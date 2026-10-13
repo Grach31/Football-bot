@@ -220,11 +220,20 @@ def monitor(fixture_id):
 
 def main():
     if os.environ.get("TEST") == "true":
-        last = api("fixtures", team=CHELSEA_ID, last=1)
-        if not last:
-            send("🧪 Тест: API ответил, но последних матчей Челси не нашлось.")
+        today = datetime.now(MSK).date()
+        season = today.year if today.month >= 7 else today.year - 1
+        played = [fx for fx in api("fixtures", team=CHELSEA_ID, season=season,
+                                   **{"from": (today - timedelta(days=21)).isoformat(),
+                                      "to": today.isoformat()},
+                                   timezone="Europe/Moscow")
+                  if fx["fixture"]["status"]["short"] in DONE]
+        if not played:
+            send("🧪 Тест: API ответил, но сыгранных матчей Челси за 3 недели не нашлось.")
             return
-        send(final_text(last[0], prefix="🧪 Тест: последний матч Челси"))
+        last = max(played, key=lambda f: f["fixture"]["timestamp"])
+        # в списке матчей нет статистики — догружаем матч целиком
+        send(final_text(api("fixtures", id=last["fixture"]["id"])[0],
+                        prefix="🧪 Тест: последний матч Челси"))
         return
 
     fx = find_fixture()
