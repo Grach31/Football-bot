@@ -9,7 +9,7 @@ import urllib.error
 import urllib.parse
 import urllib.request
 
-CHANNELS = ["KFNik", "dmitrynikotin"]   # каналы для пересылки (имя из ссылки t.me/...)
+CHANNELS = ["KFNik", "dmitrynikotin", "chelseafcrus"]   # каналы для пересылки (имя из ссылки t.me/...)
 STATE_FILE = "state/channels.json"
 
 
