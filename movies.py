@@ -166,11 +166,7 @@ def save_state(keys):
         json.dump(keys[-2000:], f)
 
 
-def main():
-    today = datetime.now(MSK).date()
-    if os.environ.get("TEST_DATE"):
-        today = datetime.strptime(os.environ["TEST_DATE"], "%Y-%m-%d").date()
-    sent = load_state()
+def run_ru(today, sent):
     seen = set(sent)
 
     picked = []
@@ -210,19 +206,147 @@ def main():
             send_text(text)  # постер не приняли — хотя бы текст
         sent.append(str(item.get("key") or item["id"]))
         time.sleep(1)
-    save_state(sent)
+
+
+# ---------- мировые новинки (TMDB) ----------
+
+TMDB = "https://api.themoviedb.org/3"
+WORLD = {  # id провайдера в TMDB (регион US) -> название
+    8: "Netflix", 1899: "HBO Max", 384: "HBO Max", 350: "Apple TV+",
+    337: "Disney+", 9: "Amazon Prime Video", 119: "Amazon Prime Video",
+}
+SKIP_TMDB_GENRES = "99,16"  # документальные, анимация (в т.ч. аниме)
+
+
+def tmdb(path, **params):
+    token = os.environ["TMDB_TOKEN"].strip()
+    headers = {"Accept": "application/json"}
+    if token.startswith("eyJ"):
+        headers["Authorization"] = f"Bearer {token}"
+    else:
+        params["api_key"] = token
+    url = f"{TMDB}/{path}?{urllib.parse.urlencode(params)}"
+    with urllib.request.urlopen(urllib.request.Request(url, headers=headers), timeout=30) as r:
+        return json.load(r)
+
+
+def tmdb_where(kind, tid):
+    res = tmdb(f"{kind}/{tid}/watch/providers").get("results", {})
+    names = []
+    for region in ("US", "GB"):
+        for p in res.get(region, {}).get("flatrate", []) or []:
+            label = WORLD.get(p.get("provider_id"))
+            if label and label not in names:
+                names.append(label)
+    return names
+
+
+def world_items(today):
+    day = today.isoformat()
+    providers = "|".join(str(k) for k in WORLD)
+    common = dict(watch_region="US", with_watch_providers=providers, without_genres=SKIP_TMDB_GENRES,
+                  sort_by="popularity.desc", language="ru-RU", page=1)
+    out = []
+    movies = tmdb("discover/movie", region="US", with_release_type="4",
+                  **{"release_date.gte": day, "release_date.lte": day}, **common).get("results", [])
+    for m in movies:
+        out.append({"kind": "movie", "id": m["id"], "key": f"tmdb-m-{m['id']}", "data": m})
+    shows = tmdb("discover/tv", **{"air_date.gte": day, "air_date.lte": day}, **common).get("results", [])
+    for t in shows:
+        d = tmdb(f"tv/{t['id']}", language="ru-RU")
+        ep = d.get("last_episode_to_air") or {}
+        if ep.get("air_date") != day:
+            nxt = d.get("next_episode_to_air") or {}
+            ep = nxt if nxt.get("air_date") == day else None
+        if not ep:
+            continue
+        label = f"{ep.get('season_number')} сезон, {ep.get('episode_number')} серия"
+        out.append({"kind": "tv", "id": t["id"], "data": d, "episode": label,
+                    "key": f"tmdb-t-{t['id']}-{ep.get('season_number')}-{ep.get('episode_number')}"})
+    return out
+
+
+def world_card(item, where):
+    d = item["data"]
+    name = d.get("title") or d.get("name") or d.get("original_title") or d.get("original_name") or "Без названия"
+    orig = d.get("original_title") or d.get("original_name") or ""
+    date = d.get("release_date") or d.get("first_air_date") or ""
+    year = f" ({date[:4]})" if date else ""
+    icon = "📺" if item["kind"] == "tv" else "🎬"
+    lines = [f"{icon} <b>{esc(name)}</b>{esc(year)}"]
+    if orig and orig != name:
+        lines.append(f"<i>{esc(orig)}</i>")
+    if item["kind"] == "tv":
+        lines.append(f"🆕 Новая серия: {esc(item['episode'])}")
+    if d.get("vote_average"):
+        lines.append(f"⭐ TMDB {round(float(d['vote_average']), 1)}")
+    desc = d.get("overview") or ""
+    if desc:
+        desc = desc if len(desc) <= 300 else desc[:297].rsplit(" ", 1)[0] + "…"
+        lines.append(f"\n{esc(desc)}")
+    lines.append(f"\n📍 Где смотреть: {esc(', '.join(where))}")
+    kind = "tv" if item["kind"] == "tv" else "movie"
+    lines.append(f"🔗 https://www.themoviedb.org/{kind}/{item['id']}")
+    return "\n".join(lines)
+
+
+def run_world(today, sent):
+    seen = set(sent)
+    picked = []
+    for item in world_items(today):
+        if item["key"] in seen or any(p[0]["key"] == item["key"] for p in picked):
+            continue
+        where = tmdb_where("tv" if item["kind"] == "tv" else "movie", item["id"])
+        if not where:
+            continue
+        picked.append((item, where))
+        if len(picked) >= TOP_N:
+            break
+    date_ru = f"{today.day} {RU_MONTHS[today.month - 1]}"
+    if not picked:
+        send_text(f"🌍 Мировые новинки · {date_ru}\n\nСегодня новинок нет.")
+        return
+    send_text(f"🌍 <b>Мировые новинки · {date_ru}</b>\n"
+              "Netflix, HBO Max, Apple TV+, Disney+, Amazon Prime Video")
+    chat = os.environ["TELEGRAM_CHAT_ID"]
+    for item, where in picked:
+        text = world_card(item, where)
+        poster = item["data"].get("poster_path")
+        try:
+            if poster and len(text) <= 1000:
+                tg("sendPhoto", chat_id=chat, photo=f"https://image.tmdb.org/t/p/w500{poster}",
+                   caption=text, parse_mode="HTML")
+            else:
+                send_text(text)
+        except urllib.error.HTTPError:
+            send_text(text)
+        sent.append(item["key"])
+        time.sleep(1)
+
+
+def main():
+    today = datetime.now(MSK).date()
+    if os.environ.get("TEST_DATE"):
+        today = datetime.strptime(os.environ["TEST_DATE"], "%Y-%m-%d").date()
+    sent = load_state()
+    errors = []
+    blocks = [("российские", "KINOPOISK_TOKEN", run_ru), ("мировые", "TMDB_TOKEN", run_world)]
+    for name, secret, fn in blocks:
+        if not os.environ.get(secret):
+            errors.append(f"{name}: не найден секрет {secret}")
+            continue
+        try:
+            fn(today, sent)
+        except Exception as err:
+            detail = str(err)
+            if isinstance(err, urllib.error.HTTPError):
+                detail = f"HTTP {err.code}: {err.read().decode(errors='replace')[:200]}"
+            errors.append(f"{name}: {type(err).__name__}: {detail}")
+        save_state(sent)
+    if errors:
+        send_text("⚠️ Бот новинок кино:\n" + esc("\n".join(errors)))
+        raise SystemExit(1)
 
 
 if __name__ == "__main__":
-    try:
-        if not os.environ.get("KINOPOISK_TOKEN"):
-            raise RuntimeError("не найден секрет KINOPOISK_TOKEN (Settings → Secrets → Actions)")
-        main()
-    except Exception as err:
-        detail = str(err)
-        if isinstance(err, urllib.error.HTTPError):
-            detail = f"HTTP {err.code}: {err.read().decode(errors='replace')[:300]}"
-        try:
-            send_text(f"⚠️ Ошибка бота новинок кино:\n{esc(type(err).__name__)}: {esc(detail)}")
-        finally:
-            raise
+    main()

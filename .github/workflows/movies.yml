@@ -27,6 +27,7 @@ jobs:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           KINOPOISK_TOKEN: ${{ secrets.KINOPOISK_TOKEN }}
+          TMDB_TOKEN: ${{ secrets.TMDB_TOKEN }}
       - name: Запомнить отправленные новинки
         if: always()
         run: |
