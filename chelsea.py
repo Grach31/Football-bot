@@ -1,6 +1,6 @@
 """Матчи Челси: составы до матча, голы и удаления по ходу игры,
 статистика в перерыве и после финального свистка.
-Данные: API-Football (api-sports.io)."""
+Данные: открытый (неофициальный) API ESPN, ключ не нужен."""
 import html
 import json
 import os
@@ -10,45 +10,45 @@ import urllib.parse
 import urllib.request
 from datetime import datetime, timedelta, timezone
 
-API = "https://v3.football.api-sports.io"
-CHELSEA_ID = 49
+ESPN = "https://site.api.espn.com/apis/site/v2/sports/soccer"
+CHELSEA_ID = "363"
 MSK = timezone(timedelta(hours=3))
+
+# Турниры, где может играть Челси (коды ESPN)
+LEAGUES = ["eng.1", "uefa.champions", "uefa.europa", "uefa.europa.conf",
+           "eng.fa", "eng.league_cup", "club.friendly"]
 
 LOOKAHEAD_MIN = 75      # начинаем следить, если до матча меньше стольких минут
 PREMATCH_MIN = 50       # за сколько минут до начала ждём составы
-POLL_SECONDS = 240      # как часто проверяем матч (в секундах)
+POLL_SECONDS = 180      # как часто проверяем матч (в секундах)
 MAX_RUNTIME = 4.5 * 3600
 
-LIVE = {"1H", "HT", "2H", "ET", "BT", "P", "LIVE", "INT", "SUSP"}
-DONE = {"FT", "AET", "PEN"}
-DEAD = {"PST", "CANC", "ABD", "AWD", "WO"}
+DEAD = {"STATUS_POSTPONED", "STATUS_CANCELED", "STATUS_ABANDONED", "STATUS_SUSPENDED",
+        "STATUS_FORFEIT"}
 
 STATS = [
-    ("Ball Possession", "Владение"),
-    ("expected_goals", "xG"),
-    ("Total Shots", "Удары"),
-    ("Shots on Goal", "В створ"),
-    ("Corner Kicks", "Угловые"),
-    ("Offsides", "Офсайды"),
-    ("Fouls", "Фолы"),
-    ("Yellow Cards", "Жёлтые"),
-    ("Red Cards", "Красные"),
-    ("Goalkeeper Saves", "Сейвы"),
-    ("Total passes", "Передачи"),
-    ("Passes %", "Точность передач"),
+    ("possessionPct", "Владение"),
+    ("totalShots", "Удары"),
+    ("shotsOnTarget", "В створ"),
+    ("wonCorners", "Угловые"),
+    ("offsides", "Офсайды"),
+    ("foulsCommitted", "Фолы"),
+    ("yellowCards", "Жёлтые"),
+    ("redCards", "Красные"),
+    ("saves", "Сейвы"),
+    ("totalPasses", "Передачи"),
+    ("accuratePasses", "Точные передачи"),
+    ("passPct", "Точность передач"),
 ]
 
-esc = html.escape
+def esc(text):
+    return html.escape(str(text), quote=False)
 
 
-def api(path, **params):
-    url = f"{API}/{path}?{urllib.parse.urlencode(params)}"
-    req = urllib.request.Request(url, headers={"x-apisports-key": os.environ["API_FOOTBALL_KEY"]})
+def get(url):
+    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
     with urllib.request.urlopen(req, timeout=30) as r:
-        data = json.load(r)
-    if data.get("errors"):
-        raise RuntimeError(f"API-Football: {data['errors']}")
-    return data.get("response", [])
+        return json.load(r)
 
 
 def send(text):
@@ -61,155 +61,185 @@ def send(text):
     urllib.request.urlopen(urllib.request.Request(url, data=body), timeout=30)
 
 
-def score(fx):
-    h, a = fx["teams"]["home"]["name"], fx["teams"]["away"]["name"]
-    gh, ga = fx["goals"]["home"], fx["goals"]["away"]
-    if gh is None:
-        return f"{esc(h)} — {esc(a)}"
-    return f"{esc(h)} <b>{gh}:{ga}</b> {esc(a)}"
+def ts(iso):
+    return datetime.fromisoformat(iso.replace("Z", "+00:00")).timestamp()
 
 
-def league(fx):
-    return esc(fx["league"]["name"])
+def chelsea_events(league, date_from, date_to):
+    """Матчи Челси в турнире за период (по таблице результатов ESPN)."""
+    dates = f"{date_from:%Y%m%d}-{date_to:%Y%m%d}"
+    try:
+        data = get(f"{ESPN}/{league}/scoreboard?dates={dates}&limit=200")
+    except urllib.error.HTTPError:
+        return []
+    found = []
+    for ev in data.get("events", []):
+        comp = (ev.get("competitions") or [{}])[0]
+        ids = {c.get("team", {}).get("id") for c in comp.get("competitors", [])}
+        if CHELSEA_ID in ids:
+            found.append((league, ev))
+    return found
 
 
-def minute(e):
-    t = e["time"]
-    return f"{t['elapsed']}'" + (f"+{t['extra']}" if t.get("extra") else "")
+def summary(league, event_id):
+    return get(f"{ESPN}/{league}/summary?event={event_id}")
 
 
-def event_key(e):
-    return (e["time"]["elapsed"], e["time"].get("extra"), e["type"], e.get("detail"),
-            (e.get("player") or {}).get("name"), e["team"]["id"])
+# ---------- разбор сводки матча ----------
+
+def comp(s):
+    return s["header"]["competitions"][0]
+
+
+def status(s):
+    return comp(s)["status"]
+
+
+def league_name(s):
+    return esc(s["header"].get("league", {}).get("name") or "")
+
+
+def side(s, home_away):
+    for c in comp(s)["competitors"]:
+        if c.get("homeAway") == home_away:
+            return c
+    return comp(s)["competitors"][0 if home_away == "home" else 1]
+
+
+def score(s):
+    h, a = side(s, "home"), side(s, "away")
+    hn, an = esc(h["team"]["displayName"]), esc(a["team"]["displayName"])
+    if status(s)["type"]["state"] == "pre" or h.get("score") in (None, ""):
+        return f"{hn} — {an}"
+    return f"{hn} <b>{h['score']}:{a['score']}</b> {an}"
 
 
 def event_text(e):
-    player = esc((e.get("player") or {}).get("name") or "?")
-    team = esc(e["team"]["name"])
-    typ, det = e["type"], e.get("detail") or ""
-    if typ == "Goal":
-        if det == "Missed Penalty":
-            return f"❌ {minute(e)} Незабитый пенальти: {player} ({team})"
-        label = {"Own Goal": " (автогол)", "Penalty": " (пенальти)"}.get(det, "")
-        assist = (e.get("assist") or {}).get("name")
-        a = f", пас: {esc(assist)}" if assist and det == "Normal Goal" else ""
-        return f"⚽ {minute(e)} ГОЛ{label}! {player} ({team}){a}"
-    if typ == "Card" and "Red" in det:
-        return f"🟥 {minute(e)} Удаление: {player} ({team})"
-    if typ == "Var":
-        return f"📺 {minute(e)} VAR: {esc(det)} ({team})"
+    clock = esc((e.get("clock") or {}).get("displayValue") or "")
+    team = esc((e.get("team") or {}).get("displayName") or "")
+    people = [esc(p["athlete"]["displayName"]) for p in e.get("participants") or [] if p.get("athlete")]
+    who = people[0] if people else "?"
+    kind = ((e.get("type") or {}).get("text") or "").lower()
+    if e.get("scoringPlay"):
+        label = " (автогол)" if "own" in kind else " (пенальти)" if "penalty" in kind else ""
+        assist = f", пас: {people[1]}" if len(people) > 1 and not label else ""
+        return f"⚽ {clock} ГОЛ{label}! {who} ({team}){assist}"
+    if "red card" in kind:
+        return f"🟥 {clock} Удаление: {who} ({team})"
+    if "penalty" in kind and ("miss" in kind or "saved" in kind):
+        return f"❌ {clock} Незабитый пенальти: {who} ({team})"
     return None
 
 
-def goals_list(fx):
-    lines = [event_text(e) for e in fx.get("events") or []
-             if e["type"] == "Goal" and e.get("detail") != "Missed Penalty"]
-    return "\n".join(lines)
+def goals_list(s):
+    return "\n".join(t for t in (event_text(e) for e in s.get("keyEvents") or []
+                                 if e.get("scoringPlay")) if t)
 
 
-def stats_block(fx):
-    st = fx.get("statistics") or []
-    if len(st) < 2:
+def stats_block(s):
+    teams = (s.get("boxscore") or {}).get("teams") or []
+    if len(teams) < 2:
         return "\n📊 Статистика пока недоступна."
-    if st[0]["team"]["id"] != fx["teams"]["home"]["id"]:
-        st = [st[1], st[0]]
-    h = {s["type"]: s["value"] for s in st[0]["statistics"]}
-    a = {s["type"]: s["value"] for s in st[1]["statistics"]}
+    teams = sorted(teams, key=lambda t: 0 if t.get("homeAway") == "home" else 1)
+    h = {x.get("name"): x.get("displayValue") for x in teams[0].get("statistics") or []}
+    a = {x.get("name"): x.get("displayValue") for x in teams[1].get("statistics") or []}
     lines = ["\n📊 <b>Статистика</b>"]
     for key, name in STATS:
-        hv, av = h.get(key), a.get(key)
-        if hv is None and av is None:
-            continue
-        lines.append(f"{name}: {hv if hv is not None else 0} — {av if av is not None else 0}")
-    return "\n".join(lines)
+        if key in h or key in a:
+            suffix = "%" if key in ("possessionPct",) and "%" not in str(h.get(key, "")) else ""
+            lines.append(f"{name}: {esc(str(h.get(key, '0')))}{suffix} — {esc(str(a.get(key, '0')))}{suffix}")
+    if len(lines) == 1:
+        # названия у ESPN поменялись: показываем как есть
+        labels = {x.get("name"): x.get("label") for x in teams[0].get("statistics") or []}
+        for key, label in labels.items():
+            lines.append(f"{esc(str(label))}: {esc(str(h.get(key)))} — {esc(str(a.get(key)))}")
+    return "\n".join(lines) if len(lines) > 1 else "\n📊 Статистика пока недоступна."
 
 
-def lineups_block(fx):
+def lineups_block(s):
     parts = []
-    for t in fx.get("lineups") or []:
-        xi = ", ".join(esc(p["player"]["name"]) for p in t.get("startXI") or [])
-        if not xi:
+    for r in s.get("rosters") or []:
+        starters = [p for p in r.get("roster") or [] if p.get("starter")]
+        if not starters:
             continue
-        coach = (t.get("coach") or {}).get("name")
-        c = f"\nТренер: {esc(coach)}" if coach else ""
-        parts.append(f"<b>{esc(t['team']['name'])}</b> ({esc(t.get('formation') or '?')})\n{xi}{c}")
+        names = ", ".join(esc(p.get("athlete", {}).get("displayName", "?")) for p in starters)
+        formation = f" ({esc(r['formation'])})" if r.get("formation") else ""
+        parts.append(f"<b>{esc(r.get('team', {}).get('displayName', ''))}</b>{formation}\n{names}")
     return "\n\n".join(parts)
 
 
-def final_text(fx, prefix="🏁 Финал"):
-    g = goals_list(fx)
-    return f"{prefix} ({league(fx)})\n{score(fx)}" + (f"\n\n{g}" if g else "") + "\n" + stats_block(fx)
+def final_text(s, prefix="🏁 Финал"):
+    g = goals_list(s)
+    return f"{prefix} ({league_name(s)})\n{score(s)}" + (f"\n\n{g}" if g else "") + "\n" + stats_block(s)
 
 
-def find_fixture():
-    today = datetime.now(MSK)
-    dates = [today.date()]
-    if today.hour >= 23:
-        dates.append(today.date() + timedelta(days=1))
-    for d in dates:
-        for fx in api("fixtures", team=CHELSEA_ID, date=d.isoformat(), timezone="Europe/Moscow"):
-            st = fx["fixture"]["status"]["short"]
-            mins = (fx["fixture"]["timestamp"] - time.time()) / 60
-            if st in LIVE or (st == "NS" and mins <= LOOKAHEAD_MIN) or (st == "TBD" and mins <= LOOKAHEAD_MIN):
-                return fx
+# ---------- основной цикл ----------
+
+def find_match():
+    now = datetime.now(timezone.utc)
+    for league in LEAGUES:
+        for lg, ev in chelsea_events(league, now - timedelta(days=1), now + timedelta(days=1)):
+            st = ev["competitions"][0]["status"]["type"]
+            mins = (ts(ev["date"]) - time.time()) / 60
+            if st["state"] == "in" or (st["state"] == "pre" and -10 <= mins <= LOOKAHEAD_MIN):
+                return lg, ev["id"]
     return None
 
 
-def monitor(fixture_id):
+def monitor(league, event_id):
     start = time.time()
     seen = set()
     sent_lineups = sent_kickoff = sent_ht = False
 
     while time.time() - start < MAX_RUNTIME:
-        fx = api("fixtures", id=fixture_id)[0]
-        st = fx["fixture"]["status"]["short"]
-        kickoff = fx["fixture"]["timestamp"]
+        s = summary(league, event_id)
+        st = status(s)["type"]
+        kickoff = ts(comp(s)["date"])
 
-        if st in DEAD:
-            send(f"⚠️ Матч {score(fx)}: {esc(fx['fixture']['status']['long'])}")
+        if st.get("name") in DEAD:
+            send(f"⚠️ Матч {score(s)}: {esc(st.get('description') or st.get('name'))}")
             return
 
-        if not sent_lineups and fx.get("lineups") and st not in DONE:
-            block = lineups_block(fx)
+        if not sent_lineups and st["state"] != "post":
+            block = lineups_block(s)
             if block:
                 ko = datetime.fromtimestamp(kickoff, MSK).strftime("%H:%M")
-                send(f"📋 <b>Составы</b> · {league(fx)}, начало в {ko} МСК\n{score(fx)}\n\n{block}")
+                send(f"📋 <b>Составы</b> · {league_name(s)}, начало в {ko} МСК\n{score(s)}\n\n{block}")
                 sent_lineups = True
 
-        if st in LIVE or st in DONE:
-            events = fx.get("events") or []
+        if st["state"] in ("in", "post"):
+            events = s.get("keyEvents") or []
             if not sent_kickoff:
-                elapsed = fx["fixture"]["status"].get("elapsed") or 0
-                if elapsed > 5 or st in DONE:
-                    # подключились посреди матча: прошлые события только сводкой
-                    seen.update(event_key(e) for e in events)
-                    g = goals_list(fx)
-                    send(f"🔵 Матч идёт, {elapsed}' ({league(fx)})\n{score(fx)}" + (f"\n\n{g}" if g else ""))
+                started_min = (time.time() - kickoff) / 60
+                if started_min > 10 or st["state"] == "post":
+                    seen.update(e.get("id") for e in events)
+                    g = goals_list(s)
+                    clock = esc(status(s).get("displayClock") or "")
+                    send(f"🔵 Матч идёт, {clock} ({league_name(s)})\n{score(s)}" + (f"\n\n{g}" if g else ""))
                 else:
-                    send(f"🟢 Матч начался! ({league(fx)})\n{score(fx)}")
+                    send(f"🟢 Матч начался! ({league_name(s)})\n{score(s)}")
                 sent_kickoff = True
 
             for e in events:
-                k = event_key(e)
-                if k in seen:
+                if e.get("id") in seen:
                     continue
-                seen.add(k)
+                seen.add(e.get("id"))
                 text = event_text(e)
                 if text:
-                    send(f"{text}\nСчёт: {score(fx)}")
+                    send(f"{text}\nСчёт: {score(s)}")
 
-            if st == "HT" and not sent_ht:
-                send(f"⏸ Перерыв ({league(fx)})\n{score(fx)}\n{stats_block(fx)}")
+            if st.get("name") == "STATUS_HALFTIME" and not sent_ht:
+                send(f"⏸ Перерыв ({league_name(s)})\n{score(s)}\n{stats_block(s)}")
                 sent_ht = True
 
-            if st in DONE:
+            if st["state"] == "post":
                 time.sleep(120)  # даём статистике обновиться
-                send(final_text(api("fixtures", id=fixture_id)[0]))
+                send(final_text(summary(league, event_id)))
                 return
 
-        # до матча не тратим запросы: спим до момента, когда появятся составы
+        # до матча не дёргаем данные зря: спим до момента, когда появятся составы
         wait = POLL_SECONDS
-        if st in ("NS", "TBD"):
+        if st["state"] == "pre":
             until_lineups = kickoff - PREMATCH_MIN * 60 - time.time()
             if sent_lineups:
                 wait = max(30, min(POLL_SECONDS, kickoff - time.time()))
@@ -220,31 +250,26 @@ def monitor(fixture_id):
 
 def main():
     if os.environ.get("TEST") == "true":
-        today = datetime.now(MSK).date()
-        season = today.year if today.month >= 7 else today.year - 1
-        played = [fx for fx in api("fixtures", team=CHELSEA_ID, season=season,
-                                   **{"from": (today - timedelta(days=21)).isoformat(),
-                                      "to": today.isoformat()},
-                                   timezone="Europe/Moscow")
-                  if fx["fixture"]["status"]["short"] in DONE]
+        now = datetime.now(timezone.utc)
+        played = []
+        for league in LEAGUES:
+            for lg, ev in chelsea_events(league, now - timedelta(days=30), now):
+                if ev["competitions"][0]["status"]["type"].get("completed"):
+                    played.append((ts(ev["date"]), lg, ev["id"]))
         if not played:
-            send("🧪 Тест: API ответил, но сыгранных матчей Челси за 3 недели не нашлось.")
+            send("🧪 Тест: ESPN ответил, но сыгранных матчей Челси за месяц не нашлось.")
             return
-        last = max(played, key=lambda f: f["fixture"]["timestamp"])
-        # в списке матчей нет статистики — догружаем матч целиком
-        send(final_text(api("fixtures", id=last["fixture"]["id"])[0],
-                        prefix="🧪 Тест: последний матч Челси"))
+        _, lg, eid = max(played)
+        send(final_text(summary(lg, eid), prefix="🧪 Тест: последний матч Челси"))
         return
 
-    fx = find_fixture()
-    if fx:
-        monitor(fx["fixture"]["id"])
+    match = find_match()
+    if match:
+        monitor(*match)
 
 
 if __name__ == "__main__":
     try:
-        if not os.environ.get("API_FOOTBALL_KEY"):
-            raise RuntimeError("не найден секрет API_FOOTBALL_KEY (проверь название в Settings → Secrets)")
         main()
     except Exception as err:
         detail = str(err)
