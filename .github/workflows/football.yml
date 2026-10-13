@@ -1,7 +1,7 @@
 name: Football results
 on:
   schedule:
-    - cron: "0 6 * * *"  # 9:00 по Москве
+    - cron: "0 18 * * *"  # 21:00 по Москве
   workflow_dispatch:
 jobs:
   send:

@@ -38,11 +38,13 @@ def send(text):
 
 
 def main():
-    yesterday = (datetime.now(MSK) - timedelta(days=1)).date()
+    now = datetime.now(MSK)
+    # матч ~115 минут: всё, что началось раньше этой границы, уже было во вчерашней сводке
+    since = now - timedelta(hours=24, minutes=115)
     params = urllib.parse.urlencode({
         "competitions": ",".join(COMPETITIONS),
-        "dateFrom": (yesterday - timedelta(days=1)).isoformat(),
-        "dateTo": (yesterday + timedelta(days=1)).isoformat(),
+        "dateFrom": (since.date() - timedelta(days=1)).isoformat(),
+        "dateTo": (now.date() + timedelta(days=1)).isoformat(),
     })
     data = get_json(
         "https://api.football-data.org/v4/matches?" + params,
@@ -54,15 +56,18 @@ def main():
         if m.get("status") != "FINISHED":
             continue
         kickoff = datetime.fromisoformat(m["utcDate"].replace("Z", "+00:00")).astimezone(MSK)
-        if kickoff.date() != yesterday:
+        if not (since <= kickoff <= now):
+            continue
+        # Челси присылается отдельно, во время матча (chelsea.py)
+        if "Chelsea" in (m["homeTeam"].get("name") or "") + (m["awayTeam"].get("name") or ""):
             continue
         s = m["score"]["fullTime"]
         line = f"{team(m['homeTeam'])} <b>{s['home']}:{s['away']}</b> {team(m['awayTeam'])}"
         groups.setdefault(m["competition"]["code"], []).append(line)
 
-    title = f"⚽ Результаты за {yesterday.strftime('%d.%m.%Y')}"
+    title = f"⚽ Результаты за сутки · {now.strftime('%d.%m')}"
     if not groups:
-        text = title + "\n\nВчера матчей не было."
+        text = title + "\n\nЗа последние сутки матчей не было."
     else:
         parts = [title]
         for code, name in COMPETITIONS.items():

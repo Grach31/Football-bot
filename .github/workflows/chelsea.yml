@@ -1,0 +1,28 @@
+name: Chelsea live
+on:
+  schedule:
+    - cron: "0 * * * *"  # раз в час проверяем, не скоро ли матч Челси
+  workflow_dispatch:
+    inputs:
+      test:
+        description: "Тест: прислать последний матч Челси"
+        type: boolean
+        default: true
+concurrency:
+  group: chelsea
+  cancel-in-progress: false
+jobs:
+  live:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python chelsea.py
+        env:
+          TEST: ${{ inputs.test }}
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          API_FOOTBALL_KEY: ${{ secrets.API_FOOTBALL_KEY }}
