@@ -91,47 +91,55 @@ def rating_of(d):
     return d.get("ratingKinopoisk") or d.get("ratingImdb") or 0
 
 
-def candidates(today):
-    """Фильмы с цифровым релизом сегодня + новые серии популярных сериалов."""
-    out = []
-    # 1) цифровые релизы месяца, оставляем сегодняшние
-    page = 1
-    while page <= 5:
-        data = api("v2.1/films/releases", year=today.year, month=MONTHS[today.month - 1], page=page)
-        rel = data.get("releases", [])
-        for r in rel:
-            if str(r.get("releaseDate", ""))[:10] == today.isoformat():
-                out.append({"id": r["filmId"], "kind": "film"})
-        if len(rel) < 10:
-            break
-        page += 1
-    # 2) новые серии популярных сериалов
-    popular = api("v2.2/films/collections", type="TOP_POPULAR_ALL", page=1).get("items", [])
-    for f in popular:
-        if f.get("type") not in ("TV_SERIES", "MINI_SERIES"):
-            continue
-        fid = f.get("kinopoiskId")
-        seasons = api(f"v2.2/films/{fid}/seasons").get("items", [])
-        todays = [ep for s in seasons for ep in s.get("episodes", [])
-                  if str(ep.get("releaseDate") or "")[:10] == today.isoformat()]
-        if todays:
-            eps = sorted(todays, key=lambda e: (e.get("seasonNumber", 0), e.get("episodeNumber", 0)))
-            first, last = eps[0], eps[-1]
-            label = f"{first.get('seasonNumber')} сезон, " + (
-                f"{first.get('episodeNumber')} серия" if len(eps) == 1
-                else f"серии {first.get('episodeNumber')}–{last.get('episodeNumber')}")
-            out.append({"id": fid, "kind": "series", "episode": label,
-                        "key": f"{fid}-{first.get('seasonNumber')}-{first.get('episodeNumber')}"})
-    return out
+def candidates(today, state):
+    """Популярные свежие фильмы и сериалы, которые впервые появились в онлайн-кинотеатрах,
+    плюс новые серии популярных сериалов, вышедшие сегодня."""
+    out, online = [], set(state["online"])
+    first_run = not state["online"]
+    newly_online = []
+    for page in range(1, 6):
+        for f in api("v2.2/films/collections", type="TOP_POPULAR_ALL", page=page).get("items", []):
+            fid = f.get("kinopoiskId")
+            if not fid or (f.get("year") or 0) < today.year - 1:
+                continue
+            is_series = f.get("type") in ("TV_SERIES", "MINI_SERIES")
+            if is_series:
+                seasons = api(f"v2.2/films/{fid}/seasons").get("items", [])
+                todays = [ep for s in seasons for ep in s.get("episodes", [])
+                          if str(ep.get("releaseDate") or "")[:10] == today.isoformat()]
+                if todays:
+                    eps = sorted(todays, key=lambda e: (e.get("seasonNumber", 0), e.get("episodeNumber", 0)))
+                    first, last = eps[0], eps[-1]
+                    label = f"{first.get('seasonNumber')} сезон, " + (
+                        f"{first.get('episodeNumber')} серия" if len(eps) == 1
+                        else f"серии {first.get('episodeNumber')}–{last.get('episodeNumber')}")
+                    out.append({"id": fid, "kind": "series", "episode": label,
+                                "key": f"{fid}-{first.get('seasonNumber')}-{first.get('episodeNumber')}"})
+            if fid in online:
+                continue
+            where = platforms_for(fid)
+            time.sleep(0.1)
+            if where:
+                online.add(fid)
+                newly_online.append({"id": fid, "kind": "series" if is_series else "film",
+                                     "episode": "новый сериал в онлайн-кинотеатре", "where": where})
+    state["online"] = sorted(online)
+    # первый запуск: всё, что уже в онлайне, попадает в базу; присылаем только лучшие 10
+    out.extend(newly_online)
+    return out, first_run
 
 
 def card(d, item, where):
     name = d.get("nameRu") or d.get("nameOriginal") or d.get("nameEn") or "Без названия"
     year = f" ({d['year']})" if d.get("year") else ""
-    icon = "📺" if item["kind"] == "series" else "🎬"
+    icon = "🎬" if item["kind"] == "film" else "📺"
     lines = [f"{icon} <b>{esc(name)}</b>{esc(year)}"]
     if item["kind"] == "series":
         lines.append(f"🆕 Новая серия: {esc(item['episode'])}")
+    elif item["kind"] == "new_series":
+        lines.append("🆕 Новый сериал в онлайне")
+    else:
+        lines.append("🆕 Появился в онлайне")
     r = []
     if d.get("ratingKinopoisk"):
         r.append(f"КП {d['ratingKinopoisk']}")
@@ -155,31 +163,43 @@ def card(d, item, where):
 def load_state():
     try:
         with open(STATE_FILE) as f:
-            return json.load(f)
+            data = json.load(f)
     except FileNotFoundError:
-        return []
+        data = {}
+    if isinstance(data, list):  # старый формат
+        data = {"sent": data}
+    data.setdefault("sent", [])
+    data.setdefault("online", [])
+    return data
 
 
-def save_state(keys):
+def save_state(state):
     os.makedirs(os.path.dirname(STATE_FILE), exist_ok=True)
+    state["sent"] = state["sent"][-3000:]
     with open(STATE_FILE, "w") as f:
-        json.dump(keys[-2000:], f)
+        json.dump(state, f, ensure_ascii=False)
 
 
-def run_ru(today, sent):
+def run_ru(today, state):
+    sent = state["sent"]
     seen = set(sent)
-
     picked = []
-    for item in candidates(today):
+    items, _ = candidates(today, state)
+    for item in items:
         key = str(item.get("key") or item["id"])
         if key in seen or any(str(p[0].get("key") or p[0]["id"]) == key for p in picked):
+            continue
+        # сериал с новой серией сегодня не дублируем карточкой «новый сериал»
+        if item.get("where") and any(p[0]["id"] == item["id"] for p in picked):
             continue
         d = details(item["id"])
         if not d or skip_by_genre(d):
             continue
-        where = platforms_for(item["id"])
+        where = item.get("where") or platforms_for(item["id"])
         if not where:
             continue
+        if item["kind"] == "series" and item.get("episode", "").startswith("новый"):
+            item = dict(item, kind="new_series")
         picked.append((item, d, where))
 
     picked.sort(key=lambda p: (rating_of(p[1]), p[1].get("ratingKinopoiskVoteCount") or 0), reverse=True)
@@ -191,7 +211,6 @@ def run_ru(today, sent):
         return
 
     send_text(f"🎬 <b>Новинки онлайн-кинотеатров · {date_ru}</b>\n"
-              f"{len(picked)} {('новинка' if len(picked) == 1 else 'новинки' if len(picked) < 5 else 'новинок')}: "
               "Кинопоиск, Okko, Иви, Wink, START, PREMIER, KION")
     chat = os.environ["TELEGRAM_CHAT_ID"]
     for item, d, where in picked:
@@ -203,7 +222,7 @@ def run_ru(today, sent):
             else:
                 send_text(text)
         except urllib.error.HTTPError:
-            send_text(text)  # постер не приняли — хотя бы текст
+            send_text(text)
         sent.append(str(item.get("key") or item["id"]))
         time.sleep(1)
 
@@ -290,7 +309,8 @@ def world_card(item, where):
     return "\n".join(lines)
 
 
-def run_world(today, sent):
+def run_world(today, state):
+    sent = state["sent"]
     seen = set(sent)
     picked = []
     for item in world_items(today):
@@ -328,7 +348,7 @@ def main():
     today = datetime.now(MSK).date()
     if os.environ.get("TEST_DATE"):
         today = datetime.strptime(os.environ["TEST_DATE"], "%Y-%m-%d").date()
-    sent = load_state()
+    state = load_state()
     errors = []
     blocks = [("российские", "KINOPOISK_TOKEN", run_ru), ("мировые", "TMDB_TOKEN", run_world)]
     for name, secret, fn in blocks:
@@ -336,13 +356,13 @@ def main():
             errors.append(f"{name}: не найден секрет {secret}")
             continue
         try:
-            fn(today, sent)
+            fn(today, state)
         except Exception as err:
             detail = str(err)
             if isinstance(err, urllib.error.HTTPError):
                 detail = f"HTTP {err.code}: {err.read().decode(errors='replace')[:200]}"
             errors.append(f"{name}: {type(err).__name__}: {detail}")
-        save_state(sent)
+        save_state(state)
     if errors:
         send_text("⚠️ Бот новинок кино:\n" + esc("\n".join(errors)))
         raise SystemExit(1)
