@@ -1,0 +1,36 @@
+name: Movie releases
+on:
+  schedule:
+    - cron: "52 17 * * *"  # ~21:00 по Москве (с небольшим запасом на очередь GitHub)
+  workflow_dispatch:
+    inputs:
+      test_date:
+        description: "Проверить за другую дату (ГГГГ-ММ-ДД), пусто = сегодня"
+        required: false
+permissions:
+  contents: write
+concurrency:
+  group: movies
+  cancel-in-progress: false
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python movies.py
+        env:
+          TEST_DATE: ${{ inputs.test_date }}
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          KINOPOISK_TOKEN: ${{ secrets.KINOPOISK_TOKEN }}
+      - name: Запомнить отправленные новинки
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add state/movies.json 2>/dev/null || exit 0
+          git diff --cached --quiet || (git commit -m "Кино: отправленные новинки" && git pull --rebase -X theirs && git push)
