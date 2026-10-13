@@ -1,11 +1,17 @@
 name: Football results
 on:
   schedule:
-    - cron: "0 18 * * *"  # 21:00 по Москве
+    - cron: "*/30 * * * *"  # каждые полчаса: результаты сразу после окончания матчей
   workflow_dispatch:
+permissions:
+  contents: write  # чтобы запомнить, какие матчи уже присланы
+concurrency:
+  group: football
+  cancel-in-progress: false
 jobs:
   send:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -16,3 +22,10 @@ jobs:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           FOOTBALL_API_KEY: ${{ secrets.FOOTBALL_API_KEY }}
+      - name: Запомнить присланные матчи
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add state/football.json 2>/dev/null || exit 0
+          git diff --cached --quiet || (git commit -m "Футбол: присланные матчи" && git pull --rebase -X theirs && git push)

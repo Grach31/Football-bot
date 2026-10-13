@@ -37,13 +37,30 @@ def send(text):
     urllib.request.urlopen(urllib.request.Request(url, data=body), timeout=30)
 
 
+STATE_FILE = "state/football.json"
+
+
+def load_sent():
+    try:
+        with open(STATE_FILE) as f:
+            return json.load(f)
+    except FileNotFoundError:
+        return None
+
+
+def save_sent(ids):
+    os.makedirs(os.path.dirname(STATE_FILE), exist_ok=True)
+    with open(STATE_FILE, "w") as f:
+        json.dump(ids[-1000:], f)
+
+
 def main():
+    """Присылает результаты сразу после окончания матчей.
+    Запускается каждые полчаса, отправляет только матчи, которые ещё не присылали."""
     now = datetime.now(MSK)
-    # матч ~115 минут: всё, что началось раньше этой границы, уже было во вчерашней сводке
-    since = now - timedelta(hours=24, minutes=115)
     params = urllib.parse.urlencode({
         "competitions": ",".join(COMPETITIONS),
-        "dateFrom": (since.date() - timedelta(days=1)).isoformat(),
+        "dateFrom": (now.date() - timedelta(days=1)).isoformat(),
         "dateTo": (now.date() + timedelta(days=1)).isoformat(),
     })
     data = get_json(
@@ -51,31 +68,34 @@ def main():
         {"X-Auth-Token": os.environ["FOOTBALL_API_KEY"]},
     )
 
-    groups = {}
-    for m in data.get("matches", []):
-        if m.get("status") != "FINISHED":
+    sent = load_sent()
+    first_run = sent is None
+    sent = sent or []
+    seen = set(sent)
+
+    groups, new_ids = {}, []
+    for m in sorted(data.get("matches", []), key=lambda m: m["utcDate"]):
+        if m.get("status") != "FINISHED" or m["id"] in seen:
             continue
-        kickoff = datetime.fromisoformat(m["utcDate"].replace("Z", "+00:00")).astimezone(MSK)
-        if not (since <= kickoff <= now):
-            continue
+        new_ids.append(m["id"])
         # Челси присылается отдельно, во время матча (chelsea.py)
-        if "Chelsea" in (m["homeTeam"].get("name") or "") + (m["awayTeam"].get("name") or ""):
+        names = " ".join(str(t.get(k) or "") for t in (m["homeTeam"], m["awayTeam"]) for k in ("name", "shortName"))
+        if "Chelsea" in names:
             continue
         s = m["score"]["fullTime"]
         line = f"{team(m['homeTeam'])} <b>{s['home']}:{s['away']}</b> {team(m['awayTeam'])}"
         groups.setdefault(m["competition"]["code"], []).append(line)
 
-    title = f"⚽ Результаты за сутки · {now.strftime('%d.%m')}"
-    if not groups:
-        text = title + "\n\nЗа последние сутки матчей не было."
-    else:
-        parts = [title]
+    # первый запуск: просто запоминаем уже сыгранные матчи, чтобы не прислать старое
+    if groups and not first_run:
+        parts = ["⚽ Завершились матчи"]
         for code, name in COMPETITIONS.items():
             if code in groups:
                 parts.append(f"\n<b>{name}</b>\n" + "\n".join(groups[code]))
-        text = "\n".join(parts)
+        send("\n".join(parts))
 
-    send(text)
+    if new_ids or first_run:
+        save_sent(sent + new_ids)
 
 
 if __name__ == "__main__":
