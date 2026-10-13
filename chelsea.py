@@ -5,6 +5,7 @@ import html
 import json
 import os
 import time
+import urllib.error
 import urllib.parse
 import urllib.request
 from datetime import datetime, timedelta, timezone
@@ -232,4 +233,15 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        if not os.environ.get("API_FOOTBALL_KEY"):
+            raise RuntimeError("не найден секрет API_FOOTBALL_KEY (проверь название в Settings → Secrets)")
+        main()
+    except Exception as err:
+        detail = str(err)
+        if isinstance(err, urllib.error.HTTPError):
+            detail = f"HTTP {err.code}: {err.read().decode(errors='replace')[:300]}"
+        try:
+            send(f"⚠️ Ошибка бота Челси:\n{esc(type(err).__name__)}: {esc(detail)}")
+        finally:
+            raise
