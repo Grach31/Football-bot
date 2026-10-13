@@ -5,12 +5,15 @@ import html
 import json
 import os
 import re
+import subprocess
+import time
 import urllib.error
 import urllib.parse
 import urllib.request
 
 CHANNELS = ["KFNik", "dmitrynikotin", "chelseafcrus"]   # каналы для пересылки (имя из ссылки t.me/...)
 STATE_FILE = "state/channels.json"
+CHECK_EVERY = 60       # как часто проверять каналы в режиме без перерыва (секунды)
 
 
 def esc(text):
@@ -114,12 +117,51 @@ def main():
             json.dump(state, f, ensure_ascii=False, indent=2)
 
 
-if __name__ == "__main__":
-    try:
-        main()
-    except Exception as err:
+def save_to_git():
+    """Запоминаем последний отправленный пост в репозитории, чтобы
+    следующий запуск не прислал его повторно."""
+    run = lambda *cmd: subprocess.run(cmd, capture_output=True, text=True)
+    run("git", "add", STATE_FILE)
+    if run("git", "diff", "--cached", "--quiet").returncode == 0:
+        return
+    run("git", "commit", "-m", "Каналы: последний отправленный пост")
+    run("git", "pull", "--rebase", "-X", "theirs")
+    run("git", "push")
+
+
+def notify_error(err):
+    tg("sendMessage", chat_id=os.environ["TELEGRAM_CHAT_ID"],
+       text=f"⚠️ Ошибка пересылки каналов:\n{type(err).__name__}: {err}"[:4000])
+
+
+def loop(minutes):
+    """Проверяем каналы раз в минуту, пока не выйдет время запуска."""
+    stop_at = time.time() + minutes * 60
+    errors_in_row = 0
+    while time.time() < stop_at:
         try:
-            tg("sendMessage", chat_id=os.environ["TELEGRAM_CHAT_ID"],
-               text=f"⚠️ Ошибка пересылки каналов:\n{type(err).__name__}: {err}"[:4000])
-        finally:
-            raise
+            main()
+            save_to_git()
+            errors_in_row = 0
+        except Exception as err:
+            errors_in_row += 1
+            if errors_in_row == 3:  # о разовых сбоях сети не пишем
+                try:
+                    notify_error(err)
+                except Exception:
+                    pass
+        time.sleep(CHECK_EVERY)
+
+
+if __name__ == "__main__":
+    minutes = int(os.environ.get("LOOP_MINUTES") or 0)
+    if minutes:
+        loop(minutes)
+    else:
+        try:
+            main()
+        except Exception as err:
+            try:
+                notify_error(err)
+            finally:
+                raise
