@@ -1,0 +1,30 @@
+name: Channel posts
+on:
+  schedule:
+    - cron: "*/15 * * * *"  # каждые 15 минут
+  workflow_dispatch:
+permissions:
+  contents: write  # чтобы запомнить последний отправленный пост
+concurrency:
+  group: channels
+  cancel-in-progress: false
+jobs:
+  forward:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python channels.py
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+      - name: Запомнить последний пост
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add state/channels.json
+          git diff --cached --quiet || (git commit -m "Каналы: последний отправленный пост" && git pull --rebase && git push)
