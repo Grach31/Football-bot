@@ -14,6 +14,7 @@ import urllib.request
 CHANNELS = ["KFNik", "dmitrynikotin", "chelseafcrus"]   # каналы для пересылки (имя из ссылки t.me/...)
 STATE_FILE = "state/channels.json"
 CHECK_EVERY = 60       # как часто проверять каналы в режиме без перерыва (секунды)
+FOOTBALL_EVERY = 600   # как часто проверять завершённые матчи (секунды)
 
 
 def esc(text):
@@ -121,7 +122,7 @@ def save_to_git():
     """Запоминаем последний отправленный пост в репозитории, чтобы
     следующий запуск не прислал его повторно."""
     run = lambda *cmd: subprocess.run(cmd, capture_output=True, text=True)
-    run("git", "add", STATE_FILE)
+    run("git", "add", STATE_FILE, "state/football.json")
     if run("git", "diff", "--cached", "--quiet").returncode == 0:
         return
     run("git", "commit", "-m", "Каналы: последний отправленный пост")
@@ -138,7 +139,24 @@ def loop(minutes):
     """Проверяем каналы раз в минуту, пока не выйдет время запуска."""
     stop_at = time.time() + minutes * 60
     errors_in_row = 0
+    football_errors = 0
+    next_football = 0
     while time.time() < stop_at:
+        # результаты футбола: раз в FOOTBALL_EVERY секунд (бот bot.py)
+        if os.environ.get("FOOTBALL_API_KEY") and time.time() >= next_football:
+            next_football = time.time() + FOOTBALL_EVERY
+            try:
+                import bot
+                bot.main()
+                football_errors = 0
+            except Exception as err:
+                football_errors += 1
+                if football_errors == 3:
+                    try:
+                        tg("sendMessage", chat_id=os.environ["TELEGRAM_CHAT_ID"],
+                           text=f"⚠️ Ошибка футбольных результатов:\n{type(err).__name__}: {err}"[:4000])
+                    except Exception:
+                        pass
         try:
             main()
             save_to_git()
