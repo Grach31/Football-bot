@@ -11,7 +11,9 @@ import urllib.error
 import urllib.parse
 import urllib.request
 
-CHANNELS = ["KFNik", "dmitrynikotin", "chelseafcrus"]   # каналы для пересылки (имя из ссылки t.me/...)
+# пересылка постов выключена; чтобы включить, верни список:
+# CHANNELS = ["KFNik", "dmitrynikotin", "chelseafcrus"]
+CHANNELS = []
 STATE_FILE = "state/channels.json"
 CHECK_EVERY = 60       # как часто проверять каналы в режиме без перерыва (секунды)
 FOOTBALL_EVERY = 600   # как часто проверять завершённые матчи (секунды)

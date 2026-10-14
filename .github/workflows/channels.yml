@@ -29,8 +29,9 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           LOOP_MINUTES: "345"
           FOOTBALL_API_KEY: ${{ secrets.FOOTBALL_API_KEY }}
-          KINOPOISK_TOKEN: ${{ secrets.KINOPOISK_TOKEN }}
-          TMDB_TOKEN: ${{ secrets.TMDB_TOKEN }}
+          # новинки кино выключены; чтобы включить, верни две строки:
+          # KINOPOISK_TOKEN: ${{ secrets.KINOPOISK_TOKEN }}
+          # TMDB_TOKEN: ${{ secrets.TMDB_TOKEN }}
       - name: Запомнить последний пост
         if: always()
         run: |
