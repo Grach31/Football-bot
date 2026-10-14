@@ -122,7 +122,7 @@ def save_to_git():
     """Запоминаем последний отправленный пост в репозитории, чтобы
     следующий запуск не прислал его повторно."""
     run = lambda *cmd: subprocess.run(cmd, capture_output=True, text=True)
-    run("git", "add", STATE_FILE, "state/football.json")
+    run("git", "add", STATE_FILE, "state/football.json", "state/movies.json")
     if run("git", "diff", "--cached", "--quiet").returncode == 0:
         return
     run("git", "commit", "-m", "Каналы: последний отправленный пост")
@@ -133,6 +133,32 @@ def save_to_git():
 def notify_error(err):
     tg("sendMessage", chat_id=os.environ["TELEGRAM_CHAT_ID"],
        text=f"⚠️ Ошибка пересылки каналов:\n{type(err).__name__}: {err}"[:4000])
+
+
+MOVIES_HOUR = 21  # во сколько по Москве присылать новинки кино
+
+
+def run_movies_if_due():
+    """Раз в день после 21:00 МСК присылает подборку новинок кино (movies.py)."""
+    if not (os.environ.get("KINOPOISK_TOKEN") or os.environ.get("TMDB_TOKEN")):
+        return
+    from datetime import datetime, timedelta, timezone
+    now = datetime.now(timezone(timedelta(hours=3)))
+    if now.hour < MOVIES_HOUR:
+        return
+    try:
+        with open("state/movies.json") as f:
+            last = json.load(f).get("last_day", "")
+    except (FileNotFoundError, AttributeError, ValueError):
+        last = ""
+    if last == now.date().isoformat():
+        return
+    try:
+        import movies
+        movies.main()
+    except BaseException:  # movies.main сам пишет об ошибке в Telegram
+        pass
+    save_to_git()
 
 
 def loop(minutes):
@@ -157,6 +183,7 @@ def loop(minutes):
                            text=f"⚠️ Ошибка футбольных результатов:\n{type(err).__name__}: {err}"[:4000])
                     except Exception:
                         pass
+        run_movies_if_due()
         try:
             main()
             save_to_git()

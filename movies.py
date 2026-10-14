@@ -170,6 +170,7 @@ def load_state():
         data = {"sent": data}
     data.setdefault("sent", [])
     data.setdefault("online", [])
+    data.setdefault("last_day", "")
     return data
 
 
@@ -349,6 +350,7 @@ def main():
     if os.environ.get("TEST_DATE"):
         today = datetime.strptime(os.environ["TEST_DATE"], "%Y-%m-%d").date()
     state = load_state()
+    state["last_day"] = today.isoformat()
     errors = []
     blocks = [("российские", "KINOPOISK_TOKEN", run_ru), ("мировые", "TMDB_TOKEN", run_world)]
     for name, secret, fn in blocks:
