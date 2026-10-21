@@ -209,3 +209,12 @@ h1 { font-family: 'Bricolage Grotesque', 'Onest', sans-serif; font-weight: 800; 
 .shero { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px; margin: -24px -20px 0; padding: calc(env(safe-area-inset-top) + 24px) 22px 28px; background: linear-gradient(175deg, color-mix(in srgb, var(--ga) 85%, #000) 0%, #000 100%); }
 .shero .back { align-self: flex-start; color: #fff; }
 .shero .stitle { font-size: 46px; margin-top: 56px; }
+
+.spic { width: 150px; aspect-ratio: 2 / 3; object-fit: cover; border-radius: 22px; border: 1px solid var(--line); box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.6); margin-top: 14px; }
+.shero.haspic .stitle { margin-top: 14px; font-size: 38px; }
+.mgrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 18px; }
+.mgrid .pcard { width: auto; }
+.hrow { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.btn.wide { display: flex; width: 100%; margin: 10px 0 0; }
+.btn.danger { color: #FF7A6B; border-color: #FF7A6B; }
+#tabs a { font-size: 11px; max-width: 90px; }

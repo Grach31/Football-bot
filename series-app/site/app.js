@@ -19,6 +19,9 @@ const CHEV = '<svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill=
 let DATA = { updated: '', series: [] };
 let CONFIG = {};
 let SUBS = { updated: '', items: [] };
+let MOVIES = { updated: '', items: [] };
+let mfilter = 'all';
+let confirmDel = '';
 let filter = 'all';
 
 /* ---------- даты ---------- */
@@ -202,7 +205,7 @@ function viewSeries(id) {
   const statusText = { airing: 'Выходит сейчас', waiting: 'Ждём: ' + (s.when || ''), nodate: 'Дата не объявлена', ended: 'Завершён' }[s.status];
   const [ga] = palOf(s);
   const [bnum] = badgeFor(s, today);
-  let html = `<div class="shero" style="--ga:${ga}"><a class="back" href="#/list"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>Сериалы</a>` +
+  let html = `<div class="shero${s.poster ? ' haspic' : ''}" style="--ga:${ga}"><a class="back" href="#/list"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>Сериалы</a>` + (s.poster ? `<img class="spic" src="${esc(s.poster)}" alt="">` : '') +
     `<div class="stitle">${esc(s.title)}</div><div class="cmeta">${bnum ? `<span class="pill">${esc(bnum.replace('/', ' / '))}</span>` : ''}<span>${esc(metaFor(s, today))}</span></div>` +
     `<div class="chip ${c}" style="margin-top:10px">${esc(statusText)}</div></div>`;
   if (s.note) html += `<p class="note">${esc(s.note)}</p>`;
@@ -478,6 +481,102 @@ async function delSub(id) {
   catch (err) { alert(err.message); }
 }
 
+
+/* ---------- фильмы ---------- */
+const MFILTERS = [['all', 'Все'], ['want', 'Хочу посмотреть'], ['soon', 'Скоро'], ['watched', 'Просмотрено']];
+function movieBadge(m, today) {
+  if (m.status === 'watched') return 'Просмотрено';
+  if (m.date) {
+    if (m.date === today) return 'Сегодня';
+    if (m.date === addDays(today, 1)) return 'Завтра';
+    if (m.date > today) return shortDate(m.date);
+  }
+  return 'В планах';
+}
+function viewMovies() {
+  const today = todayStr();
+  let list = MOVIES.items.slice().reverse();
+  if (mfilter === 'want') list = list.filter((m) => m.status !== 'watched');
+  if (mfilter === 'soon') list = list.filter((m) => m.status !== 'watched' && m.date && m.date >= today).sort((a, b) => (a.date < b.date ? -1 : 1));
+  if (mfilter === 'watched') list = list.filter((m) => m.status === 'watched');
+  let html = `<div class="hrow"><h1>Фильмы</h1><a class="addbtn" href="#/addm">+ Добавить</a></div><div class="chips">` +
+    MFILTERS.map(([k, l]) => `<button type="button" class="fbtn ${mfilter === k ? 'on' : ''}" data-mfilter="${k}">${l}</button>`).join('') + '</div>';
+  if (!list.length) return html + '<p class="empty">Здесь пока пусто. Нажмите «+ Добавить» и вставьте название фильма.</p>';
+  html += '<div class="mgrid">' + list.map((m) =>
+    `<a class="pcard" href="#/m/${esc(m.id)}">${poster(m)}<div class="bds"><span class="bl">${esc(movieBadge(m, today))}</span></div></a>`).join('') + '</div>';
+  return html;
+}
+function viewMovie(id) {
+  const today = todayStr();
+  const m = MOVIES.items.find((x) => x.id === id);
+  if (!m) return '<a class="back" href="#/movies">‹ Фильмы</a><p class="empty">Такого фильма в списке нет.</p>';
+  const [ga] = palOf(m);
+  const has = !!lsGet('gh_token');
+  const watched = m.status === 'watched';
+  const chip = watched ? ['gray', 'Просмотрено'] : (m.date && m.date >= today) ? ['amber', 'Выходит ' + longDate(m.date)] : ['blue', 'Хочу посмотреть'];
+  const w = watchLink(m);
+  let html = `<div class="shero${m.poster ? ' haspic' : ''}" style="--ga:${ga}"><a class="back" href="#/movies"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>Фильмы</a>` +
+    (m.poster ? `<img class="spic" src="${esc(m.poster)}" alt="">` : '') +
+    `<div class="stitle">${esc(m.title)}</div><div class="cmeta"><span>${esc(m.service || 'Твоё')}</span></div><div class="chip ${chip[0]}" style="margin-top:10px">${esc(chip[1])}</div></div>`;
+  if (m.note) html += `<p class="note">${esc(m.note)}</p>`;
+  html += `<a class="btn watch" href="${esc(w.url)}" target="_blank" rel="noopener">Смотреть в ${esc(w.name)}</a>${w.direct ? '' : '<span class="meta"> откроется главная или поиск сервиса</span>'}`;
+  if (has) {
+    html += `<button type="button" class="btn ghost wide" data-act="mwatched" data-id="${esc(m.id)}">${watched ? 'Вернуть в список' : 'Отметить просмотренным'}</button>` +
+      `<button type="button" class="btn ghost wide danger" data-act="mdel" data-id="${esc(m.id)}">${confirmDel === m.id ? 'Точно удалить?' : 'Удалить'}</button><div id="m_msg" class="meta" role="status"></div>`;
+  } else {
+    html += '<p class="meta">Чтобы отмечать и удалять фильмы, добавьте токен GitHub на странице «Добавить сериал».</p>';
+  }
+  return html;
+}
+function viewAddMovie() {
+  const has = !!lsGet('gh_token');
+  return `<a class="back" href="#/movies"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>Фильмы</a><h1>Добавить фильм</h1>
+<div class="panel"><form id="mform" autocomplete="off">
+<label class="lbl" for="m_title">Название</label>
+<input class="inp" id="m_title" required placeholder="Например, Дюна">
+<label class="lbl" for="m_service">Где смотреть</label>
+<select class="inp" id="m_service">${SERVICES.map((x) => `<option${x === 'Твоё' ? ' selected' : ''}>${x}</option>`).join('')}</select>
+<label class="lbl" for="m_date">Дата выхода (если известна)</label>
+<input class="inp" id="m_date" type="date">
+<label class="lbl" for="m_note">Заметка (необязательно)</label>
+<input class="inp" id="m_note" placeholder="Например, посоветовал друг">
+<button type="submit" class="btn" id="m_submit" ${has ? '' : 'disabled'}>Добавить</button>
+<div id="m_msg" class="meta" role="status"></div></form>
+${has ? '' : '<p class="meta">Чтобы сохранять, добавьте токен GitHub на странице <a href="#/add" style="color:var(--accent)">«Добавить сериал»</a>.</p>'}</div>`;
+}
+async function addMovie(e) {
+  e.preventDefault();
+  const msg = document.getElementById('m_msg'); const btn = document.getElementById('m_submit');
+  const title = document.getElementById('m_title').value.trim();
+  if (!title) return;
+  btn.disabled = true; msg.textContent = 'Сохраняю…';
+  try {
+    MOVIES = await ghEdit('movies.json', (d) => {
+      if (d.items.some((x) => x.title.toLowerCase() === title.toLowerCase())) throw new Error('Такой фильм уже есть в списке.');
+      const it = { id: `${slugify(title)}-${Date.now().toString(36).slice(-4)}`, title, service: document.getElementById('m_service').value, status: 'want', added: todayStr() };
+      const date = document.getElementById('m_date').value; if (date) it.date = date;
+      const note = document.getElementById('m_note').value.trim(); if (note) it.note = note;
+      d.items.push(it);
+    }, `Фильмы: добавить «${title}»`);
+    msg.innerHTML = '<span class="ok">Добавлено.</span> Постер появится после следующей публикации сайта.';
+    document.getElementById('mform').reset();
+  } catch (err) { msg.innerHTML = `<span class="warn">${esc(err.message || err)}</span>`; }
+  btn.disabled = false;
+}
+async function movieAct(act, id) {
+  if (act === 'mdel' && confirmDel !== id) { confirmDel = id; render(); return; }
+  const msg = document.getElementById('m_msg'); if (msg) msg.textContent = 'Сохраняю…';
+  try {
+    if (act === 'mwatched') {
+      MOVIES = await ghEdit('movies.json', (d) => { const m = d.items.find((x) => x.id === id); if (m) m.status = m.status === 'watched' ? 'want' : 'watched'; }, 'Фильмы: отметка просмотра');
+      render();
+    } else {
+      MOVIES = await ghEdit('movies.json', (d) => { d.items = d.items.filter((x) => x.id !== id); }, 'Фильмы: удалить');
+      confirmDel = ''; location.hash = '#/movies';
+    }
+  } catch (err) { if (msg) msg.innerHTML = `<span class="warn">${esc(err.message || err)}</span>`; }
+}
+
 /* ---------- роутер ---------- */
 function render() {
   const h = location.hash === '#/posters' ? '#/list' : (location.hash || '#/week');
@@ -489,17 +588,23 @@ function render() {
   else if (page === 'notify') html = viewNotify();
   else if (page === 'add') html = viewAdd();
   else if (page === 'subs') html = viewSubs();
+  else if (page === 'movies') html = viewMovies();
+  else if (page === 'm') html = viewMovie(decodeURIComponent(parts[1] || ''));
+  else if (page === 'addm') html = viewAddMovie();
   else html = viewWeek();
   $app.innerHTML = html;
-  const tab = page === 's' || page === 'add' ? 'list' : page;
+  const tab = page === 's' || page === 'add' ? 'list' : (page === 'm' || page === 'addm') ? 'movies' : page;
   document.querySelectorAll('#tabs a').forEach((a) => a.classList.toggle('on', a.dataset.tab === tab));
   window.scrollTo(0, 0);
   if (page === 'notify') refreshNotify();
+  if (page === 'addm') document.getElementById('mform').addEventListener('submit', addMovie);
   if (page === 'subs') document.getElementById('subform').addEventListener('submit', addSub);
   if (page === 'add') document.getElementById('addform').addEventListener('submit', addSeries);
 }
 
 document.addEventListener('click', (ev) => {
+  const mf = ev.target.closest('[data-mfilter]');
+  if (mf) { mfilter = mf.dataset.mfilter; const y = window.scrollY; render(); window.scrollTo(0, y); return; }
   const f = ev.target.closest('[data-filter]');
   if (f) { filter = f.dataset.filter; const y = window.scrollY; render(); window.scrollTo(0, y); return; }
   const a = ev.target.closest('[data-act]');
@@ -508,6 +613,7 @@ document.addEventListener('click', (ev) => {
   if (a.dataset.act === 'test') testPush();
   if (a.dataset.act === 'copy') copyCode();
   if (a.dataset.act === 'savetoken') { const v = document.getElementById('a_token').value.trim(); if (v) { lsSet('gh_token', v); render(); } }
+  if (a.dataset.act === 'mwatched' || a.dataset.act === 'mdel') movieAct(a.dataset.act, a.dataset.id);
   if (a.dataset.act === 'delsub') delSub(a.dataset.id);
   if (a.dataset.act === 'deltoken') { lsSet('gh_token', ''); render(); }
 });
@@ -521,6 +627,7 @@ async function boot() {
     ]);
     DATA = d; CONFIG = c;
     try { SUBS = await fetch('data/subscriptions.json', { cache: 'no-cache' }).then((r) => r.json()); } catch (e) {}
+    try { MOVIES = await fetch('data/movies.json', { cache: 'no-cache' }).then((r) => r.json()); } catch (e) {}
   } catch (err) {
     $app.innerHTML = '<h1>Сериалы</h1><p class="empty">Не удалось загрузить данные. Проверьте интернет и откройте приложение ещё раз.</p>';
     return;

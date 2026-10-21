@@ -32,6 +32,14 @@ const config = JSON.parse(fs.readFileSync(path.join(dataDir, 'config.json'), 'ut
 let subsData = { items: [] };
 try { subsData = JSON.parse(fs.readFileSync(path.join(dataDir, 'subscriptions.json'), 'utf8')); } catch (e) { /* файла нет — подписок нет */ }
 
+let moviesData = { items: [] };
+try { moviesData = JSON.parse(fs.readFileSync(path.join(dataDir, 'movies.json'), 'utf8')); } catch (e) { /* фильмов нет */ }
+function moviePayloads(date) {
+  return (moviesData.items || []).filter((m) => m.status !== 'watched' && m.date === date).map((m) => ({
+    title: `${m.title}: выходит сегодня`, body: m.service ? `Фильм · ${m.service}` : 'Фильм', tag: `movie-${m.id}-${date}`, url: `./#/m/${m.id}`,
+  }));
+}
+
 const d0 = (x) => new Date(x + 'T00:00:00Z');
 function addMonths(x, n, day) {
   const dt = d0(x); const y = dt.getUTCFullYear(), m = dt.getUTCMonth() + n;
@@ -89,7 +97,7 @@ function buildPayloads(date) {
 
 const payloads = test
   ? [{ title: 'Grach films', body: 'Проверка: уведомления работают', tag: 'test', url: './#/week' }]
-  : [...buildPayloads(today), ...subPayloads(today)];
+  : [...buildPayloads(today), ...moviePayloads(today), ...subPayloads(today)];
 
 console.log(`Дата: ${today}. Уведомлений к отправке: ${payloads.length}`);
 for (const p of payloads) console.log(` - ${p.title} | ${p.body}`);

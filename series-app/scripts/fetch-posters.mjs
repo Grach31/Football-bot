@@ -17,6 +17,9 @@ const kpToken = (process.env.KINOPOISK_TOKEN || '').trim();
 if (!tmdbToken && !kpToken) { console.log('Нет ключей TMDB_TOKEN и KINOPOISK_TOKEN, постеры пропущены.'); process.exit(0); }
 
 const data = JSON.parse(fs.readFileSync(dataFile, 'utf8'));
+const moviesFile = path.join(siteDir, 'data', 'movies.json');
+let movies = { items: [] };
+try { movies = JSON.parse(fs.readFileSync(moviesFile, 'utf8')); } catch (e) { /* фильмов нет */ }
 fs.mkdirSync(outDir, { recursive: true });
 
 const clean = (t) => t.split(/[.:]/)[0].trim() || t;
@@ -49,7 +52,7 @@ async function fromKinopoisk(query) {
 }
 
 let ok = 0;
-for (const s of data.series) {
+for (const [s, prefix] of [...data.series.map((x) => [x, '']), ...movies.items.map((x) => [x, 'm-'])]) {
   if (s.poster) continue;
   const queries = [s.poster_query, s.title, clean(s.title)].filter(Boolean);
   let url = null;
@@ -62,10 +65,11 @@ for (const s of data.series) {
   }
   if (!url) { console.log(`Постер не найден: ${s.title}`); continue; }
   try {
-    await download(url, path.join(outDir, `${s.id}.jpg`));
-    s.poster = `posters/${s.id}.jpg`;
+    await download(url, path.join(outDir, `${prefix}${s.id}.jpg`));
+    s.poster = `posters/${prefix}${s.id}.jpg`;
     ok += 1;
   } catch (e) { console.warn(`${s.title}: не удалось скачать — ${e.message}`); }
 }
 fs.writeFileSync(dataFile, JSON.stringify(data, null, 2) + '\n');
-console.log(`Постеров загружено: ${ok} из ${data.series.length}`);
+if (movies.items.length) fs.writeFileSync(moviesFile, JSON.stringify(movies, null, 2) + '\n');
+console.log(`Постеров загружено: ${ok} из ${data.series.length + movies.items.length}`);
