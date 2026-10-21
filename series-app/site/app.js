@@ -153,6 +153,7 @@ function watchLink(s) {
   else if (sv.includes('иви') || sv.includes('ivi')) { name = 'Иви'; url = `https://www.ivi.ru/search/?q=${q}`; }
   else if (sv.includes('wink')) { name = 'Wink'; url = 'https://wink.ru/'; }
   else if (sv.includes('okko')) { name = 'Okko'; url = 'https://okko.tv/'; }
+  else if (sv.includes('start') || sv.includes('старт')) { name = 'Start'; url = 'https://start.ru/'; }
   else if (sv.includes('premier') || sv.includes('тнт')) { name = 'Premier'; url = 'https://premier.one/'; }
   else { name = 'Твоё'; url = 'https://tvoe.live/'; }
   if (s.watch_url) url = s.watch_url;
@@ -278,7 +279,7 @@ async function copyCode() {
 
 
 /* ---------- добавление сериала ---------- */
-const SERVICES = ['Кинопоиск', 'KION', 'Иви', 'Wink', 'Твоё', 'Okko', 'Premier', 'Netflix', 'Apple TV+', 'Prime Video', 'Paramount+', 'Другой'];
+const SERVICES = ['Кинопоиск', 'KION', 'Иви', 'Wink', 'Твоё', 'Okko', 'Premier', 'Start', 'Netflix', 'Apple TV+', 'Prime Video', 'Paramount+', 'Другой'];
 const lsGet = (k) => { try { return localStorage.getItem(k) || ''; } catch (e) { return ''; } };
 const lsSet = (k, v) => { try { v ? localStorage.setItem(k, v) : localStorage.removeItem(k); } catch (e) {} };
 
