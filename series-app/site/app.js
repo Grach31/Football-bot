@@ -18,6 +18,7 @@ const CHEV = '<svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill=
 
 let DATA = { updated: '', series: [] };
 let CONFIG = {};
+let SUBS = { updated: '', items: [] };
 let filter = 'all';
 
 /* ---------- даты ---------- */
@@ -357,6 +358,91 @@ async function addSeries(e) {
   btn.disabled = false;
 }
 
+
+/* ---------- подписки ---------- */
+function addMonths(s, n, day) {
+  const x = d0(s); const y = x.getUTCFullYear(), m = x.getUTCMonth() + n;
+  const last = new Date(Date.UTC(y, m + 1, 0)).getUTCDate();
+  return new Date(Date.UTC(y, m, Math.min(day, last))).toISOString().slice(0, 10);
+}
+// ближайшая дата списания/окончания: если дата прошла, переносим на следующий период
+function subNext(it, today) {
+  let d = it.next;
+  if (it.period === 'once' || d >= today) return d;
+  const day = +d.slice(8, 10); let i = 0;
+  const step = it.period === 'year' ? 12 : 1;
+  while (d < today && i < 600) { i += 1; d = addMonths(it.next, step * i, day); }
+  return d;
+}
+const daysBetween = (a, b) => Math.round((d0(b) - d0(a)) / 86400000);
+const plural = (n, f) => { const a = Math.abs(n) % 100, b = a % 10; return a > 10 && a < 20 ? f[2] : b > 1 && b < 5 ? f[1] : b === 1 ? f[0] : f[2]; };
+const money = (n) => `${Number(n).toLocaleString('ru-RU')} ₽`;
+
+function viewSubs() {
+  const today = todayStr();
+  const items = SUBS.items.map((it) => { const nx = subNext(it, today); return { ...it, nx, left: daysBetween(today, nx) }; }).sort((a, b) => a.left - b.left);
+  const has = !!lsGet('gh_token');
+  const perMonth = items.reduce((s, it) => s + (it.period === 'year' ? it.price / 12 : it.period === 'once' ? 0 : it.price), 0);
+  let html = `<h1>Подписки</h1>`;
+  if (items.length) html += `<p class="meta">В среднем ${money(Math.round(perMonth))} в месяц · ${items.length} ${plural(items.length, ['сервис', 'сервиса', 'сервисов'])}</p>`;
+  else html += '<p class="empty">Подписок пока нет. Добавьте первую ниже.</p>';
+  html += '<div class="stack tight" style="margin-top:12px">' + items.map((it) => {
+    const cls = it.left <= 1 ? 'warn' : it.left <= 3 ? 'soon' : '';
+    const big = it.left < 0 ? 'закончилась' : it.left === 0 ? 'сегодня' : `${it.left} ${plural(it.left, ['день', 'дня', 'дней'])}`;
+    const what = it.period === 'once' ? 'доступ до' : 'списание';
+    return `<div class="card compact subcard"><div class="grow"><div class="ttl">${esc(it.service)}</div><div class="meta">${what} ${longDate(it.nx)} · ${money(it.price)}${it.period === 'year' ? ' в год' : ''}${it.note ? ' · ' + esc(it.note) : ''}</div></div>` +
+      `<div class="left ${cls}">${big}</div>${has ? `<button type="button" class="xbtn" data-act="delsub" data-id="${esc(it.id)}" aria-label="Удалить ${esc(it.service)}">×</button>` : ''}</div>`;
+  }).join('') + '</div>';
+  html += `<div class="panel"><h2>Добавить подписку</h2><form id="subform" autocomplete="off">
+<label class="lbl" for="s_service">Сервис</label>
+<select class="inp" id="s_service">${SERVICES.map((x) => `<option>${x}</option>`).join('')}</select>
+<label class="lbl" for="s_price">Цена, ₽</label>
+<input class="inp" id="s_price" type="number" inputmode="decimal" min="0" required placeholder="399">
+<label class="lbl" for="s_next">Ближайшее списание или конец доступа</label>
+<input class="inp" id="s_next" type="date" required>
+<label class="lbl" for="s_period">Как часто</label>
+<select class="inp" id="s_period"><option value="month">Каждый месяц</option><option value="year">Раз в год</option><option value="once">Один раз (без продления)</option></select>
+<button type="submit" class="btn" id="s_submit" ${has ? '' : 'disabled'}>Добавить</button>
+<div id="s_msg" class="meta" role="status"></div></form>
+${has ? '' : '<p class="meta">Чтобы сохранять, добавьте токен GitHub на странице <a href="#/add" style="color:var(--accent)">«Добавить сериал»</a>.</p>'}</div>`;
+  return html;
+}
+
+async function ghEdit(file, mutate, message) {
+  const token = lsGet('gh_token');
+  const R = CONFIG.repo;
+  const url = `https://api.github.com/repos/${R.owner}/${R.name}/contents/${R.path.replace('series.json', file)}`;
+  const h = { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json' };
+  for (let attempt = 0; attempt < 2; attempt++) {
+    const r = await fetch(`${url}?ref=${R.branch}`, { headers: h, cache: 'no-store' });
+    if (r.status === 401 || r.status === 403) throw new Error('Токен не подошёл или у него нет прав на запись.');
+    if (!r.ok) throw new Error(`GitHub ответил ${r.status}`);
+    const f = await r.json();
+    const data = JSON.parse(b64ToStr(f.content));
+    mutate(data);
+    data.updated = todayStr();
+    const p = await fetch(url, { method: 'PUT', headers: { ...h, 'Content-Type': 'application/json' }, body: JSON.stringify({ message, content: u8ToB64(JSON.stringify(data, null, 2) + '\n'), sha: f.sha, branch: R.branch }) });
+    if (p.status === 409 && attempt === 0) continue;
+    if (!p.ok) throw new Error(`Не удалось сохранить (${p.status})`);
+    return data;
+  }
+}
+async function addSub(e) {
+  e.preventDefault();
+  const msg = document.getElementById('s_msg'); const btn = document.getElementById('s_submit');
+  const service = document.getElementById('s_service').value;
+  const it = { id: `${slugify(service)}-${Date.now().toString(36)}`, service, price: Number(document.getElementById('s_price').value), next: document.getElementById('s_next').value, period: document.getElementById('s_period').value };
+  btn.disabled = true; msg.textContent = 'Сохраняю…';
+  try {
+    SUBS = await ghEdit('subscriptions.json', (d) => { d.items.push(it); }, `Подписки: добавить ${service}`);
+    render();
+  } catch (err) { msg.innerHTML = `<span class="warn">${esc(err.message || err)}</span>`; btn.disabled = false; }
+}
+async function delSub(id) {
+  try { SUBS = await ghEdit('subscriptions.json', (d) => { d.items = d.items.filter((x) => x.id !== id); }, 'Подписки: удалить'); render(); }
+  catch (err) { alert(err.message); }
+}
+
 /* ---------- роутер ---------- */
 function render() {
   const h = location.hash || '#/week';
@@ -368,12 +454,14 @@ function render() {
   else if (page === 's') html = viewSeries(decodeURIComponent(parts[1] || ''));
   else if (page === 'notify') html = viewNotify();
   else if (page === 'add') html = viewAdd();
+  else if (page === 'subs') html = viewSubs();
   else html = viewWeek();
   $app.innerHTML = html;
   const tab = page === 'posters' || page === 's' || page === 'add' ? 'list' : page;
   document.querySelectorAll('#tabs a').forEach((a) => a.classList.toggle('on', a.dataset.tab === tab));
   window.scrollTo(0, 0);
   if (page === 'notify') refreshNotify();
+  if (page === 'subs') document.getElementById('subform').addEventListener('submit', addSub);
   if (page === 'add') document.getElementById('addform').addEventListener('submit', addSeries);
 }
 
@@ -386,6 +474,7 @@ document.addEventListener('click', (ev) => {
   if (a.dataset.act === 'test') testPush();
   if (a.dataset.act === 'copy') copyCode();
   if (a.dataset.act === 'savetoken') { const v = document.getElementById('a_token').value.trim(); if (v) { lsSet('gh_token', v); render(); } }
+  if (a.dataset.act === 'delsub') delSub(a.dataset.id);
   if (a.dataset.act === 'deltoken') { lsSet('gh_token', ''); render(); }
 });
 window.addEventListener('hashchange', render);
@@ -397,6 +486,7 @@ async function boot() {
       fetch('data/config.json', { cache: 'no-cache' }).then((r) => r.json()),
     ]);
     DATA = d; CONFIG = c;
+    try { SUBS = await fetch('data/subscriptions.json', { cache: 'no-cache' }).then((r) => r.json()); } catch (e) {}
   } catch (err) {
     $app.innerHTML = '<h1>Сериалы</h1><p class="empty">Не удалось загрузить данные. Проверьте интернет и откройте приложение ещё раз.</p>';
     return;

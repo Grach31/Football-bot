@@ -29,6 +29,38 @@ const today = val('--date') || new Intl.DateTimeFormat('en-CA', { timeZone: 'Eur
 const data = JSON.parse(fs.readFileSync(path.join(dataDir, 'series.json'), 'utf8'));
 const config = JSON.parse(fs.readFileSync(path.join(dataDir, 'config.json'), 'utf8'));
 
+let subsData = { items: [] };
+try { subsData = JSON.parse(fs.readFileSync(path.join(dataDir, 'subscriptions.json'), 'utf8')); } catch (e) { /* файла нет — подписок нет */ }
+
+const d0 = (x) => new Date(x + 'T00:00:00Z');
+function addMonths(x, n, day) {
+  const dt = d0(x); const y = dt.getUTCFullYear(), m = dt.getUTCMonth() + n;
+  const last = new Date(Date.UTC(y, m + 1, 0)).getUTCDate();
+  return new Date(Date.UTC(y, m, Math.min(day, last))).toISOString().slice(0, 10);
+}
+function subNext(it, today) {
+  let d = it.next;
+  if (it.period === 'once' || d >= today) return d;
+  const day = +d.slice(8, 10); let i = 0;
+  const step = it.period === 'year' ? 12 : 1;
+  while (d < today && i < 600) { i += 1; d = addMonths(it.next, step * i, day); }
+  return d;
+}
+const money = (n) => `${Number(n).toLocaleString('ru-RU')} ₽`;
+function subPayloads(date) {
+  const out = [];
+  for (const it of subsData.items || []) {
+    const nx = subNext(it, date);
+    const left = Math.round((d0(nx) - d0(date)) / 86400000);
+    if (left !== 2 && left !== 0) continue;
+    const once = it.period === 'once';
+    const when = left === 0 ? 'сегодня' : 'через 2 дня';
+    const title = once ? `${it.service}: доступ заканчивается ${when}` : `${it.service}: списание ${when}`;
+    out.push({ title, body: once ? 'Продлите, если ещё смотрите' : `${money(it.price)}. Если сервис не нужен, отмените подписку`, tag: `sub-${it.id}-${nx}-${left}`, url: './#/subs' });
+  }
+  return out;
+}
+
 const weekday = (s) => new Intl.DateTimeFormat('ru-RU', { timeZone: 'UTC', weekday: 'long' }).format(new Date(s + 'T00:00:00Z'));
 
 function buildPayloads(date) {
@@ -57,7 +89,7 @@ function buildPayloads(date) {
 
 const payloads = test
   ? [{ title: 'Сериалы', body: 'Проверка: уведомления работают', tag: 'test', url: './#/week' }]
-  : buildPayloads(today);
+  : [...buildPayloads(today), ...subPayloads(today)];
 
 console.log(`Дата: ${today}. Уведомлений к отправке: ${payloads.length}`);
 for (const p of payloads) console.log(` - ${p.title} | ${p.body}`);
