@@ -1,1 +1,4 @@
-{"updated": "2026-10-21", "items": [{"id": "t1", "service": "\u0418\u0432\u0438", "price": 399, "next": "2026-09-24", "period": "month"}, {"id": "t2", "service": "Wink", "price": 299, "next": "2026-12-24", "period": "once"}]}
+{
+  "updated": "",
+  "items": []
+}
