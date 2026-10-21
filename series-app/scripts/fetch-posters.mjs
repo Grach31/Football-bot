@@ -51,8 +51,24 @@ async function fromKinopoisk(query) {
   return hit ? hit.posterUrlPreview : null;
 }
 
+// страница на Кинопоиске: там кнопка «Смотреть» ведёт в нужный российский сервис
+async function kpPage(query, isSeries) {
+  if (!kpToken) return null;
+  const j = await getJson(`https://kinopoiskapiunofficial.tech/api/v2.1/films/search-by-keyword?keyword=${encodeURIComponent(query)}&page=1`, { 'X-API-KEY': kpToken });
+  const tv = (x) => /SERIES|SHOW/.test(x.type || '');
+  const list = j.films || [];
+  const hit = list.find((x) => tv(x) === isSeries) || list[0];
+  return hit ? `https://www.kinopoisk.ru/${tv(hit) ? 'series' : 'film'}/${hit.filmId}/` : null;
+}
+
 let ok = 0;
 for (const [s, prefix] of [...data.series.map((x) => [x, '']), ...movies.items.map((x) => [x, 'm-'])]) {
+  if (!s.kp_url) {
+    for (const q of [...new Set([s.poster_query, s.title, clean(s.title)].filter(Boolean))]) {
+      try { s.kp_url = await kpPage(q, !prefix); } catch (e) { console.warn(`${s.title}: kp — ${e.message}`); }
+      if (s.kp_url) break;
+    }
+  }
   if (s.poster) continue;
   const queries = [s.poster_query, s.title, clean(s.title)].filter(Boolean);
   let url = null;
