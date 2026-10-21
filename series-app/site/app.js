@@ -113,7 +113,7 @@ function seg(mode) {
 }
 function viewList(mode) {
   const today = todayStr();
-  let html = `<h1>Сериалы</h1>${seg(mode)}<div class="chips">` +
+  let html = `<div class="hrow"><h1>Сериалы</h1><a class="addbtn" href="#/add" aria-label="Добавить сериал">+ Добавить</a></div>${seg(mode)}<div class="chips">` +
     FILTERS.map(([k, l]) => `<button type="button" class="fbtn ${filter === k ? 'on' : ''}" data-filter="${k}">${l}</button>`).join('') + '</div>';
   GROUPS.forEach(([key, label]) => {
     if (filter !== 'all' && filter !== key) return;
@@ -254,6 +254,86 @@ async function copyCode() {
   catch (e) { el.select(); note.textContent = ' Выделено, скопируйте вручную'; }
 }
 
+
+/* ---------- добавление сериала ---------- */
+const SERVICES = ['Кинопоиск', 'KION', 'Иви', 'Wink', 'Твоё', 'Okko', 'Premier', 'Netflix', 'Apple TV+', 'Prime Video', 'Paramount+', 'Другой'];
+const lsGet = (k) => { try { return localStorage.getItem(k) || ''; } catch (e) { return ''; } };
+const lsSet = (k, v) => { try { v ? localStorage.setItem(k, v) : localStorage.removeItem(k); } catch (e) {} };
+
+function viewAdd() {
+  const has = !!lsGet('gh_token');
+  return `<h1>Добавить сериал</h1>
+<div class="panel"><form id="addform" autocomplete="off">
+<label class="lbl" for="a_title">Название</label>
+<input class="inp" id="a_title" required placeholder="Например, Сёгун">
+<label class="lbl" for="a_service">Где смотрите</label>
+<select class="inp" id="a_service">${SERVICES.map((x) => `<option>${x}</option>`).join('')}</select>
+<label class="lbl" for="a_note">Заметка (необязательно)</label>
+<input class="inp" id="a_note" placeholder="Например, 2 сезон">
+<button type="submit" class="btn" ${has ? '' : 'disabled'} id="a_submit">Добавить</button>
+<div id="a_msg" class="meta" role="status"></div>
+</form>
+<p class="meta">Сериал появится в списке «Нет даты». Даты выхода серий я подтягиваю при еженедельной проверке.</p></div>
+<div class="panel"><h2>Доступ к GitHub</h2>
+<p>${has ? '<span class="ok">Токен сохранён на этом телефоне.</span>' : 'Нужен один раз: токен GitHub только для этого репозитория (Contents: Read and write).'}</p>
+<input class="inp" id="a_token" type="password" placeholder="${has ? 'Заменить токен' : 'Вставьте токен'}" autocomplete="off">
+<button type="button" class="btn ghost" data-act="savetoken">Сохранить токен</button>
+${has ? '<button type="button" class="btn ghost" data-act="deltoken">Удалить токен</button>' : ''}
+<a class="meta" href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener" style="display:block;margin-top:8px">Создать токен на GitHub</a></div>`;
+}
+
+function slugify(t) {
+  const m = { а:'a',б:'b',в:'v',г:'g',д:'d',е:'e',ё:'e',ж:'zh',з:'z',и:'i',й:'y',к:'k',л:'l',м:'m',н:'n',о:'o',п:'p',р:'r',с:'s',т:'t',у:'u',ф:'f',х:'h',ц:'c',ч:'ch',ш:'sh',щ:'sch',ъ:'',ы:'y',ь:'',э:'e',ю:'yu',я:'ya' };
+  return t.toLowerCase().split('').map((c) => (m[c] !== undefined ? m[c] : c)).join('').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'series';
+}
+const u8ToB64 = (s) => btoa(String.fromCharCode(...new TextEncoder().encode(s)));
+const b64ToStr = (b) => new TextDecoder().decode(Uint8Array.from(atob(b.replace(/\n/g, '')), (c) => c.charCodeAt(0)));
+
+async function ghFile(token) {
+  const R = CONFIG.repo;
+  const url = `https://api.github.com/repos/${R.owner}/${R.name}/contents/${R.path}`;
+  const h = { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json' };
+  return { url, h, branch: R.branch };
+}
+async function addSeries(e) {
+  e.preventDefault();
+  const msg = document.getElementById('a_msg');
+  const btn = document.getElementById('a_submit');
+  const token = lsGet('gh_token');
+  const title = document.getElementById('a_title').value.trim();
+  if (!title || !token) return;
+  btn.disabled = true; msg.textContent = 'Сохраняю…';
+  try {
+    const { url, h, branch } = await ghFile(token);
+    for (let attempt = 0; attempt < 2; attempt++) {
+      const r = await fetch(`${url}?ref=${branch}`, { headers: h, cache: 'no-store' });
+      if (r.status === 401 || r.status === 403) throw new Error('Токен не подошёл или у него нет прав на запись.');
+      if (!r.ok) throw new Error(`GitHub ответил ${r.status}`);
+      const f = await r.json();
+      const data = JSON.parse(b64ToStr(f.content));
+      if (data.series.some((s) => s.title.toLowerCase() === title.toLowerCase())) throw new Error('Такой сериал уже есть в списке.');
+      let id = slugify(title); let n = 2; const base = id;
+      while (data.series.some((s) => s.id === id)) id = `${base}-${n++}`;
+      const item = { id, title, service: document.getElementById('a_service').value, status: 'nodate', added: todayStr() };
+      const note = document.getElementById('a_note').value.trim();
+      if (note) item.note = note;
+      data.series.push(item);
+      data.updated = todayStr();
+      const body = { message: `Сериалы: добавить «${title}»`, content: u8ToB64(JSON.stringify(data, null, 2) + '\n'), sha: f.sha, branch };
+      const p = await fetch(url, { method: 'PUT', headers: { ...h, 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+      if (p.status === 409 && attempt === 0) continue;
+      if (!p.ok) throw new Error(`Не удалось сохранить (${p.status})`);
+      DATA = data;
+      msg.innerHTML = `<span class="ok">Добавлено.</span> В списке появится через минуту после обновления сайта.`;
+      document.getElementById('addform').reset();
+      break;
+    }
+  } catch (err) {
+    msg.innerHTML = `<span class="warn">${esc(err.message || err)}</span>`;
+  }
+  btn.disabled = false;
+}
+
 /* ---------- роутер ---------- */
 function render() {
   const h = location.hash || '#/week';
@@ -264,12 +344,14 @@ function render() {
   else if (page === 'posters') html = viewList('posters');
   else if (page === 's') html = viewSeries(decodeURIComponent(parts[1] || ''));
   else if (page === 'notify') html = viewNotify();
+  else if (page === 'add') html = viewAdd();
   else html = viewWeek();
   $app.innerHTML = html;
-  const tab = page === 'posters' || page === 's' ? 'list' : page;
+  const tab = page === 'posters' || page === 's' || page === 'add' ? 'list' : page;
   document.querySelectorAll('#tabs a').forEach((a) => a.classList.toggle('on', a.dataset.tab === tab));
   window.scrollTo(0, 0);
   if (page === 'notify') refreshNotify();
+  if (page === 'add') document.getElementById('addform').addEventListener('submit', addSeries);
 }
 
 document.addEventListener('click', (ev) => {
@@ -280,6 +362,8 @@ document.addEventListener('click', (ev) => {
   if (a.dataset.act === 'enable') enablePush();
   if (a.dataset.act === 'test') testPush();
   if (a.dataset.act === 'copy') copyCode();
+  if (a.dataset.act === 'savetoken') { const v = document.getElementById('a_token').value.trim(); if (v) { lsSet('gh_token', v); render(); } }
+  if (a.dataset.act === 'deltoken') { lsSet('gh_token', ''); render(); }
 });
 window.addEventListener('hashchange', render);
 
