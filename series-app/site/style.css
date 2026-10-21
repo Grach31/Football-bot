@@ -218,3 +218,4 @@ h1 { font-family: 'Bricolage Grotesque', 'Onest', sans-serif; font-weight: 800; 
 .btn.wide { display: flex; width: 100%; margin: 10px 0 0; }
 .btn.danger { color: #FF7A6B; border-color: #FF7A6B; }
 #tabs a { font-size: 11px; max-width: 90px; }
+#tabs { z-index: 50; }
