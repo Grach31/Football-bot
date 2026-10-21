@@ -2,7 +2,7 @@
   "vapidPublicKey": "BKP4aOmCv6k9JdRBgiGwCnDEFcSpKrrJLX5NHxRsJpk-BtdbgmCpY67zN6tPfOuM1_04gEkp-ZSsnMm53KvHjOg",
   "repo": {
     "owner": "Grach31",
-    "name": "football-bot",
+    "name": "Football-bot",
     "path": "series-app/site/data/series.json",
     "branch": "main"
   }
