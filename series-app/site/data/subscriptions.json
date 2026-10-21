@@ -7,6 +7,13 @@
       "price": 4490,
       "next": "2026-12-17",
       "period": "year"
+    },
+    {
+      "id": "tvoe-mviosan5",
+      "service": "Твоё",
+      "price": 1799,
+      "next": "2027-03-14",
+      "period": "6m"
     }
   ]
 }
