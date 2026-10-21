@@ -398,6 +398,8 @@ async function addSeries(e) {
 
 
 /* ---------- подписки ---------- */
+const PMONTHS = { month: 1, '3m': 3, '6m': 6, year: 12 };
+const PLABEL = { '3m': 'за 3 месяца', '6m': 'за 6 месяцев', year: 'в год' };
 function addMonths(s, n, day) {
   const x = d0(s); const y = x.getUTCFullYear(), m = x.getUTCMonth() + n;
   const last = new Date(Date.UTC(y, m + 1, 0)).getUTCDate();
@@ -408,7 +410,7 @@ function subNext(it, today) {
   let d = it.next;
   if (it.period === 'once' || d >= today) return d;
   const day = +d.slice(8, 10); let i = 0;
-  const step = it.period === 'year' ? 12 : 1;
+  const step = PMONTHS[it.period] || 1;
   while (d < today && i < 600) { i += 1; d = addMonths(it.next, step * i, day); }
   return d;
 }
@@ -420,7 +422,7 @@ function viewSubs() {
   const today = todayStr();
   const items = SUBS.items.map((it) => { const nx = subNext(it, today); return { ...it, nx, left: daysBetween(today, nx) }; }).sort((a, b) => a.left - b.left);
   const has = !!lsGet('gh_token');
-  const perMonth = items.reduce((s, it) => s + (it.period === 'year' ? it.price / 12 : it.period === 'once' ? 0 : it.price), 0);
+  const perMonth = items.reduce((s, it) => s + (it.period === 'once' ? 0 : it.price / (PMONTHS[it.period] || 1)), 0);
   let html = `<h1>Подписки</h1>`;
   if (items.length) html += `<p class="meta">В среднем ${money(Math.round(perMonth))} в месяц · ${items.length} ${plural(items.length, ['сервис', 'сервиса', 'сервисов'])}</p>`;
   else html += '<p class="empty">Подписок пока нет. Добавьте первую ниже.</p>';
@@ -428,7 +430,7 @@ function viewSubs() {
     const cls = it.left <= 1 ? 'warn' : it.left <= 3 ? 'soon' : '';
     const big = it.left < 0 ? 'закончилась' : it.left === 0 ? 'сегодня' : `${it.left} ${plural(it.left, ['день', 'дня', 'дней'])}`;
     const what = it.period === 'once' ? 'доступ до' : 'списание';
-    return `<div class="card compact subcard"><div class="grow"><div class="ttl">${esc(it.service)}</div><div class="meta">${what} ${longDate(it.nx)} · ${money(it.price)}${it.period === 'year' ? ' в год' : ''}${it.note ? ' · ' + esc(it.note) : ''}</div></div>` +
+    return `<div class="card compact subcard"><div class="grow"><div class="ttl">${esc(it.service)}</div><div class="meta">${what} ${longDate(it.nx)} · ${money(it.price)}${PLABEL[it.period] ? ' ' + PLABEL[it.period] : ''}${it.note ? ' · ' + esc(it.note) : ''}</div></div>` +
       `<div class="left ${cls}">${big}</div>${has ? `<button type="button" class="xbtn" data-act="delsub" data-id="${esc(it.id)}" aria-label="Удалить ${esc(it.service)}">×</button>` : ''}</div>`;
   }).join('') + '</div>';
   html += `<div class="panel"><h2>Добавить подписку</h2><form id="subform" autocomplete="off">
@@ -439,7 +441,7 @@ function viewSubs() {
 <label class="lbl" for="s_next">Ближайшее списание или конец доступа</label>
 <input class="inp" id="s_next" type="date" required>
 <label class="lbl" for="s_period">Как часто</label>
-<select class="inp" id="s_period"><option value="month">Каждый месяц</option><option value="year">Раз в год</option><option value="once">Один раз (без продления)</option></select>
+<select class="inp" id="s_period"><option value="month">Каждый месяц</option><option value="3m">Раз в 3 месяца</option><option value="6m">Раз в полгода</option><option value="year">Раз в год</option><option value="once">Один раз (без продления)</option></select>
 <button type="submit" class="btn" id="s_submit" ${has ? '' : 'disabled'}>Добавить</button>
 <div id="s_msg" class="meta" role="status"></div></form>
 ${has ? '' : '<p class="meta">Чтобы сохранять, добавьте токен GitHub на странице <a href="#/add" style="color:var(--accent)">«Добавить сериал»</a>.</p>'}</div>`;

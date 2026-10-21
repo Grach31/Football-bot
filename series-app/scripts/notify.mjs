@@ -50,7 +50,7 @@ function subNext(it, today) {
   let d = it.next;
   if (it.period === 'once' || d >= today) return d;
   const day = +d.slice(8, 10); let i = 0;
-  const step = it.period === 'year' ? 12 : 1;
+  const step = { month: 1, '3m': 3, '6m': 6, year: 12 }[it.period] || 1;
   while (d < today && i < 600) { i += 1; d = addMonths(it.next, step * i, day); }
   return d;
 }
