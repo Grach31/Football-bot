@@ -4,10 +4,10 @@
   --surface2: #1C1C1C;
   --text: #FFFFFF;
   --muted: #8E8E93;
-  --accent: #D4F862;
-  --accent-bg: #1B2108;
-  --blue: #8DB4FF;
-  --blue-bg: #1B2335;
+  --accent: #8CC4FF;
+  --accent-bg: #0C1A2C;
+  --blue: #C3B6FF;
+  --blue-bg: #1D1A33;
 }
 * { box-sizing: border-box; }
 html { background: var(--bg); }
@@ -174,7 +174,7 @@ h1 { font-family: 'Bricolage Grotesque', 'Onest', sans-serif; font-weight: 800; 
 .card { border: 1px solid var(--line); border-radius: 24px; }
 .card.compact { border-radius: 22px; }
 .ep { border: 1px solid var(--line); border-radius: 18px; }
-.ep.next { border-color: rgba(212, 248, 98, 0.7); }
+.ep.next { border-color: rgba(140, 196, 255, 0.7); }
 .poster { border-radius: 22px; border: 1px solid var(--line); }
 .chip.amber { color: #111; background: var(--accent); font-weight: 700; }
 .fbtn { border: 1px solid var(--line); background: transparent; }

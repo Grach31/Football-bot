@@ -97,7 +97,7 @@ function viewWeek() {
   const end = addDays(today, 13);
   const airing = DATA.series.filter((s) => s.status === 'airing' && nextEp(s, today))
     .sort((a, b) => (nextEp(a, today).date < nextEp(b, today).date ? -1 : 1));
-  let html = `<div class="brand"><svg width="22" height="22" viewBox="0 0 24 24" fill="#D4F862" aria-hidden="true"><path d="M7 4.5v15l12-7.5z"/></svg>Grach films</div>`;
+  let html = `<div class="brand"><svg width="22" height="22" viewBox="0 0 24 24" fill="#8CC4FF" aria-hidden="true"><path d="M7 4.5v15l12-7.5z"/></svg>Grach films</div>`;
   const h = airing[0];
   if (h) {
     const n = nextEp(h, today);
