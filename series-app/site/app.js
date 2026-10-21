@@ -211,7 +211,7 @@ function viewSeries(id) {
   if (s.note) html += `<p class="note">${esc(s.note)}</p>`;
   if (s.status === 'airing' || s.status === 'ended') {
     const w = watchLink(s);
-    html += `<a class="btn watch" href="${esc(w.url)}" target="_blank" rel="noopener">Смотреть в ${esc(w.name)}</a>${w.direct ? '' : (s.kp_url ? '' : '<span class="meta"> откроется главная или поиск сервиса</span>')}${s.kp_url ? `<a class="btn ghost wide" href="${esc(s.kp_url)}" target="_blank" rel="noopener">Где смотреть: страница на Кинопоиске</a>` : ''}`;
+    html += `<a class="btn watch" href="${esc(w.url)}" target="_blank" rel="noopener">Смотреть в ${esc(w.name)}</a>${w.direct ? '' : '<span class="meta"> откроется главная или поиск сервиса</span>'}`;
   }
   const list = eps(s);
   if (list.length) {
@@ -521,7 +521,7 @@ function viewMovie(id) {
     (m.poster ? `<img class="spic" src="${esc(m.poster)}" alt="">` : '') +
     `<div class="stitle">${esc(m.title)}</div><div class="cmeta"><span>${esc(m.service || 'Твоё')}</span></div><div class="chip ${chip[0]}" style="margin-top:10px">${esc(chip[1])}</div></div>`;
   if (m.note) html += `<p class="note">${esc(m.note)}</p>`;
-  html += `<a class="btn watch" href="${esc(w.url)}" target="_blank" rel="noopener">Смотреть в ${esc(w.name)}</a>${w.direct ? '' : (m.kp_url ? '' : '<span class="meta"> откроется главная или поиск сервиса</span>')}${m.kp_url ? `<a class="btn ghost wide" href="${esc(m.kp_url)}" target="_blank" rel="noopener">Где смотреть: страница на Кинопоиске</a>` : ''}`;
+  html += `<a class="btn watch" href="${esc(w.url)}" target="_blank" rel="noopener">Смотреть в ${esc(w.name)}</a>${w.direct ? '' : '<span class="meta"> откроется главная или поиск сервиса</span>'}`;
   if (has) {
     html += `<button type="button" class="btn ghost wide" data-act="mwatched" data-id="${esc(m.id)}">${watched ? 'Вернуть в список' : 'Отметить просмотренным'}</button>` +
       `<button type="button" class="btn ghost wide danger" data-act="mdel" data-id="${esc(m.id)}">${confirmDel === m.id ? 'Точно удалить?' : 'Удалить'}</button><div id="m_msg" class="meta" role="status"></div>`;
