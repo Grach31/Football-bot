@@ -156,3 +156,5 @@ ol.steps li { margin-bottom: 6px; }
 .lbl { display: block; margin: 14px 0 6px; font-size: 13px; color: var(--muted); }
 .inp { width: 100%; min-height: 48px; padding: 0 14px; border-radius: 12px; border: 1px solid var(--surface2); background: var(--bg); color: var(--text); font: inherit; font-size: 16px; }
 form .btn { margin-top: 16px; }
+
+.btn.watch { text-decoration: none; margin-top: 16px; }

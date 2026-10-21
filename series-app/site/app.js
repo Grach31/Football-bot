@@ -142,6 +142,24 @@ function viewList(mode) {
   return html;
 }
 
+
+/* ---------- где смотреть (только российские сервисы; зарубежное — через «Твоё») ---------- */
+function watchLink(s) {
+  const q = encodeURIComponent(s.title);
+  const sv = (s.service || '').toLowerCase();
+  let name, url;
+  if (sv.includes('кинопоиск')) { name = 'Кинопоиске'; url = `https://www.kinopoisk.ru/index.php?kp_query=${q}`; }
+  else if (sv.includes('кион') || sv.includes('kion')) { name = 'KION'; url = 'https://kion.ru/'; }
+  else if (sv.includes('иви') || sv.includes('ivi')) { name = 'Иви'; url = `https://www.ivi.ru/search/?q=${q}`; }
+  else if (sv.includes('wink')) { name = 'Wink'; url = 'https://wink.ru/'; }
+  else if (sv.includes('okko')) { name = 'Okko'; url = 'https://okko.tv/'; }
+  else if (sv.includes('premier') || sv.includes('тнт')) { name = 'Premier'; url = 'https://premier.one/'; }
+  else { name = 'Твоё'; url = 'https://tvoe.live/'; }
+  if (s.watch_url) url = s.watch_url;
+  if (s.watch_name) name = s.watch_name;
+  return { name, url, direct: !!s.watch_url };
+}
+
 function viewSeries(id) {
   const today = todayStr();
   const s = DATA.series.find((x) => x.id === id);
@@ -151,6 +169,10 @@ function viewSeries(id) {
   let html = `<a class="back" href="#/list"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>Сериалы</a>`;
   html += `<div class="hero">${poster(s)}<div><h1 style="font-size:26px">${esc(s.title)}</h1><div class="meta">${esc(metaFor(s, today))}</div><div class="chip ${c}" style="display:inline-block;margin-top:8px">${esc(statusText)}</div></div></div>`;
   if (s.note) html += `<p class="note">${esc(s.note)}</p>`;
+  if (s.status === 'airing' || s.status === 'ended') {
+    const w = watchLink(s);
+    html += `<a class="btn watch" href="${esc(w.url)}" target="_blank" rel="noopener">Смотреть в ${esc(w.name)}</a>${w.direct ? '' : '<span class="meta"> откроется главная или поиск сервиса</span>'}`;
+  }
   const list = eps(s);
   if (list.length) {
     const done = list.filter((e) => e.date < today);
