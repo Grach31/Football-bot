@@ -114,7 +114,7 @@ function seg(mode) {
 }
 function viewList(mode) {
   const today = todayStr();
-  let html = `<div class="hrow"><h1>Сериалы</h1><a class="addbtn" href="#/add" aria-label="Добавить сериал">+ Добавить</a></div>${seg(mode)}<div class="chips">` +
+  let html = `<div class="hrow"><h1>Сериалы</h1><a class="addbtn" href="#/add" aria-label="Добавить сериал">+ Добавить</a></div><div class="chips">` +
     FILTERS.map(([k, l]) => `<button type="button" class="fbtn ${filter === k ? 'on' : ''}" data-filter="${k}">${l}</button>`).join('') + '</div>';
   GROUPS.forEach(([key, label]) => {
     if (filter !== 'all' && filter !== key) return;
@@ -136,7 +136,7 @@ function viewList(mode) {
     } else {
       html += '<div class="stack tight">' + list.map((s) => {
         const [c, t] = chipFor(s, today);
-        return `<a class="card compact" href="#/s/${esc(s.id)}">${tile(s)}<div class="grow"><div class="ttl">${esc(s.title)}</div><div class="meta">${esc(metaFor(s, today))}</div></div><div class="chip ${c}">${esc(t)}</div></a>`;
+        return `<a class="card compact" href="#/s/${esc(s.id)}">${poster(s)}<div class="grow"><div class="ttl">${esc(s.title)}</div><div class="meta">${esc(metaFor(s, today))}</div></div><div class="chip ${c}">${esc(t)}</div></a>`;
       }).join('') + '</div>';
     }
   });
@@ -445,19 +445,18 @@ async function delSub(id) {
 
 /* ---------- роутер ---------- */
 function render() {
-  const h = location.hash || '#/week';
+  const h = location.hash === '#/posters' ? '#/list' : (location.hash || '#/week');
   const parts = h.replace(/^#\//, '').split('/');
   const page = parts[0] || 'week';
   let html;
   if (page === 'list') html = viewList('list');
-  else if (page === 'posters') html = viewList('posters');
   else if (page === 's') html = viewSeries(decodeURIComponent(parts[1] || ''));
   else if (page === 'notify') html = viewNotify();
   else if (page === 'add') html = viewAdd();
   else if (page === 'subs') html = viewSubs();
   else html = viewWeek();
   $app.innerHTML = html;
-  const tab = page === 'posters' || page === 's' || page === 'add' ? 'list' : page;
+  const tab = page === 's' || page === 'add' ? 'list' : page;
   document.querySelectorAll('#tabs a').forEach((a) => a.classList.toggle('on', a.dataset.tab === tab));
   window.scrollTo(0, 0);
   if (page === 'notify') refreshNotify();

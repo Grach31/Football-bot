@@ -163,3 +163,7 @@ form .btn { margin-top: 16px; }
 .left { flex: none; font-size: 20px; font-weight: 700; color: var(--accent); text-align: right; }
 .left.soon { color: #FFB224; } .left.warn { color: #FF7A6B; }
 .xbtn { flex: none; width: 36px; height: 36px; border-radius: 50%; border: 0; background: var(--surface2); color: var(--muted); font-size: 20px; cursor: pointer; margin-left: 8px; }
+
+.compact .poster { width: 54px; flex: none; border-radius: 10px; }
+.compact .poster .ptitle { font-size: 8px; left: 4px; right: 4px; bottom: 4px; line-height: 1.15; }
+.card.compact { align-items: center; }
