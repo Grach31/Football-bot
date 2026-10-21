@@ -1,0 +1,58 @@
+name: Сериалы
+
+on:
+  schedule:
+    - cron: '0 7 * * *' # 10:00 по Москве
+  workflow_dispatch:
+    inputs:
+      test_push:
+        description: 'Отправить тестовое уведомление'
+        type: boolean
+        default: false
+  push:
+    branches: [main]
+    paths:
+      - 'series-app/site/**'
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: series-app
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    if: github.event_name != 'schedule'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: series-app/site
+      - id: deployment
+        uses: actions/deploy-pages@v4
+
+  notify:
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Установить зависимости
+        working-directory: series-app/scripts
+        run: npm ci
+      - name: Отправить уведомления
+        working-directory: series-app/scripts
+        env:
+          VAPID_PRIVATE_KEY: ${{ secrets.VAPID_PRIVATE_KEY }}
+          PUSH_SUBSCRIPTION: ${{ secrets.PUSH_SUBSCRIPTION }}
+        run: node notify.mjs ${{ github.event.inputs.test_push == 'true' && '--test' || '' }}

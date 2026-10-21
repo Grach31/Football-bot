@@ -1,0 +1,9 @@
+{
+  "name": "series-notify",
+  "private": true,
+  "type": "module",
+  "description": "Ежедневная отправка push-уведомлений о выходе серий",
+  "dependencies": {
+    "web-push": "^3.6.7"
+  }
+}
