@@ -62,7 +62,7 @@
     {
       "id": "polden",
       "title": "Полдень",
-      "service": null,
+      "service": "KION",
       "status": "airing",
       "total": 6,
       "episodes": [
