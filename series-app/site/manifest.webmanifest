@@ -1,6 +1,6 @@
 {
-  "name": "Сериалы",
-  "short_name": "Сериалы",
+  "name": "Grach films",
+  "short_name": "Grach films",
   "description": "Когда выходят новые серии и сезоны",
   "lang": "ru",
   "start_url": "./",

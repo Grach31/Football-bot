@@ -88,7 +88,7 @@ function buildPayloads(date) {
 }
 
 const payloads = test
-  ? [{ title: 'Сериалы', body: 'Проверка: уведомления работают', tag: 'test', url: './#/week' }]
+  ? [{ title: 'Grach films', body: 'Проверка: уведомления работают', tag: 'test', url: './#/week' }]
   : [...buildPayloads(today), ...subPayloads(today)];
 
 console.log(`Дата: ${today}. Уведомлений к отправке: ${payloads.length}`);

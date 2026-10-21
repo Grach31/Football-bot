@@ -1,5 +1,5 @@
 'use strict';
-const CACHE = 'series-v8';
+const CACHE = 'series-v9';
 const SHELL = ['./', 'index.html', 'style.css', 'app.js', 'manifest.webmanifest', 'icons/icon-192.png', 'icons/icon-512.png'];
 
 self.addEventListener('install', (e) => {
@@ -45,7 +45,7 @@ self.addEventListener('push', (e) => {
   let p = {};
   try { p = e.data ? e.data.json() : {}; } catch (err) { p = { body: e.data ? e.data.text() : '' }; }
   e.waitUntil(
-    self.registration.showNotification(p.title || 'Сериалы', {
+    self.registration.showNotification(p.title || 'Grach films', {
       body: p.body || '',
       icon: 'icons/icon-192.png',
       badge: 'icons/icon-192.png',
