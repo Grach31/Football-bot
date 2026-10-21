@@ -1,11 +1,11 @@
 :root {
-  --bg: #0F1115;
-  --surface: #181B22;
-  --surface2: #232834;
-  --text: #F3F1EC;
-  --muted: #9AA0AB;
-  --accent: #FFB224;
-  --accent-bg: #2A2418;
+  --bg: #000000;
+  --surface: #0E0E0E;
+  --surface2: #1C1C1C;
+  --text: #FFFFFF;
+  --muted: #8E8E93;
+  --accent: #D4F862;
+  --accent-bg: #1B2108;
   --blue: #8DB4FF;
   --blue-bg: #1B2335;
 }
@@ -167,3 +167,45 @@ form .btn { margin-top: 16px; }
 .compact .poster { width: 54px; flex: none; border-radius: 10px; }
 .compact .poster .ptitle { font-size: 8px; left: 4px; right: 4px; bottom: 4px; line-height: 1.15; }
 .card.compact { align-items: center; }
+
+/* ---------- стиль Cinema ---------- */
+:root { --line: rgba(255, 255, 255, 0.14); }
+h1 { font-family: 'Bricolage Grotesque', 'Onest', sans-serif; font-weight: 800; text-transform: uppercase; letter-spacing: -0.5px; }
+.card { border: 1px solid var(--line); border-radius: 24px; }
+.card.compact { border-radius: 22px; }
+.ep { border: 1px solid var(--line); border-radius: 18px; }
+.ep.next { border-color: rgba(212, 248, 98, 0.7); }
+.poster { border-radius: 22px; border: 1px solid var(--line); }
+.chip.amber { color: #111; background: var(--accent); font-weight: 700; }
+.fbtn { border: 1px solid var(--line); background: transparent; }
+.fbtn.on { background: var(--accent); border-color: var(--accent); }
+.seg a.on { background: var(--accent); }
+.btn { border-radius: 18px; min-height: 54px; }
+.btn.watch { display: flex; width: 100%; margin: 16px 0 0; }
+.addbtn { border-radius: 14px; }
+.inp, .code { border-radius: 16px; border: 1px solid var(--line); }
+.panel { border: 1px solid var(--line); border-radius: 24px; background: var(--surface); }
+#tabs { background: #0B0B0B; border-top: 1px solid var(--line); }
+#tabs a { color: var(--muted); }
+#tabs a.on { color: #fff; font-weight: 600; }
+#tabs svg { width: 26px; height: 26px; }
+
+.brand { display: flex; align-items: center; justify-content: center; gap: 8px; font-weight: 800; font-size: 19px; letter-spacing: 0.05em; text-transform: uppercase; position: relative; z-index: 1; }
+.chero { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 12px; margin: -40px -20px 0; padding: 112px 22px 24px; background: radial-gradient(ellipse at 50% 20%, color-mix(in srgb, var(--ga) 55%, #000) 0%, #000 72%); position: relative; }
+.ctitle, .stitle { font-family: 'Bricolage Grotesque', 'Onest', sans-serif; font-weight: 800; font-size: 42px; line-height: 0.96; letter-spacing: -1px; text-transform: uppercase; overflow-wrap: anywhere; }
+.cmeta { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 10px; font-size: 15px; color: #E5E5E5; }
+.pill { padding: 5px 10px; border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.3); font-weight: 700; }
+.cdesc { margin: 0; max-width: 320px; font-size: 15px; line-height: 1.4; color: #D8D8D8; }
+.hd { margin: 26px 0 12px; font-size: 22px; font-weight: 700; }
+.hrow2 { display: flex; gap: 14px; overflow-x: auto; margin: 0 -20px; padding: 0 20px 4px; scroll-snap-type: x proximity; scrollbar-width: none; }
+.hrow2::-webkit-scrollbar { display: none; }
+.pcard { position: relative; flex: none; width: 168px; scroll-snap-align: start; }
+.pcard .poster { border-radius: 26px; }
+.pcard .poster .ptitle { font-size: 23px; line-height: 1; text-transform: uppercase; font-family: 'Bricolage Grotesque', 'Onest', sans-serif; font-weight: 800; left: 14px; right: 14px; bottom: 16px; z-index: 1; overflow-wrap: anywhere; }
+.pcard .poster::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 55%; background: linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,0.65)); }
+.bds { position: absolute; left: 10px; top: 10px; display: flex; gap: 6px; z-index: 2; }
+.bd { padding: 5px 8px; border-radius: 10px; background: var(--accent); color: #111; font-weight: 800; font-size: 14px; }
+.bl { padding: 5px 9px; border-radius: 10px; background: rgba(0, 0, 0, 0.62); font-weight: 600; font-size: 14px; }
+.shero { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px; margin: -24px -20px 0; padding: calc(env(safe-area-inset-top) + 24px) 22px 28px; background: linear-gradient(175deg, color-mix(in srgb, var(--ga) 85%, #000) 0%, #000 100%); }
+.shero .back { align-self: flex-start; color: #fff; }
+.shero .stitle { font-size: 46px; margin-top: 56px; }

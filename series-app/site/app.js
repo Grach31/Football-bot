@@ -4,8 +4,8 @@ const $app = document.getElementById('app');
 const params = new URLSearchParams(location.search);
 const MSK = 'Europe/Moscow';
 const PAL = [
-  ['#1E3A5F', '#0D1B2E'], ['#5A3B1E', '#2A1A0B'], ['#5A2E2E', '#231010'], ['#35503A', '#111C14'],
-  ['#3F3068', '#171026'], ['#444A55', '#14161B'], ['#1F4B4F', '#0B1C1E'], ['#5A4A1E', '#241D0A'],
+  ['#6C4DFF', '#1B0F55'], ['#FFA94D', '#8C2F00'], ['#FF6AA2', '#6A0F3A'], ['#2FBF71', '#0B3D26'],
+  ['#36D1DC', '#0B4F6C'], ['#E8590C', '#4A1500'], ['#4C8DFF', '#0D2A63'], ['#C77DFF', '#3A0F66'],
 ];
 const GROUPS = [
   ['airing', 'Выходят сейчас'],
@@ -53,6 +53,22 @@ function poster(s) {
   const inner = s.poster ? `<img src="${esc(s.poster)}" alt="">` : `<span class="ptitle">${esc(s.title)}</span>`;
   return `<div class="poster" style="background:linear-gradient(160deg,${a},${b})" role="img" aria-label="${esc(s.title)}">${inner}</div>`;
 }
+const palOf = (s) => PAL[hash(s.title) % PAL.length];
+function badgeFor(s, today) {
+  if (s.status === 'airing') {
+    const n = nextEp(s, today);
+    const num = n ? `${n.n}${s.total ? '/' + s.total : ''}` : (s.total ? `${s.total}` : '');
+    const when = n ? (n.date === today ? 'Сегодня' : n.date === addDays(today, 1) ? 'Завтра' : shortDate(n.date)) : 'Уточняется';
+    return [num, when];
+  }
+  if (s.status === 'waiting') return ['', s.when || 'Ждём'];
+  if (s.status === 'nodate') return ['', 'Нет даты'];
+  return ['', 'Завершён'];
+}
+function pcard(s, today) {
+  const [num, when] = badgeFor(s, today);
+  return `<a class="pcard" href="#/s/${esc(s.id)}">${poster(s)}<div class="bds">${num ? `<span class="bd">${esc(num)}</span>` : ''}<span class="bl">${esc(when)}</span></div></a>`;
+}
 function chipFor(s, today) {
   if (s.status === 'airing') {
     const n = nextEp(s, today);
@@ -79,12 +95,28 @@ function metaFor(s, today) {
 function viewWeek() {
   const today = todayStr();
   const end = addDays(today, 13);
+  const airing = DATA.series.filter((s) => s.status === 'airing' && nextEp(s, today))
+    .sort((a, b) => (nextEp(a, today).date < nextEp(b, today).date ? -1 : 1));
+  let html = `<div class="brand"><svg width="22" height="22" viewBox="0 0 24 24" fill="#D4F862" aria-hidden="true"><path d="M7 4.5v15l12-7.5z"/></svg>Сериалы</div>`;
+  const h = airing[0];
+  if (h) {
+    const n = nextEp(h, today);
+    const [a] = palOf(h);
+    const when = n.date === today ? 'сегодня' : n.date === addDays(today, 1) ? 'завтра' : longDate(n.date);
+    html += `<a class="chero" href="#/s/${esc(h.id)}" style="--ga:${a}"><div class="ctitle">${esc(h.title)}</div>` +
+      `<div class="cmeta"><span class="pill">${n.n}${h.total ? ' / ' + h.total : ''}</span><span>${esc(h.service || '')}</span><span>${when}</span></div>` +
+      `<p class="cdesc">${esc(h.note || `${cap(unit(h))} ${n.n} выходит ${when}.`)}</p></a>`;
+  }
+  if (airing.length) html += `<h2 class="hd">Выходят сейчас</h2><div class="hrow2">${airing.map((s) => pcard(s, today)).join('')}</div>`;
+  const wait = DATA.series.filter((s) => s.status === 'waiting');
+  if (wait.length) html += `<h2 class="hd">Ждём новые сезоны</h2><div class="hrow2">${wait.map((s) => pcard(s, today)).join('')}</div>`;
+
   const byDate = {};
   DATA.series.forEach((s) => eps(s).forEach((e) => {
     if (e.date >= today && e.date <= end) (byDate[e.date] = byDate[e.date] || []).push({ s, e });
   }));
   const dates = Object.keys(byDate).sort();
-  let html = `<div class="sub">${cap(weekday(today))}, ${longDate(today)}</div><h1>Что выходит</h1>`;
+  html += `<h2 class="hd">Расписание на две недели</h2>`;
   if (!dates.length) html += '<p class="empty">На ближайшие две недели новых серий нет.</p>';
   dates.forEach((date) => {
     const label = date === today ? 'Сегодня' : date === addDays(today, 1) ? 'Завтра' : cap(weekday(date));
@@ -168,8 +200,11 @@ function viewSeries(id) {
   if (!s) return '<a class="back" href="#/list">‹ Сериалы</a><p class="empty">Такого сериала в списке нет.</p>';
   const [c, t] = chipFor(s, today);
   const statusText = { airing: 'Выходит сейчас', waiting: 'Ждём: ' + (s.when || ''), nodate: 'Дата не объявлена', ended: 'Завершён' }[s.status];
-  let html = `<a class="back" href="#/list"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>Сериалы</a>`;
-  html += `<div class="hero">${poster(s)}<div><h1 style="font-size:26px">${esc(s.title)}</h1><div class="meta">${esc(metaFor(s, today))}</div><div class="chip ${c}" style="display:inline-block;margin-top:8px">${esc(statusText)}</div></div></div>`;
+  const [ga] = palOf(s);
+  const [bnum] = badgeFor(s, today);
+  let html = `<div class="shero" style="--ga:${ga}"><a class="back" href="#/list"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>Сериалы</a>` +
+    `<div class="stitle">${esc(s.title)}</div><div class="cmeta">${bnum ? `<span class="pill">${esc(bnum.replace('/', ' / '))}</span>` : ''}<span>${esc(metaFor(s, today))}</span></div>` +
+    `<div class="chip ${c}" style="margin-top:10px">${esc(statusText)}</div></div>`;
   if (s.note) html += `<p class="note">${esc(s.note)}</p>`;
   if (s.status === 'airing' || s.status === 'ended') {
     const w = watchLink(s);
