@@ -13,7 +13,7 @@ const GROUPS = [
   ['nodate', 'Дата не объявлена'],
   ['ended', 'Завершены'],
 ];
-const FILTERS = [['all', 'Все'], ['airing', 'Выходят'], ['waiting', 'Ждём'], ['nodate', 'Нет даты'], ['ended', 'Завершены']];
+const FILTERS = [['all', 'Все'], ['watching', 'Смотрю'], ['want', 'Хочу посмотреть'], ['airing', 'Выходят'], ['waiting', 'Ждём'], ['nodate', 'Нет даты'], ['ended', 'Завершены']];
 const CHEV = '<svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>';
 
 let DATA = { updated: '', series: [] };
@@ -151,9 +151,12 @@ function viewList(mode) {
   const today = todayStr();
   let html = `<div class="hrow"><h1>Сериалы</h1><a class="addbtn" href="#/add" aria-label="Добавить сериал">+ Добавить</a></div><div class="chips">` +
     FILTERS.map(([k, l]) => `<button type="button" class="fbtn ${filter === k ? 'on' : ''}" data-filter="${k}">${l}</button>`).join('') + '</div>';
-  GROUPS.forEach(([key, label]) => {
+  const MINE = { watching: 'Смотрю', want: 'Хочу посмотреть' };
+  const groups = MINE[filter] ? [[filter, MINE[filter]]] : GROUPS;
+  if (MINE[filter] && !DATA.series.some((s) => s.mine === filter)) html += '<p class="empty">Здесь пока пусто. Напишите Claude, какие сериалы смотрите или хотите посмотреть.</p>';
+  groups.forEach(([key, label]) => {
     if (filter !== 'all' && filter !== key) return;
-    let list = DATA.series.filter((s) => s.status === key);
+    let list = MINE[filter] ? DATA.series.filter((s) => s.mine === key) : DATA.series.filter((s) => s.status === key);
     if (!list.length) return;
     if (key === 'airing') {
       list = list.slice().sort((a, b) => {
