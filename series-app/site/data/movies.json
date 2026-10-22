@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-22",
+  "updated": "2026-10-23",
   "items": [
     {
       "id": "odisseya",
@@ -70,6 +70,14 @@
       "added": "2026-10-22",
       "date": "2026-11-20",
       "note": "Сюжет о юности Хеймитча. Дата по VGTimes."
+    },
+    {
+      "id": "chernyy-shelk-be1r",
+      "title": "Черный шелк",
+      "service": "KION",
+      "status": "want",
+      "added": "2026-10-23",
+      "date": "2027-03-31"
     }
   ]
 }
