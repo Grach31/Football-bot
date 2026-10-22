@@ -21,6 +21,13 @@
       "price": 399,
       "next": "2026-11-22",
       "period": "month"
+    },
+    {
+      "id": "premier-mvjvyvvj",
+      "service": "Premier",
+      "price": 399,
+      "next": "2026-11-23",
+      "period": "month"
     }
   ]
 }
