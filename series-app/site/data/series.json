@@ -512,8 +512,9 @@
       "title": "Резервация",
       "service": "KION",
       "status": "nodate",
-      "mine": "want",
-      "added": "2026-10-22"
+      "mine": "done",
+      "added": "2026-10-22",
+      "seen_season": 1
     },
     {
       "id": "zahvachennyy-reys",
