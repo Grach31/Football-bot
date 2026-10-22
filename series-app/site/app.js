@@ -13,7 +13,7 @@ const GROUPS = [
   ['nodate', 'Дата не объявлена'],
   ['ended', 'Завершены'],
 ];
-const FILTERS = [['all', 'Все'], ['watching', 'Смотрю'], ['want', 'Хочу посмотреть'], ['airing', 'Выходят'], ['waiting', 'Ждём'], ['nodate', 'Нет даты'], ['ended', 'Завершены']];
+const FILTERS = [['all', 'Все'], ['watching', 'Смотрю'], ['want', 'Хочу посмотреть'], ['done', 'Просмотрено'], ['airing', 'Выходят'], ['waiting', 'Ждём'], ['nodate', 'Нет даты'], ['ended', 'Завершены']];
 const CHEV = '<svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>';
 
 let DATA = { updated: '', series: [] };
@@ -147,16 +147,40 @@ function viewWeek() {
 function seg(mode) {
   return `<div class="seg"><a href="#/list" class="${mode === 'list' ? 'on' : ''}">Список</a><a href="#/posters" class="${mode === 'posters' ? 'on' : ''}">Постеры</a></div>`;
 }
+/* ---------- мои разделы: смотрю / хочу / просмотрено ---------- */
+const MINE = { watching: 'Смотрю', want: 'Хочу посмотреть', done: 'Просмотрено' };
+// «Смотрю» → «Просмотрено» автоматически через 5 дней после последней серии;
+// «Просмотрено» → «Смотрю», когда появляется новый сезон
+function effMine(s) {
+  const today = todayStr();
+  const list = s.episodes || [];
+  const last = list.length ? list.map((e) => e.date).sort().pop() : null;
+  const finished = last && (s.status === 'ended' || (s.total && list.length >= s.total));
+  if (s.mine === 'watching' && finished && addDays(last, 5) <= today) return 'done';
+  if (s.mine === 'done' && s.seen_season && (s.season || 1) > s.seen_season && (s.status === 'airing' || list.length)) return 'watching';
+  return s.mine || '';
+}
+async function setMine(id, val) {
+  const msg = document.getElementById('s_msg'); if (msg) msg.textContent = 'Сохраняю…';
+  try {
+    DATA = await ghEdit('series.json', (d) => {
+      const x = d.series.find((y) => y.id === id); if (!x) return;
+      if (val) x.mine = val; else delete x.mine;
+      if (val === 'done') x.seen_season = x.season || 1; else delete x.seen_season;
+    }, 'Сериалы: раздел');
+    render();
+  } catch (err) { if (msg) msg.innerHTML = `<span class="warn">${esc(err.message || err)}</span>`; }
+}
+
 function viewList(mode) {
   const today = todayStr();
   let html = `<div class="hrow"><h1>Сериалы</h1><a class="addbtn" href="#/add" aria-label="Добавить сериал">+ Добавить</a></div><div class="chips">` +
     FILTERS.map(([k, l]) => `<button type="button" class="fbtn ${filter === k ? 'on' : ''}" data-filter="${k}">${l}</button>`).join('') + '</div>';
-  const MINE = { watching: 'Смотрю', want: 'Хочу посмотреть' };
   const groups = MINE[filter] ? [[filter, MINE[filter]]] : GROUPS;
-  if (MINE[filter] && !DATA.series.some((s) => s.mine === filter)) html += '<p class="empty">Здесь пока пусто. Напишите Claude, какие сериалы смотрите или хотите посмотреть.</p>';
+  if (MINE[filter] && !DATA.series.some((s) => effMine(s) === filter)) html += '<p class="empty">Здесь пока пусто. Напишите Claude, какие сериалы смотрите или хотите посмотреть.</p>';
   groups.forEach(([key, label]) => {
     if (filter !== 'all' && filter !== key) return;
-    let list = MINE[filter] ? DATA.series.filter((s) => s.mine === key) : DATA.series.filter((s) => s.status === key);
+    let list = MINE[filter] ? DATA.series.filter((s) => effMine(s) === key) : DATA.series.filter((s) => s.status === key);
     if (!list.length) return;
     if (key === 'airing') {
       list = list.slice().sort((a, b) => {
@@ -215,6 +239,11 @@ function viewSeries(id) {
   if (s.status === 'airing' || s.status === 'ended') {
     const w = watchLink(s);
     html += `<a class="btn watch" href="${esc(w.url)}" target="_blank" rel="noopener">Смотреть в ${esc(w.name)}</a>${w.direct ? '' : '<span class="meta"> откроется главная или поиск сервиса</span>'}`;
+  }
+  {
+    const cur = effMine(s), has = !!lsGet('gh_token');
+    if (has) html += '<div class="chips" style="margin-top:12px">' + [...Object.entries(MINE), ['', 'Убрать']].map(([k, l]) => `<button type="button" class="fbtn ${cur === k ? 'on' : ''}" data-act="setmine" data-id="${esc(s.id)}" data-val="${k}">${l}</button>`).join('') + '</div><div id="s_msg" class="meta" role="status"></div>';
+    else if (cur) html += `<p class="meta">Мой раздел: ${MINE[cur]}</p>`;
   }
   const list = eps(s);
   if (list.length) {
@@ -620,6 +649,7 @@ document.addEventListener('click', (ev) => {
   if (a.dataset.act === 'savetoken') { const v = document.getElementById('a_token').value.trim(); if (v) { lsSet('gh_token', v); render(); } }
   if (a.dataset.act === 'mwatched' || a.dataset.act === 'mdel') movieAct(a.dataset.act, a.dataset.id);
   if (a.dataset.act === 'delsub') delSub(a.dataset.id);
+  if (a.dataset.act === 'setmine') setMine(a.dataset.id, a.dataset.val);
   if (a.dataset.act === 'deltoken') { lsSet('gh_token', ''); render(); }
 });
 window.addEventListener('hashchange', render);
