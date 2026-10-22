@@ -1,0 +1,33 @@
+{
+  "updated": "2026-10-22",
+  "min_rating": 7.5,
+  "items": [
+    {
+      "id": "golodnye-igry-rassvet-zhatvy",
+      "title": "Голодные игры: Рассвет жатвы",
+      "kind": "film",
+      "country": "world",
+      "date": "2026-11-20",
+      "service": "Твоё",
+      "note": "Сюжет о юности Хеймитча. Дата по VGTimes."
+    },
+    {
+      "id": "tri-tela-2",
+      "title": "Задача трёх тел, 2 сезон",
+      "kind": "series",
+      "country": "world",
+      "when": "4 квартал 2026",
+      "service": "Твоё",
+      "note": "Netflix. Точная дата не объявлена (по releases.com)."
+    },
+    {
+      "id": "tolko-ubiystva-v-dome-6",
+      "title": "Только убийства в здании, 6 сезон",
+      "kind": "series",
+      "country": "world",
+      "date": "2026-12-08",
+      "service": "Твоё",
+      "note": "Hulu. По releases.com."
+    }
+  ]
+}

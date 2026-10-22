@@ -16,6 +16,8 @@ const GROUPS = [
 const FILTERS = [['all', 'Все'], ['watching', 'Смотрю'], ['soon', 'Скоро'], ['want', 'Хочу посмотреть'], ['done', 'Просмотрено'], ['airing', 'Выходят'], ['waiting', 'Ждём'], ['nodate', 'Нет даты'], ['ended', 'Завершены']];
 const CHEV = '<svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>';
 
+let DISC = { updated: '', items: [] };
+let dfilter = 'all';
 let DATA = { updated: '', series: [] };
 let CONFIG = {};
 let SUBS = { updated: '', items: [] };
@@ -623,6 +625,49 @@ async function movieAct(act, id) {
   } catch (err) { if (msg) msg.innerHTML = `<span class="warn">${esc(err.message || err)}</span>`; }
 }
 
+/* ---------- премьеры: подборка раз в неделю ---------- */
+const DFILTERS = [['all', 'Все'], ['series', 'Сериалы'], ['film', 'Фильмы']];
+const inCollection = (it) => { const t = it.title.toLowerCase(); return DATA.series.some((x) => x.title.toLowerCase() === t) || MOVIES.items.some((x) => x.title.toLowerCase() === t); };
+function viewDiscover() {
+  const today = todayStr();
+  let list = DISC.items.filter((x) => dfilter === 'all' || x.kind === dfilter);
+  let html = `<h1>Премьеры</h1><p class="meta">Самые ожидаемые премьеры, российские и зарубежные. Оценку ★ показываю, когда она есть. Подборку обновляю раз в неделю${DISC.updated ? ' · обновлено ' + longDate(DISC.updated) : ''}.</p><div class="chips">` +
+    DFILTERS.map(([k, l]) => `<button type="button" class="fbtn ${dfilter === k ? 'on' : ''}" data-dfilter="${k}">${l}</button>`).join('') + '</div>';
+  if (!list.length) return html + '<p class="empty">Подборка пока пустая. Она заполнится при ближайшем обновлении.</p>';
+  const has = !!lsGet('gh_token');
+  html += '<div class="stack tight" style="margin-top:12px">' + list.map((it) => {
+    const added = inCollection(it);
+    const meta = [it.kind === 'film' ? 'Фильм' : 'Сериал', it.country === 'ru' ? 'Россия' : '', it.date ? longDate(it.date) : (it.when || ''), it.service || ''].filter(Boolean).join(' · ');
+    const rate = it.rating ? `<span class="chip amber">★ ${esc(String(it.rating))}</span>` : '';
+    return `<div class="card compact">${poster(it)}<div class="grow"><div class="ttl">${esc(it.title)}</div><div class="meta">${esc(meta)}</div>${it.note ? `<div class="meta">${esc(it.note)}</div>` : ''}<div style="margin-top:8px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">${rate}` +
+      (added ? '<span class="chip gray">В списке</span>' : `<button type="button" class="fbtn on" data-act="dadd" data-id="${esc(it.id)}">Хочу посмотреть</button>`) + `</div></div></div>`;
+  }).join('') + '</div><div id="d_msg" class="meta" role="status"></div>';
+  if (!has) html += '<p class="meta">Чтобы добавлять в список, сохраните токен GitHub на странице «Добавить сериал».</p>';
+  return html;
+}
+async function discoverAdd(id) {
+  const it = DISC.items.find((x) => x.id === id); if (!it) return;
+  const msg = document.getElementById('d_msg');
+  if (!lsGet('gh_token')) { if (msg) msg.innerHTML = '<span class="warn">Нужен токен GitHub: «Добавить сериал» → токен.</span>'; return; }
+  if (msg) msg.textContent = 'Сохраняю…';
+  try {
+    if (it.kind === 'film') {
+      MOVIES = await ghEdit('movies.json', (d) => {
+        if (d.items.some((x) => x.title.toLowerCase() === it.title.toLowerCase())) return;
+        const m = { id: `${slugify(it.title)}-${Date.now().toString(36).slice(-4)}`, title: it.title, service: it.service || 'Твоё', status: 'want', added: todayStr() };
+        if (it.date) m.date = it.date; if (it.note) m.note = it.note; d.items.push(m);
+      }, `Фильмы: «${it.title}» из премьер`);
+    } else {
+      DATA = await ghEdit('series.json', (d) => {
+        if (d.series.some((x) => x.title.toLowerCase() === it.title.toLowerCase())) return;
+        const x = { id: slugify(it.title), title: it.title, service: it.service || null, status: it.date || it.when ? 'waiting' : 'nodate', mine: 'want', added: todayStr() };
+        if (it.when || it.date) x.when = it.when || longDate(it.date); if (it.note) x.note = it.note; d.series.push(x);
+      }, `Сериалы: «${it.title}» из премьер`);
+    }
+    render();
+  } catch (err) { if (msg) msg.innerHTML = `<span class="warn">${esc(err.message || err)}</span>`; }
+}
+
 /* ---------- роутер ---------- */
 function render() {
   const h = location.hash === '#/posters' ? '#/list' : (location.hash || '#/week');
@@ -634,6 +679,7 @@ function render() {
   else if (page === 'notify') html = viewNotify();
   else if (page === 'add') html = viewAdd();
   else if (page === 'subs') html = viewSubs();
+  else if (page === 'discover') html = viewDiscover();
   else if (page === 'movies') html = viewMovies();
   else if (page === 'm') html = viewMovie(decodeURIComponent(parts[1] || ''));
   else if (page === 'addm') html = viewAddMovie();
@@ -651,6 +697,8 @@ function render() {
 document.addEventListener('click', (ev) => {
   const mf = ev.target.closest('[data-mfilter]');
   if (mf) { mfilter = mf.dataset.mfilter; const y = window.scrollY; render(); window.scrollTo(0, y); return; }
+  const df = ev.target.closest('[data-dfilter]');
+  if (df) { dfilter = df.dataset.dfilter; const y = window.scrollY; render(); window.scrollTo(0, y); return; }
   const f = ev.target.closest('[data-filter]');
   if (f) { filter = f.dataset.filter; const y = window.scrollY; render(); window.scrollTo(0, y); return; }
   const a = ev.target.closest('[data-act]');
@@ -661,6 +709,7 @@ document.addEventListener('click', (ev) => {
   if (a.dataset.act === 'savetoken') { const v = document.getElementById('a_token').value.trim(); if (v) { lsSet('gh_token', v); render(); } }
   if (a.dataset.act === 'mwatched' || a.dataset.act === 'mdel') movieAct(a.dataset.act, a.dataset.id);
   if (a.dataset.act === 'delsub') delSub(a.dataset.id);
+  if (a.dataset.act === 'dadd') discoverAdd(a.dataset.id);
   if (a.dataset.act === 'setmine') setMine(a.dataset.id, a.dataset.val);
   if (a.dataset.act === 'deltoken') { lsSet('gh_token', ''); render(); }
 });
@@ -674,6 +723,7 @@ async function boot() {
     ]);
     DATA = d; CONFIG = c;
     try { SUBS = await fetch('data/subscriptions.json', { cache: 'no-cache' }).then((r) => r.json()); } catch (e) {}
+    try { DISC = await fetch('data/discover.json', { cache: 'no-cache' }).then((r) => r.json()); } catch (e) {}
     try { MOVIES = await fetch('data/movies.json', { cache: 'no-cache' }).then((r) => r.json()); } catch (e) {}
   } catch (err) {
     $app.innerHTML = '<h1>Сериалы</h1><p class="empty">Не удалось загрузить данные. Проверьте интернет и откройте приложение ещё раз.</p>';

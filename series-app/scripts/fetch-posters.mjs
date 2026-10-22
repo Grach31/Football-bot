@@ -20,6 +20,9 @@ const data = JSON.parse(fs.readFileSync(dataFile, 'utf8'));
 const moviesFile = path.join(siteDir, 'data', 'movies.json');
 let movies = { items: [] };
 try { movies = JSON.parse(fs.readFileSync(moviesFile, 'utf8')); } catch (e) { /* фильмов нет */ }
+const discFile = path.join(siteDir, 'data', 'discover.json');
+let disc = { items: [] };
+try { disc = JSON.parse(fs.readFileSync(discFile, 'utf8')); } catch (e) { /* подборки нет */ }
 fs.mkdirSync(outDir, { recursive: true });
 
 const clean = (t) => t.split(/[.:]/)[0].trim() || t;
@@ -51,24 +54,8 @@ async function fromKinopoisk(query) {
   return hit ? hit.posterUrlPreview : null;
 }
 
-// страница на Кинопоиске: там кнопка «Смотреть» ведёт в нужный российский сервис
-async function kpPage(query, isSeries) {
-  if (!kpToken) return null;
-  const j = await getJson(`https://kinopoiskapiunofficial.tech/api/v2.1/films/search-by-keyword?keyword=${encodeURIComponent(query)}&page=1`, { 'X-API-KEY': kpToken });
-  const tv = (x) => /SERIES|SHOW/.test(x.type || '');
-  const list = j.films || [];
-  const hit = list.find((x) => tv(x) === isSeries) || list[0];
-  return hit ? `https://www.kinopoisk.ru/${tv(hit) ? 'series' : 'film'}/${hit.filmId}/` : null;
-}
-
 let ok = 0;
-for (const [s, prefix] of [...data.series.map((x) => [x, '']), ...movies.items.map((x) => [x, 'm-'])]) {
-  if (!s.kp_url) {
-    for (const q of [...new Set([s.poster_query, s.title, clean(s.title)].filter(Boolean))]) {
-      try { s.kp_url = await kpPage(q, !prefix); } catch (e) { console.warn(`${s.title}: kp — ${e.message}`); }
-      if (s.kp_url) break;
-    }
-  }
+for (const [s, prefix] of [...data.series.map((x) => [x, '']), ...movies.items.map((x) => [x, 'm-']), ...disc.items.map((x) => [x, 'd-'])]) {
   if (s.poster) continue;
   const queries = [s.poster_query, s.title, clean(s.title)].filter(Boolean);
   let url = null;
@@ -88,4 +75,5 @@ for (const [s, prefix] of [...data.series.map((x) => [x, '']), ...movies.items.m
 }
 fs.writeFileSync(dataFile, JSON.stringify(data, null, 2) + '\n');
 if (movies.items.length) fs.writeFileSync(moviesFile, JSON.stringify(movies, null, 2) + '\n');
+if (disc.items.length) fs.writeFileSync(discFile, JSON.stringify(disc, null, 2) + '\n');
 console.log(`Постеров загружено: ${ok} из ${data.series.length + movies.items.length}`);
