@@ -14,6 +14,13 @@
       "price": 1799,
       "next": "2027-03-14",
       "period": "6m"
+    },
+    {
+      "id": "kion-mvjlz59r",
+      "service": "KION",
+      "price": 399,
+      "next": "2026-11-22",
+      "period": "month"
     }
   ]
 }
