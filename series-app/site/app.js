@@ -8,12 +8,13 @@ const PAL = [
   ['#36D1DC', '#0B4F6C'], ['#E8590C', '#4A1500'], ['#4C8DFF', '#0D2A63'], ['#C77DFF', '#3A0F66'],
 ];
 const GROUPS = [
-  ['airing', 'Выходят сейчас'],
-  ['waiting', 'Ждём новый сезон'],
+  ['airing', 'Выходит сейчас'],
+  ['soon', 'Скоро'],
   ['nodate', 'Дата не объявлена'],
-  ['ended', 'Завершены'],
+  ['out', 'Вышел'],
+  ['closed', 'Закрыт: продолжения не будет'],
 ];
-const FILTERS = [['all', 'Все'], ['watching', 'Смотрю'], ['soon', 'Скоро'], ['want', 'Хочу посмотреть'], ['done', 'Просмотрено'], ['airing', 'Выходят'], ['waiting', 'Ждём'], ['nodate', 'Нет даты'], ['ended', 'Завершены']];
+const SFILTERS = [['all', 'Все'], ['airing', 'Выходит'], ['soon', 'Скоро'], ['nodate', 'Нет даты'], ['out', 'Вышел'], ['closed', 'Закрыт']];
 const CHEV = '<svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>';
 
 let DISC = { updated: '', items: [] };
@@ -25,6 +26,8 @@ let MOVIES = { updated: '', items: [] };
 let mfilter = 'all';
 let confirmDel = '';
 let filter = 'all';
+let sfilter = 'all';
+let msfilter = 'all';
 
 /* ---------- даты ---------- */
 function todayStr() {
@@ -150,8 +153,10 @@ function seg(mode) {
   return `<div class="seg"><a href="#/list" class="${mode === 'list' ? 'on' : ''}">Список</a><a href="#/posters" class="${mode === 'posters' ? 'on' : ''}">Постеры</a></div>`;
 }
 /* ---------- мои разделы: смотрю / хочу / просмотрено ---------- */
-const MINE = { watching: 'Смотрю', want: 'Хочу посмотреть', done: 'Просмотрено' };
-const MINE_LABEL = { ...MINE, soon: 'Скоро' };
+const MINE = { want: 'Хочу посмотреть', watching: 'Смотрю', done: 'Посмотрел' };
+const MINE_LABEL = MINE;
+const MFILTERS = [['all', 'Все'], ...Object.entries(MINE)];
+const MSFILTERS = [['all', 'Все'], ['soon', 'Скоро'], ['nodate', 'Нет даты'], ['out', 'Вышел']];
 // «Смотрю» → «Просмотрено» автоматически через 5 дней после последней серии;
 // «Просмотрено» → «Смотрю», когда появляется новый сезон
 function effMine(s) {
@@ -163,12 +168,11 @@ function effMine(s) {
   // новый сезон объявлен, но первая серия ещё не вышла
   const announced = s.status === 'waiting' || (list.length > 0 && !aired);
   if (s.mine === 'watching') {
-    if (announced) return 'soon';
     if (finished && addDays(last, 5) <= today) return 'done';
     return 'watching';
   }
   if (s.mine === 'done') {
-    if (announced) return 'soon';
+    if (announced) return 'watching';
     if (s.seen_season && (s.season || 1) > s.seen_season && aired) return 'watching';
     return 'done';
   }
@@ -186,35 +190,37 @@ async function setMine(id, val) {
   } catch (err) { if (msg) msg.innerHTML = `<span class="warn">${esc(err.message || err)}</span>`; }
 }
 
+// состояние самого сериала (определяю я): выходит / скоро / нет даты / вышел / закрыт
+function sState(s, today) {
+  const list = s.episodes || [];
+  const aired = list.some((e) => e.date <= today);
+  if (s.status === 'waiting' || (list.length > 0 && !aired)) return 'soon';
+  if (s.status === 'airing') return 'airing';
+  if (s.status === 'nodate') return 'nodate';
+  return s.closed ? 'closed' : 'out';
+}
+const chipRow = (arr, cur, attr) => '<div class="chips">' + arr.map(([k, l]) => `<button type="button" class="fbtn ${cur === k ? 'on' : ''}" ${attr}="${k}">${l}</button>`).join('') + '</div>';
 function viewList(mode) {
   const today = todayStr();
-  let html = `<div class="hrow"><h1>Сериалы</h1><a class="addbtn" href="#/add" aria-label="Добавить сериал">+ Добавить</a></div><div class="chips">` +
-    FILTERS.map(([k, l]) => `<button type="button" class="fbtn ${filter === k ? 'on' : ''}" data-filter="${k}">${l}</button>`).join('') + '</div>';
-  const groups = MINE_LABEL[filter] ? [[filter, MINE_LABEL[filter]]] : GROUPS;
-  if (MINE_LABEL[filter] && !DATA.series.some((s) => effMine(s) === filter)) html += '<p class="empty">Здесь пока пусто. Напишите Claude, какие сериалы смотрите или хотите посмотреть.</p>';
-  groups.forEach(([key, label]) => {
-    if (filter !== 'all' && filter !== key) return;
-    let list = MINE_LABEL[filter] ? DATA.series.filter((s) => effMine(s) === key) : DATA.series.filter((s) => s.status === key);
+  let html = `<div class="hrow"><h1>Сериалы</h1><a class="addbtn" href="#/add" aria-label="Добавить сериал">+ Добавить</a></div>` +
+    chipRow(Object.entries({ all: 'Все', ...MINE }), filter, 'data-filter') + chipRow(SFILTERS, sfilter, 'data-sfilter');
+  const all = DATA.series.map((s) => ({ s, st: sState(s, today) })).filter((x) => (filter === 'all' || effMine(x.s) === filter) && (sfilter === 'all' || x.st === sfilter));
+  if (!all.length) return html + '<p class="empty">Здесь пока пусто. Измените фильтры или добавьте сериал.</p>';
+  GROUPS.forEach(([key, label]) => {
+    let list = all.filter((x) => x.st === key).map((x) => x.s);
     if (!list.length) return;
-    if (key === 'airing') {
+    if (key === 'airing' || key === 'soon') {
       list = list.slice().sort((a, b) => {
         const na = nextEp(a, today), nb = nextEp(b, today);
         return (na ? na.date : '9999') < (nb ? nb.date : '9999') ? -1 : 1;
       });
     }
-    html += `<div class="group">${label}</div>`;
-    if (mode === 'posters') {
-      html += '<div class="grid">' + list.map((s) => {
-        const [c, t] = chipFor(s, today);
-        return `<a class="pcell" href="#/s/${esc(s.id)}"><div style="position:relative">${poster(s)}<div class="chip ${c}" style="position:absolute;left:10px;top:10px;padding:5px 9px;background:rgba(15,17,21,.78)">${esc(t)}</div></div>` +
-          `<div class="meta" style="margin:0">${esc(metaFor(s, today))}</div></a>`;
-      }).join('') + '</div>';
-    } else {
-      html += '<div class="stack tight">' + list.map((s) => {
-        const [c, t] = chipFor(s, today);
-        return `<a class="card compact" href="#/s/${esc(s.id)}">${poster(s)}<div class="grow"><div class="ttl">${esc(s.title)}</div><div class="meta">${esc(metaFor(s, today))}</div></div><div class="chip ${c}">${esc(t)}</div></a>`;
-      }).join('') + '</div>';
-    }
+    if (sfilter === 'all') html += `<div class="group">${label}</div>`;
+    html += '<div class="stack tight">' + list.map((s) => {
+      const [c, t] = chipFor(s, today);
+      const m = effMine(s);
+      return `<a class="card compact" href="#/s/${esc(s.id)}">${poster(s)}<div class="grow"><div class="ttl">${esc(s.title)}</div><div class="meta">${esc(metaFor(s, today))}${m ? ' · ' + MINE[m] : ''}</div></div><div class="chip ${c}">${esc(t)}</div></a>`;
+    }).join('') + '</div>';
   });
   return html;
 }
@@ -243,7 +249,7 @@ function viewSeries(id) {
   const s = DATA.series.find((x) => x.id === id);
   if (!s) return '<a class="back" href="#/list">‹ Сериалы</a><p class="empty">Такого сериала в списке нет.</p>';
   const [c, t] = chipFor(s, today);
-  const statusText = { airing: 'Выходит сейчас', waiting: 'Ждём: ' + (s.when || ''), nodate: 'Дата не объявлена', ended: 'Завершён' }[s.status];
+  const statusText = { airing: 'Выходит сейчас', waiting: 'Ждём: ' + (s.when || ''), nodate: 'Дата не объявлена', ended: s.closed ? 'Закрыт: продолжения не будет' : 'Вышел' }[s.status];
   const [ga] = palOf(s);
   const [bnum] = badgeFor(s, today);
   let html = `<div class="shero${s.poster ? ' haspic' : ''}" style="--ga:${ga}"><a class="back" href="#/list"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>Сериалы</a>` + (s.poster ? `<img class="spic" src="${esc(s.poster)}" alt="">` : '') +
@@ -422,7 +428,7 @@ async function addSeries(e) {
       if (data.series.some((s) => s.title.toLowerCase() === title.toLowerCase())) throw new Error('Такой сериал уже есть в списке.');
       let id = slugify(title); let n = 2; const base = id;
       while (data.series.some((s) => s.id === id)) id = `${base}-${n++}`;
-      const item = { id, title, service: document.getElementById('a_service').value, status: 'nodate', added: todayStr() };
+      const item = { id, title, service: document.getElementById('a_service').value, status: 'nodate', mine: 'want', added: todayStr() };
       const note = document.getElementById('a_note').value.trim();
       if (note) item.note = note;
       data.series.push(item);
@@ -531,9 +537,9 @@ async function delSub(id) {
 
 
 /* ---------- фильмы ---------- */
-const MFILTERS = [['all', 'Все'], ['want', 'Хочу посмотреть'], ['soon', 'Скоро'], ['watched', 'Просмотрено']];
 function movieBadge(m, today) {
-  if (m.status === 'watched') return 'Просмотрено';
+  if (m.status === 'watched') return 'Посмотрел';
+  if (m.status === 'watching') return 'Смотрю';
   if (m.date) {
     if (m.date === today) return 'Сегодня';
     if (m.date === addDays(today, 1)) return 'Завтра';
@@ -541,15 +547,13 @@ function movieBadge(m, today) {
   }
   return 'В планах';
 }
+const mState = (m, today) => (m.date ? (m.date >= today ? 'soon' : 'out') : 'nodate');
+const mMine = (m) => (m.status === 'watched' ? 'done' : m.status === 'watching' ? 'watching' : 'want');
 function viewMovies() {
   const today = todayStr();
-  let list = MOVIES.items.slice().reverse();
-  if (mfilter === 'want') list = list.filter((m) => m.status !== 'watched');
-  if (mfilter === 'soon') list = list.filter((m) => m.status !== 'watched' && m.date && m.date >= today).sort((a, b) => (a.date < b.date ? -1 : 1));
-  if (mfilter === 'watched') list = list.filter((m) => m.status === 'watched');
-  let html = `<div class="hrow"><h1>Фильмы</h1><a class="addbtn" href="#/addm">+ Добавить</a></div><div class="chips">` +
-    MFILTERS.map(([k, l]) => `<button type="button" class="fbtn ${mfilter === k ? 'on' : ''}" data-mfilter="${k}">${l}</button>`).join('') + '</div>';
-  if (!list.length) return html + '<p class="empty">Здесь пока пусто. Нажмите «+ Добавить» и вставьте название фильма.</p>';
+  let list = MOVIES.items.slice().reverse().filter((m) => (mfilter === 'all' || mMine(m) === mfilter) && (msfilter === 'all' || mState(m, today) === msfilter));
+  let html = `<div class="hrow"><h1>Фильмы</h1><a class="addbtn" href="#/addm">+ Добавить</a></div>` + chipRow(MFILTERS, mfilter, 'data-mfilter') + chipRow(MSFILTERS, msfilter, 'data-msfilter');
+  if (!list.length) return html + '<p class="empty">Здесь пока пусто. Измените фильтры или нажмите «+ Добавить».</p>';
   html += '<div class="mgrid">' + list.map((m) =>
     `<a class="pcard" href="#/m/${esc(m.id)}">${poster(m)}<div class="bds"><span class="bl">${esc(movieBadge(m, today))}</span></div></a>`).join('') + '</div>';
   return html;
@@ -561,7 +565,7 @@ function viewMovie(id) {
   const [ga] = palOf(m);
   const has = !!lsGet('gh_token');
   const watched = m.status === 'watched';
-  const chip = watched ? ['gray', 'Просмотрено'] : (m.date && m.date >= today) ? ['amber', 'Выходит ' + longDate(m.date)] : ['blue', 'Хочу посмотреть'];
+  const chip = watched ? ['gray', 'Посмотрел'] : m.status === 'watching' ? ['blue', 'Смотрю'] : (m.date && m.date >= today) ? ['amber', 'Выходит ' + longDate(m.date)] : ['blue', 'Хочу посмотреть'];
   const w = watchLink(m);
   let html = `<div class="shero${m.poster ? ' haspic' : ''}" style="--ga:${ga}"><a class="back" href="#/movies"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>Фильмы</a>` +
     (m.poster ? `<img class="spic" src="${esc(m.poster)}" alt="">` : '') +
@@ -569,7 +573,7 @@ function viewMovie(id) {
   if (m.note) html += `<p class="note">${esc(m.note)}</p>`;
   html += `<a class="btn watch" href="${esc(w.url)}" target="_blank" rel="noopener">Смотреть в ${esc(w.name)}</a>${w.direct ? '' : '<span class="meta"> откроется главная или поиск сервиса</span>'}`;
   if (has) {
-    html += `<button type="button" class="btn ghost wide" data-act="mwatched" data-id="${esc(m.id)}">${watched ? 'Вернуть в список' : 'Отметить просмотренным'}</button>` +
+    html += '<div class="chips" style="margin-top:12px">' + Object.entries(MINE).map(([k, l]) => `<button type="button" class="fbtn ${mMine(m) === k ? 'on' : ''}" data-act="mset" data-id="${esc(m.id)}" data-val="${k}">${l}</button>`).join('') + '</div>' +
       `<button type="button" class="btn ghost wide danger" data-act="mdel" data-id="${esc(m.id)}">${confirmDel === m.id ? 'Точно удалить?' : 'Удалить'}</button><div id="m_msg" class="meta" role="status"></div>`;
   } else {
     html += '<p class="meta">Чтобы отмечать и удалять фильмы, добавьте токен GitHub на странице «Добавить сериал».</p>';
@@ -611,12 +615,12 @@ async function addMovie(e) {
   } catch (err) { msg.innerHTML = `<span class="warn">${esc(err.message || err)}</span>`; }
   btn.disabled = false;
 }
-async function movieAct(act, id) {
+async function movieAct(act, id, val) {
   if (act === 'mdel' && confirmDel !== id) { confirmDel = id; render(); return; }
   const msg = document.getElementById('m_msg'); if (msg) msg.textContent = 'Сохраняю…';
   try {
-    if (act === 'mwatched') {
-      MOVIES = await ghEdit('movies.json', (d) => { const m = d.items.find((x) => x.id === id); if (m) m.status = m.status === 'watched' ? 'want' : 'watched'; }, 'Фильмы: отметка просмотра');
+    if (act === 'mset') {
+      MOVIES = await ghEdit('movies.json', (d) => { const m = d.items.find((x) => x.id === id); if (m) m.status = ({ done: 'watched', watching: 'watching', want: 'want' })[val] || 'want'; }, 'Фильмы: раздел');
       render();
     } else {
       MOVIES = await ghEdit('movies.json', (d) => { d.items = d.items.filter((x) => x.id !== id); }, 'Фильмы: удалить');
@@ -697,6 +701,10 @@ function render() {
 document.addEventListener('click', (ev) => {
   const mf = ev.target.closest('[data-mfilter]');
   if (mf) { mfilter = mf.dataset.mfilter; const y = window.scrollY; render(); window.scrollTo(0, y); return; }
+  const sf = ev.target.closest('[data-sfilter]');
+  if (sf) { sfilter = sf.dataset.sfilter; const y = window.scrollY; render(); window.scrollTo(0, y); return; }
+  const msf = ev.target.closest('[data-msfilter]');
+  if (msf) { msfilter = msf.dataset.msfilter; const y = window.scrollY; render(); window.scrollTo(0, y); return; }
   const df = ev.target.closest('[data-dfilter]');
   if (df) { dfilter = df.dataset.dfilter; const y = window.scrollY; render(); window.scrollTo(0, y); return; }
   const f = ev.target.closest('[data-filter]');
@@ -707,7 +715,7 @@ document.addEventListener('click', (ev) => {
   if (a.dataset.act === 'test') testPush();
   if (a.dataset.act === 'copy') copyCode();
   if (a.dataset.act === 'savetoken') { const v = document.getElementById('a_token').value.trim(); if (v) { lsSet('gh_token', v); render(); } }
-  if (a.dataset.act === 'mwatched' || a.dataset.act === 'mdel') movieAct(a.dataset.act, a.dataset.id);
+  if (a.dataset.act === 'mset' || a.dataset.act === 'mdel') movieAct(a.dataset.act, a.dataset.id, a.dataset.val);
   if (a.dataset.act === 'delsub') delSub(a.dataset.id);
   if (a.dataset.act === 'dadd') discoverAdd(a.dataset.id);
   if (a.dataset.act === 'setmine') setMine(a.dataset.id, a.dataset.val);
