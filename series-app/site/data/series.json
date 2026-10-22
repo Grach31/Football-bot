@@ -506,6 +506,14 @@
       "added": "2026-10-22",
       "when": "до конца 2026",
       "note": "Дата не объявлена, ожидается до конца 2026. По Click-or-Die."
+    },
+    {
+      "id": "rezervaciya",
+      "title": "Резервация",
+      "service": "KION",
+      "status": "nodate",
+      "mine": "want",
+      "added": "2026-10-22"
     }
   ]
 }
