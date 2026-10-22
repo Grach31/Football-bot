@@ -19,6 +19,7 @@ const CHEV = '<svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill=
 
 // образы для главной; новые картинки добавляйте в конец списка
 const HERO = ['avatars/fallout.jpg', 'avatars/got.jpg'];
+{ const i = new Image(); i.src = HERO[Math.floor(Date.parse(new Date().toISOString().slice(0, 10)) / 86400000) % HERO.length]; } // загрузка образа дня заранее
 let DISC = { updated: '', items: [] };
 let dfilter = 'all';
 let DATA = { updated: '', series: [] };
@@ -60,7 +61,7 @@ function tile(s, small) {
 }
 function poster(s) {
   const [a, b] = PAL[hash(s.title) % PAL.length];
-  const inner = s.poster ? `<img src="${esc(s.poster)}" alt="">` : `<span class="ptitle">${esc(s.title)}</span>`;
+  const inner = s.poster ? `<img src="${esc(s.poster)}" alt="" loading="lazy" decoding="async">` : `<span class="ptitle">${esc(s.title)}</span>`;
   return `<div class="poster" style="background:linear-gradient(160deg,${a},${b})" role="img" aria-label="${esc(s.title)}">${inner}</div>`;
 }
 const palOf = (s) => PAL[hash(s.title) % PAL.length];

@@ -1,5 +1,5 @@
 'use strict';
-const CACHE = 'series-v25';
+const CACHE = 'series-v26';
 const SHELL = ['./', 'index.html', 'style.css', 'app.js', 'manifest.webmanifest', 'icons/icon-192.png', 'icons/icon-512.png'];
 
 self.addEventListener('install', (e) => {
@@ -28,6 +28,14 @@ self.addEventListener('fetch', (e) => {
         return res;
       }).catch(() => caches.match(req))
     );
+    return;
+  }
+  // картинки (постеры, образы): сразу из кэша, обновление в фоне — так открывается быстро
+  if (req.destination === 'image') {
+    e.respondWith(caches.open(CACHE).then((c) => c.match(req).then((hit) => {
+      const net = fetch(req).then((res) => { if (res.ok) c.put(req, res.clone()); return res; }).catch(() => hit);
+      return hit || net;
+    })));
     return;
   }
   e.respondWith(
