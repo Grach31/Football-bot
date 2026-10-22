@@ -199,7 +199,7 @@ function sState(s, today) {
   if (s.status === 'nodate') return 'nodate';
   return s.closed ? 'closed' : 'out';
 }
-const chipRow = (arr, cur, attr) => '<div class="chips">' + arr.map(([k, l]) => `<button type="button" class="fbtn ${cur === k ? 'on' : ''}" ${attr}="${k}">${l}</button>`).join('') + '</div>';
+const chipRow = (arr, cur, attr) => '<div class="chips">' + arr.filter(([k]) => k !== 'all').map(([k, l]) => `<button type="button" class="fbtn ${cur === k ? 'on' : ''}" ${attr}="${k}">${l}</button>`).join('') + '</div>';
 function viewList(mode) {
   const today = todayStr();
   let html = `<div class="hrow"><h1>Сериалы</h1><a class="addbtn" href="#/add" aria-label="Добавить сериал">+ Добавить</a></div>` +
@@ -714,15 +714,15 @@ function render() {
 
 document.addEventListener('click', (ev) => {
   const mf = ev.target.closest('[data-mfilter]');
-  if (mf) { mfilter = mf.dataset.mfilter; const y = window.scrollY; render(); window.scrollTo(0, y); return; }
+  if (mf) { mfilter = mfilter === mf.dataset.mfilter ? 'all' : mf.dataset.mfilter; const y = window.scrollY; render(); window.scrollTo(0, y); return; }
   const sf = ev.target.closest('[data-sfilter]');
-  if (sf) { sfilter = sf.dataset.sfilter; const y = window.scrollY; render(); window.scrollTo(0, y); return; }
+  if (sf) { sfilter = sfilter === sf.dataset.sfilter ? 'all' : sf.dataset.sfilter; const y = window.scrollY; render(); window.scrollTo(0, y); return; }
   const msf = ev.target.closest('[data-msfilter]');
-  if (msf) { msfilter = msf.dataset.msfilter; const y = window.scrollY; render(); window.scrollTo(0, y); return; }
+  if (msf) { msfilter = msfilter === msf.dataset.msfilter ? 'all' : msf.dataset.msfilter; const y = window.scrollY; render(); window.scrollTo(0, y); return; }
   const df = ev.target.closest('[data-dfilter]');
   if (df) { dfilter = df.dataset.dfilter; const y = window.scrollY; render(); window.scrollTo(0, y); return; }
   const f = ev.target.closest('[data-filter]');
-  if (f) { filter = f.dataset.filter; const y = window.scrollY; render(); window.scrollTo(0, y); return; }
+  if (f) { filter = filter === f.dataset.filter ? 'all' : f.dataset.filter; const y = window.scrollY; render(); window.scrollTo(0, y); return; }
   const a = ev.target.closest('[data-act]');
   if (!a) return;
   if (a.dataset.act === 'enable') enablePush();
