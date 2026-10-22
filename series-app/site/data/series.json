@@ -263,7 +263,8 @@
       "status": "waiting",
       "when": "нач. 2027",
       "note": "Съёмки идут. Глава HBO назвал ориентир: начало 2027 года, точной даты нет.",
-      "mine": "want"
+      "mine": "want",
+      "poster": "custom/garri-potter.jpg"
     },
     {
       "id": "rycar-semi-korolevstv",
@@ -408,7 +409,8 @@
       "status": "nodate",
       "added": "2026-10-22",
       "season": 2,
-      "note": "Съёмки 2 сезона завершились в сентябре 2026 года, дата выхода не объявлена."
+      "note": "Съёмки 2 сезона завершились в сентябре 2026 года, дата выхода не объявлена.",
+      "poster": "custom/segun.jpg"
     },
     {
       "id": "kapitan-tuman",
