@@ -514,6 +514,14 @@
       "status": "nodate",
       "mine": "want",
       "added": "2026-10-22"
+    },
+    {
+      "id": "zahvachennyy-reys",
+      "title": "Захваченный рейс",
+      "service": "Твоё",
+      "status": "nodate",
+      "mine": "want",
+      "added": "2026-10-22"
     }
   ]
 }
