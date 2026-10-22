@@ -17,6 +17,8 @@ const GROUPS = [
 const SFILTERS = [['all', 'Все'], ['airing', 'Выходит'], ['soon', 'Скоро'], ['nodate', 'Нет даты'], ['out', 'Вышел'], ['closed', 'Закрыт']];
 const CHEV = '<svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>';
 
+// образы для главной; новые картинки добавляйте в конец списка
+const HERO = ['avatars/fallout.jpg', 'avatars/got.jpg'];
 let DISC = { updated: '', items: [] };
 let dfilter = 'all';
 let DATA = { updated: '', series: [] };
@@ -106,15 +108,9 @@ function viewWeek() {
   const airing = DATA.series.filter((s) => s.status === 'airing' && nextEp(s, today))
     .sort((a, b) => (nextEp(a, today).date < nextEp(b, today).date ? -1 : 1));
   let html = `<div class="brand"><svg width="22" height="22" viewBox="0 0 24 24" fill="#8CC4FF" aria-hidden="true"><path d="M7 4.5v15l12-7.5z"/></svg>Grach films</div>`;
-  const h = airing[0];
-  if (h) {
-    const n = nextEp(h, today);
-    const [a] = palOf(h);
-    const when = n.date === today ? 'сегодня' : n.date === addDays(today, 1) ? 'завтра' : longDate(n.date);
-    html += `<a class="chero" href="#/s/${esc(h.id)}" style="--ga:${a}"><div class="ctitle">${esc(h.title)}</div>` +
-      `<div class="cmeta"><span class="pill">${n.n}${h.total ? ' / ' + h.total : ''}</span><span>${esc(h.service || '')}</span><span>${when}</span></div>` +
-      `<p class="cdesc">${esc(h.note || `${cap(unit(h))} ${n.n} выходит ${when}.`)}</p></a>`;
-  }
+  // главная картинка: каждый день новый образ
+  const day = Math.floor(d0(today).getTime() / 86400000);
+  html += `<div class="avhero"><img src="${esc(HERO[day % HERO.length])}" alt=""></div>`;
   if (airing.length) html += `<h2 class="hd">Выходят сейчас</h2><div class="hrow2">${airing.map((s) => pcard(s, today)).join('')}</div>`;
   const wait = DATA.series.filter((s) => s.status === 'waiting');
   if (wait.length) html += `<h2 class="hd">Ждём новые сезоны</h2><div class="hrow2">${wait.map((s) => pcard(s, today)).join('')}</div>`;
