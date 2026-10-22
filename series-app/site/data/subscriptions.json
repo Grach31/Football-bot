@@ -14,13 +14,6 @@
       "price": 1799,
       "next": "2027-03-14",
       "period": "6m"
-    },
-    {
-      "id": "kion-mvioswqk",
-      "service": "KION",
-      "price": 249,
-      "next": "2026-10-22",
-      "period": "month"
     }
   ]
 }
