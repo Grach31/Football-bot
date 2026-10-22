@@ -638,15 +638,28 @@ function viewDiscover() {
   let html = `<h1>Премьеры</h1><p class="meta">Самые ожидаемые премьеры, российские и зарубежные. Оценку ★ показываю, когда она есть. Подборку обновляю раз в неделю${DISC.updated ? ' · обновлено ' + longDate(DISC.updated) : ''}.</p><div class="chips">` +
     DFILTERS.map(([k, l]) => `<button type="button" class="fbtn ${dfilter === k ? 'on' : ''}" data-dfilter="${k}">${l}</button>`).join('') + '</div>';
   if (!list.length) return html + '<p class="empty">Подборка пока пустая. Она заполнится при ближайшем обновлении.</p>';
-  const has = !!lsGet('gh_token');
   html += '<div class="stack tight" style="margin-top:12px">' + list.map((it) => {
     const added = inCollection(it);
     const meta = [it.kind === 'film' ? 'Фильм' : 'Сериал', it.country === 'ru' ? 'Россия' : '', it.date ? longDate(it.date) : (it.when || ''), it.service || ''].filter(Boolean).join(' · ');
     const rate = it.rating ? `<span class="chip amber">★ ${esc(String(it.rating))}</span>` : '';
-    return `<div class="card compact">${poster(it)}<div class="grow"><div class="ttl">${esc(it.title)}</div><div class="meta">${esc(meta)}</div>${it.note ? `<div class="meta">${esc(it.note)}</div>` : ''}<div style="margin-top:8px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">${rate}` +
-      (added ? '<span class="chip gray">В списке</span>' : `<button type="button" class="fbtn on" data-act="dadd" data-id="${esc(it.id)}">Хочу посмотреть</button>`) + `</div></div></div>`;
+    return `<a class="card compact" href="#/d/${esc(it.id)}">${poster(it)}<div class="grow"><div class="ttl">${esc(it.title)}</div><div class="meta">${esc(meta)}</div><div style="margin-top:8px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">${rate}` +
+      (added ? '<span class="chip gray">В списке</span>' : '') + `</div></div></a>`;
   }).join('') + '</div><div id="d_msg" class="meta" role="status"></div>';
-  if (!has) html += '<p class="meta">Чтобы добавлять в список, сохраните токен GitHub на странице «Добавить сериал».</p>';
+  return html;
+}
+function viewDisc(id) {
+  const it = DISC.items.find((x) => x.id === id);
+  if (!it) return '<a class="back" href="#/discover">‹ Премьеры</a><p class="empty">Этой премьеры уже нет в подборке: список обновляется раз в неделю.</p>';
+  const [ga] = palOf(it);
+  const added = inCollection(it), has = !!lsGet('gh_token');
+  const when = it.date ? longDate(it.date) : (it.when || 'Дата уточняется');
+  let html = `<div class="shero${it.poster ? ' haspic' : ''}" style="--ga:${ga}"><a class="back" href="#/discover"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>Премьеры</a>` + (it.poster ? `<img class="spic" src="${esc(it.poster)}" alt="">` : '') +
+    `<div class="stitle">${esc(it.title)}</div><div class="cmeta">${it.rating ? `<span class="pill">★ ${esc(String(it.rating))}</span>` : ''}<span>${it.kind === 'film' ? 'Фильм' : 'Сериал'}${it.country === 'ru' ? ' · Россия' : ''}${it.service ? ' · ' + esc(it.service) : ''}</span></div><div class="chip amber" style="margin-top:10px">${esc(when)}</div></div>`;
+  if (it.desc) html += `<p class="note">${esc(it.desc)}</p>`;
+  if (it.note) html += `<p class="meta">${esc(it.note)}</p>`;
+  html += added ? '<div class="chip gray" style="margin-top:12px">Уже в вашем списке</div>' : `<button type="button" class="btn wide" data-act="dadd" data-id="${esc(it.id)}">Хочу посмотреть</button>`;
+  html += '<div id="d_msg" class="meta" role="status"></div>';
+  if (!added && !has) html += '<p class="meta">Чтобы добавить, сохраните токен GitHub на странице «Добавить сериал».</p>';
   return html;
 }
 async function discoverAdd(id) {
@@ -684,12 +697,13 @@ function render() {
   else if (page === 'add') html = viewAdd();
   else if (page === 'subs') html = viewSubs();
   else if (page === 'discover') html = viewDiscover();
+  else if (page === 'd') html = viewDisc(decodeURIComponent(parts[1] || ''));
   else if (page === 'movies') html = viewMovies();
   else if (page === 'm') html = viewMovie(decodeURIComponent(parts[1] || ''));
   else if (page === 'addm') html = viewAddMovie();
   else html = viewWeek();
   $app.innerHTML = html;
-  const tab = page === 's' || page === 'add' ? 'list' : (page === 'm' || page === 'addm') ? 'movies' : page;
+  const tab = page === 's' || page === 'add' ? 'list' : (page === 'm' || page === 'addm') ? 'movies' : page === 'd' ? 'discover' : page;
   document.querySelectorAll('#tabs a').forEach((a) => a.classList.toggle('on', a.dataset.tab === tab));
   window.scrollTo(0, 0);
   if (page === 'notify') refreshNotify();
