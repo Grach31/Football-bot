@@ -78,6 +78,110 @@
       "status": "want",
       "added": "2026-10-23",
       "date": "2027-03-31"
+    },
+    {
+      "id": "lib-salyut-7",
+      "title": "Салют-7",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "Салют-7",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-inostranets",
+      "title": "Иностранец",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "The Foreigner",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-sdelano-v-amerike",
+      "title": "Сделано в Америке",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "American Made",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-super-alibi",
+      "title": "SuperАлиби",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "Alibi.com",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-zodiak",
+      "title": "Зодиак",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "Zodiac",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-po-soobrazheniyam-sovesti",
+      "title": "По соображениям совести",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "Hacksaw Ridge",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-kubo",
+      "title": "Кубо. Легенда о самурае",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "Kubo and the Two Strings",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-parni-so-stvolami",
+      "title": "Парни со стволами",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "War Dogs",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-starikam-tut-ne-mesto",
+      "title": "Старикам тут не место",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "No Country for Old Men",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-gangster",
+      "title": "Гангстер",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "American Gangster",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-odnazhdy-v-amerike",
+      "title": "Однажды в Америке",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "Once Upon a Time in America",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-slavnye-parni",
+      "title": "Славные парни",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "The Nice Guys",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-illyuziya-obmana-2",
+      "title": "Иллюзия обмана 2",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "Now You See Me 2",
+      "added": "2026-10-23"
     }
   ]
 }
