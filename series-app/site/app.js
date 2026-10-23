@@ -558,18 +558,22 @@ const mState = (m, today) => (m.date ? (m.date >= today ? 'soon' : 'out') : 'nod
 const mMine = (m) => (m.status === 'watched' ? 'done' : m.status === 'watching' ? 'watching' : 'want');
 function viewMovies() {
   const today = todayStr();
-  let list = MOVIES.items.slice().reverse().filter((m) => hit(m.title) && (mfilter === 'all' || mMine(m) === mfilter) && (msfilter === 'all' || mState(m, today) === msfilter));
-  let html = topBar('Фильмы') + chipRow(MFILTERS, mfilter, 'data-mfilter');
-  if (!list.length) return html + '<p class="empty">Здесь пока пусто. Измените фильтр или поиск.</p>';
-  [['soon', 'Скоро'], ['nodate', 'Дата не объявлена'], ['out', 'Вышел']].forEach(([key, label]) => {
-    let g = list.filter((m) => mState(m, today) === key);
+  const base = MOVIES.items.slice().reverse().filter((m) => m.status !== 'watched' && hit(m.title));
+  const isSoon = (m) => m.status !== 'watching' && m.date && m.date >= today;
+  const groups = [
+    ['Смотрю', base.filter((m) => m.status === 'watching')],
+    ['Хочу посмотреть', base.filter((m) => m.status !== 'watching' && !isSoon(m))],
+    ['Скоро', base.filter(isSoon).sort((a, b) => (a.date < b.date ? -1 : 1))],
+  ];
+  let html = topBar('Фильмы');
+  if (!groups.some((g) => g[1].length)) return html + '<p class="empty">Здесь пока пусто. Просмотренные фильмы лежат в «Библиотеке».</p>';
+  groups.forEach(([label, g]) => {
     if (!g.length) return;
-    if (key === 'soon') g = g.slice().sort((a, b) => (a.date < b.date ? -1 : 1));
-    html += `<div class="group">${label}</div>`;
-    html += '<div class="stack tight">' + g.map((m) => {
-      const c = key === 'soon' ? 'amber' : key === 'nodate' ? 'gray' : 'blue';
-      const t = key === 'soon' ? movieBadge(m, today) : key === 'nodate' ? 'Нет даты' : 'Вышел';
-      return `<a class="card compact" href="#/m/${esc(m.id)}">${poster(m)}<div class="grow"><div class="ttl">${esc(m.title)}</div><div class="meta">${esc(m.service || 'Твоё')} · ${MINE[mMine(m)]}</div></div><div class="chip ${c}">${esc(t)}</div></a>`;
+    html += `<div class="group">${label}</div><div class="stack tight">` + g.map((m) => {
+      const soon = isSoon(m);
+      const t = soon ? movieBadge(m, today) : m.status === 'watching' ? 'Смотрю' : (m.date ? 'Вышел' : 'Нет даты');
+      const c = soon ? 'amber' : m.status === 'watching' ? 'blue' : 'gray';
+      return `<a class="card compact" href="#/m/${esc(m.id)}">${poster(m)}<div class="grow"><div class="ttl">${esc(m.title)}</div><div class="meta">${esc(m.service || 'Твоё')}</div></div><div class="chip ${c}">${esc(t)}</div></a>`;
     }).join('') + '</div>';
   });
   return html;
@@ -779,7 +783,7 @@ function render() {
   const h = location.hash === '#/posters' ? '#/list' : (location.hash || '#/week');
   const parts = h.replace(/^#\//, '').split('/');
   let page = parts[0] || 'week';
-  if (page !== lastPage) { sq = ''; sqOpen = false; if (page === 'movies') mfilter = 'want'; lastPage = page; }
+  if (page !== lastPage) { sq = ''; sqOpen = false; lastPage = page; }
   let html;
   if (page === 'subs' || page === 'notify') { stab = page; page = 'settings'; }
   if (page === 'list') html = viewList('list');
