@@ -716,7 +716,7 @@ function viewDisc(id) {
   if (it.desc) html += `<p class="note">${esc(it.desc)}</p>`;
   if (it.because) html += `<p class="meta">Почему рекомендую: ${esc(it.because)}</p>`;
   if (it.note) html += `<p class="meta">${esc(it.note)}</p>`;
-  html += added ? '<div class="chip gray" style="margin-top:12px">Уже в вашем списке</div>' : `<button type="button" class="btn wide" data-act="dadd" data-id="${esc(it.id)}">Хочу посмотреть</button><button type="button" class="btn wide ghost" data-act="dlib" data-id="${esc(it.id)}">Уже смотрел: в библиотеку</button>`;
+  html += added ? '<div class="chip gray" style="margin-top:12px">Уже в вашем списке</div>' : `<button type="button" class="btn wide" data-act="dadd" data-id="${esc(it.id)}">Хочу посмотреть</button>${it.rec ? `<button type="button" class="btn wide ghost" data-act="dlib" data-id="${esc(it.id)}">Уже смотрел: в библиотеку</button>` : ''}`;
   html += '<div id="d_msg" class="meta" role="status"></div>';
   if (!added && !has) html += '<p class="meta">Чтобы добавить, сохраните токен GitHub на странице «Добавить сериал».</p>';
   return html;
