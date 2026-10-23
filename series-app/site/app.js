@@ -110,7 +110,7 @@ function viewWeek() {
   const end = addDays(today, 13);
   const airing = DATA.series.filter((s) => s.status === 'airing' && nextEp(s, today))
     .sort((a, b) => (nextEp(a, today).date < nextEp(b, today).date ? -1 : 1));
-  let html = `<div class="brand"><svg width="22" height="22" viewBox="0 0 24 24" fill="#8CC4FF" aria-hidden="true"><path d="M7 4.5v15l12-7.5z"/></svg>Grach films</div>`;
+  let html = `<div class="brand"><svg width="22" height="22" viewBox="0 0 24 24" fill="#8CC4FF" aria-hidden="true"><path d="M7 4.5v15l12-7.5z"/></svg>Grach films<a class="gear" href="#/settings" aria-label="Настройки"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></a></div>`;
   // главная картинка: каждый день новый образ
   const day = Math.floor(d0(today).getTime() / 86400000);
   html += `<div class="avhero"><img src="${esc(HERO[day % HERO.length])}" alt=""></div>`;
@@ -120,6 +120,9 @@ function viewWeek() {
 
   const soonMovies = MOVIES.items.filter((m) => m.status !== 'watched' && m.date && m.date >= today).sort((a, b) => (a.date < b.date ? -1 : 1));
   if (soonMovies.length) html += `<h2 class="hd">Фильмы скоро</h2><div class="hrow2">${soonMovies.map((m) => `<a class="pcard" href="#/m/${esc(m.id)}">${poster(m)}<div class="bds"><span class="bl">${esc(movieBadge(m, today))}</span></div></a>`).join('')}</div>`;
+
+  const prem = (DISC.items || []).slice();
+  if (prem.length) html += `<h2 class="hd">Премьеры</h2><div class="hrow2">${prem.map((it) => `<a class="pcard" href="#/d/${esc(it.id)}">${poster(it)}<div class="bds">${it.rating ? `<span class="bd">★ ${esc(String(it.rating))}</span>` : ''}<span class="bl">${esc(it.date ? shortDate(it.date) : (it.when || 'ожидается'))}</span></div></a>`).join('')}</div>`;
 
   const byDate = {};
   DATA.series.forEach((s) => eps(s).forEach((e) => {
@@ -662,11 +665,11 @@ function viewDiscover() {
 }
 function viewDisc(id) {
   const it = DISC.items.find((x) => x.id === id);
-  if (!it) return '<a class="back" href="#/discover">‹ Премьеры</a><p class="empty">Этой премьеры уже нет в подборке: список обновляется раз в неделю.</p>';
+  if (!it) return '<a class="back" href="#/week">‹ Главная</a><p class="empty">Этой премьеры уже нет в подборке: список обновляется раз в неделю.</p>';
   const [ga] = palOf(it);
   const added = inCollection(it), has = !!lsGet('gh_token');
   const when = it.date ? longDate(it.date) : (it.when || 'Дата уточняется');
-  let html = `<div class="shero${it.poster ? ' haspic' : ''}" style="--ga:${ga}"><a class="back" href="#/discover"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>Премьеры</a>` + (it.poster ? `<img class="spic" src="${esc(it.poster)}" alt="">` : '') +
+  let html = `<div class="shero${it.poster ? ' haspic' : ''}" style="--ga:${ga}"><a class="back" href="#/week"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>Главная</a>` + (it.poster ? `<img class="spic" src="${esc(it.poster)}" alt="">` : '') +
     `<div class="stitle">${esc(it.title)}</div><div class="cmeta">${it.rating ? `<span class="pill">★ ${esc(String(it.rating))}</span>` : ''}<span>${it.kind === 'film' ? 'Фильм' : 'Сериал'}${it.country === 'ru' ? ' · Россия' : ''}${it.service ? ' · ' + esc(it.service) : ''}</span></div><div class="chip amber" style="margin-top:10px">${esc(when)}</div></div>`;
   if (it.desc) html += `<p class="note">${esc(it.desc)}</p>`;
   if (it.note) html += `<p class="meta">${esc(it.note)}</p>`;
@@ -767,7 +770,7 @@ ${has ? '<button type="button" class="btn ghost" data-act="deltoken">Удали�
 }
 function viewSettings() {
   const body = stab === 'notify' ? viewNotify() : stab === 'token' ? tokenPanel() : viewSubs();
-  return '<h1>Настройки</h1>' + chipRow([['subs', 'Подписки'], ['notify', 'Уведомления'], ['token', 'Токен']], stab, 'data-stab') + body.replace(/^<h1>.*?<\/h1>/, '');
+  return '<a class="back" href="#/week">‹ Главная</a><h1>Настройки</h1>' + chipRow([['subs', 'Подписки'], ['notify', 'Уведомления'], ['token', 'Токен']], stab, 'data-stab') + body.replace(/^<h1>.*?<\/h1>/, '');
 }
 
 /* ---------- роутер ---------- */
@@ -792,7 +795,7 @@ function render() {
   else if (page === 'addm') html = viewAddMovie();
   else html = viewWeek();
   $app.innerHTML = html;
-  const tab = page === 's' || page === 'add' ? 'list' : (page === 'm' || page === 'addm') ? 'movies' : page === 'd' ? 'discover' : page === 'addlib' ? 'lib' : page;
+  const tab = page === 's' || page === 'add' ? 'list' : (page === 'm' || page === 'addm') ? 'movies' : page === 'd' ? 'week' : page === 'addlib' ? 'lib' : page;
   document.querySelectorAll('#tabs a').forEach((a) => a.classList.toggle('on', a.dataset.tab === tab));
   if (!typing) window.scrollTo(0, 0);
   if (page === 'settings' && stab === 'notify') refreshNotify();
