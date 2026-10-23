@@ -235,3 +235,19 @@ h1 { font-family: 'Bricolage Grotesque', 'Onest', sans-serif; font-weight: 800; 
 #tabs a svg { opacity: .7; }
 #tabs a.on svg { opacity: 1; }
 .gear { position: absolute; right: 0; top: 50%; transform: translateY(-50%); color: #fff; padding: 8px; display: flex; text-transform: none; filter: drop-shadow(0 1px 4px rgba(0,0,0,.7)); }
+/* календарь выходов */
+.cal { margin-top: 12px; padding: 12px; border: 1px solid var(--line); border-radius: 24px; background: #0B0B0B; }
+.calhead { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; font-size: 16px; }
+.calnav { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--line); background: none; color: #fff; font-size: 22px; line-height: 1; }
+.calgrid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center; }
+.calgrid .dow { font-size: 11px; color: var(--muted); padding: 4px 0; }
+.day { position: relative; height: 42px; border: 0; border-radius: 12px; background: none; color: #fff; font: inherit; font-size: 15px; }
+.day.today { outline: 1.5px solid var(--accent); }
+.day.sel { background: var(--accent); color: #000; font-weight: 700; }
+.day .dot { position: absolute; left: 50%; bottom: 5px; width: 5px; height: 5px; margin-left: -2.5px; border-radius: 50%; background: var(--accent); }
+.day .dot.many { box-shadow: 7px 0 0 var(--accent); margin-left: -6px; }
+.day.sel .dot { background: #000; box-shadow: none; }
+.prog { height: 6px; border-radius: 3px; background: #1c1c1c; margin: 2px 0 6px; overflow: hidden; }
+.prog i { display: block; height: 100%; background: var(--accent); border-radius: 3px; }
+.chips.nowrap { margin: 0; flex-wrap: nowrap; flex: none; }
+.chips.nowrap .fbtn { padding: 8px 14px; font-size: 14px; }

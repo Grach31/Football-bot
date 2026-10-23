@@ -104,6 +104,42 @@ function metaFor(s, today) {
   return p.join(' · ');
 }
 
+
+/* ---------- календарь выходов ---------- */
+let calview = 'list', calMonth = '', calDay = '';
+const MONTHS = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
+function calEvents() {
+  const ev = {};
+  const add = (date, o) => { (ev[date] = ev[date] || []).push(o); };
+  DATA.series.forEach((sr) => eps(sr).forEach((e) => add(e.date, { href: `#/s/${sr.id}`, title: sr.title, sub: `${e.n} ${unit(sr)}${sr.total ? ' из ' + sr.total : ''}${e.time ? ' · ' + e.time : ''}`, kind: 's' })));
+  MOVIES.items.filter((m) => m.status !== 'watched' && m.date).forEach((m) => add(m.date, { href: `#/m/${m.id}`, title: m.title, sub: 'Фильм' + (m.service ? ' · ' + m.service : ''), kind: 'm' }));
+  return ev;
+}
+function calHtml(today) {
+  if (!calMonth) calMonth = today.slice(0, 7);
+  const [y, mo] = calMonth.split('-').map(Number);
+  const ev = calEvents();
+  const first = new Date(Date.UTC(y, mo - 1, 1));
+  const lead = (first.getUTCDay() + 6) % 7;
+  const days = new Date(Date.UTC(y, mo, 0)).getUTCDate();
+  const prev = new Date(Date.UTC(y, mo - 2, 1)).toISOString().slice(0, 7), next = new Date(Date.UTC(y, mo, 1)).toISOString().slice(0, 7);
+  let h = `<div class="cal"><div class="calhead"><button type="button" class="calnav" data-calmonth="${prev}" aria-label="Предыдущий месяц">‹</button><b>${MONTHS[mo - 1]} ${y}</b><button type="button" class="calnav" data-calmonth="${next}" aria-label="Следующий месяц">›</button></div><div class="calgrid">` +
+    ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'].map((d) => `<span class="dow">${d}</span>`).join('') + '<span></span>'.repeat(lead);
+  for (let d = 1; d <= days; d++) {
+    const date = `${calMonth}-${String(d).padStart(2, '0')}`;
+    const n = (ev[date] || []).length;
+    h += `<button type="button" class="day${date === today ? ' today' : ''}${date === calDay ? ' sel' : ''}" data-calday="${date}">${d}${n ? `<i class="dot${n > 1 ? ' many' : ''}"></i>` : ''}</button>`;
+  }
+  h += '</div></div>';
+  const day = calDay && calDay.startsWith(calMonth) ? calDay : '';
+  if (day) {
+    const list = ev[day] || [];
+    h += `<div class="row-head"><b>${day === today ? 'Сегодня' : cap(weekday(day))}</b><span>${longDate(day)}</span></div>`;
+    h += list.length ? '<div class="stack tight">' + list.map((x) => `<a class="card compact" href="${esc(x.href)}"><div class="grow"><div class="ttl">${esc(x.title)}</div><div class="meta">${esc(x.sub)}</div></div>${CHEV}</a>`).join('') + '</div>' : '<p class="empty" style="margin-top:8px">В этот день выходов нет.</p>';
+  } else h += '<p class="meta" style="margin-top:10px">Нажмите на день, чтобы увидеть, что выходит.</p>';
+  return h;
+}
+
 /* ---------- экраны ---------- */
 function viewWeek() {
   const today = todayStr();
@@ -121,34 +157,39 @@ function viewWeek() {
   const soonMovies = MOVIES.items.filter((m) => m.status !== 'watched' && m.date && m.date >= today).sort((a, b) => (a.date < b.date ? -1 : 1));
   if (soonMovies.length) html += `<h2 class="hd">Фильмы скоро</h2><div class="hrow2">${soonMovies.map((m) => `<a class="pcard" href="#/m/${esc(m.id)}">${poster(m)}<div class="bds"><span class="bl">${esc(movieBadge(m, today))}</span></div></a>`).join('')}</div>`;
 
-  const prem = (DISC.items || []).slice();
+  const prem = (DISC.items || []).filter((it) => !it.rec);
+  const recs = (DISC.items || []).filter((it) => it.rec);
   if (prem.length) html += `<h2 class="hd">Премьеры</h2><div class="hrow2">${prem.map((it) => `<a class="pcard" href="#/d/${esc(it.id)}">${poster(it)}<div class="bds">${it.rating ? `<span class="bd">★ ${esc(String(it.rating))}</span>` : ''}<span class="bl">${esc(it.date ? shortDate(it.date) : (it.when || 'ожидается'))}</span></div></a>`).join('')}</div>`;
+  if (recs.length) html += `<h2 class="hd">Вам может понравиться</h2><div class="hrow2">${recs.map((it) => `<a class="pcard" href="#/d/${esc(it.id)}">${poster(it)}<div class="bds">${it.rating ? `<span class="bd">★ ${esc(String(it.rating))}</span>` : ''}<span class="bl">${it.kind === 'film' ? 'Фильм' : 'Сериал'}</span></div></a>`).join('')}</div>`;
 
   const byDate = {};
   DATA.series.forEach((s) => eps(s).forEach((e) => {
     if (e.date >= today && e.date <= end) (byDate[e.date] = byDate[e.date] || []).push({ s, e });
   }));
   const dates = Object.keys(byDate).sort();
-  html += `<h2 class="hd">Расписание на две недели</h2>`;
-  if (!dates.length) html += '<p class="empty">На ближайшие две недели новых серий нет.</p>';
-  dates.forEach((date) => {
-    const label = date === today ? 'Сегодня' : date === addDays(today, 1) ? 'Завтра' : cap(weekday(date));
-    html += `<div class="row-head"><b>${label}</b><span>${longDate(date)}</span></div><div class="stack">`;
-    byDate[date].forEach(({ s, e }) => {
-      const fin = s.total && e.n === s.total ? ' · финал' : '';
-      const time = e.time ? `<div class="chip amber">${esc(e.time)}</div>` : CHEV;
-      html += `<a class="card" href="#/s/${esc(s.id)}">${tile(s)}<div class="grow"><div class="ttl">${esc(s.title)}</div>` +
-        `<div class="meta">${e.n} ${unit(s)}${s.total ? ' из ' + s.total : ''}${fin}${s.service ? ' · ' + esc(s.service) : ''}</div></div>${time}</a>`;
+  html += `<div class="hrow"><h2 class="hd" style="margin:0">${calview === 'month' ? 'Календарь' : 'Ближайшие две недели'}</h2><div class="chips nowrap"><button type="button" class="fbtn ${calview === 'list' ? 'on' : ''}" data-calview="list">Список</button><button type="button" class="fbtn ${calview === 'month' ? 'on' : ''}" data-calview="month">Месяц</button></div></div>`;
+  if (calview === 'month') html += calHtml(today);
+  else {
+    if (!dates.length) html += '<p class="empty">На ближайшие две недели новых серий нет.</p>';
+    dates.forEach((date) => {
+      const label = date === today ? 'Сегодня' : date === addDays(today, 1) ? 'Завтра' : cap(weekday(date));
+      html += `<div class="row-head"><b>${label}</b><span>${longDate(date)}</span></div><div class="stack">`;
+      byDate[date].forEach(({ s, e }) => {
+        const fin = s.total && e.n === s.total ? ' · финал' : '';
+        const time = e.time ? `<div class="chip amber">${esc(e.time)}</div>` : CHEV;
+        html += `<a class="card" href="#/s/${esc(s.id)}">${tile(s)}<div class="grow"><div class="ttl">${esc(s.title)}</div>` +
+          `<div class="meta">${e.n} ${unit(s)}${s.total ? ' из ' + s.total : ''}${fin}${s.service ? ' · ' + esc(s.service) : ''}</div></div>${time}</a>`;
+      });
+      html += '</div>';
     });
-    html += '</div>';
-  });
-  const pending = DATA.series.filter((s) => s.status === 'airing' && !nextEp(s, today));
-  if (pending.length) {
-    html += '<div class="row-head"><b>График уточняется</b></div><div class="stack">';
-    pending.forEach((s) => {
-      html += `<a class="card" href="#/s/${esc(s.id)}">${tile(s)}<div class="grow"><div class="ttl">${esc(s.title)}</div><div class="meta">${esc(metaFor(s, today))}</div></div>${CHEV}</a>`;
-    });
-    html += '</div>';
+    const pending = DATA.series.filter((s) => s.status === 'airing' && !nextEp(s, today));
+    if (pending.length) {
+      html += '<div class="row-head"><b>График уточняется</b></div><div class="stack">';
+      pending.forEach((s) => {
+        html += `<a class="card" href="#/s/${esc(s.id)}">${tile(s)}<div class="grow"><div class="ttl">${esc(s.title)}</div><div class="meta">${esc(metaFor(s, today))}</div></div>${CHEV}</a>`;
+      });
+      html += '</div>';
+    }
   }
   html += `<p class="foot">Данные обновлены ${esc(DATA.updated)}. Даты взяты из открытых источников и могут меняться.</p>`;
   return html;
@@ -276,6 +317,7 @@ function viewSeries(id) {
     if (done.length) {
       const last = done[done.length - 1];
       html += `<div class="ep done"><span aria-hidden="true">✓</span><span>Вышло ${done.length}${s.total ? ' из ' + s.total : ''} · последняя ${longDate(last.date)}</span></div>`;
+      if (s.total) html += `<div class="prog" aria-hidden="true"><i style="width:${Math.min(100, Math.round(done.length / s.total * 100))}%"></i></div>`;
     }
     upcoming.forEach((e, i) => {
       const r = e.date === today ? 'сегодня' : e.date === addDays(today, 1) ? 'завтра' : (s.total && e.n === s.total ? 'финал' : '');
@@ -668,10 +710,11 @@ function viewDisc(id) {
   if (!it) return '<a class="back" href="#/week">‹ Главная</a><p class="empty">Этой премьеры уже нет в подборке: список обновляется раз в неделю.</p>';
   const [ga] = palOf(it);
   const added = inCollection(it), has = !!lsGet('gh_token');
-  const when = it.date ? longDate(it.date) : (it.when || 'Дата уточняется');
+  const when = it.date ? longDate(it.date) : (it.rec ? 'Уже вышло' : (it.when || 'Дата уточняется'));
   let html = `<div class="shero${it.poster ? ' haspic' : ''}" style="--ga:${ga}"><a class="back" href="#/week"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>Главная</a>` + (it.poster ? `<img class="spic" src="${esc(it.poster)}" alt="">` : '') +
     `<div class="stitle">${esc(it.title)}</div><div class="cmeta">${it.rating ? `<span class="pill">★ ${esc(String(it.rating))}</span>` : ''}<span>${it.kind === 'film' ? 'Фильм' : 'Сериал'}${it.country === 'ru' ? ' · Россия' : ''}${it.service ? ' · ' + esc(it.service) : ''}</span></div><div class="chip amber" style="margin-top:10px">${esc(when)}</div></div>`;
   if (it.desc) html += `<p class="note">${esc(it.desc)}</p>`;
+  if (it.because) html += `<p class="meta">Почему рекомендую: ${esc(it.because)}</p>`;
   if (it.note) html += `<p class="meta">${esc(it.note)}</p>`;
   html += added ? '<div class="chip gray" style="margin-top:12px">Уже в вашем списке</div>' : `<button type="button" class="btn wide" data-act="dadd" data-id="${esc(it.id)}">Хочу посмотреть</button>`;
   html += '<div id="d_msg" class="meta" role="status"></div>';
@@ -812,6 +855,12 @@ document.addEventListener('input', (ev) => {
 });
 let heroOff = 0;
 document.addEventListener('click', (ev) => {
+  const cv = ev.target.closest('[data-calview]');
+  if (cv) { calview = cv.dataset.calview; const y = window.scrollY; typing = true; render(); typing = false; window.scrollTo(0, y); return; }
+  const cm = ev.target.closest('[data-calmonth]');
+  if (cm) { calMonth = cm.dataset.calmonth; calDay = ''; const y = window.scrollY; typing = true; render(); typing = false; window.scrollTo(0, y); return; }
+  const cd = ev.target.closest('[data-calday]');
+  if (cd) { calDay = calDay === cd.dataset.calday ? '' : cd.dataset.calday; const y = window.scrollY; typing = true; render(); typing = false; window.scrollTo(0, y); return; }
   if (ev.target.closest('[data-sqtoggle]')) {
     if (sqOpen || sq) { sqOpen = false; sq = ''; } else sqOpen = true;
     const y = window.scrollY; typing = true; render(); typing = false; window.scrollTo(0, y);

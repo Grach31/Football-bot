@@ -1,5 +1,5 @@
 'use strict';
-const CACHE = 'series-v41';
+const CACHE = 'series-v43';
 const SHELL = ['./', 'index.html', 'style.css', 'app.js', 'manifest.webmanifest', 'icons/icon-192.png', 'icons/icon-512.png'];
 
 self.addEventListener('install', (e) => {
