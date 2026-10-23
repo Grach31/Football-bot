@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-22",
+  "updated": "2026-10-23",
   "series": [
     {
       "id": "sedmoy-igrok",
@@ -524,6 +524,136 @@
       "mine": "done",
       "added": "2026-10-22",
       "seen_season": 1
+    },
+    {
+      "id": "lib-politsejskij-s-rublevki",
+      "title": "Полицейский с Рублёвки",
+      "service": null,
+      "status": "ended",
+      "mine": "done",
+      "seen_season": 1,
+      "poster_query": "Полицейский с Рублёвки",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-molodoj-papa",
+      "title": "Молодой папа",
+      "service": null,
+      "status": "ended",
+      "mine": "done",
+      "seen_season": 1,
+      "poster_query": "The Young Pope",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-ostrye-kozyrki",
+      "title": "Острые козырьки",
+      "service": null,
+      "status": "ended",
+      "mine": "done",
+      "seen_season": 1,
+      "poster_query": "Peaky Blinders",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-fargo",
+      "title": "Фарго",
+      "service": null,
+      "status": "ended",
+      "mine": "done",
+      "seen_season": 1,
+      "poster_query": "Fargo",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-kartochnyj-domik",
+      "title": "Карточный домик",
+      "service": null,
+      "status": "ended",
+      "mine": "done",
+      "seen_season": 1,
+      "poster_query": "House of Cards",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-otbrosy",
+      "title": "Отбросы",
+      "service": null,
+      "status": "ended",
+      "mine": "done",
+      "seen_season": 1,
+      "poster_query": "Misfits",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-poslednee-korolevstvo",
+      "title": "Последнее королевство",
+      "service": null,
+      "status": "ended",
+      "mine": "done",
+      "seen_season": 1,
+      "poster_query": "The Last Kingdom",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-sherlok-bbc",
+      "title": "Шерлок",
+      "service": null,
+      "status": "ended",
+      "mine": "done",
+      "seen_season": 1,
+      "poster_query": "Sherlock",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-mister-robot",
+      "title": "Мистер Робот",
+      "service": null,
+      "status": "ended",
+      "mine": "done",
+      "seen_season": 1,
+      "poster_query": "Mr. Robot",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-igra-prestolov",
+      "title": "Игра престолов",
+      "service": null,
+      "status": "ended",
+      "mine": "done",
+      "seen_season": 1,
+      "poster_query": "Game of Thrones",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-vikingi",
+      "title": "Викинги",
+      "service": null,
+      "status": "ended",
+      "mine": "done",
+      "seen_season": 1,
+      "poster_query": "Vikings",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-sladkaya-zhizn",
+      "title": "Сладкая жизнь",
+      "service": null,
+      "status": "ended",
+      "mine": "done",
+      "seen_season": 1,
+      "poster_query": "Сладкая жизнь",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-gomorra",
+      "title": "Гоморра",
+      "service": null,
+      "status": "ended",
+      "mine": "done",
+      "seen_season": 1,
+      "poster_query": "Gomorrah",
+      "added": "2026-10-23"
     }
   ]
 }
