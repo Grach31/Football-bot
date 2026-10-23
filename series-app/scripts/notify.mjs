@@ -60,9 +60,9 @@ function subPayloads(date) {
   for (const it of subsData.items || []) {
     const nx = subNext(it, date);
     const left = Math.round((d0(nx) - d0(date)) / 86400000);
-    if (left !== 2 && left !== 0) continue;
+    if (left !== 3 && left !== 1 && left !== 0) continue;
     const once = it.period === 'once';
-    const when = left === 0 ? 'сегодня' : 'через 2 дня';
+    const when = left === 0 ? 'сегодня' : left === 1 ? 'завтра' : 'через 3 дня';
     const title = once ? `${it.service}: доступ заканчивается ${when}` : `${it.service}: списание ${when}`;
     out.push({ title, body: once ? 'Продлите, если ещё смотрите' : `${money(it.price)}. Если сервис не нужен, отмените подписку`, tag: `sub-${it.id}-${nx}-${left}`, url: './#/subs' });
   }

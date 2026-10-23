@@ -201,12 +201,15 @@ function sState(s, today) {
   if (s.status === 'nodate') return 'nodate';
   return s.closed ? 'closed' : 'out';
 }
+let sq = '';
+const searchBox = () => `<input class="inp sbox" id="sq" type="search" placeholder="Поиск по названию" value="${esc(sq)}" autocomplete="off">`;
+const hit = (t) => !sq || (t || '').toLowerCase().includes(sq.toLowerCase().trim());
 const chipRow = (arr, cur, attr) => '<div class="chips">' + arr.filter(([k]) => k !== 'all').map(([k, l]) => `<button type="button" class="fbtn ${cur === k ? 'on' : ''}" ${attr}="${k}">${l}</button>`).join('') + '</div>';
 function viewList(mode) {
   const today = todayStr();
   let html = `<div class="hrow"><h1>Сериалы</h1><a class="addbtn" href="#/add" aria-label="Добавить сериал">+ Добавить</a></div>` +
-    chipRow(Object.entries({ all: 'Все', ...MINE }), filter, 'data-filter') + chipRow(SFILTERS, sfilter, 'data-sfilter');
-  const all = DATA.series.map((s) => ({ s, st: sState(s, today) })).filter((x) => (filter === 'all' || effMine(x.s) === filter) && (sfilter === 'all' || x.st === sfilter));
+    searchBox() + chipRow(Object.entries({ all: 'Все', ...MINE }), filter, 'data-filter') + chipRow(SFILTERS, sfilter, 'data-sfilter');
+  const all = DATA.series.map((s) => ({ s, st: sState(s, today) })).filter((x) => hit(x.s.title) && (filter === 'all' || effMine(x.s) === filter) && (sfilter === 'all' || x.st === sfilter));
   if (!all.length) return html + '<p class="empty">Здесь пока пусто. Измените фильтры или добавьте сериал.</p>';
   GROUPS.forEach(([key, label]) => {
     let list = all.filter((x) => x.st === key).map((x) => x.s);
@@ -553,8 +556,8 @@ const mState = (m, today) => (m.date ? (m.date >= today ? 'soon' : 'out') : 'nod
 const mMine = (m) => (m.status === 'watched' ? 'done' : m.status === 'watching' ? 'watching' : 'want');
 function viewMovies() {
   const today = todayStr();
-  let list = MOVIES.items.slice().reverse().filter((m) => (mfilter === 'all' || mMine(m) === mfilter) && (msfilter === 'all' || mState(m, today) === msfilter));
-  let html = `<div class="hrow"><h1>Фильмы</h1><a class="addbtn" href="#/addm">+ Добавить</a></div>` + chipRow(MFILTERS, mfilter, 'data-mfilter') + chipRow(MSFILTERS, msfilter, 'data-msfilter');
+  let list = MOVIES.items.slice().reverse().filter((m) => hit(m.title) && (mfilter === 'all' || mMine(m) === mfilter) && (msfilter === 'all' || mState(m, today) === msfilter));
+  let html = `<div class="hrow"><h1>Фильмы</h1><a class="addbtn" href="#/addm">+ Добавить</a></div>` + searchBox() + chipRow(MFILTERS, mfilter, 'data-mfilter') + chipRow(MSFILTERS, msfilter, 'data-msfilter');
   if (!list.length) return html + '<p class="empty">Здесь пока пусто. Измените фильтры или нажмите «+ Добавить».</p>';
   html += '<div class="mgrid">' + list.map((m) =>
     `<a class="pcard" href="#/m/${esc(m.id)}">${poster(m)}<div class="bds"><span class="bl">${esc(movieBadge(m, today))}</span></div></a>`).join('') + '</div>';
@@ -695,13 +698,13 @@ function libItems() {
 }
 function viewLib() {
   const all = libItems();
-  const list = all.filter((x) => libfilter === 'all' || x.kind === libfilter)
+  const list = all.filter((x) => hit(x.it.title) && (libfilter === 'all' || x.kind === libfilter))
     .sort((x, y) => ((y.it.rating || 0) - (x.it.rating || 0)) || x.it.title.localeCompare(y.it.title, 'ru'));
   const rated = list.filter((x) => x.it.rating);
   const avg = rated.length ? (rated.reduce((n, x) => n + x.it.rating, 0) / rated.length).toFixed(1) : null;
   let html = `<div class="hrow"><h1>Библиотека</h1><a class="addbtn" href="#/addlib">+ Добавить</a></div>` +
     `<p class="meta">${list.length ? `${list.length} ${plural(list.length, ['тайтл', 'тайтла', 'тайтлов'])}${avg ? ` · средняя оценка ★ ${avg}` : ''} · рейтинг Кинопоиска` : ''}</p>` +
-    chipRow([['s', 'Сериалы'], ['m', 'Фильмы']], libfilter, 'data-libfilter');
+    searchBox() + chipRow([['s', 'Сериалы'], ['m', 'Фильмы']], libfilter, 'data-libfilter');
   if (!list.length) return html + '<p class="empty">Пока пусто. Всё, что вы отметите «Посмотрел», появится здесь. Старое можно добавить кнопкой «+ Добавить».</p>';
   html += '<div class="mgrid">' + list.map((x) =>
     `<a class="pcard" href="${esc(x.href)}">${poster(x.it)}<div class="bds"><span class="bl">${x.it.rating ? '★ ' + esc(Number(x.it.rating).toFixed(1)) : '★ —'}</span></div></a>`).join('') + '</div>';
@@ -760,10 +763,12 @@ function viewSettings() {
 }
 
 /* ---------- роутер ---------- */
+let lastPage = '', typing = false;
 function render() {
   const h = location.hash === '#/posters' ? '#/list' : (location.hash || '#/week');
   const parts = h.replace(/^#\//, '').split('/');
   let page = parts[0] || 'week';
+  if (page !== lastPage) { sq = ''; lastPage = page; }
   let html;
   if (page === 'subs' || page === 'notify') { stab = page; page = 'settings'; }
   if (page === 'list') html = viewList('list');
@@ -781,7 +786,7 @@ function render() {
   $app.innerHTML = html;
   const tab = page === 's' || page === 'add' ? 'list' : (page === 'm' || page === 'addm') ? 'movies' : page === 'd' ? 'discover' : page === 'addlib' ? 'lib' : page;
   document.querySelectorAll('#tabs a').forEach((a) => a.classList.toggle('on', a.dataset.tab === tab));
-  window.scrollTo(0, 0);
+  if (!typing) window.scrollTo(0, 0);
   if (page === 'settings' && stab === 'notify') refreshNotify();
   if (page === 'settings' && stab === 'subs') document.getElementById('subform').addEventListener('submit', addSub);
   if (page === 'addlib') document.getElementById('libform').addEventListener('submit', addLib);
@@ -789,7 +794,19 @@ function render() {
   if (page === 'add') document.getElementById('addform').addEventListener('submit', addSeries);
 }
 
+document.addEventListener('input', (ev) => {
+  if (ev.target.id !== 'sq') return;
+  sq = ev.target.value; const pos = ev.target.selectionStart; typing = true; render(); typing = false;
+  const el = document.getElementById('sq'); if (el) { el.focus(); try { el.setSelectionRange(pos, pos); } catch (e) {} }
+});
+let heroOff = 0;
 document.addEventListener('click', (ev) => {
+  if (ev.target.closest('.avhero')) {
+    const day = Math.floor(d0(todayStr()).getTime() / 86400000);
+    heroOff = (heroOff + 1) % HERO.length;
+    const img = document.querySelector('.avhero img'); if (img) img.src = HERO[(day + heroOff) % HERO.length];
+    return;
+  }
   const mf = ev.target.closest('[data-mfilter]');
   if (mf) { mfilter = mfilter === mf.dataset.mfilter ? 'all' : mf.dataset.mfilter; const y = window.scrollY; render(); window.scrollTo(0, y); return; }
   const sf = ev.target.closest('[data-sfilter]');

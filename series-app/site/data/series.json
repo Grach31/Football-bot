@@ -553,7 +553,8 @@
       "mine": "done",
       "seen_season": 1,
       "poster_query": "Peaky Blinders",
-      "added": "2026-10-23"
+      "added": "2026-10-23",
+      "closed": true
     },
     {
       "id": "lib-fargo",
@@ -573,7 +574,8 @@
       "mine": "done",
       "seen_season": 1,
       "poster_query": "House of Cards",
-      "added": "2026-10-23"
+      "added": "2026-10-23",
+      "closed": true
     },
     {
       "id": "lib-otbrosy",
@@ -583,7 +585,8 @@
       "mine": "done",
       "seen_season": 1,
       "poster_query": "Misfits",
-      "added": "2026-10-23"
+      "added": "2026-10-23",
+      "closed": true
     },
     {
       "id": "lib-poslednee-korolevstvo",
@@ -593,7 +596,8 @@
       "mine": "done",
       "seen_season": 1,
       "poster_query": "The Last Kingdom",
-      "added": "2026-10-23"
+      "added": "2026-10-23",
+      "closed": true
     },
     {
       "id": "lib-sherlok-bbc",
@@ -613,7 +617,8 @@
       "mine": "done",
       "seen_season": 1,
       "poster_query": "Mr. Robot",
-      "added": "2026-10-23"
+      "added": "2026-10-23",
+      "closed": true
     },
     {
       "id": "lib-igra-prestolov",
@@ -623,7 +628,8 @@
       "mine": "done",
       "seen_season": 1,
       "poster_query": "Game of Thrones",
-      "added": "2026-10-23"
+      "added": "2026-10-23",
+      "closed": true
     },
     {
       "id": "lib-vikingi",
@@ -633,7 +639,8 @@
       "mine": "done",
       "seen_season": 1,
       "poster_query": "Vikings",
-      "added": "2026-10-23"
+      "added": "2026-10-23",
+      "closed": true
     },
     {
       "id": "lib-sladkaya-zhizn",
@@ -653,7 +660,8 @@
       "mine": "done",
       "seen_season": 1,
       "poster_query": "Gomorrah",
-      "added": "2026-10-23"
+      "added": "2026-10-23",
+      "closed": true
     },
     {
       "id": "mcu-ironheart",
