@@ -924,3 +924,33 @@ async function boot() {
 }
 if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
 boot();
+
+/* ---------- свайп между тайтлами из одного списка ---------- */
+let navList = [];
+document.addEventListener('click', (ev) => {
+  const a = ev.target.closest('a.pcard, a.card');
+  if (!a) return;
+  const box = a.closest('.hrow2, .mgrid, .stack');
+  if (!box) return;
+  navList = [...box.querySelectorAll('a.pcard, a.card')].map((x) => x.getAttribute('href')).filter((h) => /^#\/(s|m|d)\//.test(h || ''));
+}, true);
+{
+  let sx = 0, sy = 0, t0 = 0, ok = false;
+  document.addEventListener('touchstart', (e) => {
+    const t = e.touches[0]; sx = t.clientX; sy = t.clientY; t0 = Date.now();
+    ok = e.touches.length === 1 && sx > 28 && sx < window.innerWidth - 28 && !e.target.closest('input, textarea, select');
+  }, { passive: true });
+  document.addEventListener('touchend', (e) => {
+    if (!ok) return; ok = false;
+    const t = e.changedTouches[0], dx = t.clientX - sx, dy = t.clientY - sy;
+    if (Math.abs(dx) < 70 || Math.abs(dx) < Math.abs(dy) * 1.6 || Date.now() - t0 > 700) return;
+    const i = navList.indexOf(location.hash);
+    if (i < 0) return;
+    const j = dx < 0 ? i + 1 : i - 1;
+    if (j < 0 || j >= navList.length) return;
+    $app.classList.remove('slideL', 'slideR');
+    void $app.offsetWidth;
+    $app.classList.add(dx < 0 ? 'slideL' : 'slideR');
+    location.hash = navList[j];
+  }, { passive: true });
+}
