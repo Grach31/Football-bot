@@ -455,6 +455,478 @@
       "poster_query": "Spider-Man: Brand New Day",
       "added": "2026-10-23",
       "date": "2026-07-31"
+    },
+    {
+      "id": "lib-law-abiding-citizen",
+      "title": "Законопослушный гражданин",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "Law Abiding Citizen",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-catch-me-if-you-can",
+      "title": "Поймай меня, если сможешь",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "Catch Me If You Can",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-the-wolf-of-wall-street",
+      "title": "Волк с Уолл-стрит",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "The Wolf of Wall Street",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-django-unchained",
+      "title": "Джанго освобождённый",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "Django Unchained",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-the-great-gatsby-2013",
+      "title": "Великий Гэтсби",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "The Great Gatsby 2013",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-inception",
+      "title": "Начало",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "Inception",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-shutter-island",
+      "title": "Остров проклятых",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "Shutter Island",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-the-revenant",
+      "title": "Выживший",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "The Revenant",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-",
+      "title": "Грязные деньги",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "Грязные деньги",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-aladdin-2019",
+      "title": "Аладдин",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "Aladdin 2019",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-operation-fortune-ruse-de-guerre",
+      "title": "Операция «Фортуна»: Искусство побеждать",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "Operation Fortune: Ruse de Guerre",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-the-covenant-2023",
+      "title": "Переводчик",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "The Covenant 2023",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-king-arthur-legend-of-the-sword",
+      "title": "Меч короля Артура",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "King Arthur: Legend of the Sword",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-the-man-from-u-n-c-l-e",
+      "title": "Агенты А.Н.К.Л.",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "The Man from U.N.C.L.E.",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-the-gentlemen-2019",
+      "title": "Джентльмены",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "The Gentlemen 2019",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-revolver-2005",
+      "title": "Револьвер",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "Revolver 2005",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-rocknrolla",
+      "title": "Рок-н-рольщик",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "RocknRolla",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-snatch",
+      "title": "Большой куш",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "Snatch",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-lock-stock-and-two-smoking-barrels",
+      "title": "Карты, деньги, два ствола",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "Lock, Stock and Two Smoking Barrels",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-the-hateful-eight",
+      "title": "Омерзительная восьмёрка",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "The Hateful Eight",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-inglourious-basterds",
+      "title": "Бесславные ублюдки",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "Inglourious Basterds",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-pulp-fiction",
+      "title": "Криминальное чтиво",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "Pulp Fiction",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-dallas-buyers-club",
+      "title": "Далласский клуб покупателей",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "Dallas Buyers Club",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-you-don-t-mess-with-the-zohan",
+      "title": "Не шутите с Зоханом",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "You Don't Mess with the Zohan",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-just-go-with-it",
+      "title": "Притворись моей женой",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "Just Go with It",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-click-2006",
+      "title": "Клик: с пультом по жизни",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "Click 2006",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-grown-ups-2010",
+      "title": "Одноклассники",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "Grown Ups 2010",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-grown-ups-2",
+      "title": "Одноклассники 2",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "Grown Ups 2",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-the-lord-of-the-rings-the-fellowship-of-the-ring",
+      "title": "Властелин колец: Братство Кольца",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "The Lord of the Rings: The Fellowship of the Ring",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-the-lord-of-the-rings-the-two-towers",
+      "title": "Властелин колец: Две крепости",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "The Lord of the Rings: The Two Towers",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-the-lord-of-the-rings-the-return-of-the-king",
+      "title": "Властелин колец: Возвращение короля",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "The Lord of the Rings: The Return of the King",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-the-hobbit-an-unexpected-journey",
+      "title": "Хоббит: Нежданное путешествие",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "The Hobbit: An Unexpected Journey",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-the-hobbit-the-desolation-of-smaug",
+      "title": "Хоббит: Пустошь Смауга",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "The Hobbit: The Desolation of Smaug",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-the-hobbit-the-battle-of-the-five-armies",
+      "title": "Хоббит: Битва пяти воинств",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "The Hobbit: The Battle of the Five Armies",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-the-intouchables",
+      "title": "1+1",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "The Intouchables",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-fight-club",
+      "title": "Бойцовский клуб",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "Fight Club",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-gladiator-2000",
+      "title": "Гладиатор",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "Gladiator 2000",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-harry-potter-and-the-philosopher-s-stone",
+      "title": "Гарри Поттер и философский камень",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "Harry Potter and the Philosopher's Stone",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-harry-potter-and-the-chamber-of-secrets",
+      "title": "Гарри Поттер и Тайная комната",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "Harry Potter and the Chamber of Secrets",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-harry-potter-and-the-prisoner-of-azkaban",
+      "title": "Гарри Поттер и узник Азкабана",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "Harry Potter and the Prisoner of Azkaban",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-harry-potter-and-the-goblet-of-fire",
+      "title": "Гарри Поттер и Кубок огня",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "Harry Potter and the Goblet of Fire",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-harry-potter-and-the-order-of-the-phoenix",
+      "title": "Гарри Поттер и Орден Феникса",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "Harry Potter and the Order of the Phoenix",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-harry-potter-and-the-half-blood-prince",
+      "title": "Гарри Поттер и Принц-полукровка",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "Harry Potter and the Half-Blood Prince",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-harry-potter-and-the-deathly-hallows-part-1",
+      "title": "Гарри Поттер и Дары Смерти: Часть 1",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "Harry Potter and the Deathly Hallows: Part 1",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-harry-potter-and-the-deathly-hallows-part-2",
+      "title": "Гарри Поттер и Дары Смерти: Часть 2",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "Harry Potter and the Deathly Hallows: Part 2",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-pirates-of-the-caribbean-the-curse-of-the-black-pearl",
+      "title": "Пираты Карибского моря: Проклятие «Чёрной жемчужины»",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "Pirates of the Caribbean: The Curse of the Black Pearl",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-pirates-of-the-caribbean-dead-man-s-chest",
+      "title": "Пираты Карибского моря: Сундук мертвеца",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "Pirates of the Caribbean: Dead Man's Chest",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-pirates-of-the-caribbean-at-world-s-end",
+      "title": "Пираты Карибского моря: На краю света",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "Pirates of the Caribbean: At World's End",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-pirates-of-the-caribbean-on-stranger-tides",
+      "title": "Пираты Карибского моря: На странных берегах",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "Pirates of the Caribbean: On Stranger Tides",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-pirates-of-the-caribbean-dead-men-tell-no-tales",
+      "title": "Пираты Карибского моря: Мертвецы не рассказывают сказки",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "Pirates of the Caribbean: Dead Men Tell No Tales",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-the-lincoln-lawyer",
+      "title": "Линкольн для адвоката",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "The Lincoln Lawyer",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-knives-out",
+      "title": "Достать ножи",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "Knives Out",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-the-game-1997",
+      "title": "Игра",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "The Game 1997",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-argylle",
+      "title": "Аргайл: Супершпион",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "Argylle",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-kingsman-the-secret-service",
+      "title": "Kingsman: Секретная служба",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "Kingsman: The Secret Service",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-kingsman-the-golden-circle",
+      "title": "Kingsman: Золотое кольцо",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "Kingsman: The Golden Circle",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-the-king-s-man",
+      "title": "King's Man: Начало",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "The King's Man",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-reservoir-dogs",
+      "title": "Бешеные псы",
+      "service": "Твоё",
+      "status": "want",
+      "poster_query": "Reservoir Dogs",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "lib-papa-dosvidos",
+      "title": "Папа досвидос",
+      "service": "Твоё",
+      "status": "want",
+      "poster_query": "Папа досвидос",
+      "added": "2026-10-23"
     }
   ]
 }
