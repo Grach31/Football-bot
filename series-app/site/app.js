@@ -18,7 +18,7 @@ const SFILTERS = [['all', 'Все'], ['airing', 'Выходит'], ['soon', 'С�
 const CHEV = '<svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>';
 
 // образы для главной; новые картинки добавляйте в конец списка
-const HERO = ['avatars/fallout.jpg', 'avatars/got.jpg'];
+const HERO = ['avatars/fallout.jpg', 'avatars/got.jpg', 'avatars/gangster.jpg', 'avatars/samurai.jpg'];
 { const i = new Image(); i.src = HERO[Math.floor(Date.parse(new Date().toISOString().slice(0, 10)) / 86400000) % HERO.length]; } // загрузка образа дня заранее
 let DISC = { updated: '', items: [] };
 let dfilter = 'all';
