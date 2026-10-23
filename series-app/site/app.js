@@ -115,8 +115,8 @@ function viewWeek() {
   const day = Math.floor(d0(today).getTime() / 86400000);
   html += `<div class="avhero"><img src="${esc(HERO[day % HERO.length])}" alt=""></div>`;
   if (airing.length) html += `<h2 class="hd">Выходят сейчас</h2><div class="hrow2">${airing.map((s) => pcard(s, today)).join('')}</div>`;
-  const wait = DATA.series.filter((s) => s.status === 'waiting');
-  if (wait.length) html += `<h2 class="hd">Ждём новые сезоны</h2><div class="hrow2">${wait.map((s) => pcard(s, today)).join('')}</div>`;
+  const wait = DATA.series.filter((s) => sState(s, today) === 'soon').sort((a, b) => { const x = nextEp(a, today), y = nextEp(b, today); return (x ? x.date : '9999') < (y ? y.date : '9999') ? -1 : 1; });
+  if (wait.length) html += `<h2 class="hd">Сериалы скоро</h2><div class="hrow2">${wait.map((s) => pcard(s, today)).join('')}</div>`;
 
   const soonMovies = MOVIES.items.filter((m) => m.status !== 'watched' && m.date && m.date >= today).sort((a, b) => (a.date < b.date ? -1 : 1));
   if (soonMovies.length) html += `<h2 class="hd">Фильмы скоро</h2><div class="hrow2">${soonMovies.map((m) => `<a class="pcard" href="#/m/${esc(m.id)}">${poster(m)}<div class="bds"><span class="bl">${esc(movieBadge(m, today))}</span></div></a>`).join('')}</div>`;
@@ -210,23 +210,16 @@ const hit = (t) => !sq || (t || '').toLowerCase().includes(sq.toLowerCase().trim
 const chipRow = (arr, cur, attr) => '<div class="chips">' + arr.filter(([k]) => k !== 'all').map(([k, l]) => `<button type="button" class="fbtn ${cur === k ? 'on' : ''}" ${attr}="${k}">${l}</button>`).join('') + '</div>';
 function viewList(mode) {
   const today = todayStr();
-  let html = topBar('Сериалы') + chipRow(Object.entries({ all: 'Все', ...MINE }), filter, 'data-filter');
-  const all = DATA.series.map((s) => ({ s, st: sState(s, today) })).filter((x) => hit(x.s.title) && (filter === 'all' || effMine(x.s) === filter) && (sfilter === 'all' || x.st === sfilter));
-  if (!all.length) return html + '<p class="empty">Здесь пока пусто. Измените фильтр или поиск.</p>';
-  GROUPS.forEach(([key, label]) => {
-    let list = all.filter((x) => x.st === key).map((x) => x.s);
+  const base = DATA.series.filter((s) => effMine(s) !== 'done' && hit(s.title));
+  const nd = (s) => { const n = nextEp(s, today); return n ? n.date : '9999'; };
+  const groups = [['Смотрю', 'watching'], ['Хочу посмотреть', 'want']].map(([label, k]) => [label, base.filter((s) => effMine(s) === k).sort((a, b) => (nd(a) < nd(b) ? -1 : nd(a) > nd(b) ? 1 : 0))]);
+  let html = topBar('Сериалы');
+  if (!groups.some((g) => g[1].length)) return html + '<p class="empty">Здесь пока пусто. Просмотренное лежит в «Библиотеке».</p>';
+  groups.forEach(([label, list]) => {
     if (!list.length) return;
-    if (key === 'airing' || key === 'soon') {
-      list = list.slice().sort((a, b) => {
-        const na = nextEp(a, today), nb = nextEp(b, today);
-        return (na ? na.date : '9999') < (nb ? nb.date : '9999') ? -1 : 1;
-      });
-    }
-    html += `<div class="group">${label}</div>`;
-    html += '<div class="stack tight">' + list.map((s) => {
+    html += `<div class="group">${label}</div><div class="stack tight">` + list.map((s) => {
       const [c, t] = chipFor(s, today);
-      const m = effMine(s);
-      return `<a class="card compact" href="#/s/${esc(s.id)}">${poster(s)}<div class="grow"><div class="ttl">${esc(s.title)}</div><div class="meta">${esc(metaFor(s, today))}${m ? ' · ' + MINE[m] : ''}</div></div><div class="chip ${c}">${esc(t)}</div></a>`;
+      return `<a class="card compact" href="#/s/${esc(s.id)}">${poster(s)}<div class="grow"><div class="ttl">${esc(s.title)}</div><div class="meta">${esc(metaFor(s, today))}</div></div><div class="chip ${c}">${esc(t)}</div></a>`;
     }).join('') + '</div>';
   });
   return html;
