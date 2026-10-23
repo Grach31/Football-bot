@@ -559,8 +559,17 @@ function viewMovies() {
   let list = MOVIES.items.slice().reverse().filter((m) => hit(m.title) && (mfilter === 'all' || mMine(m) === mfilter) && (msfilter === 'all' || mState(m, today) === msfilter));
   let html = `<div class="hrow"><h1>Фильмы</h1><a class="addbtn" href="#/addm">+ Добавить</a></div>` + searchBox() + chipRow(MFILTERS, mfilter, 'data-mfilter') + chipRow(MSFILTERS, msfilter, 'data-msfilter');
   if (!list.length) return html + '<p class="empty">Здесь пока пусто. Измените фильтры или нажмите «+ Добавить».</p>';
-  html += '<div class="mgrid">' + list.map((m) =>
-    `<a class="pcard" href="#/m/${esc(m.id)}">${poster(m)}<div class="bds"><span class="bl">${esc(movieBadge(m, today))}</span></div></a>`).join('') + '</div>';
+  [['soon', 'Скоро'], ['nodate', 'Дата не объявлена'], ['out', 'Вышел']].forEach(([key, label]) => {
+    let g = list.filter((m) => mState(m, today) === key);
+    if (!g.length) return;
+    if (key === 'soon') g = g.slice().sort((a, b) => (a.date < b.date ? -1 : 1));
+    if (msfilter === 'all') html += `<div class="group">${label}</div>`;
+    html += '<div class="stack tight">' + g.map((m) => {
+      const c = key === 'soon' ? 'amber' : key === 'nodate' ? 'gray' : 'blue';
+      const t = key === 'soon' ? movieBadge(m, today) : key === 'nodate' ? 'Нет даты' : 'Вышел';
+      return `<a class="card compact" href="#/m/${esc(m.id)}">${poster(m)}<div class="grow"><div class="ttl">${esc(m.title)}</div><div class="meta">${esc(m.service || 'Твоё')} · ${MINE[mMine(m)]}</div></div><div class="chip ${c}">${esc(t)}</div></a>`;
+    }).join('') + '</div>';
+  });
   return html;
 }
 function viewMovie(id) {
