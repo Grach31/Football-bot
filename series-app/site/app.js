@@ -30,6 +30,8 @@ let mfilter = 'all';
 let confirmDel = '';
 let filter = 'all';
 let sfilter = 'all';
+let libfilter = 'all';
+let stab = 'subs';
 let msfilter = 'all';
 
 /* ---------- даты ---------- */
@@ -682,17 +684,91 @@ async function discoverAdd(id) {
   } catch (err) { if (msg) msg.innerHTML = `<span class="warn">${esc(err.message || err)}</span>`; }
 }
 
+/* ---------- библиотека: всё, что посмотрел ---------- */
+function libItems() {
+  const a = DATA.series.filter((s) => effMine(s) === 'done').map((it) => ({ it, kind: 's', href: `#/s/${it.id}` }));
+  const b = MOVIES.items.filter((m) => m.status === 'watched').map((it) => ({ it, kind: 'm', href: `#/m/${it.id}` }));
+  return [...a, ...b];
+}
+function viewLib() {
+  const all = libItems();
+  const list = all.filter((x) => libfilter === 'all' || x.kind === libfilter)
+    .sort((x, y) => ((y.it.rating || 0) - (x.it.rating || 0)) || x.it.title.localeCompare(y.it.title, 'ru'));
+  const rated = list.filter((x) => x.it.rating);
+  const avg = rated.length ? (rated.reduce((n, x) => n + x.it.rating, 0) / rated.length).toFixed(1) : null;
+  let html = `<div class="hrow"><h1>Библиотека</h1><a class="addbtn" href="#/addlib">+ Добавить</a></div>` +
+    `<p class="meta">${list.length ? `${list.length} ${plural(list.length, ['тайтл', 'тайтла', 'тайтлов'])}${avg ? ` · средняя оценка ★ ${avg}` : ''} · рейтинг Кинопоиска` : ''}</p>` +
+    chipRow([['s', 'Сериалы'], ['m', 'Фильмы']], libfilter, 'data-libfilter');
+  if (!list.length) return html + '<p class="empty">Пока пусто. Всё, что вы отметите «Посмотрел», появится здесь. Старое можно добавить кнопкой «+ Добавить».</p>';
+  html += '<div class="mgrid">' + list.map((x) =>
+    `<a class="pcard" href="${esc(x.href)}">${poster(x.it)}<div class="bds"><span class="bl">${x.it.rating ? '★ ' + esc(Number(x.it.rating).toFixed(1)) : '★ —'}</span></div></a>`).join('') + '</div>';
+  return html;
+}
+function viewAddLib() {
+  const has = !!lsGet('gh_token');
+  return `<a class="back" href="#/lib"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>Библиотека</a><h1>Что вы уже смотрели</h1>
+<div class="panel"><form id="libform" autocomplete="off">
+<label class="lbl" for="l_title">Название</label>
+<input class="inp" id="l_title" required placeholder="Например: Во все тяжкие">
+<label class="lbl" for="l_kind">Что это</label>
+<select class="inp" id="l_kind"><option value="s">Сериал</option><option value="m">Фильм</option></select>
+<button type="submit" class="btn" id="l_submit" ${has ? '' : 'disabled'}>Добавить в библиотеку</button>
+<div id="l_msg" class="meta" role="status"></div>
+${has ? '' : '<p class="meta">Нужен токен GitHub: «Настройки» → «Токен».</p>'}</form></div>`;
+}
+async function addLib(e) {
+  e.preventDefault();
+  const msg = document.getElementById('l_msg'); const btn = document.getElementById('l_submit');
+  const title = document.getElementById('l_title').value.trim(); const kind = document.getElementById('l_kind').value;
+  if (!title) return;
+  btn.disabled = true; msg.textContent = 'Сохраняю…';
+  try {
+    if (kind === 's') {
+      DATA = await ghEdit('series.json', (d) => {
+        const x = d.series.find((y) => y.title.toLowerCase() === title.toLowerCase());
+        if (x) { x.mine = 'done'; x.seen_season = x.season || 1; return; }
+        d.series.push({ id: `${slugify(title)}-${Date.now().toString(36).slice(-4)}`, title, service: null, status: 'ended', mine: 'done', seen_season: 1, added: todayStr() });
+      }, `Библиотека: «${title}»`);
+    } else {
+      MOVIES = await ghEdit('movies.json', (d) => {
+        const x = d.items.find((y) => y.title.toLowerCase() === title.toLowerCase());
+        if (x) { x.status = 'watched'; return; }
+        d.items.push({ id: `${slugify(title)}-${Date.now().toString(36).slice(-4)}`, title, service: 'Твоё', status: 'watched', added: todayStr() });
+      }, `Библиотека: «${title}»`);
+    }
+    msg.innerHTML = '<span class="ok">Добавлено.</span> Рейтинг и постер появятся после следующей публикации сайта.';
+    document.getElementById('libform').reset();
+  } catch (err) { msg.innerHTML = `<span class="warn">${esc(err.message || err)}</span>`; }
+  btn.disabled = false;
+}
+
+/* ---------- настройки: подписки, уведомления, токен ---------- */
+function tokenPanel() {
+  const has = !!lsGet('gh_token');
+  return `<div class="panel"><h2>Токен GitHub</h2><p>${has ? '<span class="ok">Токен сохранён на этом телефоне.</span>' : 'Нужен один раз: токен GitHub только для этого репозитория (Contents: Read and write). Без него нельзя добавлять и переносить сериалы и фильмы.'}</p>
+<input class="inp" id="a_token" type="password" placeholder="${has ? 'Заменить токен' : 'Вставьте токен'}" autocomplete="off">
+<button type="button" class="btn ghost" data-act="savetoken">Сохранить токен</button>
+${has ? '<button type="button" class="btn ghost" data-act="deltoken">Удалить токен</button>' : ''}
+<a class="meta" href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener" style="display:block;margin-top:8px">Создать токен на GitHub</a></div>`;
+}
+function viewSettings() {
+  const body = stab === 'notify' ? viewNotify() : stab === 'token' ? tokenPanel() : viewSubs();
+  return '<h1>Настройки</h1>' + chipRow([['subs', 'Подписки'], ['notify', 'Уведомления'], ['token', 'Токен']], stab, 'data-stab') + body.replace(/^<h1>.*?<\/h1>/, '');
+}
+
 /* ---------- роутер ---------- */
 function render() {
   const h = location.hash === '#/posters' ? '#/list' : (location.hash || '#/week');
   const parts = h.replace(/^#\//, '').split('/');
-  const page = parts[0] || 'week';
+  let page = parts[0] || 'week';
   let html;
+  if (page === 'subs' || page === 'notify') { stab = page; page = 'settings'; }
   if (page === 'list') html = viewList('list');
   else if (page === 's') html = viewSeries(decodeURIComponent(parts[1] || ''));
-  else if (page === 'notify') html = viewNotify();
+  else if (page === 'settings') html = viewSettings();
+  else if (page === 'lib') html = viewLib();
+  else if (page === 'addlib') html = viewAddLib();
   else if (page === 'add') html = viewAdd();
-  else if (page === 'subs') html = viewSubs();
   else if (page === 'discover') html = viewDiscover();
   else if (page === 'd') html = viewDisc(decodeURIComponent(parts[1] || ''));
   else if (page === 'movies') html = viewMovies();
@@ -700,12 +776,13 @@ function render() {
   else if (page === 'addm') html = viewAddMovie();
   else html = viewWeek();
   $app.innerHTML = html;
-  const tab = page === 's' || page === 'add' ? 'list' : (page === 'm' || page === 'addm') ? 'movies' : page === 'd' ? 'discover' : page;
+  const tab = page === 's' || page === 'add' ? 'list' : (page === 'm' || page === 'addm') ? 'movies' : page === 'd' ? 'discover' : page === 'addlib' ? 'lib' : page;
   document.querySelectorAll('#tabs a').forEach((a) => a.classList.toggle('on', a.dataset.tab === tab));
   window.scrollTo(0, 0);
-  if (page === 'notify') refreshNotify();
+  if (page === 'settings' && stab === 'notify') refreshNotify();
+  if (page === 'settings' && stab === 'subs') document.getElementById('subform').addEventListener('submit', addSub);
+  if (page === 'addlib') document.getElementById('libform').addEventListener('submit', addLib);
   if (page === 'addm') document.getElementById('mform').addEventListener('submit', addMovie);
-  if (page === 'subs') document.getElementById('subform').addEventListener('submit', addSub);
   if (page === 'add') document.getElementById('addform').addEventListener('submit', addSeries);
 }
 
@@ -716,6 +793,10 @@ document.addEventListener('click', (ev) => {
   if (sf) { sfilter = sfilter === sf.dataset.sfilter ? 'all' : sf.dataset.sfilter; const y = window.scrollY; render(); window.scrollTo(0, y); return; }
   const msf = ev.target.closest('[data-msfilter]');
   if (msf) { msfilter = msfilter === msf.dataset.msfilter ? 'all' : msf.dataset.msfilter; const y = window.scrollY; render(); window.scrollTo(0, y); return; }
+  const lf = ev.target.closest('[data-libfilter]');
+  if (lf) { libfilter = libfilter === lf.dataset.libfilter ? 'all' : lf.dataset.libfilter; render(); return; }
+  const st = ev.target.closest('[data-stab]');
+  if (st) { stab = st.dataset.stab; render(); return; }
   const df = ev.target.closest('[data-dfilter]');
   if (df) { dfilter = df.dataset.dfilter; const y = window.scrollY; render(); window.scrollTo(0, y); return; }
   const f = ev.target.closest('[data-filter]');

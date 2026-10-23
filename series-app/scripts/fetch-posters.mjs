@@ -54,8 +54,31 @@ async function fromKinopoisk(query) {
   return hit ? hit.posterUrlPreview : null;
 }
 
+// рейтинг: Кинопоиск, запасной вариант — оценка TMDB
+async function ratingFor(query) {
+  if (kpToken) {
+    const j = await getJson(`https://kinopoiskapiunofficial.tech/api/v2.1/films/search-by-keyword?keyword=${encodeURIComponent(query)}&page=1`, { 'X-API-KEY': kpToken });
+    const hit = (j.films || []).find((x) => x.rating && /^\d+(\.\d+)?$/.test(String(x.rating)));
+    if (hit) return Number(hit.rating);
+  }
+  if (tmdbToken) {
+    const headers = { Accept: 'application/json' };
+    const params = new URLSearchParams({ query, language: 'ru-RU' });
+    if (tmdbToken.startsWith('eyJ')) headers.Authorization = `Bearer ${tmdbToken}`; else params.set('api_key', tmdbToken);
+    const j = await getJson(`https://api.themoviedb.org/3/search/multi?${params}`, headers);
+    const hit = (j.results || []).find((x) => (x.media_type === 'tv' || x.media_type === 'movie') && x.vote_count >= 20 && x.vote_average > 0);
+    if (hit) return Math.round(hit.vote_average * 10) / 10;
+  }
+  return null;
+}
+
 let ok = 0;
 for (const [s, prefix] of [...data.series.map((x) => [x, '']), ...movies.items.map((x) => [x, 'm-']), ...disc.items.map((x) => [x, 'd-'])]) {
+  if (prefix !== 'd-' && s.rating == null) {
+    for (const q of [...new Set([s.poster_query, s.title, clean(s.title)].filter(Boolean))]) {
+      try { const r = await ratingFor(q); if (r) { s.rating = r; break; } } catch (e) { console.warn(`${s.title}: рейтинг — ${e.message}`); }
+    }
+  }
   if (s.poster) continue;
   const queries = [s.poster_query, s.title, clean(s.title)].filter(Boolean);
   let url = null;
