@@ -955,6 +955,13 @@
       "status": "want",
       "added": "2026-10-23",
       "note": "Оценка Кинопоиска 7,7 (топ-250 фильмов)."
+    },
+    {
+      "id": "prestizh-hktz",
+      "title": "Престиж",
+      "service": "Твоё",
+      "status": "watched",
+      "added": "2026-10-23"
     }
   ]
 }
