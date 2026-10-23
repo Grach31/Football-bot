@@ -203,14 +203,16 @@ function sState(s, today) {
 }
 let sq = '';
 const searchBox = () => `<input class="inp sbox" id="sq" type="search" placeholder="Поиск по названию" value="${esc(sq)}" autocomplete="off">`;
+let sqOpen = false;
+const LOUPE = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>';
+const topBar = (t) => `<div class="hrow"><h1>${t}</h1><button type="button" class="addbtn" data-sqtoggle="1" aria-label="Поиск">${LOUPE}</button></div>` + (sqOpen || sq ? searchBox() : '');
 const hit = (t) => !sq || (t || '').toLowerCase().includes(sq.toLowerCase().trim());
 const chipRow = (arr, cur, attr) => '<div class="chips">' + arr.filter(([k]) => k !== 'all').map(([k, l]) => `<button type="button" class="fbtn ${cur === k ? 'on' : ''}" ${attr}="${k}">${l}</button>`).join('') + '</div>';
 function viewList(mode) {
   const today = todayStr();
-  let html = `<div class="hrow"><h1>Сериалы</h1><a class="addbtn" href="#/add" aria-label="Добавить сериал">+ Добавить</a></div>` +
-    searchBox() + chipRow(Object.entries({ all: 'Все', ...MINE }), filter, 'data-filter') + chipRow(SFILTERS, sfilter, 'data-sfilter');
+  let html = topBar('Сериалы') + chipRow(Object.entries({ all: 'Все', ...MINE }), filter, 'data-filter');
   const all = DATA.series.map((s) => ({ s, st: sState(s, today) })).filter((x) => hit(x.s.title) && (filter === 'all' || effMine(x.s) === filter) && (sfilter === 'all' || x.st === sfilter));
-  if (!all.length) return html + '<p class="empty">Здесь пока пусто. Измените фильтры или добавьте сериал.</p>';
+  if (!all.length) return html + '<p class="empty">Здесь пока пусто. Измените фильтр или поиск.</p>';
   GROUPS.forEach(([key, label]) => {
     let list = all.filter((x) => x.st === key).map((x) => x.s);
     if (!list.length) return;
@@ -220,7 +222,7 @@ function viewList(mode) {
         return (na ? na.date : '9999') < (nb ? nb.date : '9999') ? -1 : 1;
       });
     }
-    if (sfilter === 'all') html += `<div class="group">${label}</div>`;
+    html += `<div class="group">${label}</div>`;
     html += '<div class="stack tight">' + list.map((s) => {
       const [c, t] = chipFor(s, today);
       const m = effMine(s);
@@ -557,13 +559,13 @@ const mMine = (m) => (m.status === 'watched' ? 'done' : m.status === 'watching' 
 function viewMovies() {
   const today = todayStr();
   let list = MOVIES.items.slice().reverse().filter((m) => hit(m.title) && (mfilter === 'all' || mMine(m) === mfilter) && (msfilter === 'all' || mState(m, today) === msfilter));
-  let html = `<div class="hrow"><h1>Фильмы</h1><a class="addbtn" href="#/addm">+ Добавить</a></div>` + searchBox() + chipRow(MFILTERS, mfilter, 'data-mfilter') + chipRow(MSFILTERS, msfilter, 'data-msfilter');
-  if (!list.length) return html + '<p class="empty">Здесь пока пусто. Измените фильтры или нажмите «+ Добавить».</p>';
+  let html = topBar('Фильмы') + chipRow(MFILTERS, mfilter, 'data-mfilter');
+  if (!list.length) return html + '<p class="empty">Здесь пока пусто. Измените фильтр или поиск.</p>';
   [['soon', 'Скоро'], ['nodate', 'Дата не объявлена'], ['out', 'Вышел']].forEach(([key, label]) => {
     let g = list.filter((m) => mState(m, today) === key);
     if (!g.length) return;
     if (key === 'soon') g = g.slice().sort((a, b) => (a.date < b.date ? -1 : 1));
-    if (msfilter === 'all') html += `<div class="group">${label}</div>`;
+    html += `<div class="group">${label}</div>`;
     html += '<div class="stack tight">' + g.map((m) => {
       const c = key === 'soon' ? 'amber' : key === 'nodate' ? 'gray' : 'blue';
       const t = key === 'soon' ? movieBadge(m, today) : key === 'nodate' ? 'Нет даты' : 'Вышел';
@@ -777,7 +779,7 @@ function render() {
   const h = location.hash === '#/posters' ? '#/list' : (location.hash || '#/week');
   const parts = h.replace(/^#\//, '').split('/');
   let page = parts[0] || 'week';
-  if (page !== lastPage) { sq = ''; lastPage = page; }
+  if (page !== lastPage) { sq = ''; sqOpen = false; lastPage = page; }
   let html;
   if (page === 'subs' || page === 'notify') { stab = page; page = 'settings'; }
   if (page === 'list') html = viewList('list');
@@ -810,6 +812,12 @@ document.addEventListener('input', (ev) => {
 });
 let heroOff = 0;
 document.addEventListener('click', (ev) => {
+  if (ev.target.closest('[data-sqtoggle]')) {
+    if (sqOpen || sq) { sqOpen = false; sq = ''; } else sqOpen = true;
+    const y = window.scrollY; typing = true; render(); typing = false; window.scrollTo(0, y);
+    const el = document.getElementById('sq'); if (el) el.focus();
+    return;
+  }
   if (ev.target.closest('.avhero')) {
     const day = Math.floor(d0(todayStr()).getTime() / 86400000);
     heroOff = (heroOff + 1) % HERO.length;
