@@ -525,8 +525,9 @@
       "title": "Грязные деньги",
       "service": "Твоё",
       "status": "watched",
-      "poster_query": "Грязные деньги",
-      "added": "2026-10-23"
+      "poster_query": "In the Grey",
+      "added": "2026-10-23",
+      "note": "Фильм Гая Ричи 2026 (In the Grey)."
     },
     {
       "id": "lib-aladdin-2019",
@@ -925,8 +926,9 @@
       "title": "Папа досвидос",
       "service": "Твоё",
       "status": "want",
-      "poster_query": "Папа досвидос",
-      "added": "2026-10-23"
+      "poster_query": "That's My Boy",
+      "added": "2026-10-23",
+      "note": "С Адамом Сэндлером (2012)."
     }
   ]
 }
