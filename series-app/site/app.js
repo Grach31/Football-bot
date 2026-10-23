@@ -716,12 +716,12 @@ function viewDisc(id) {
   if (it.desc) html += `<p class="note">${esc(it.desc)}</p>`;
   if (it.because) html += `<p class="meta">Почему рекомендую: ${esc(it.because)}</p>`;
   if (it.note) html += `<p class="meta">${esc(it.note)}</p>`;
-  html += added ? '<div class="chip gray" style="margin-top:12px">Уже в вашем списке</div>' : `<button type="button" class="btn wide" data-act="dadd" data-id="${esc(it.id)}">Хочу посмотреть</button>`;
+  html += added ? '<div class="chip gray" style="margin-top:12px">Уже в вашем списке</div>' : `<button type="button" class="btn wide" data-act="dadd" data-id="${esc(it.id)}">Хочу посмотреть</button><button type="button" class="btn wide ghost" data-act="dlib" data-id="${esc(it.id)}">Уже смотрел: в библиотеку</button>`;
   html += '<div id="d_msg" class="meta" role="status"></div>';
   if (!added && !has) html += '<p class="meta">Чтобы добавить, сохраните токен GitHub на странице «Добавить сериал».</p>';
   return html;
 }
-async function discoverAdd(id) {
+async function discoverAdd(id, lib) {
   const it = DISC.items.find((x) => x.id === id); if (!it) return;
   const msg = document.getElementById('d_msg');
   if (!lsGet('gh_token')) { if (msg) msg.innerHTML = '<span class="warn">Нужен токен GitHub: «Добавить сериал» → токен.</span>'; return; }
@@ -730,15 +730,19 @@ async function discoverAdd(id) {
     if (it.kind === 'film') {
       MOVIES = await ghEdit('movies.json', (d) => {
         if (d.items.some((x) => x.title.toLowerCase() === it.title.toLowerCase())) return;
-        const m = { id: `${slugify(it.title)}-${Date.now().toString(36).slice(-4)}`, title: it.title, service: it.service || 'Твоё', status: 'want', added: todayStr() };
-        if (it.date) m.date = it.date; if (it.note) m.note = it.note; d.items.push(m);
-      }, `Фильмы: «${it.title}» из премьер`);
+        const m = { id: `${slugify(it.title)}-${Date.now().toString(36).slice(-4)}`, title: it.title, service: it.service || 'Твоё', status: lib ? 'watched' : 'want', added: todayStr() };
+        if (!lib) { if (it.date) m.date = it.date; if (it.note) m.note = it.note; }
+        d.items.push(m);
+      }, lib ? `Фильмы: «${it.title}» в библиотеку` : `Фильмы: «${it.title}» из премьер`);
     } else {
       DATA = await ghEdit('series.json', (d) => {
         if (d.series.some((x) => x.title.toLowerCase() === it.title.toLowerCase())) return;
-        const x = { id: slugify(it.title), title: it.title, service: it.service || null, status: it.date || it.when ? 'waiting' : 'nodate', mine: 'want', added: todayStr() };
-        if (it.when || it.date) x.when = it.when || longDate(it.date); if (it.note) x.note = it.note; d.series.push(x);
-      }, `Сериалы: «${it.title}» из премьер`);
+        const x = lib
+          ? { id: slugify(it.title), title: it.title, service: null, status: 'ended', mine: 'done', seen_season: 1, added: todayStr() }
+          : { id: slugify(it.title), title: it.title, service: it.service || null, status: it.date || it.when ? 'waiting' : 'nodate', mine: 'want', added: todayStr() };
+        if (!lib) { if (it.when || it.date) x.when = it.when || longDate(it.date); if (it.note) x.note = it.note; }
+        d.series.push(x);
+      }, lib ? `Сериалы: «${it.title}» в библиотеку` : `Сериалы: «${it.title}» из премьер`);
     }
     render();
   } catch (err) { if (msg) msg.innerHTML = `<span class="warn">${esc(err.message || err)}</span>`; }
@@ -896,6 +900,7 @@ document.addEventListener('click', (ev) => {
   if (a.dataset.act === 'mset' || a.dataset.act === 'mdel') movieAct(a.dataset.act, a.dataset.id, a.dataset.val);
   if (a.dataset.act === 'delsub') delSub(a.dataset.id);
   if (a.dataset.act === 'dadd') discoverAdd(a.dataset.id);
+  if (a.dataset.act === 'dlib') discoverAdd(a.dataset.id, true);
   if (a.dataset.act === 'setmine') setMine(a.dataset.id, a.dataset.val);
   if (a.dataset.act === 'deltoken') { lsSet('gh_token', ''); render(); }
 });
