@@ -205,7 +205,7 @@ let sq = '';
 const searchBox = () => `<input class="inp sbox" id="sq" type="search" placeholder="Поиск по названию" value="${esc(sq)}" autocomplete="off">`;
 let sqOpen = false;
 const LOUPE = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>';
-const topBar = (t) => `<div class="hrow"><h1>${t}</h1><button type="button" class="addbtn" data-sqtoggle="1" aria-label="Поиск">${LOUPE}</button></div>` + (sqOpen || sq ? searchBox() : '');
+const topBar = (t) => `<div class="hrow"><h1>${t}</h1></div>`;
 const hit = (t) => !sq || (t || '').toLowerCase().includes(sq.toLowerCase().trim());
 const chipRow = (arr, cur, attr) => '<div class="chips">' + arr.filter(([k]) => k !== 'all').map(([k, l]) => `<button type="button" class="fbtn ${cur === k ? 'on' : ''}" ${attr}="${k}">${l}</button>`).join('') + '</div>';
 function viewList(mode) {
