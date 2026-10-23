@@ -182,6 +182,279 @@
       "status": "watched",
       "poster_query": "Now You See Me 2",
       "added": "2026-10-23"
+    },
+    {
+      "id": "mcu-iron-man",
+      "title": "Железный человек",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "Iron Man",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "mcu-the-incredible-hulk",
+      "title": "Невероятный Халк",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "The Incredible Hulk",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "mcu-iron-man-2",
+      "title": "Железный человек 2",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "Iron Man 2",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "mcu-thor-2011",
+      "title": "Тор",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "Thor 2011",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "mcu-captain-america-the-first-avenger",
+      "title": "Первый мститель",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "Captain America: The First Avenger",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "mcu-the-avengers-2012",
+      "title": "Мстители",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "The Avengers 2012",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "mcu-iron-man-3",
+      "title": "Железный человек 3",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "Iron Man 3",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "mcu-thor-the-dark-world",
+      "title": "Тор 2: Царство тьмы",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "Thor: The Dark World",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "mcu-captain-america-the-winter-soldier",
+      "title": "Первый мститель: Другая война",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "Captain America: The Winter Soldier",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "mcu-guardians-of-the-galaxy",
+      "title": "Стражи Галактики",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "Guardians of the Galaxy",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "mcu-avengers-age-of-ultron",
+      "title": "Мстители: Эра Альтрона",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "Avengers: Age of Ultron",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "mcu-ant-man",
+      "title": "Человек-муравей",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "Ant-Man",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "mcu-captain-america-civil-war",
+      "title": "Первый мститель: Противостояние",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "Captain America: Civil War",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "mcu-doctor-strange",
+      "title": "Доктор Стрэндж",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "Doctor Strange",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "mcu-guardians-of-the-galaxy-vol-2",
+      "title": "Стражи Галактики 2",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "Guardians of the Galaxy Vol. 2",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "mcu-spider-man-homecoming",
+      "title": "Человек-паук: Возвращение домой",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "Spider-Man: Homecoming",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "mcu-thor-ragnarok",
+      "title": "Тор: Рагнарёк",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "Thor: Ragnarok",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "mcu-black-panther",
+      "title": "Чёрная пантера",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "Black Panther",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "mcu-avengers-infinity-war",
+      "title": "Мстители: Война бесконечности",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "Avengers: Infinity War",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "mcu-ant-man-and-the-wasp",
+      "title": "Человек-муравей и Оса",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "Ant-Man and the Wasp",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "mcu-captain-marvel",
+      "title": "Капитан Марвел",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "Captain Marvel",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "mcu-avengers-endgame",
+      "title": "Мстители: Финал",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "Avengers: Endgame",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "mcu-spider-man-far-from-home",
+      "title": "Человек-паук: Вдали от дома",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "Spider-Man: Far From Home",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "mcu-shang-chi-and-the-legend-of-the-ten-rings",
+      "title": "Шан-Чи и легенда десяти колец",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "Shang-Chi and the Legend of the Ten Rings",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "mcu-spider-man-no-way-home",
+      "title": "Человек-паук: Нет пути домой",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "Spider-Man: No Way Home",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "mcu-thor-love-and-thunder",
+      "title": "Тор: Любовь и гром",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "Thor: Love and Thunder",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "mcu-black-panther-wakanda-forever",
+      "title": "Чёрная пантера: Ваканда навеки",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "Black Panther: Wakanda Forever",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "mcu-guardians-of-the-galaxy-vol-3",
+      "title": "Стражи Галактики 3",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "Guardians of the Galaxy Vol. 3",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "mcu-the-fantastic-four-first-steps",
+      "title": "Фантастическая четвёрка: Первые шаги",
+      "service": "Твоё",
+      "status": "watched",
+      "poster_query": "The Fantastic Four: First Steps",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "mcu-doctor-strange-in-the-multiverse-of-madness",
+      "title": "Доктор Стрэндж: В мультивселенной безумия",
+      "service": "Твоё",
+      "status": "want",
+      "poster_query": "Doctor Strange in the Multiverse of Madness",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "mcu-ant-man-and-the-wasp-quantumania",
+      "title": "Человек-муравей и Оса: Квантомания",
+      "service": "Твоё",
+      "status": "want",
+      "poster_query": "Ant-Man and the Wasp: Quantumania",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "mcu-deadpool-wolverine",
+      "title": "Дэдпул и Росомаха",
+      "service": "Твоё",
+      "status": "want",
+      "poster_query": "Deadpool & Wolverine",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "mcu-captain-america-brave-new-world",
+      "title": "Капитан Америка: Дивный новый мир",
+      "service": "Твоё",
+      "status": "want",
+      "poster_query": "Captain America: Brave New World",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "mcu-spider-man-brand-new-day",
+      "title": "Человек-паук: Новый день",
+      "service": "Твоё",
+      "status": "want",
+      "poster_query": "Spider-Man: Brand New Day",
+      "added": "2026-10-23",
+      "date": "2026-07-31"
     }
   ]
 }

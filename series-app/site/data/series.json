@@ -654,6 +654,26 @@
       "seen_season": 1,
       "poster_query": "Gomorrah",
       "added": "2026-10-23"
+    },
+    {
+      "id": "mcu-ironheart",
+      "title": "Железное сердце",
+      "service": "Твоё",
+      "status": "ended",
+      "mine": "want",
+      "poster_query": "Ironheart",
+      "added": "2026-10-23"
+    },
+    {
+      "id": "mcu-visionquest",
+      "title": "ВижнКвест",
+      "service": "Твоё",
+      "status": "waiting",
+      "when": "конец 2026",
+      "mine": "want",
+      "poster_query": "VisionQuest",
+      "added": "2026-10-23",
+      "note": "Сериал Disney+ по Marvel. Дата приблизительная (Den of Geek)."
     }
   ]
 }
