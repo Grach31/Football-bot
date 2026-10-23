@@ -118,6 +118,9 @@ function viewWeek() {
   const wait = DATA.series.filter((s) => s.status === 'waiting');
   if (wait.length) html += `<h2 class="hd">Ждём новые сезоны</h2><div class="hrow2">${wait.map((s) => pcard(s, today)).join('')}</div>`;
 
+  const soonMovies = MOVIES.items.filter((m) => m.status !== 'watched' && m.date && m.date >= today).sort((a, b) => (a.date < b.date ? -1 : 1));
+  if (soonMovies.length) html += `<h2 class="hd">Фильмы скоро</h2><div class="hrow2">${soonMovies.map((m) => `<a class="pcard" href="#/m/${esc(m.id)}">${poster(m)}<div class="bds"><span class="bl">${esc(movieBadge(m, today))}</span></div></a>`).join('')}</div>`;
+
   const byDate = {};
   DATA.series.forEach((s) => eps(s).forEach((e) => {
     if (e.date >= today && e.date <= end) (byDate[e.date] = byDate[e.date] || []).push({ s, e });
