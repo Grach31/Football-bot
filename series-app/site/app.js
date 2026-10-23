@@ -26,7 +26,7 @@ let DATA = { updated: '', series: [] };
 let CONFIG = {};
 let SUBS = { updated: '', items: [] };
 let MOVIES = { updated: '', items: [] };
-let mfilter = 'all';
+let mfilter = 'want';
 let confirmDel = '';
 let filter = 'all';
 let sfilter = 'all';
@@ -779,7 +779,7 @@ function render() {
   const h = location.hash === '#/posters' ? '#/list' : (location.hash || '#/week');
   const parts = h.replace(/^#\//, '').split('/');
   let page = parts[0] || 'week';
-  if (page !== lastPage) { sq = ''; sqOpen = false; lastPage = page; }
+  if (page !== lastPage) { sq = ''; sqOpen = false; if (page === 'movies') mfilter = 'want'; lastPage = page; }
   let html;
   if (page === 'subs' || page === 'notify') { stab = page; page = 'settings'; }
   if (page === 'list') html = viewList('list');
