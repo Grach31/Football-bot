@@ -961,7 +961,7 @@ document.addEventListener('click', (ev) => {
 });
 window.addEventListener('hashchange', render);
 
-async function boot() {
+async function boot(manual) {
   try {
     const [d, c] = await Promise.all([
       fetch('data/series.json', { cache: 'no-cache' }).then((r) => r.json()),
@@ -974,7 +974,7 @@ async function boot() {
     // сайт обновляется через пару минут после правки; пока он не пересобрался, берём свежие данные прямо из репозитория
     try {
       const last = Number(lsGet('gh_last_edit') || 0), token = lsGet('gh_token');
-      if (token && Date.now() - last < 15 * 60 * 1000) {
+      if (token && (manual || Date.now() - last < 15 * 60 * 1000)) {
         const R = CONFIG.repo;
         const fresh = async (file) => {
           const r = await fetch(`https://api.github.com/repos/${R.owner}/${R.name}/contents/${R.path.replace('series.json', file)}?ref=${R.branch}`, { headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json' }, cache: 'no-store' });
@@ -988,10 +988,12 @@ async function boot() {
       }
     } catch (e) {}
   } catch (err) {
+    if (manual) return false;
     $app.innerHTML = '<h1>Сериалы</h1><p class="empty">Не удалось загрузить данные. Проверьте интернет и откройте приложение ещё раз.</p>';
     return;
   }
   render();
+  return true;
 }
 if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
 boot();
@@ -1024,4 +1026,31 @@ document.addEventListener('click', (ev) => {
     $app.classList.add(dx < 0 ? 'slideL' : 'slideR');
     location.hash = navList[j];
   }, { passive: true });
+}
+
+/* ---------- потяни вниз, чтобы обновить ---------- */
+{
+  const ind = document.createElement('div');
+  ind.id = 'ptr'; ind.textContent = '↓'; document.body.appendChild(ind);
+  let y0 = 0, pull = 0, on = false, busy = false;
+  const set = (h, txt) => { ind.style.transform = `translate(-50%, ${h - 44}px)`; ind.style.opacity = Math.min(1, h / 50); if (txt) ind.textContent = txt; };
+  document.addEventListener('touchstart', (e) => {
+    on = !busy && window.scrollY <= 0 && e.touches.length === 1 && !e.target.closest('input, textarea, select');
+    y0 = e.touches[0].clientY; pull = 0;
+  }, { passive: true });
+  document.addEventListener('touchmove', (e) => {
+    if (!on) return;
+    const dy = e.touches[0].clientY - y0;
+    if (dy <= 0 || window.scrollY > 0) { pull = 0; set(0); return; }
+    pull = Math.min(dy * 0.5, 80);
+    ind.classList.remove('spin'); set(pull, pull >= 60 ? '↑ отпусти' : '↓');
+  }, { passive: true });
+  document.addEventListener('touchend', async () => {
+    if (!on) return; on = false;
+    if (pull < 60) { ind.style.transition = 'transform .2s, opacity .2s'; set(0); setTimeout(() => (ind.style.transition = ''), 250); return; }
+    busy = true; ind.classList.add('spin'); ind.textContent = '⟳'; set(50);
+    const ok = await boot(true);
+    ind.classList.remove('spin'); ind.textContent = ok ? '✓' : '✕'; await new Promise((r) => setTimeout(r, 600));
+    ind.style.transition = 'transform .2s, opacity .2s'; set(0); setTimeout(() => (ind.style.transition = ''), 250); busy = false;
+  });
 }
