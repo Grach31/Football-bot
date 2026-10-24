@@ -255,3 +255,7 @@ h1 { font-family: 'Bricolage Grotesque', 'Onest', sans-serif; font-weight: 800; 
 @keyframes inR { from { opacity: 0; transform: translateX(-28px); } to { opacity: 1; transform: none; } }
 #app.slideL { animation: inL .22s ease-out; }
 #app.slideR { animation: inR .22s ease-out; }
+/* кнопка «серия просмотрена» в правом нижнем углу постера */
+.seenbtn { position: absolute; right: 10px; bottom: 10px; z-index: 3; width: 40px; height: 40px; border-radius: 50%; border: 1.5px solid rgba(255,255,255,.75); background: rgba(0,0,0,.55); color: #fff; display: flex; align-items: center; justify-content: center; padding: 0; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+.seenbtn.on { background: var(--accent); border-color: var(--accent); color: #111; }
+.pcard.hasbtn .poster .ptitle { right: 58px; }

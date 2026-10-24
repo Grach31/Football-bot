@@ -55,15 +55,29 @@ function hash(str) { let h = 0; for (const ch of str) h = (h * 31 + ch.codePoint
 const eps = (s) => s.episodes || [];
 const unit = (s) => s.unit || 'серия';
 const nextEp = (s, today) => eps(s).find((e) => e.date >= today) || null;
+// серия считается вышедшей: дата прошла, а если в день выхода указано время, то оно наступило
+const nowHM = () => { const d = new Date(); return String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0'); };
+const epAired = (e, today) => e.date < today || (e.date === today && (!e.time || e.time <= nowHM()));
+const nextUnaired = (s, today) => eps(s).find((e) => !epAired(e, today)) || null;
 // недавно вышедшая серия: держим сериал заметным, пока не выйдет следующая (до 13 дней)
 function lastOut(s, today) {
-  const past = eps(s).filter((e) => e.date < today);
+  const past = eps(s).filter((e) => epAired(e, today));
   if (!past.length) return null;
   const e = past[past.length - 1];
   const days = Math.round((d0(today) - d0(e.date)) / 86400000);
   return days <= 13 ? { e, days } : null;
 }
-const outLabel = (days) => (days === 1 ? 'Вышла вчера' : days === 2 ? 'Вышла позавчера' : `Вышла ${days} дн. назад`);
+const outLabel = (days) => (days === 0 ? 'Вышла сегодня' : days === 1 ? 'Вышла вчера' : days === 2 ? 'Вышла позавчера' : `Вышла ${days} дн. назад`);
+// отметка «посмотрел» последнюю вышедшую серию (хранится в series.json: seen_ep и seen_ep_season)
+const seenEp = (s) => (s.seen_ep && s.seen_ep_season === (s.season || 1) ? s.seen_ep : 0);
+// new — вышла серия, которую не отметили; wait — отметили, ждём следующую; soon — ещё ничего не вышло
+function airState(s, today) {
+  if (s.status !== 'airing') return null;
+  const lo = lastOut(s, today), nu = nextUnaired(s, today);
+  if (!lo) return nu ? 'soon' : null;
+  if (seenEp(s) < lo.e.n) return 'new';
+  return nu ? 'wait' : null;
+}
 
 function tile(s, small) {
   const kind = s.status === 'waiting' ? 'blue' : (s.status === 'nodate' || s.status === 'ended') ? 'gray' : '';
@@ -78,23 +92,27 @@ function poster(s) {
 const palOf = (s) => PAL[hash(s.title) % PAL.length];
 function badgeFor(s, today) {
   if (s.status === 'airing') {
-    const n = nextEp(s, today);
+    const nu = nextUnaired(s, today);
     const lo = lastOut(s, today);
-    if (lo && !(n && n.date === today)) {
-      const num = `${lo.e.n}${s.total ? '/' + s.total : ''}`;
-      return [num, outLabel(lo.days)];
-    }
-    const num = n ? `${n.n}${s.total ? '/' + s.total : ''}` : (s.total ? `${s.total}` : '');
-    const when = n ? (n.date === today ? 'Сегодня' : n.date === addDays(today, 1) ? 'Завтра' : shortDate(n.date)) : 'Уточняется';
+    const st = airState(s, today);
+    const fmt = (e) => `${e.n}${s.total ? '/' + s.total : ''}`;
+    if (lo && st === 'new' && !(nu && nu.date === today)) return [fmt(lo.e), outLabel(lo.days)];
+    if (lo && st === 'new') return [fmt(lo.e), outLabel(lo.days)];
+    const n = nu;
+    const num = n ? fmt(n) : (s.total ? `${s.total}` : '');
+    const when = n ? (n.date === today ? 'Сегодня' + (n.time ? ' ' + n.time : '') : n.date === addDays(today, 1) ? 'Завтра' : shortDate(n.date)) : 'Уточняется';
     return [num, when];
   }
   if (s.status === 'waiting') return ['', s.when || 'Ждём'];
   if (s.status === 'nodate') return ['', 'Нет даты'];
   return ['', 'Завершён'];
 }
-function pcard(s, today) {
+function pcard(s, today, withBtn) {
   const [num, when] = badgeFor(s, today);
-  return `<a class="pcard" href="#/s/${esc(s.id)}">${poster(s)}<div class="bds">${num ? `<span class="bd">${esc(num)}</span>` : ''}<span class="bl">${esc(when)}</span></div></a>`;
+  const st = withBtn ? airState(s, today) : null;
+  const btn = st === 'new' ? `<button type="button" class="seenbtn" data-act="seen" data-id="${esc(s.id)}" aria-label="Отметить, что серия просмотрена"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.500"/></svg></button>`
+    : st === 'wait' ? `<button type="button" class="seenbtn on" data-act="unseen" data-id="${esc(s.id)}" aria-label="Вернуть: серия не просмотрена"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.500"/></svg></button>` : '';
+  return `<a class="pcard${btn ? ' hasbtn' : ''}" href="#/s/${esc(s.id)}">${poster(s)}<div class="bds">${num ? `<span class="bd">${esc(num)}</span>` : ''}<span class="bl">${esc(when)}</span></div>${btn}</a>`;
 }
 function chipFor(s, today) {
   if (s.status === 'airing') {
@@ -158,22 +176,18 @@ function calHtml(today) {
 function viewWeek() {
   const today = todayStr();
   const end = addDays(today, 13);
-  const airing = DATA.series.filter((s) => s.status === 'airing' && (nextEp(s, today) || lastOut(s, today)))
-    .sort((a, b) => {
-      const la = lastOut(a, today), lb = lastOut(b, today);
-      const ta = nextEp(a, today) && nextEp(a, today).date === today;
-      const tb = nextEp(b, today) && nextEp(b, today).date === today;
-      const ra = la && !ta ? 0 : 1, rb = lb && !tb ? 0 : 1;
-      if (ra !== rb) return ra - rb;                       // сначала те, где серия уже вышла
-      if (ra === 0) return la.days - lb.days;              // самые свежие выше
-      const da = nextEp(a, today) ? nextEp(a, today).date : '9999', db = nextEp(b, today) ? nextEp(b, today).date : '9999';
-      return da < db ? -1 : da > db ? 1 : 0;
-    });
+  const states = DATA.series.map((s) => ({ s, st: airState(s, today) }));
+  const lastDays = (s) => { const l = lastOut(s, today); return l ? l.days : 99; };
+  const topRow = states.filter((x) => x.st === 'new' || x.st === 'soon')
+    .sort((a, b) => (a.st === b.st ? (a.st === 'new' ? lastDays(a.s) - lastDays(b.s) : ((nextUnaired(a.s, today) || {}).date || '9999') < ((nextUnaired(b.s, today) || {}).date || '9999') ? -1 : 1) : a.st === 'new' ? -1 : 1)).map((x) => x.s);
+  const waitRow = states.filter((x) => x.st === 'wait')
+    .sort((a, b) => (((nextUnaired(a.s, today) || {}).date || '9999') < ((nextUnaired(b.s, today) || {}).date || '9999') ? -1 : 1)).map((x) => x.s);
   let html = `<div class="brand"><svg width="22" height="22" viewBox="0 0 24 24" fill="#8CC4FF" aria-hidden="true"><path d="M7 4.5v15l12-7.5z"/></svg>Grach films<a class="gear" href="#/settings" aria-label="Настройки"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></a></div>`;
   // главная картинка: каждый день новый образ
   const day = Math.floor(d0(today).getTime() / 86400000);
   html += `<div class="avhero"><img src="${esc(HERO[day % HERO.length])}" alt=""></div>`;
-  if (airing.length) html += `<h2 class="hd">Выходят сейчас</h2><div class="hrow2">${airing.map((s) => pcard(s, today)).join('')}</div>`;
+  if (topRow.length) html += `<h2 class="hd">Выходят сейчас</h2><div class="hrow2">${topRow.map((s) => pcard(s, today, true)).join('')}</div>`;
+  if (waitRow.length) html += `<h2 class="hd">Жду следующую серию</h2><div class="hrow2">${waitRow.map((s) => pcard(s, today, true)).join('')}</div>`;
   const wait = DATA.series.filter((s) => sState(s, today) === 'soon').sort((a, b) => { const x = nextEp(a, today), y = nextEp(b, today); return (x ? x.date : '9999') < (y ? y.date : '9999') ? -1 : 1; });
   if (wait.length) html += `<h2 class="hd">Сериалы скоро</h2><div class="hrow2">${wait.map((s) => pcard(s, today)).join('')}</div>`;
 
@@ -246,6 +260,22 @@ function effMine(s) {
     return 'done';
   }
   return s.mine || '';
+}
+async function markSeen(id, seen) {
+  const today = todayStr();
+  const sr = DATA.series.find((y) => y.id === id); if (!sr) return;
+  const lo = lastOut(sr, today); if (!lo) return;
+  if (!lsGet('gh_token')) { alert('Чтобы отмечать серии, нужен токен GitHub: «Настройки» (шестерёнка на главной) → «Токен».'); return; }
+  const season = sr.season || 1, n = lo.e.n, prev = { ep: sr.seen_ep, season: sr.seen_ep_season };
+  const apply = (x) => { if (seen) { x.seen_ep = n; x.seen_ep_season = season; } else if (n > 1) { x.seen_ep = n - 1; x.seen_ep_season = season; } else { delete x.seen_ep; delete x.seen_ep_season; } };
+  apply(sr); const y = window.scrollY; render(); window.scrollTo(0, y); // сразу показываем результат
+  try {
+    DATA = await ghEdit('series.json', (d) => { const x = d.series.find((z) => z.id === id); if (x) apply(x); }, seen ? `Сериалы: «${sr.title}» серия ${n} просмотрена` : `Сериалы: «${sr.title}» серия ${n} снова не просмотрена`);
+    render(); window.scrollTo(0, y);
+  } catch (err) {
+    if (prev.ep) { sr.seen_ep = prev.ep; sr.seen_ep_season = prev.season; } else { delete sr.seen_ep; delete sr.seen_ep_season; }
+    render(); alert(err.message || String(err));
+  }
 }
 async function setMine(id, val) {
   const msg = document.getElementById('s_msg'); if (msg) msg.textContent = 'Сохраняю…';
@@ -925,6 +955,7 @@ document.addEventListener('click', (ev) => {
   if (a.dataset.act === 'dadd') discoverAdd(a.dataset.id);
   if (a.dataset.act === 'dlib') discoverAdd(a.dataset.id, true);
   if (a.dataset.act === 'setmine') setMine(a.dataset.id, a.dataset.val);
+  if (a.dataset.act === 'seen' || a.dataset.act === 'unseen') { ev.preventDefault(); ev.stopPropagation(); markSeen(a.dataset.id, a.dataset.act === 'seen'); }
   if (a.dataset.act === 'deltoken') { lsSet('gh_token', ''); render(); }
 });
 window.addEventListener('hashchange', render);
