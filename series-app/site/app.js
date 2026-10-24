@@ -614,6 +614,7 @@ async function ghEdit(file, mutate, message) {
     const p = await fetch(url, { method: 'PUT', headers: { ...h, 'Content-Type': 'application/json' }, body: JSON.stringify({ message, content: u8ToB64(JSON.stringify(data, null, 2) + '\n'), sha: f.sha, branch: R.branch }) });
     if (p.status === 409 && attempt === 0) continue;
     if (!p.ok) throw new Error(`Не удалось сохранить (${p.status})`);
+    lsSet('gh_last_edit', String(Date.now()));
     return data;
   }
 }
@@ -970,6 +971,22 @@ async function boot() {
     try { SUBS = await fetch('data/subscriptions.json', { cache: 'no-cache' }).then((r) => r.json()); } catch (e) {}
     try { DISC = await fetch('data/discover.json', { cache: 'no-cache' }).then((r) => r.json()); } catch (e) {}
     try { MOVIES = await fetch('data/movies.json', { cache: 'no-cache' }).then((r) => r.json()); } catch (e) {}
+    // сайт обновляется через пару минут после правки; пока он не пересобрался, берём свежие данные прямо из репозитория
+    try {
+      const last = Number(lsGet('gh_last_edit') || 0), token = lsGet('gh_token');
+      if (token && Date.now() - last < 15 * 60 * 1000) {
+        const R = CONFIG.repo;
+        const fresh = async (file) => {
+          const r = await fetch(`https://api.github.com/repos/${R.owner}/${R.name}/contents/${R.path.replace('series.json', file)}?ref=${R.branch}`, { headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json' }, cache: 'no-store' });
+          if (!r.ok) throw new Error(r.status);
+          return JSON.parse(b64ToStr((await r.json()).content));
+        };
+        const [a, m, u] = await Promise.all([fresh('series.json').catch(() => null), fresh('movies.json').catch(() => null), fresh('subscriptions.json').catch(() => null)]);
+        // постеры и рейтинги подставляются при сборке сайта и в репозитории их нет: переносим из загруженной версии
+        const keep = (fresh, old, key) => { const map = new Map((old[key] || []).map((x) => [x.id, x])); (fresh[key] || []).forEach((x) => { const o = map.get(x.id); if (o) { if (o.poster && !x.poster) x.poster = o.poster; if (o.rating && !x.rating) x.rating = o.rating; } }); return fresh; };
+        if (a) DATA = keep(a, DATA, 'series'); if (m) MOVIES = keep(m, MOVIES, 'items'); if (u) SUBS = u;
+      }
+    } catch (e) {}
   } catch (err) {
     $app.innerHTML = '<h1>Сериалы</h1><p class="empty">Не удалось загрузить данные. Проверьте интернет и откройте приложение ещё раз.</p>';
     return;
