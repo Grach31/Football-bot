@@ -55,6 +55,15 @@ function hash(str) { let h = 0; for (const ch of str) h = (h * 31 + ch.codePoint
 const eps = (s) => s.episodes || [];
 const unit = (s) => s.unit || 'серия';
 const nextEp = (s, today) => eps(s).find((e) => e.date >= today) || null;
+// недавно вышедшая серия: держим сериал заметным, пока не выйдет следующая (до 13 дней)
+function lastOut(s, today) {
+  const past = eps(s).filter((e) => e.date < today);
+  if (!past.length) return null;
+  const e = past[past.length - 1];
+  const days = Math.round((d0(today) - d0(e.date)) / 86400000);
+  return days <= 13 ? { e, days } : null;
+}
+const outLabel = (days) => (days === 1 ? 'Вышла вчера' : days === 2 ? 'Вышла позавчера' : `Вышла ${days} дн. назад`);
 
 function tile(s, small) {
   const kind = s.status === 'waiting' ? 'blue' : (s.status === 'nodate' || s.status === 'ended') ? 'gray' : '';
@@ -70,6 +79,11 @@ const palOf = (s) => PAL[hash(s.title) % PAL.length];
 function badgeFor(s, today) {
   if (s.status === 'airing') {
     const n = nextEp(s, today);
+    const lo = lastOut(s, today);
+    if (lo && !(n && n.date === today)) {
+      const num = `${lo.e.n}${s.total ? '/' + s.total : ''}`;
+      return [num, outLabel(lo.days)];
+    }
     const num = n ? `${n.n}${s.total ? '/' + s.total : ''}` : (s.total ? `${s.total}` : '');
     const when = n ? (n.date === today ? 'Сегодня' : n.date === addDays(today, 1) ? 'Завтра' : shortDate(n.date)) : 'Уточняется';
     return [num, when];
@@ -144,8 +158,17 @@ function calHtml(today) {
 function viewWeek() {
   const today = todayStr();
   const end = addDays(today, 13);
-  const airing = DATA.series.filter((s) => s.status === 'airing' && nextEp(s, today))
-    .sort((a, b) => (nextEp(a, today).date < nextEp(b, today).date ? -1 : 1));
+  const airing = DATA.series.filter((s) => s.status === 'airing' && (nextEp(s, today) || lastOut(s, today)))
+    .sort((a, b) => {
+      const la = lastOut(a, today), lb = lastOut(b, today);
+      const ta = nextEp(a, today) && nextEp(a, today).date === today;
+      const tb = nextEp(b, today) && nextEp(b, today).date === today;
+      const ra = la && !ta ? 0 : 1, rb = lb && !tb ? 0 : 1;
+      if (ra !== rb) return ra - rb;                       // сначала те, где серия уже вышла
+      if (ra === 0) return la.days - lb.days;              // самые свежие выше
+      const da = nextEp(a, today) ? nextEp(a, today).date : '9999', db = nextEp(b, today) ? nextEp(b, today).date : '9999';
+      return da < db ? -1 : da > db ? 1 : 0;
+    });
   let html = `<div class="brand"><svg width="22" height="22" viewBox="0 0 24 24" fill="#8CC4FF" aria-hidden="true"><path d="M7 4.5v15l12-7.5z"/></svg>Grach films<a class="gear" href="#/settings" aria-label="Настройки"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></a></div>`;
   // главная картинка: каждый день новый образ
   const day = Math.floor(d0(today).getTime() / 86400000);
@@ -182,7 +205,7 @@ function viewWeek() {
       });
       html += '</div>';
     });
-    const pending = DATA.series.filter((s) => s.status === 'airing' && !nextEp(s, today));
+    const pending = DATA.series.filter((s) => s.status === 'airing' && !nextEp(s, today) && !lastOut(s, today));
     if (pending.length) {
       html += '<div class="row-head"><b>График уточняется</b></div><div class="stack">';
       pending.forEach((s) => {
