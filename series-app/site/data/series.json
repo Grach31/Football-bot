@@ -201,7 +201,9 @@
         }
       ],
       "note": "Даты по графику Paramount+, выход по пятницам. На российских сервисах серия может появиться позже.",
-      "mine": "watching"
+      "mine": "watching",
+      "seen_ep": 6,
+      "seen_ep_season": 2
     },
     {
       "id": "zvezdy-v-dzhunglyah",
