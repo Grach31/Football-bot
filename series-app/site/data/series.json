@@ -96,7 +96,9 @@
       ],
       "note": "Шесть серий по Стругацким. Площадка в источниках не указана.",
       "poster": "custom/polden.jpg",
-      "mine": "watching"
+      "mine": "watching",
+      "seen_ep": 5,
+      "seen_ep_season": 1
     },
     {
       "id": "korol-talsy",
