@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-23",
+  "updated": "2026-10-24",
   "series": [
     {
       "id": "sedmoy-igrok",
@@ -785,7 +785,9 @@
       "mine": "done",
       "seen_season": 3,
       "added": "2026-10-23",
-      "total": 10
+      "total": 10,
+      "seen_ep": 2,
+      "seen_ep_season": 3
     },
     {
       "id": "furiya",
