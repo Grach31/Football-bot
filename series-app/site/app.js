@@ -944,8 +944,8 @@ function jfBase() { return lsGet('jf_url').replace(/\/+$/, ''); }
 function jfWatch(title) {
   const b = jfBase();
   if (!title) return '';
-  if (!b) return '<a class="btn watch" href="#/jf">Смотреть в моём</a><span class="meta"> сначала укажите адрес сервера</span>';
-  return `<a class="btn watch" href="${esc(b + '/web/#/search?query=' + encodeURIComponent(title))}" target="_blank" rel="noopener">Смотреть в моём</a>`;
+  if (!b) return '<a class="btn watch" href="#/jf">Смотреть</a><span class="meta"> сначала укажите адрес сервера</span>';
+  return `<a class="btn watch" href="${esc(b + '/web/#/search?query=' + encodeURIComponent(title))}" target="_blank" rel="noopener">Смотреть</a>`;
 }
 function jellyfinPanel() {
   const cur = jfBase();
