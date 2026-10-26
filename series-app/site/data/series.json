@@ -836,6 +836,15 @@
       "mine": "done",
       "seen_season": 1,
       "added": "2026-10-26"
+    },
+    {
+      "id": "igra-v-kalmara",
+      "title": "Игра в кальмара",
+      "service": null,
+      "status": "ended",
+      "mine": "done",
+      "seen_season": 1,
+      "added": "2026-10-26"
     }
   ]
 }
