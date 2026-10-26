@@ -22,7 +22,7 @@ const HERO = ['avatars/fallout.jpg', 'avatars/got.jpg', 'avatars/gangster.jpg', 
 { const i = new Image(); i.src = HERO[Math.floor(Date.parse(new Date().toISOString().slice(0, 10)) / 86400000) % HERO.length]; } // загрузка образа дня заранее
 let DISC = { updated: '', items: [] };
 let POOL = { updated: '', items: [] };
-let rnd = null, rndDeck = [];
+let rnd = null;
 let dfilter = 'all';
 let DATA = { updated: '', series: [] };
 let CONFIG = {};
@@ -763,21 +763,57 @@ function viewDiscover() {
   return html;
 }
 const DICE = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="4"/><circle cx="8.5" cy="8.5" r=".9" fill="currentColor"/><circle cx="15.5" cy="8.5" r=".9" fill="currentColor"/><circle cx="12" cy="12" r=".9" fill="currentColor"/><circle cx="8.5" cy="15.5" r=".9" fill="currentColor"/><circle cx="15.5" cy="15.5" r=".9" fill="currentColor"/></svg>';
-/* ---------- случайный выбор: «нечего смотреть» ---------- */
-function rndPick() {
-  const free = (it) => !inCollection(it);
-  rndDeck = rndDeck.filter((id) => { const it = POOL.items.find((x) => x.id === id); return it && free(it) && (!rnd || id !== rnd.id); });
-  if (!rndDeck.length) {
-    rndDeck = POOL.items.filter(free).filter((x) => !rnd || x.id !== rnd.id).map((x) => x.id);
-    for (let i = rndDeck.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [rndDeck[i], rndDeck[j]] = [rndDeck[j], rndDeck[i]]; }
-  }
-  const id = rndDeck.shift();
-  rnd = POOL.items.find((x) => x.id === id) || null;
+/* ---------- случайный выбор: «нечего смотреть», бесконечная лента из TMDB ---------- */
+// Ключ TMDB (только чтение) хранится на телефоне, в код и репозиторий не попадает.
+const tmdbKey = () => lsGet('tmdb_key');
+const TG = { 28: 'боевик', 12: 'приключения', 16: 'мультфильм', 35: 'комедия', 80: 'криминал', 18: 'драма', 10751: 'семейный', 14: 'фэнтези', 36: 'история', 27: 'ужасы', 10402: 'музыка', 9648: 'детектив', 10749: 'мелодрама', 878: 'фантастика', 53: 'триллер', 10752: 'военный', 37: 'вестерн', 10759: 'боевик и приключения', 10765: 'фантастика и фэнтези', 10768: 'война и политика' };
+let rndBuf = [], rndBusy = null, rndLoading = false, rndMax = {}, rndKind = 0, rndErr = '';
+const rndCache = new Map();
+let rndSeen = new Set(); try { rndSeen = new Set(JSON.parse(lsGet('rnd_seen') || '[]')); } catch (e) {}
+const rndMark = (id) => { rndSeen.add(id); lsSet('rnd_seen', JSON.stringify([...rndSeen].slice(-400))); };
+const rndOk = (it) => it && !rndSeen.has(it.id) && !inCollection(it);
+async function tmdbBatch(kind) {
+  const tv = kind === 'series', t = tv ? 'tv' : 'movie';
+  const max = rndMax[t] || 1;
+  const page = 1 + Math.floor(Math.random() * Math.min(max, 40));
+  const url = `https://api.themoviedb.org/3/discover/${t}?api_key=${encodeURIComponent(tmdbKey())}&language=ru-RU&sort_by=popularity.desc&vote_average.gte=${tv ? 7.6 : 7.4}&vote_count.gte=${tv ? 800 : 2000}&without_genres=99,10764,10767,10763,10766,10762&page=${page}`;
+  const r = await fetch(url, { signal: AbortSignal.timeout(8000) });
+  if (!r.ok) throw new Error('TMDB ' + r.status);
+  const j = await r.json();
+  rndMax[t] = j.total_pages || 1;
+  return (j.results || []).filter((x) => x.poster_path && x.overview && x.overview.length > 30).map((x) => {
+    const title = tv ? x.name : x.title, y = (tv ? x.first_air_date : x.release_date) || '';
+    return { id: `t-${t}-${x.id}`, title, kind: tv ? 'series' : 'film', year: y.slice(0, 4), genre: (x.genre_ids || []).map((g) => TG[g]).filter(Boolean).slice(0, 3).join(', '), rating: Math.round(x.vote_average * 10) / 10, desc: x.overview, poster: `https://image.tmdb.org/t/p/w500${x.poster_path}` };
+  }).sort(() => Math.random() - 0.5);
+}
+async function rndFill() {
+  if (!tmdbKey()) return;
+  if (rndBusy) return rndBusy;
+  rndBusy = (async () => {
+    for (let n = 0; n < 4 && rndBuf.filter(rndOk).length < 4; n++) {
+      try { const items = await tmdbBatch(rndKind++ % 2 ? 'series' : 'film'); rndErr = ''; items.forEach((x) => { if (rndOk(x) && !rndBuf.some((b) => b.id === x.id)) rndBuf.push(x); }); } catch (e) { rndErr = String(e.message || e); break; }
+    }
+  })().finally(() => { rndBusy = null; });
+  return rndBusy;
+}
+function rndFromPool() {
+  const list = POOL.items.filter((x) => rndOk(x) && (!rnd || x.id !== rnd.id));
+  return list.length ? list[Math.floor(Math.random() * list.length)] : null;
+}
+async function rndNext() {
+  if (rnd) rndMark(rnd.id);
+  rndBuf = rndBuf.filter(rndOk);
+  if (!rndBuf.length && tmdbKey()) { rndLoading = true; render(); await rndFill(); rndLoading = false; rndBuf = rndBuf.filter(rndOk); }
+  rnd = rndBuf.shift() || rndFromPool();
+  if (rnd) { rndCache.set(rnd.id, rnd); if (rnd.poster) { const im = new Image(); im.src = rnd.poster; } }
+  if (location.hash === '#/random') { render(); window.scrollTo(0, 0); }
+  if (rndBuf.length < 3) rndFill();
 }
 function viewRandom() {
   const back = '<a class="back" href="#/week"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>Главная</a>';
-  if (!rnd) rndPick();
-  if (!rnd) return `${back}<p class="empty">Подборка пока пуста или всё из неё уже в вашем списке.</p>`;
+  if (!rnd && !rndLoading) { setTimeout(rndNext, 0); return `${back}<p class="empty">Подбираю…</p>`; }
+  if (rndLoading) return `${back}<p class="empty">Подбираю…</p>`;
+  if (!rnd) return `${back}<p class="empty">Не получилось подобрать: проверьте интернет и откройте раздел ещё раз.</p>`;
   const it = rnd, [ga] = palOf(it), added = inCollection(it), has = !!lsGet('gh_token');
   let html = `<div class="shero${it.poster ? ' haspic' : ''}" style="--ga:${ga}">${back}` + (it.poster ? `<img class="spic big" src="${esc(it.poster)}" alt="">` : '') +
     `<div class="stitle">${esc(it.title)}</div><div class="cmeta">${it.rating ? `<span class="pill">★ ${esc(Number(it.rating).toFixed(1))}</span>` : ''}<span>${it.kind === 'film' ? 'Фильм' : 'Сериал'}${it.year ? ' · ' + esc(String(it.year)) : ''}${it.genre ? ' · ' + esc(it.genre) : ''}</span></div></div>`;
@@ -786,6 +822,8 @@ function viewRandom() {
   html += added ? '<div class="chip gray" style="margin-top:12px">В вашем списке</div>' : `<button type="button" class="btn wide ghost" data-act="dadd" data-id="${esc(it.id)}">Хочу посмотреть</button><button type="button" class="btn wide ghost" data-act="dlib" data-id="${esc(it.id)}">Уже смотрел: в библиотеку</button>`;
   html += '<div id="d_msg" class="meta" role="status"></div>';
   if (!added && !has) html += '<p class="meta">Чтобы добавить, сохраните токен GitHub на странице «Добавить сериал».</p>';
+  if (!tmdbKey()) html += `<div class="panel"><h2>Бесконечная лента</h2><p>Сейчас выпадают тайтлы из готовой подборки. Чтобы лента не заканчивалась, вставьте ключ TMDB (API Key). Он хранится только на этом телефоне.</p><input id="r_key" class="inp" placeholder="Ключ TMDB" autocomplete="off" autocapitalize="off"><button type="button" class="btn wide" data-act="savetmdb">Включить</button></div>`;
+  else html += `<p class="foot">Данные и постеры: TMDB.${rndErr ? ' Сейчас TMDB не отвечает, показываю готовую подборку.' : ''} <a href="#/random" data-act="deltmdb" style="text-decoration:underline">Убрать ключ</a></p>`;
   return html;
 }
 function viewDisc(id) {
@@ -805,7 +843,7 @@ function viewDisc(id) {
   return html;
 }
 async function discoverAdd(id, lib) {
-  const it = DISC.items.find((x) => x.id === id) || POOL.items.find((x) => x.id === id); if (!it) return;
+  const it = DISC.items.find((x) => x.id === id) || POOL.items.find((x) => x.id === id) || rndCache.get(id); if (!it) return;
   const msg = document.getElementById('d_msg');
   if (!lsGet('gh_token')) { if (msg) msg.innerHTML = '<span class="warn">Нужен токен GitHub: «Добавить сериал» → токен.</span>'; return; }
   if (msg) msg.textContent = 'Сохраняю…';
@@ -909,7 +947,7 @@ function render() {
   const h = location.hash === '#/posters' ? '#/list' : (location.hash || '#/week');
   const parts = h.replace(/^#\//, '').split('/');
   let page = parts[0] || 'week';
-  if (page === 'random' && lastPage !== 'random') rnd = null;
+  if (page === 'random' && lastPage !== 'random') { rnd = null; rndLoading = false; }
   if (page !== lastPage) { sq = ''; sqOpen = false; lastPage = page; }
   let html;
   if (page === 'subs' || page === 'notify') { stab = page; page = 'settings'; }
@@ -984,9 +1022,14 @@ document.addEventListener('click', (ev) => {
   if (a.dataset.act === 'savetoken') { const v = document.getElementById('a_token').value.trim(); if (v) { lsSet('gh_token', v); render(); } }
   if (a.dataset.act === 'mset' || a.dataset.act === 'mdel') movieAct(a.dataset.act, a.dataset.id, a.dataset.val);
   if (a.dataset.act === 'delsub') delSub(a.dataset.id);
-  if (a.dataset.act === 'rnext') { rndPick(); render(); window.scrollTo(0, 0); return; }
-  if (a.dataset.act === 'dadd') discoverAdd(a.dataset.id);
-  if (a.dataset.act === 'dlib') discoverAdd(a.dataset.id, true);
+  if (a.dataset.act === 'rnext') { rndNext(); return; }
+  if (a.dataset.act === 'savetmdb') { const v = (document.getElementById('r_key') || {}).value; if (v && v.trim()) { lsSet('tmdb_key', v.trim()); rndBuf = []; rndNext(); } return; }
+  if (a.dataset.act === 'deltmdb') { ev.preventDefault(); lsSet('tmdb_key', ''); rndBuf = []; render(); return; }
+  if (a.dataset.act === 'dadd' || a.dataset.act === 'dlib') {
+    const rid = a.dataset.id, inRnd = location.hash === '#/random';
+    discoverAdd(rid, a.dataset.act === 'dlib').then(() => { if (inRnd && location.hash === '#/random' && rnd && rnd.id === rid && inCollection(rnd)) rndNext(); });
+    return;
+  }
   if (a.dataset.act === 'setmine') setMine(a.dataset.id, a.dataset.val);
   if (a.dataset.act === 'seen' || a.dataset.act === 'unseen') { ev.preventDefault(); ev.stopPropagation(); markSeen(a.dataset.id, a.dataset.act === 'seen'); }
   if (a.dataset.act === 'deltoken') { lsSet('gh_token', ''); render(); }
