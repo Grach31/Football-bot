@@ -357,10 +357,8 @@ function viewSeries(id) {
     `<div class="chip ${c}" style="margin-top:10px">${esc(statusText)}</div></div>`;
   if (s.note) html += `<p class="note">${esc(s.note)}</p>`;
   if (s.status === 'airing' || s.status === 'ended') {
-    const w = watchLink(s);
-    html += `<a class="btn watch" href="${esc(w.url)}" target="_blank" rel="noopener">Смотреть в ${esc(w.name)}</a>${w.direct ? '' : '<span class="meta"> откроется главная или поиск сервиса</span>'}`;
+    html += jfWatch(s.title);
   }
-  html += jfWatch(s.title);
   {
     const cur = effMine(s), has = !!lsGet('gh_token');
     if (has) html += '<div class="chips" style="margin-top:12px">' + [...Object.entries(MINE), ['', 'Убрать']].map(([k, l]) => `<button type="button" class="fbtn ${cur === k ? 'on' : ''}" data-act="setmine" data-id="${esc(s.id)}" data-val="${k}">${l}</button>`).join('') + '</div><div id="s_msg" class="meta" role="status"></div>';
@@ -682,12 +680,10 @@ function viewMovie(id) {
   const has = !!lsGet('gh_token');
   const watched = m.status === 'watched';
   const chip = watched ? ['gray', 'Посмотрел'] : m.status === 'watching' ? ['blue', 'Смотрю'] : (m.date && m.date >= today) ? ['amber', 'Выходит ' + longDate(m.date)] : ['blue', 'Хочу посмотреть'];
-  const w = watchLink(m);
   let html = `<div class="shero${m.poster ? ' haspic' : ''}" style="--ga:${ga}"><a class="back" href="#/movies"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>Фильмы</a>` +
     (m.poster ? `<img class="spic" src="${esc(m.poster)}" alt="">` : '') +
     `<div class="stitle">${esc(m.title)}</div><div class="cmeta"><span>${esc(m.service || 'Твоё')}</span></div><div class="chip ${chip[0]}" style="margin-top:10px">${esc(chip[1])}</div></div>`;
   if (m.note) html += `<p class="note">${esc(m.note)}</p>`;
-  html += `<a class="btn watch" href="${esc(w.url)}" target="_blank" rel="noopener">Смотреть в ${esc(w.name)}</a>${w.direct ? '' : '<span class="meta"> откроется главная или поиск сервиса</span>'}`;
   html += jfWatch(m.title);
   if (has) {
     html += '<div class="chips" style="margin-top:12px">' + Object.entries(MINE).map(([k, l]) => `<button type="button" class="fbtn ${mMine(m) === k ? 'on' : ''}" data-act="mset" data-id="${esc(m.id)}" data-val="${k}">${l}</button>`).join('') + '</div>' +
@@ -947,8 +943,9 @@ ${has ? '<button type="button" class="btn ghost" data-act="deltoken">Удали�
 function jfBase() { return lsGet('jf_url').replace(/\/+$/, ''); }
 function jfWatch(title) {
   const b = jfBase();
-  if (!b || !title) return '';
-  return `<a class="btn watch" href="${esc(b + '/web/#/search?query=' + encodeURIComponent(title))}" target="_blank" rel="noopener">Смотреть на моём сервере</a>`;
+  if (!title) return '';
+  if (!b) return '<a class="btn watch" href="#/jf">Смотреть в моём</a><span class="meta"> сначала укажите адрес сервера</span>';
+  return `<a class="btn watch" href="${esc(b + '/web/#/search?query=' + encodeURIComponent(title))}" target="_blank" rel="noopener">Смотреть в моём</a>`;
 }
 function jellyfinPanel() {
   const cur = jfBase();
@@ -972,7 +969,7 @@ function render() {
   if (page === 'random' && lastPage !== 'random') { rnd = null; rndLoading = false; }
   if (page !== lastPage) { sq = ''; sqOpen = false; lastPage = page; }
   let html;
-  if (page === 'subs' || page === 'notify') { stab = page; page = 'settings'; }
+  if (page === 'subs' || page === 'notify' || page === 'jf') { stab = page; page = 'settings'; }
   if (page === 'list') html = viewList('list');
   else if (page === 's') html = viewSeries(decodeURIComponent(parts[1] || ''));
   else if (page === 'settings') html = viewSettings();
