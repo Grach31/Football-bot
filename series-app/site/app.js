@@ -360,6 +360,7 @@ function viewSeries(id) {
     const w = watchLink(s);
     html += `<a class="btn watch" href="${esc(w.url)}" target="_blank" rel="noopener">Смотреть в ${esc(w.name)}</a>${w.direct ? '' : '<span class="meta"> откроется главная или поиск сервиса</span>'}`;
   }
+  html += jfWatch(s.title);
   {
     const cur = effMine(s), has = !!lsGet('gh_token');
     if (has) html += '<div class="chips" style="margin-top:12px">' + [...Object.entries(MINE), ['', 'Убрать']].map(([k, l]) => `<button type="button" class="fbtn ${cur === k ? 'on' : ''}" data-act="setmine" data-id="${esc(s.id)}" data-val="${k}">${l}</button>`).join('') + '</div><div id="s_msg" class="meta" role="status"></div>';
@@ -687,6 +688,7 @@ function viewMovie(id) {
     `<div class="stitle">${esc(m.title)}</div><div class="cmeta"><span>${esc(m.service || 'Твоё')}</span></div><div class="chip ${chip[0]}" style="margin-top:10px">${esc(chip[1])}</div></div>`;
   if (m.note) html += `<p class="note">${esc(m.note)}</p>`;
   html += `<a class="btn watch" href="${esc(w.url)}" target="_blank" rel="noopener">Смотреть в ${esc(w.name)}</a>${w.direct ? '' : '<span class="meta"> откроется главная или поиск сервиса</span>'}`;
+  html += jfWatch(m.title);
   if (has) {
     html += '<div class="chips" style="margin-top:12px">' + Object.entries(MINE).map(([k, l]) => `<button type="button" class="fbtn ${mMine(m) === k ? 'on' : ''}" data-act="mset" data-id="${esc(m.id)}" data-val="${k}">${l}</button>`).join('') + '</div>' +
       `<button type="button" class="btn ghost wide danger" data-act="mdel" data-id="${esc(m.id)}">${confirmDel === m.id ? 'Точно удалить?' : 'Удалить'}</button><div id="m_msg" class="meta" role="status"></div>`;
@@ -941,9 +943,24 @@ function tokenPanel() {
 ${has ? '<button type="button" class="btn ghost" data-act="deltoken">Удалить токен</button>' : ''}
 <a class="meta" href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener" style="display:block;margin-top:8px">Создать токен на GitHub</a></div>`;
 }
+/* ---------- Jellyfin: кнопка «Смотреть на моём сервере» ---------- */
+function jfBase() { return lsGet('jf_url').replace(/\/+$/, ''); }
+function jfWatch(title) {
+  const b = jfBase();
+  if (!b || !title) return '';
+  return `<a class="btn watch" href="${esc(b + '/web/#/search?query=' + encodeURIComponent(title))}" target="_blank" rel="noopener">Смотреть на моём сервере</a>`;
+}
+function jellyfinPanel() {
+  const cur = jfBase();
+  return `<div class="panel"><h2>Мой сервер Jellyfin</h2><p>${cur ? '<span class="ok">Адрес сохранён на этом устройстве.</span>' : 'Адрес вашего Jellyfin, например http://100.x.y.z:8096. Хранится только на этом устройстве, на GitHub не попадает.'}</p>
+<input class="inp" id="a_jf" type="url" inputmode="url" placeholder="http://100.x.y.z:8096" value="${esc(cur)}" autocomplete="off">
+<button type="button" class="btn ghost" data-act="savejf">Сохранить адрес</button>
+${cur ? '<button type="button" class="btn ghost" data-act="deljf">Удалить адрес</button>' : ''}
+<p class="meta">Кнопка откроет поиск по названию на вашем сервере. Для доступа вне дома нужен включённый Tailscale.</p></div>`;
+}
 function viewSettings() {
-  const body = stab === 'notify' ? viewNotify() : stab === 'token' ? tokenPanel() : viewSubs();
-  return '<a class="back" href="#/week">‹ Главная</a><h1>Настройки</h1>' + chipRow([['subs', 'Подписки'], ['notify', 'Уведомления'], ['token', 'Токен']], stab, 'data-stab') + body.replace(/^<h1>.*?<\/h1>/, '');
+  const body = stab === 'notify' ? viewNotify() : stab === 'token' ? tokenPanel() : stab === 'jf' ? jellyfinPanel() : viewSubs();
+  return '<a class="back" href="#/week">‹ Главная</a><h1>Настройки</h1>' + chipRow([['subs', 'Подписки'], ['notify', 'Уведомления'], ['jf', 'Jellyfin'], ['token', 'Токен']], stab, 'data-stab') + body.replace(/^<h1>.*?<\/h1>/, '');
 }
 
 /* ---------- роутер ---------- */
@@ -1049,6 +1066,8 @@ document.addEventListener('click', (ev) => {
   if (a.dataset.act === 'setmine') setMine(a.dataset.id, a.dataset.val);
   if (a.dataset.act === 'seen' || a.dataset.act === 'unseen') { ev.preventDefault(); ev.stopPropagation(); markSeen(a.dataset.id, a.dataset.act === 'seen'); }
   if (a.dataset.act === 'deltoken') { lsSet('gh_token', ''); render(); }
+  if (a.dataset.act === 'savejf') { const v = document.getElementById('a_jf').value.trim(); if (/^https?:\/\//i.test(v)) { lsSet('jf_url', v); render(); } }
+  if (a.dataset.act === 'deljf') { lsSet('jf_url', ''); render(); }
 });
 window.addEventListener('hashchange', render);
 
