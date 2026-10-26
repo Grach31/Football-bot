@@ -827,6 +827,15 @@
       "status": "ended",
       "mine": "watching",
       "added": "2026-10-26"
+    },
+    {
+      "id": "nastoyaschiy-detektiv",
+      "title": "Настоящий детектив",
+      "service": null,
+      "status": "ended",
+      "mine": "done",
+      "seen_season": 1,
+      "added": "2026-10-26"
     }
   ]
 }
