@@ -23,6 +23,9 @@ try { movies = JSON.parse(fs.readFileSync(moviesFile, 'utf8')); } catch (e) { /*
 const discFile = path.join(siteDir, 'data', 'discover.json');
 let disc = { items: [] };
 try { disc = JSON.parse(fs.readFileSync(discFile, 'utf8')); } catch (e) { /* подборки нет */ }
+const poolFile = path.join(siteDir, 'data', 'pool.json');
+let pool = { items: [] };
+try { pool = JSON.parse(fs.readFileSync(poolFile, 'utf8')); } catch (e) { /* случайной подборки нет */ }
 fs.mkdirSync(outDir, { recursive: true });
 
 const clean = (t) => t.split(/[.:]/)[0].trim() || t;
@@ -73,7 +76,7 @@ async function ratingFor(query) {
 }
 
 let ok = 0;
-for (const [s, prefix] of [...data.series.map((x) => [x, '']), ...movies.items.map((x) => [x, 'm-']), ...disc.items.map((x) => [x, 'd-'])]) {
+for (const [s, prefix] of [...data.series.map((x) => [x, '']), ...movies.items.map((x) => [x, 'm-']), ...disc.items.map((x) => [x, 'd-']), ...pool.items.map((x) => [x, ''])]) {
   if (prefix !== 'd-' && s.rating == null) {
     for (const q of [...new Set([s.poster_query, s.title, clean(s.title)].filter(Boolean))]) {
       try { const r = await ratingFor(q); if (r) { s.rating = r; break; } } catch (e) { console.warn(`${s.title}: рейтинг — ${e.message}`); }
@@ -99,4 +102,5 @@ for (const [s, prefix] of [...data.series.map((x) => [x, '']), ...movies.items.m
 fs.writeFileSync(dataFile, JSON.stringify(data, null, 2) + '\n');
 if (movies.items.length) fs.writeFileSync(moviesFile, JSON.stringify(movies, null, 2) + '\n');
 if (disc.items.length) fs.writeFileSync(discFile, JSON.stringify(disc, null, 2) + '\n');
+if (pool.items.length) fs.writeFileSync(poolFile, JSON.stringify(pool, null, 2) + '\n');
 console.log(`Постеров загружено: ${ok} из ${data.series.length + movies.items.length}`);

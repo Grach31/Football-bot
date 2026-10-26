@@ -21,6 +21,8 @@ const CHEV = '<svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill=
 const HERO = ['avatars/fallout.jpg', 'avatars/got.jpg', 'avatars/gangster.jpg', 'avatars/samurai.jpg'];
 { const i = new Image(); i.src = HERO[Math.floor(Date.parse(new Date().toISOString().slice(0, 10)) / 86400000) % HERO.length]; } // загрузка образа дня заранее
 let DISC = { updated: '', items: [] };
+let POOL = { updated: '', items: [] };
+let rnd = null, rndDeck = [];
 let dfilter = 'all';
 let DATA = { updated: '', series: [] };
 let CONFIG = {};
@@ -186,6 +188,7 @@ function viewWeek() {
   // главная картинка: каждый день новый образ
   const day = Math.floor(d0(today).getTime() / 86400000);
   html += `<div class="avhero"><img src="${esc(HERO[day % HERO.length])}" alt=""></div>`;
+  html += `<a class="rbtn" href="#/random"><span class="rico">${DICE}</span><span class="rtx"><b>Нечего смотреть?</b><i>Случайный фильм или сериал</i></span>${CHEV}</a>`;
   if (topRow.length) html += `<h2 class="hd">Выходят сейчас</h2><div class="hrow2">${topRow.map((s) => pcard(s, today, true)).join('')}</div>`;
   if (waitRow.length) html += `<h2 class="hd">Жду следующую серию</h2><div class="hrow2">${waitRow.map((s) => pcard(s, today, true)).join('')}</div>`;
   const wait = DATA.series.filter((s) => sState(s, today) === 'soon').sort((a, b) => { const x = nextEp(a, today), y = nextEp(b, today); return (x ? x.date : '9999') < (y ? y.date : '9999') ? -1 : 1; });
@@ -759,6 +762,32 @@ function viewDiscover() {
   }).join('') + '</div><div id="d_msg" class="meta" role="status"></div>';
   return html;
 }
+const DICE = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="4"/><circle cx="8.5" cy="8.5" r=".9" fill="currentColor"/><circle cx="15.5" cy="8.5" r=".9" fill="currentColor"/><circle cx="12" cy="12" r=".9" fill="currentColor"/><circle cx="8.5" cy="15.5" r=".9" fill="currentColor"/><circle cx="15.5" cy="15.5" r=".9" fill="currentColor"/></svg>';
+/* ---------- случайный выбор: «нечего смотреть» ---------- */
+function rndPick() {
+  const free = (it) => !inCollection(it);
+  rndDeck = rndDeck.filter((id) => { const it = POOL.items.find((x) => x.id === id); return it && free(it) && (!rnd || id !== rnd.id); });
+  if (!rndDeck.length) {
+    rndDeck = POOL.items.filter(free).filter((x) => !rnd || x.id !== rnd.id).map((x) => x.id);
+    for (let i = rndDeck.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [rndDeck[i], rndDeck[j]] = [rndDeck[j], rndDeck[i]]; }
+  }
+  const id = rndDeck.shift();
+  rnd = POOL.items.find((x) => x.id === id) || null;
+}
+function viewRandom() {
+  const back = '<a class="back" href="#/week"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>Главная</a>';
+  if (!rnd) rndPick();
+  if (!rnd) return `${back}<p class="empty">Подборка пока пуста или всё из неё уже в вашем списке.</p>`;
+  const it = rnd, [ga] = palOf(it), added = inCollection(it), has = !!lsGet('gh_token');
+  let html = `<div class="shero${it.poster ? ' haspic' : ''}" style="--ga:${ga}">${back}` + (it.poster ? `<img class="spic big" src="${esc(it.poster)}" alt="">` : '') +
+    `<div class="stitle">${esc(it.title)}</div><div class="cmeta">${it.rating ? `<span class="pill">★ ${esc(Number(it.rating).toFixed(1))}</span>` : ''}<span>${it.kind === 'film' ? 'Фильм' : 'Сериал'}${it.year ? ' · ' + esc(String(it.year)) : ''}${it.genre ? ' · ' + esc(it.genre) : ''}</span></div></div>`;
+  if (it.desc) html += `<p class="note">${esc(it.desc)}</p>`;
+  html += `<button type="button" class="btn wide" data-act="rnext">Ещё вариант</button>`;
+  html += added ? '<div class="chip gray" style="margin-top:12px">В вашем списке</div>' : `<button type="button" class="btn wide ghost" data-act="dadd" data-id="${esc(it.id)}">Хочу посмотреть</button><button type="button" class="btn wide ghost" data-act="dlib" data-id="${esc(it.id)}">Уже смотрел: в библиотеку</button>`;
+  html += '<div id="d_msg" class="meta" role="status"></div>';
+  if (!added && !has) html += '<p class="meta">Чтобы добавить, сохраните токен GitHub на странице «Добавить сериал».</p>';
+  return html;
+}
 function viewDisc(id) {
   const it = DISC.items.find((x) => x.id === id);
   if (!it) return '<a class="back" href="#/week">‹ Главная</a><p class="empty">Этой премьеры уже нет в подборке: список обновляется раз в неделю.</p>';
@@ -776,7 +805,7 @@ function viewDisc(id) {
   return html;
 }
 async function discoverAdd(id, lib) {
-  const it = DISC.items.find((x) => x.id === id); if (!it) return;
+  const it = DISC.items.find((x) => x.id === id) || POOL.items.find((x) => x.id === id); if (!it) return;
   const msg = document.getElementById('d_msg');
   if (!lsGet('gh_token')) { if (msg) msg.innerHTML = '<span class="warn">Нужен токен GitHub: «Добавить сериал» → токен.</span>'; return; }
   if (msg) msg.textContent = 'Сохраняю…';
@@ -880,6 +909,7 @@ function render() {
   const h = location.hash === '#/posters' ? '#/list' : (location.hash || '#/week');
   const parts = h.replace(/^#\//, '').split('/');
   let page = parts[0] || 'week';
+  if (page === 'random' && lastPage !== 'random') rnd = null;
   if (page !== lastPage) { sq = ''; sqOpen = false; lastPage = page; }
   let html;
   if (page === 'subs' || page === 'notify') { stab = page; page = 'settings'; }
@@ -891,12 +921,13 @@ function render() {
   else if (page === 'add') html = viewAdd();
   else if (page === 'discover') html = viewDiscover();
   else if (page === 'd') html = viewDisc(decodeURIComponent(parts[1] || ''));
+  else if (page === 'random') html = viewRandom();
   else if (page === 'movies') html = viewMovies();
   else if (page === 'm') html = viewMovie(decodeURIComponent(parts[1] || ''));
   else if (page === 'addm') html = viewAddMovie();
   else html = viewWeek();
   $app.innerHTML = html;
-  const tab = page === 's' || page === 'add' ? 'list' : (page === 'm' || page === 'addm') ? 'movies' : page === 'd' ? 'week' : page === 'addlib' ? 'lib' : page;
+  const tab = page === 's' || page === 'add' ? 'list' : (page === 'm' || page === 'addm') ? 'movies' : page === 'd' || page === 'random' ? 'week' : page === 'addlib' ? 'lib' : page;
   document.querySelectorAll('#tabs a').forEach((a) => a.classList.toggle('on', a.dataset.tab === tab));
   if (!typing) window.scrollTo(0, 0);
   if (page === 'settings' && stab === 'notify') refreshNotify();
@@ -953,6 +984,7 @@ document.addEventListener('click', (ev) => {
   if (a.dataset.act === 'savetoken') { const v = document.getElementById('a_token').value.trim(); if (v) { lsSet('gh_token', v); render(); } }
   if (a.dataset.act === 'mset' || a.dataset.act === 'mdel') movieAct(a.dataset.act, a.dataset.id, a.dataset.val);
   if (a.dataset.act === 'delsub') delSub(a.dataset.id);
+  if (a.dataset.act === 'rnext') { rndPick(); render(); window.scrollTo(0, 0); return; }
   if (a.dataset.act === 'dadd') discoverAdd(a.dataset.id);
   if (a.dataset.act === 'dlib') discoverAdd(a.dataset.id, true);
   if (a.dataset.act === 'setmine') setMine(a.dataset.id, a.dataset.val);
@@ -971,6 +1003,7 @@ async function boot(manual) {
     try { SUBS = await fetch('data/subscriptions.json', { cache: 'no-cache' }).then((r) => r.json()); } catch (e) {}
     try { DISC = await fetch('data/discover.json', { cache: 'no-cache' }).then((r) => r.json()); } catch (e) {}
     try { MOVIES = await fetch('data/movies.json', { cache: 'no-cache' }).then((r) => r.json()); } catch (e) {}
+    try { POOL = await fetch('data/pool.json', { cache: 'no-cache' }).then((r) => r.json()); } catch (e) {}
     // сайт обновляется через пару минут после правки; пока он не пересобрался, берём свежие данные прямо из репозитория
     try {
       const last = Number(lsGet('gh_last_edit') || 0), token = lsGet('gh_token');

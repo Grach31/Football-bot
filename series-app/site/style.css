@@ -264,3 +264,13 @@ h1 { font-family: 'Bricolage Grotesque', 'Onest', sans-serif; font-weight: 800; 
 #ptr.spin{animation:ptrspin .8s linear infinite}
 @keyframes ptrspin{to{rotate:360deg}}
 html,body{overscroll-behavior-y:contain}
+
+/* кнопка «нечего смотреть» */
+.rbtn { display: flex; align-items: center; gap: 14px; margin: 4px 0 0; padding: 14px 16px; border-radius: 24px; border: 1px solid rgba(140,196,255,.45); background: linear-gradient(135deg, rgba(140,196,255,.16), rgba(195,182,255,.10) 60%, rgba(255,255,255,.03)); position: relative; z-index: 2; -webkit-tap-highlight-color: transparent; transition: transform .12s ease, border-color .2s; }
+.rbtn:active { transform: scale(.98); border-color: var(--accent); }
+.rico { flex: none; width: 46px; height: 46px; border-radius: 16px; display: flex; align-items: center; justify-content: center; background: var(--accent); color: #111; }
+.rtx { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.rtx b { font-size: 17px; font-weight: 700; }
+.rtx i { font-style: normal; font-size: 13px; color: var(--muted); }
+.rbtn .chev { color: var(--accent); }
+.spic.big { width: 200px; }
