@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-25",
+  "updated": "2026-10-26",
   "series": [
     {
       "id": "sedmoy-igrok",
@@ -819,6 +819,15 @@
       "mine": "done",
       "seen_season": 1,
       "added": "2026-10-23"
+    },
+    {
+      "id": "sergiy-protiv-nechisti-t0d2",
+      "title": "Сергий против нечисти",
+      "service": null,
+      "status": "ended",
+      "mine": "done",
+      "seen_season": 1,
+      "added": "2026-10-26"
     }
   ]
 }
