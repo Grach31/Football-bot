@@ -821,8 +821,9 @@ function viewRandom() {
   const ab = (act, ico, label, cls) => `<button type="button" class="ab ${cls || ''}" data-act="${act}" data-id="${esc(it.id)}"${added && act !== 'rnext' ? ' disabled' : ''}><i><svg width="${cls === 'main' ? 28 : 24}" height="${cls === 'main' ? 28 : 24}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${I[ico]}</svg></i><span>${label}</span></button>`;
   const pic = it.poster ? `<img class="spic big" src="${esc(it.poster)}" alt="">` : `<div class="spic big nopic" style="background:linear-gradient(160deg,${ga},${gb})"></div>`;
   let html = `<div class="shero haspic" style="--ga:${ga}">${back}<div class="stage">${pic}<div class="side">` +
-    (added ? ab('dadd', 'plus', 'Хочу', 'dim') + ab('dlib', 'check', 'Смотрел', 'dim') : ab('dadd', 'plus', 'Хочу') + ab('dlib', 'check', 'Смотрел')) + ab('rnext', 'next', 'Ещё', 'main') + `</div></div>` +
+    (added ? ab('dadd', 'plus', 'Хочу', 'dim') + ab('dlib', 'check', 'Смотрел', 'dim') : ab('dadd', 'plus', 'Хочу') + ab('dlib', 'check', 'Смотрел')) + `</div></div>` +
     `<div class="stitle">${esc(it.title)}</div><div class="cmeta">${it.rating ? `<span class="pill">★ ${esc(Number(it.rating).toFixed(1))}</span>` : ''}<span>${it.kind === 'film' ? 'Фильм' : 'Сериал'}${it.year ? ' · ' + esc(String(it.year)) : ''}${it.genre ? ' · ' + esc(it.genre) : ''}</span></div></div>`;
+  html += '<p class="swhint">← листайте влево или вправо: следующий →</p>';
   if (it.desc) html += `<p class="note">${esc(it.desc)}</p>`;
   html += '<div id="d_msg" class="meta" role="status"></div>';
   if (!added && !has) html += '<p class="meta">Чтобы добавить, сохраните токен GitHub на странице «Добавить сериал».</p>';
@@ -1116,6 +1117,23 @@ document.addEventListener('click', (ev) => {
     void $app.offsetWidth;
     $app.classList.add(dx < 0 ? 'slideL' : 'slideR');
     location.hash = navList[j];
+  }, { passive: true });
+}
+
+/* ---------- свайп в случайном выборе: следующий тайтл ---------- */
+{
+  let sx = 0, sy = 0, t0 = 0, ok = false;
+  document.addEventListener('touchstart', (e) => {
+    ok = location.hash === '#/random' && !!e.target.closest('.shero') && e.touches.length === 1;
+    if (ok) { sx = e.touches[0].clientX; sy = e.touches[0].clientY; t0 = Date.now(); }
+  }, { passive: true });
+  document.addEventListener('touchend', (e) => {
+    if (!ok) return; ok = false;
+    const t = e.changedTouches[0], dx = t.clientX - sx, dy = t.clientY - sy;
+    if (Math.abs(dx) < 55 || Math.abs(dx) < Math.abs(dy) * 1.5 || Date.now() - t0 > 800) return;
+    const st = document.querySelector('.stage'); if (!st || st.classList.contains('busy')) return;
+    st.classList.add('busy', 'out'); st.style.setProperty('--sw', dx < 0 ? '-40px' : '40px');
+    setTimeout(rndNext, 160);
   }, { passive: true });
 }
 
