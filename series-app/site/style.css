@@ -274,3 +274,18 @@ html,body{overscroll-behavior-y:contain}
 .rtx i { font-style: normal; font-size: 13px; color: var(--muted); }
 .rbtn .chev { color: var(--accent); }
 .spic.big { width: 200px; }
+
+/* случайный выбор: кнопки справа от постера */
+.stage { position: relative; display: flex; justify-content: center; width: 100%; transition: opacity .18s, transform .18s; }
+.stage .spic.big { width: 220px; margin-left: -62px; }
+.spic.nopic { aspect-ratio: 2 / 3; }
+.stage.out .spic { opacity: .5; transform: translateX(-24px) scale(.96); transition: opacity .18s, transform .18s; }
+.stage .side { position: absolute; right: 0; top: 14px; bottom: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 16px; }
+.ab { display: flex; flex-direction: column; align-items: center; gap: 5px; border: 0; background: none; padding: 0; color: #fff; font-size: 11px; font-weight: 600; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.ab i { width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,.5); border: 1.5px solid rgba(255,255,255,.7); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); transition: transform .12s, background .15s; }
+.ab:active i { transform: scale(.92); }
+.ab.main i { width: 60px; height: 60px; background: var(--accent); border-color: var(--accent); color: #111; }
+.ab.dim, .ab[disabled] { opacity: .4; cursor: default; }
+.stage.busy .ab { pointer-events: none; }
+.stage.busy:not(.ok) .ab { opacity: .5; }
+.stage.ok .ab.sel i { background: var(--accent); border-color: var(--accent); color: #111; }

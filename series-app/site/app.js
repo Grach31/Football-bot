@@ -814,12 +814,16 @@ function viewRandom() {
   if (!rnd && !rndLoading) { setTimeout(rndNext, 0); return `${back}<p class="empty">Подбираю…</p>`; }
   if (rndLoading) return `${back}<p class="empty">Подбираю…</p>`;
   if (!rnd) return `${back}<p class="empty">Не получилось подобрать: проверьте интернет и откройте раздел ещё раз.</p>`;
-  const it = rnd, [ga] = palOf(it), added = inCollection(it), has = !!lsGet('gh_token');
-  let html = `<div class="shero${it.poster ? ' haspic' : ''}" style="--ga:${ga}">${back}` + (it.poster ? `<img class="spic big" src="${esc(it.poster)}" alt="">` : '') +
+  const it = rnd, [ga, gb] = palOf(it), added = inCollection(it), has = !!lsGet('gh_token');
+  const I = {
+    plus: '<path d="M12 5v14M5 12h14"/>', check: '<path d="M5 12.5l4.5 4.5L19 7.5"/>', next: '<path d="M5 12h14M13 6l6 6-6 6"/>',
+  };
+  const ab = (act, ico, label, cls) => `<button type="button" class="ab ${cls || ''}" data-act="${act}" data-id="${esc(it.id)}"${added && act !== 'rnext' ? ' disabled' : ''}><i><svg width="${cls === 'main' ? 28 : 24}" height="${cls === 'main' ? 28 : 24}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${I[ico]}</svg></i><span>${label}</span></button>`;
+  const pic = it.poster ? `<img class="spic big" src="${esc(it.poster)}" alt="">` : `<div class="spic big nopic" style="background:linear-gradient(160deg,${ga},${gb})"></div>`;
+  let html = `<div class="shero haspic" style="--ga:${ga}">${back}<div class="stage">${pic}<div class="side">` +
+    (added ? ab('dadd', 'plus', 'Хочу', 'dim') + ab('dlib', 'check', 'Смотрел', 'dim') : ab('dadd', 'plus', 'Хочу') + ab('dlib', 'check', 'Смотрел')) + ab('rnext', 'next', 'Ещё', 'main') + `</div></div>` +
     `<div class="stitle">${esc(it.title)}</div><div class="cmeta">${it.rating ? `<span class="pill">★ ${esc(Number(it.rating).toFixed(1))}</span>` : ''}<span>${it.kind === 'film' ? 'Фильм' : 'Сериал'}${it.year ? ' · ' + esc(String(it.year)) : ''}${it.genre ? ' · ' + esc(it.genre) : ''}</span></div></div>`;
   if (it.desc) html += `<p class="note">${esc(it.desc)}</p>`;
-  html += `<button type="button" class="btn wide" data-act="rnext">Ещё вариант</button>`;
-  html += added ? '<div class="chip gray" style="margin-top:12px">В вашем списке</div>' : `<button type="button" class="btn wide ghost" data-act="dadd" data-id="${esc(it.id)}">Хочу посмотреть</button><button type="button" class="btn wide ghost" data-act="dlib" data-id="${esc(it.id)}">Уже смотрел: в библиотеку</button>`;
   html += '<div id="d_msg" class="meta" role="status"></div>';
   if (!added && !has) html += '<p class="meta">Чтобы добавить, сохраните токен GitHub на странице «Добавить сериал».</p>';
   if (!tmdbKey()) html += `<div class="panel"><h2>Бесконечная лента</h2><p>Сейчас выпадают тайтлы из готовой подборки. Чтобы лента не заканчивалась, вставьте ключ TMDB (API Key). Он хранится только на этом телефоне.</p><input id="r_key" class="inp" placeholder="Ключ TMDB" autocomplete="off" autocapitalize="off"><button type="button" class="btn wide" data-act="savetmdb">Включить</button></div>`;
@@ -1022,12 +1026,23 @@ document.addEventListener('click', (ev) => {
   if (a.dataset.act === 'savetoken') { const v = document.getElementById('a_token').value.trim(); if (v) { lsSet('gh_token', v); render(); } }
   if (a.dataset.act === 'mset' || a.dataset.act === 'mdel') movieAct(a.dataset.act, a.dataset.id, a.dataset.val);
   if (a.dataset.act === 'delsub') delSub(a.dataset.id);
-  if (a.dataset.act === 'rnext') { rndNext(); return; }
+  if (a.dataset.act === 'rnext') { const st = document.querySelector('.stage'); if (st && !st.classList.contains('busy')) { st.classList.add('busy', 'out'); setTimeout(rndNext, 160); } return; }
   if (a.dataset.act === 'savetmdb') { const v = (document.getElementById('r_key') || {}).value; if (v && v.trim()) { lsSet('tmdb_key', v.trim()); rndBuf = []; rndNext(); } return; }
   if (a.dataset.act === 'deltmdb') { ev.preventDefault(); lsSet('tmdb_key', ''); rndBuf = []; render(); return; }
   if (a.dataset.act === 'dadd' || a.dataset.act === 'dlib') {
-    const rid = a.dataset.id, inRnd = location.hash === '#/random';
-    discoverAdd(rid, a.dataset.act === 'dlib').then(() => { if (inRnd && location.hash === '#/random' && rnd && rnd.id === rid && inCollection(rnd)) rndNext(); });
+    const rid = a.dataset.id, act = a.dataset.act, inRnd = location.hash === '#/random';
+    if (inRnd) {
+      const st = document.querySelector('.stage'); if (st && st.classList.contains('busy')) return;
+      if (st) st.classList.add('busy');
+      discoverAdd(rid, a.dataset.act === 'dlib').then(() => {
+        if (location.hash !== '#/random' || !rnd || rnd.id !== rid) return;
+        if (!inCollection(rnd)) { const s2 = document.querySelector('.stage'); if (s2) s2.classList.remove('busy'); return; }
+        const s3 = document.querySelector('.stage'); if (s3) { s3.classList.add('busy', 'ok', 'out'); const nb = s3.querySelector(`.ab[data-act="${act}"]`); if (nb) { nb.classList.add('sel'); nb.classList.remove('dim'); nb.style.opacity = 1; const sv = nb.querySelector('svg'); if (sv) sv.innerHTML = '<path d="M5 12.5l4.5 4.5L19 7.5"/>'; const sp = nb.querySelector('span'); if (sp) sp.textContent = 'Добавлено'; } }
+        setTimeout(rndNext, 380);
+      });
+      return;
+    }
+    discoverAdd(rid, a.dataset.act === 'dlib');
     return;
   }
   if (a.dataset.act === 'setmine') setMine(a.dataset.id, a.dataset.val);
