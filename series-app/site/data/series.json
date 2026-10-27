@@ -890,6 +890,26 @@
       "mine": "done",
       "seen_season": 1,
       "added": "2026-10-26"
+    },
+    {
+      "id": "frisco-king",
+      "title": "Король Фриско",
+      "service": "Paramount+",
+      "status": "waiting",
+      "season": 1,
+      "total": 8,
+      "episodes": [
+        {
+          "n": 1,
+          "date": "2026-12-18"
+        }
+      ],
+      "when": "18 декабря 2026",
+      "mine": "want",
+      "poster": "custom/frisko-king.jpg",
+      "poster_query": "Frisco King",
+      "added": "2026-10-27",
+      "note": "Спин-офф «Короля Талсы», Сэмюэл Л. Джексон. Премьера 18 декабря сразу двумя сериями, далее по пятницам (TVLine). 8 серий — по числу сценариев Тейлора Шеридана, официально не подтверждено."
     }
   ]
 }
