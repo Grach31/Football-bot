@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-26",
+  "updated": "2026-10-28",
   "items": [
     {
       "id": "odisseya",
@@ -999,6 +999,13 @@
       "service": "Твоё",
       "status": "watched",
       "added": "2026-10-26"
+    },
+    {
+      "id": "mathbox-ne0j",
+      "title": "Mathbox",
+      "service": "Твоё",
+      "status": "watched",
+      "added": "2026-10-28"
     }
   ]
 }
