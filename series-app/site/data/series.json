@@ -761,14 +761,49 @@
     },
     {
       "id": "mcu-visionquest",
-      "title": "ВижнКвест",
+      "title": "Квест Вижна",
       "service": "Твоё",
-      "status": "waiting",
-      "when": "конец 2026",
+      "status": "airing",
       "mine": "want",
       "poster_query": "VisionQuest",
       "added": "2026-10-23",
-      "note": "Сериал Disney+ по Marvel. Дата приблизительная (Den of Geek)."
+      "note": "Сериал Marvel, Disney+. Мировая премьера 14 октября 2026, 8 серий: по две в неделю до 28 октября, затем 4 и 11 ноября (lenta.ru, media.halvacard.ru). Сервис в России уточнить.",
+      "season": 1,
+      "total": 8,
+      "episodes": [
+        {
+          "n": 1,
+          "date": "2026-10-14"
+        },
+        {
+          "n": 2,
+          "date": "2026-10-14"
+        },
+        {
+          "n": 3,
+          "date": "2026-10-21"
+        },
+        {
+          "n": 4,
+          "date": "2026-10-21"
+        },
+        {
+          "n": 5,
+          "date": "2026-10-28"
+        },
+        {
+          "n": 6,
+          "date": "2026-10-28"
+        },
+        {
+          "n": 7,
+          "date": "2026-11-04"
+        },
+        {
+          "n": 8,
+          "date": "2026-11-11"
+        }
+      ]
     },
     {
       "id": "stavka-na-lyubov",
