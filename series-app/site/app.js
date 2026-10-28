@@ -879,6 +879,10 @@ function libItems() {
   return [...a, ...b];
 }
 function viewLib() {
+  if (libfilter === 'jf') {
+    return `<div class="hrow"><h1>Библиотека</h1><a class="addbtn" href="#/addlib">+ Добавить</a></div>` +
+      searchBox() + chipRow([['s', 'Сериалы'], ['m', 'Фильмы'], ['jf', 'Сервер']], libfilter, 'data-libfilter') + viewJfServer();
+  }
   const all = libItems();
   const list = all.filter((x) => hit(x.it.title) && (libfilter === 'all' || x.kind === libfilter))
     .sort((x, y) => ((y.it.rating || 0) - (x.it.rating || 0)) || x.it.title.localeCompare(y.it.title, 'ru'));
@@ -886,7 +890,7 @@ function viewLib() {
   const avg = rated.length ? (rated.reduce((n, x) => n + x.it.rating, 0) / rated.length).toFixed(1) : null;
   let html = `<div class="hrow"><h1>Библиотека</h1><a class="addbtn" href="#/addlib">+ Добавить</a></div>` +
     `<p class="meta">${list.length ? `${list.length} ${plural(list.length, ['тайтл', 'тайтла', 'тайтлов'])}${avg ? ` · средняя оценка ★ ${avg}` : ''} · рейтинг Кинопоиска` : ''}</p>` +
-    searchBox() + chipRow([['s', 'Сериалы'], ['m', 'Фильмы']], libfilter, 'data-libfilter');
+    searchBox() + chipRow([['s', 'Сериалы'], ['m', 'Фильмы'], ['jf', 'Сервер']], libfilter, 'data-libfilter');
   if (!list.length) return html + '<p class="empty">Пока пусто. Всё, что вы отметите «Посмотрел», появится здесь. Старое можно добавить кнопкой «+ Добавить».</p>';
   html += '<div class="mgrid">' + list.map((x) =>
     `<a class="pcard" href="${esc(x.href)}">${poster(x.it)}<div class="bds"><span class="bl">${x.it.rating ? '★ ' + esc(Number(x.it.rating).toFixed(1)) : '★ —'}</span></div></a>`).join('') + '</div>';
@@ -946,6 +950,55 @@ function jfWatch(title) {
   if (!title) return '';
   if (!b) return '<a class="btn watch" href="#/jf">Смотреть</a><span class="meta"> сначала укажите адрес сервера</span>';
   return `<a class="btn watch" href="${esc(b + '/web/#/search?query=' + encodeURIComponent(title))}" target="_blank" rel="noopener">Смотреть</a>`;
+}
+/* ---------- вкладка «Сервер»: что лежит на моём Jellyfin ---------- */
+let jfItems = null, jfLoading = false, jfErr = '';
+function jfDevId() { let d = lsGet('jf_dev'); if (!d) { d = 'gf-' + Math.random().toString(36).slice(2, 12); lsSet('jf_dev', d); } return d; }
+function jfAuth(tok) { return 'MediaBrowser Client="Grach films", Device="Web", DeviceId="' + jfDevId() + '", Version="1.0"' + (tok ? ', Token="' + tok + '"' : ''); }
+function jfNetErr(e) { return /Failed to fetch|NetworkError|Load failed/i.test(String(e && e.message || e)) ? 'Не удалось связаться с сервером. Проверьте, что ноутбук включён и адрес в «Настройки → Jellyfin» верный.' : String(e && e.message || e); }
+async function jfLogin(user, pw) {
+  const b = jfBase();
+  const r = await fetch(b + '/Users/AuthenticateByName', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: jfAuth() }, body: JSON.stringify({ Username: user, Pw: pw }) });
+  if (r.status === 401 || r.status === 400) throw new Error('Неверный логин или пароль.');
+  if (!r.ok) throw new Error('Сервер ответил ошибкой ' + r.status + '.');
+  const d = await r.json();
+  lsSet('jf_token', d.AccessToken); lsSet('jf_uid', d.User && d.User.Id);
+}
+async function jfLoad() {
+  const b = jfBase(), tok = lsGet('jf_token'), uid = lsGet('jf_uid');
+  if (!b || !tok || !uid || jfLoading) return;
+  jfLoading = true; jfErr = '';
+  try {
+    const r = await fetch(`${b}/Items?userId=${encodeURIComponent(uid)}&Recursive=true&IncludeItemTypes=Movie,Series&SortBy=SortName&SortOrder=Ascending&Fields=ProductionYear&EnableTotalRecordCount=false`, { headers: { Authorization: jfAuth(tok) } });
+    if (r.status === 401) { lsSet('jf_token', ''); lsSet('jf_uid', ''); jfItems = null; jfErr = 'Нужно войти заново.'; }
+    else if (!r.ok) throw new Error('Сервер ответил ошибкой ' + r.status + '.');
+    else jfItems = (await r.json()).Items || [];
+  } catch (e) { jfErr = jfNetErr(e); jfItems = null; }
+  jfLoading = false;
+  if (location.hash === '#/lib' && libfilter === 'jf') render();
+}
+function viewJfServer() {
+  const b = jfBase();
+  if (!b) return '<div class="panel"><p>Сначала укажите адрес сервера: <a href="#/jf">Настройки → Jellyfin</a>.</p></div>';
+  const warn = jfErr ? `<p class="meta"><span class="warn">${esc(jfErr)}</span></p>` : '';
+  if (!lsGet('jf_token')) {
+    return `<div class="panel"><h2>Вход на сервер</h2>${warn}<form data-jfform autocomplete="off">
+<input class="inp" id="jf_user" placeholder="Логин" autocapitalize="none" autocomplete="username">
+<input class="inp" id="jf_pass" type="password" placeholder="Пароль" autocomplete="current-password">
+<button type="submit" class="btn">Войти</button></form>
+<p class="meta">Пароль не сохраняется, на устройстве остаётся только ключ доступа.</p></div>`;
+  }
+  if (jfItems === null) { if (!jfLoading && !jfErr) setTimeout(jfLoad, 0); return warn + (jfErr ? '<button type="button" class="btn ghost" data-act="jfrefresh">Повторить</button>' : '<p class="empty">Загружаю список с сервера…</p>'); }
+  const list = jfItems.filter((x) => hit(x.Name));
+  let html = `<p class="meta">${jfItems.length} ${plural(jfItems.length, ['тайтл', 'тайтла', 'тайтлов'])} на сервере · <a href="#" data-act="jfrefresh">обновить</a> · <a href="#" data-act="jflogout">выйти</a></p>`;
+  if (!jfItems.length) return html + '<p class="empty">На сервере пока пусто. Когда добавите фильмы в библиотеку Jellyfin, они появятся здесь.</p>';
+  if (!list.length) return html + '<p class="empty">Ничего не найдено.</p>';
+  html += '<div class="mgrid">' + list.map((x) => {
+    const img = x.ImageTags && x.ImageTags.Primary ? `${b}/Items/${x.Id}/Images/Primary?maxWidth=400&quality=85&tag=${encodeURIComponent(x.ImageTags.Primary)}` : '';
+    const tag = (x.Type === 'Series' ? 'Сериал' : 'Фильм') + (x.ProductionYear ? ' · ' + x.ProductionYear : '');
+    return `<a class="pcard" href="${esc(b + '/web/#/details?id=' + x.Id)}" target="_blank" rel="noopener">${poster({ title: x.Name, poster: img })}<div class="bds"><span class="bl">${esc(tag)}</span></div></a>`;
+  }).join('') + '</div>';
+  return html;
 }
 function jellyfinPanel() {
   const cur = jfBase();
@@ -1065,6 +1118,16 @@ document.addEventListener('click', (ev) => {
   if (a.dataset.act === 'deltoken') { lsSet('gh_token', ''); render(); }
   if (a.dataset.act === 'savejf') { const v = document.getElementById('a_jf').value.trim(); if (/^https?:\/\//i.test(v)) { lsSet('jf_url', v); render(); } }
   if (a.dataset.act === 'deljf') { lsSet('jf_url', ''); render(); }
+  if (a.dataset.act === 'jfrefresh') { ev.preventDefault(); jfItems = null; jfErr = ''; jfLoad(); render(); }
+  if (a.dataset.act === 'jflogout') { ev.preventDefault(); lsSet('jf_token', ''); lsSet('jf_uid', ''); jfItems = null; jfErr = ''; render(); }
+});
+document.addEventListener('submit', async (ev) => {
+  if (!ev.target.matches('[data-jfform]')) return;
+  ev.preventDefault();
+  const u = (document.getElementById('jf_user') || {}).value || '', pw = (document.getElementById('jf_pass') || {}).value || '';
+  if (!u.trim()) return;
+  try { await jfLogin(u.trim(), pw); jfErr = ''; jfItems = null; } catch (e) { jfErr = jfNetErr(e); }
+  render();
 });
 window.addEventListener('hashchange', render);
 
