@@ -880,8 +880,8 @@ function libItems() {
 }
 function viewLib() {
   if (libfilter === 'jf') {
-    return `<div class="hrow"><h1>Библиотека</h1><a class="addbtn" href="#/addlib">+ Добавить</a></div>` +
-      searchBox() + chipRow([['s', 'Сериалы'], ['m', 'Фильмы'], ['jf', 'Сервер']], libfilter, 'data-libfilter') + viewJfServer();
+    return '<button type="button" class="back" data-libfilter="jf" style="background:none;border:0;padding:0;font:inherit;color:inherit">‹ Библиотека</button><h1>Сервер</h1>' +
+      searchBox() + chipRow([['Series', 'Сериалы'], ['Movie', 'Фильмы']], jfkind, 'data-jfkind') + viewJfServer();
   }
   const all = libItems();
   const list = all.filter((x) => hit(x.it.title) && (libfilter === 'all' || x.kind === libfilter))
@@ -952,7 +952,7 @@ function jfWatch(title) {
   return `<a class="btn watch" href="${esc(b + '/web/#/search?query=' + encodeURIComponent(title))}" target="_blank" rel="noopener">Смотреть</a>`;
 }
 /* ---------- вкладка «Сервер»: что лежит на моём Jellyfin ---------- */
-let jfItems = null, jfLoading = false, jfErr = '';
+let jfItems = null, jfLoading = false, jfErr = '', jfkind = 'all';
 function jfDevId() { let d = lsGet('jf_dev'); if (!d) { d = 'gf-' + Math.random().toString(36).slice(2, 12); lsSet('jf_dev', d); } return d; }
 function jfAuth(tok) { return 'MediaBrowser Client="Grach films", Device="Web", DeviceId="' + jfDevId() + '", Version="1.0"' + (tok ? ', Token="' + tok + '"' : ''); }
 function jfNetErr(e) { return /Failed to fetch|NetworkError|Load failed/i.test(String(e && e.message || e)) ? 'Не удалось связаться с сервером. Проверьте, что ноутбук включён и адрес в «Настройки → Jellyfin» верный.' : String(e && e.message || e); }
@@ -989,7 +989,7 @@ function viewJfServer() {
 <p class="meta">Пароль не сохраняется, на устройстве остаётся только ключ доступа.</p></div>`;
   }
   if (jfItems === null) { if (!jfLoading && !jfErr) setTimeout(jfLoad, 0); return warn + (jfErr ? '<button type="button" class="btn ghost" data-act="jfrefresh">Повторить</button>' : '<p class="empty">Загружаю список с сервера…</p>'); }
-  const list = jfItems.filter((x) => hit(x.Name));
+  const list = jfItems.filter((x) => hit(x.Name) && (jfkind === 'all' || x.Type === jfkind));
   let html = `<p class="meta">${jfItems.length} ${plural(jfItems.length, ['тайтл', 'тайтла', 'тайтлов'])} на сервере · <a href="#" data-act="jfrefresh">обновить</a> · <a href="#" data-act="jflogout">выйти</a></p>`;
   if (!jfItems.length) return html + '<p class="empty">На сервере пока пусто. Когда добавите фильмы в библиотеку Jellyfin, они появятся здесь.</p>';
   if (!list.length) return html + '<p class="empty">Ничего не найдено.</p>';
@@ -1078,6 +1078,8 @@ document.addEventListener('click', (ev) => {
   if (sf) { sfilter = sfilter === sf.dataset.sfilter ? 'all' : sf.dataset.sfilter; const y = window.scrollY; render(); window.scrollTo(0, y); return; }
   const msf = ev.target.closest('[data-msfilter]');
   if (msf) { msfilter = msfilter === msf.dataset.msfilter ? 'all' : msf.dataset.msfilter; const y = window.scrollY; render(); window.scrollTo(0, y); return; }
+  const jk = ev.target.closest('[data-jfkind]');
+  if (jk) { jfkind = jfkind === jk.dataset.jfkind ? 'all' : jk.dataset.jfkind; render(); return; }
   const lf = ev.target.closest('[data-libfilter]');
   if (lf) { libfilter = libfilter === lf.dataset.libfilter ? 'all' : lf.dataset.libfilter; render(); return; }
   const st = ev.target.closest('[data-stab]');
