@@ -896,8 +896,9 @@
       "title": "Сергий против нечисти",
       "service": null,
       "status": "ended",
-      "mine": "watching",
-      "added": "2026-10-26"
+      "mine": "done",
+      "added": "2026-10-26",
+      "seen_season": 1
     },
     {
       "id": "nastoyaschiy-detektiv",
