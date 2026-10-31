@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-28",
+  "updated": "2026-10-31",
   "items": [
     {
       "id": "odisseya",
@@ -1080,6 +1080,15 @@
       "service": "Твоё",
       "status": "watched",
       "added": "2026-10-28"
+    },
+    {
+      "id": "edvard-ruki-nozhnitsy",
+      "title": "Эдвард руки-ножницы",
+      "service": "Твоё",
+      "status": "want",
+      "poster_query": "Edward Scissorhands",
+      "added": "2026-10-31",
+      "note": "Фильм Тима Бертона (1990)."
     }
   ]
 }
