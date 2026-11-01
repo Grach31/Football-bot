@@ -145,7 +145,7 @@ const MONTHS = ['Январь', 'Февраль', 'Март', 'Апрель', '�
 function calEvents() {
   const ev = {};
   const add = (date, o) => { (ev[date] = ev[date] || []).push(o); };
-  DATA.series.forEach((sr) => eps(sr).forEach((e) => add(e.date, { href: `#/s/${sr.id}`, title: sr.title, sub: `${e.n} ${unit(sr)}${sr.total ? ' из ' + sr.total : ''}${e.time ? ' · ' + e.time : ''}`, kind: 's' })));
+  DATA.series.filter((sr) => !sr.no_schedule).forEach((sr) => eps(sr).forEach((e) => add(e.date, { href: `#/s/${sr.id}`, title: sr.title, sub: `${e.n} ${unit(sr)}${sr.total ? ' из ' + sr.total : ''}${e.time ? ' · ' + e.time : ''}`, kind: 's' })));
   MOVIES.items.filter((m) => m.status !== 'watched' && m.date).forEach((m) => add(m.date, { href: `#/m/${m.id}`, title: m.title, sub: 'Фильм' + (m.service ? ' · ' + m.service : ''), kind: 'm' }));
   return ev;
 }
@@ -203,7 +203,7 @@ function viewWeek() {
   if (recs.length) html += `<h2 class="hd">Вам может понравиться</h2><div class="hrow2">${recs.map((it) => `<a class="pcard" href="#/d/${esc(it.id)}">${poster(it)}<div class="bds">${it.rating ? `<span class="bd">★ ${esc(String(it.rating))}</span>` : ''}<span class="bl">${it.kind === 'film' ? 'Фильм' : 'Сериал'}</span></div></a>`).join('')}</div>`;
 
   const byDate = {};
-  DATA.series.forEach((s) => eps(s).forEach((e) => {
+  DATA.series.filter((s) => !s.no_schedule).forEach((s) => eps(s).forEach((e) => {
     if (e.date >= today && e.date <= end) (byDate[e.date] = byDate[e.date] || []).push({ s, e });
   }));
   const dates = Object.keys(byDate).sort();

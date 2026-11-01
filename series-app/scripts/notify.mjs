@@ -74,6 +74,7 @@ const weekday = (s) => new Intl.DateTimeFormat('ru-RU', { timeZone: 'UTC', weekd
 function buildPayloads(date) {
   const out = [];
   for (const s of data.series) {
+    if (s.no_schedule) continue;
     const todays = (s.episodes || []).filter((e) => e.date === date);
     if (!todays.length) continue;
     const u = s.unit || 'серия';
