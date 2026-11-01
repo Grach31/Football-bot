@@ -1,6 +1,6 @@
 'use strict';
-const CACHE = 'series-v60';
-const SHELL = ['./', 'index.html', 'style.css', 'app.js', 'manifest.webmanifest', 'icons/icon-192.png', 'icons/icon-512.png'];
+const CACHE = 'series-v61';
+const SHELL = ['./', 'index.html', 'style.css', 'app.js', 'cinema.js', 'cinema.css', 'fonts.css', 'fonts/unbounded-700-cyr.woff2', 'fonts/unbounded-700-lat.woff2', 'fonts/manrope-400-cyr.woff2', 'fonts/manrope-400-lat.woff2', 'fonts/manrope-600-cyr.woff2', 'fonts/manrope-600-lat.woff2', 'fonts/manrope-700-cyr.woff2', 'fonts/manrope-700-lat.woff2', 'manifest.webmanifest', 'icons/icon-192.png', 'icons/icon-512.png'];
 
 self.addEventListener('install', (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => Promise.all(SHELL.map((u) => fetch(u, { cache: 'reload' }).then((r) => (r.ok ? c.put(u, r) : null)).catch(() => null)))).then(() => self.skipWaiting()));
