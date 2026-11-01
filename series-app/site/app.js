@@ -1032,6 +1032,7 @@ function render() {
   else if (page === 'discover') html = viewDiscover();
   else if (page === 'd') html = viewDisc(decodeURIComponent(parts[1] || ''));
   else if (page === 'random') html = viewRandom();
+  else if (page === 'cal') html = viewCal();
   else if (page === 'movies') html = viewMovies();
   else if (page === 'm') html = viewMovie(decodeURIComponent(parts[1] || ''));
   else if (page === 'addm') html = viewAddMovie();
@@ -1040,6 +1041,7 @@ function render() {
   const tab = page === 's' || page === 'add' ? 'list' : (page === 'm' || page === 'addm') ? 'movies' : page === 'd' || page === 'random' ? 'week' : page === 'addlib' ? 'lib' : page;
   document.querySelectorAll('#tabs a').forEach((a) => a.classList.toggle('on', a.dataset.tab === tab));
   if (!typing) window.scrollTo(0, 0);
+  if (typeof afterRender === 'function') afterRender(page);
   if (page === 'settings' && stab === 'notify') refreshNotify();
   if (page === 'settings' && stab === 'subs') document.getElementById('subform').addEventListener('submit', addSub);
   if (page === 'addlib') document.getElementById('libform').addEventListener('submit', addLib);
