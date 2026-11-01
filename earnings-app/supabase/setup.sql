@@ -32,4 +32,7 @@ create policy "members insert docs" on public.docs for insert to authenticated w
 create policy "members update docs" on public.docs for update to authenticated using (public.is_member()) with check (public.is_member());
 create policy "members delete docs" on public.docs for delete to authenticated using (public.is_member());
 
-alter publication supabase_realtime add table public.docs;
+do $$ begin
+  alter publication supabase_realtime add table public.docs;
+exception when duplicate_object then null;
+end $$;
