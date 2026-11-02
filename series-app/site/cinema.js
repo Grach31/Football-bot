@@ -3,6 +3,7 @@
    Загружается после app.js и заменяет экраны: главная (зал), страница сериала (плёнка), календарь (табло),
    добавляет титры после финала и вступление. Данные и логика сохранения остаются в app.js. */
 
+const APP_V = '65';
 const NEON = ['#ff8a3d', '#ffd24d', '#3dff9a', '#ff5d8f', '#4d8bff', '#a58bff', '#3dd5ff', '#ff6b6b'];
 let NEON_CACHE = {};
 try { NEON_CACHE = JSON.parse(localStorage.getItem('neon_cache') || '{}'); } catch (e) { NEON_CACHE = {}; }
@@ -141,7 +142,7 @@ function carouselHtml(cfg, today) {
     <div class="hinfo" id="hinfo"><h2 id="hit"></h2><p id="him"></p><div class="hbtns"><a class="go" id="hopen" href="#/list"><svg width="18" height="18" viewBox="0 0 24 24"><path d="M7 4.5v15l12-7.5z" fill="#04101c"/></svg>Открыть</a><button type="button" class="glass hround" id="hact" hidden></button></div><div class="hbtns hbtns2" id="hbtns2" hidden></div><div id="d_msg" class="meta" role="status"></div></div>
     <div class="seats"><svg viewBox="0 0 400 150" preserveAspectRatio="none"><g>${STAGE_SEATS}</g></svg></div></section><div class="below" id="hbelow"></div>`;
 }
-viewWeek = function () { const t = todayStr(); return carouselHtml(cfgWeek(t), t) + `<p class="foot">Данные обновлены ${esc(DATA.updated)}. Даты взяты из открытых источников и могут меняться.</p>`; };
+viewWeek = function () { const t = todayStr(); return carouselHtml(cfgWeek(t), t) + `<p class="foot">Данные обновлены ${esc(DATA.updated)}. Даты взяты из открытых источников и могут меняться. Версия ${APP_V}.</p>`; };
 viewList = function () { const t = todayStr(); return carouselHtml(cfgSeries(t), t); };
 viewMovies = function () { const t = todayStr(); return carouselHtml(cfgMovies(t), t); };
 viewLib = function () { const t = todayStr(); return carouselHtml(cfgLib(t), t); };
@@ -499,4 +500,13 @@ function afterRender(page) {
     if (r && r.items && file === 'movies.json') carry(r.items, prevM);
     return r;
   };
+}
+
+/* обновление без ручной перезагрузки: проверка при возвращении в приложение и каждые 5 минут */
+if ('serviceWorker' in navigator) {
+  const had = !!navigator.serviceWorker.controller; let reloading = false;
+  navigator.serviceWorker.addEventListener('controllerchange', () => { if (!had || reloading) return; reloading = true; location.reload(); });
+  const check = () => navigator.serviceWorker.getRegistration().then((r) => r && r.update()).catch(() => {});
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) check(); });
+  setInterval(check, 5 * 60 * 1000);
 }
