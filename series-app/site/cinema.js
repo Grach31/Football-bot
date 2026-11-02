@@ -51,7 +51,7 @@ function ensureColors(items) {
       NEON_CACHE[neonKey(s)] = c;
       try { localStorage.setItem('neon_cache', JSON.stringify(NEON_CACHE)); } catch (e) {}
       document.querySelectorAll(`[data-cid="${CSS.escape(neonKey(s))}"]`).forEach((el) => { el.style.setProperty('--c', c); el.style.setProperty('--pc', c); });
-      if (HALL.cur && neonKey(HALL.cur) === neonKey(s)) hallTheme(HALL.cur);
+      const cur = PG.list && PG.list[PG.idx]; if (cur && neonKey(cur.src || cur) === neonKey(s)) hallTheme(cur);
     });
   });
 }
@@ -64,75 +64,105 @@ poster = function (s) {
   return `<div class="poster" data-cid="${esc(neonKey(s))}" style="--pc:${c};background:linear-gradient(160deg,${a},${b})" role="img" aria-label="${esc(s.title)}">${inner}</div>`;
 };
 
-/* ---------- ЗАЛ ---------- */
-const HALL = { items: [], list: [], idx: 0, cur: null, timer: null, raf: 0, filter: 'all' };
-function hallItems(today) {
-  const rank = (s) => { const st = airState(s, today); if (st === 'new') return 0; if (st === 'wait') return 1; if (effMine(s) === 'watching') return 2; if (sState(s, today) === 'soon' || st === 'soon') return 3; return 9; };
-  const ser = DATA.series.map((s) => ({ s, r: rank(s) })).filter((x) => x.r < 9)
-    .sort((a, b) => (a.r - b.r) || (((nextUnaired(a.s, today) || {}).date || '9999') < ((nextUnaired(b.s, today) || {}).date || '9999') ? -1 : 1))
-    .map(({ s, r }) => ({
-      kind: 's', id: s.id, title: s.title, poster: s.poster, k: r <= 2 ? 'now' : 'soon', href: `#/s/${s.id}`, src: s,
-      meta: [metaFor(s, today), s.total && seenEp(s) ? `${seenEp(s)} из ${s.total}` : ''].filter(Boolean).join(' · '),
-      badge: r === 0 ? 'СЕРИЯ ' + (lastOut(s, today) || { e: {} }).e.n : '',
-    }));
-  const mov = MOVIES.items.filter((m) => m.status !== 'watched' && m.date && m.date >= today).sort((a, b) => (a.date < b.date ? -1 : 1))
-    .map((m) => ({ kind: 'm', id: m.id, title: m.title, poster: m.poster, k: 'film', href: `#/m/${m.id}`, src: m, meta: ['Фильм', movieBadge(m, today), m.service].filter(Boolean).join(' · '), badge: '' }));
-  let all = [...ser.slice(0, 7), ...mov.slice(0, 4)];
-  if (!all.length) all = DATA.series.slice(0, 6).map((s) => ({ kind: 's', id: s.id, title: s.title, poster: s.poster, k: 'now', href: `#/s/${s.id}`, src: s, meta: metaFor(s, today), badge: '' }));
-  return all;
-}
+/* ---------- ОБЩАЯ КАРУСЕЛЬ-ЗАЛ (главная, сериалы, фильмы, библиотека) ---------- */
+const PG = { cfg: null, list: [], idx: 0, active: '', timer: null, raf: 0, q: '', saved: {} };
 const STAGE_SEATS = (() => { let h = ''; [[88, 22, 12], [112, 28, 10], [138, 36, 8]].forEach(([y, w, cnt], r) => { const gap = 400 / cnt; for (let i = 0; i < cnt; i++) { const x = gap * i + gap / 2 - w / 2; h += `<path class="row" d="M${x},${y + 30} v-${16 + r * 2} q0,-${12 + r * 3} ${w / 2},-${12 + r * 3} q${w / 2},0 ${w / 2},${12 + r * 3} v${16 + r * 2} z"/><path class="rim" d="M${x + 1},${y + 10 - r * 2} q0,-${12 + r * 3} ${w / 2 - 1},-${12 + r * 3} q${w / 2 - 1},0 ${w / 2 - 1},${12 + r * 3}"/>`; } }); return h; })();
 const GEAR = '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>';
+const MAGN = '<svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>';
 
-viewWeek = function () {
-  const today = todayStr();
-  HALL.items = hallItems(today);
-  const newEp = DATA.series.map((s) => ({ s, st: airState(s, today) })).filter((x) => x.st === 'new').sort((a, b) => lastOut(a.s, today).days - lastOut(b.s, today).days)[0];
-  let ticket = '';
-  if (newEp) {
-    const lo = lastOut(newEp.s, today);
-    ticket = `<div class="hticket" id="hticket"><a class="t1" href="#/s/${esc(newEp.s.id)}"><div style="min-width:0"><small>Новая серия · ${lo.days === 0 ? 'сегодня' : lo.days === 1 ? 'вчера' : lo.days + ' дн. назад'}</small><b>${esc(newEp.s.title)}</b><em>Серия ${lo.e.n}${newEp.s.total ? ' из ' + newEp.s.total : ''}${newEp.s.service ? ' · ' + esc(newEp.s.service) : ''}</em></div><div class="stampA">ПРОСМОТРЕНО</div></a><button type="button" class="t2" id="tear" data-sid="${esc(newEp.s.id)}"><div class="tx">НАДОРВАТЬ<br>БИЛЕТ</div></button></div>`;
-  }
-  let html = `<section class="hall" id="hall"><div class="beam"></div><canvas id="dust"></canvas>
-    <div class="htop"><div class="hrow1"><div class="hbrand glass"><div class="hlogo"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l12-7.5z"/></svg></div>GRACH FILMS</div><a class="hbtn glass" href="#/settings" aria-label="Настройки">${GEAR}</a></div>
-    <div class="hchips" id="hchips"><button type="button" class="hchip on" data-hf="all" style="--c:#e9eefc"><i></i>Все</button><button type="button" class="hchip" data-hf="now" style="--c:#3dff9a"><i></i>Сейчас идёт</button><button type="button" class="hchip" data-hf="soon" style="--c:#ffd24d"><i></i>Скоро</button><button type="button" class="hchip" data-hf="film" style="--c:#a58bff"><i></i>Афиша</button></div></div>
-    <div class="screenwrap"><div class="hglow"></div><div class="hstage" id="hstage"></div><div class="hrefl"></div></div>
-    <div class="hinfo" id="hinfo"><h2 id="hit"></h2><p id="him"></p><div class="hbtns"><a class="go" id="hopen" href="#/list"><svg width="18" height="18" viewBox="0 0 24 24"><path d="M7 4.5v15l12-7.5z" fill="#04101c"/></svg>Открыть</a><a class="glass gl" href="#/random">🎲 Случайный</a></div></div>
-    ${ticket}
-    <div class="seats"><svg viewBox="0 0 400 150" preserveAspectRatio="none"><g>${STAGE_SEATS}</g></svg></div></section><div class="below">`;
-  html += weekRows(today);
-  return html + '</div>';
-};
+/* верхняя панель: одна и та же на всех вкладках */
+function pageHeader(add) {
+  return `<div class="hrow1"><a class="hbrand glass" href="#/week"><div class="hlogo"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l12-7.5z"/></svg></div>GRACH FILMS</a>${add ? '<a class="hadd" href="#/addlib">+ Добавить</a>' : ''}<a class="hbtn glass" href="#/settings" aria-label="Настройки">${GEAR}</a></div>`;
+}
+const seriesItem = (s, today, st) => ({ id: s.id, title: s.title, poster: s.poster, href: `#/s/${s.id}`, src: s, kind: 's',
+  meta: [metaFor(s, today), (badgeFor(s, today)[1] || '')].filter(Boolean).join(' · '), badge: st === 'new' ? 'СЕРИЯ ' + (lastOut(s, today) || { e: {} }).e.n : '',
+  act: st === 'new' ? 'seen' : st === 'wait' ? 'unseen' : '' });
+const movieItem = (m, today) => ({ id: m.id, title: m.title, poster: m.poster, href: `#/m/${m.id}`, src: m, kind: 'm', meta: ['Фильм', movieBadge(m, today), m.service].filter(Boolean).join(' · '), badge: '', act: '' });
+const discItem = (it) => ({ id: it.id, title: it.title, poster: it.poster, href: `#/d/${it.id}`, src: it, kind: 'd', badge: '',
+  meta: [it.kind === 'film' ? 'Фильм' : 'Сериал', it.rating ? '★ ' + it.rating : '', it.date ? shortDate(it.date) : it.when].filter(Boolean).join(' · '), act: '' });
 
-function weekRows(today) {
-  const states = DATA.series.map((s) => ({ s, st: airState(s, today) }));
+/* подборки для каждой вкладки */
+function cfgWeek(today) {
+  const st = DATA.series.map((s) => ({ s, st: airState(s, today) }));
   const lastDays = (s) => { const l = lastOut(s, today); return l ? l.days : 99; };
   const nd = (s) => (nextUnaired(s, today) || {}).date || '9999';
-  const topRow = states.filter((x) => x.st === 'new' || x.st === 'soon').sort((a, b) => (a.st === b.st ? (a.st === 'new' ? lastDays(a.s) - lastDays(b.s) : nd(a.s) < nd(b.s) ? -1 : 1) : a.st === 'new' ? -1 : 1)).map((x) => x.s);
-  const waitRow = states.filter((x) => x.st === 'wait').sort((a, b) => (nd(a.s) < nd(b.s) ? -1 : 1)).map((x) => x.s);
-  let html = '';
-  if (topRow.length) html += `<h2 class="hd">Выходят сейчас</h2><div class="hrow2">${topRow.map((s) => pcard(s, today, true)).join('')}</div>`;
-  if (waitRow.length) html += `<h2 class="hd">Жду следующую серию</h2><div class="hrow2">${waitRow.map((s) => pcard(s, today, true)).join('')}</div>`;
-  const wait = DATA.series.filter((s) => sState(s, today) === 'soon').sort((a, b) => { const x = nextEp(a, today), y = nextEp(b, today); return (x ? x.date : '9999') < (y ? y.date : '9999') ? -1 : 1; });
-  if (wait.length) html += `<h2 class="hd">Сериалы скоро</h2><div class="hrow2">${wait.map((s) => pcard(s, today)).join('')}</div>`;
-  const soonMovies = MOVIES.items.filter((m) => m.status !== 'watched' && m.date && m.date >= today).sort((a, b) => (a.date < b.date ? -1 : 1));
-  if (soonMovies.length) html += `<h2 class="hd">Фильмы скоро</h2><div class="hrow2">${soonMovies.map((m) => `<a class="pcard" href="#/m/${esc(m.id)}">${poster(m)}<div class="bds"><span class="bl">${esc(movieBadge(m, today))}</span></div></a>`).join('')}</div>`;
-  const prem = (DISC.items || []).filter((it) => !it.rec), recs = (DISC.items || []).filter((it) => it.rec);
-  if (prem.length) html += `<h2 class="hd">Премьеры</h2><div class="hrow2">${prem.map((it) => `<a class="pcard" href="#/d/${esc(it.id)}">${poster(it)}<div class="bds">${it.rating ? `<span class="bd">★ ${esc(String(it.rating))}</span>` : ''}<span class="bl">${esc(it.date ? shortDate(it.date) : (it.when || 'ожидается'))}</span></div></a>`).join('')}</div>`;
-  if (recs.length) html += `<h2 class="hd">Вам может понравиться</h2><div class="hrow2">${recs.map((it) => `<a class="pcard" href="#/d/${esc(it.id)}">${poster(it)}<div class="bds">${it.rating ? `<span class="bd">★ ${esc(String(it.rating))}</span>` : ''}<span class="bl">${it.kind === 'film' ? 'Фильм' : 'Сериал'}</span></div></a>`).join('')}</div>`;
-  html += `<p class="foot">Данные обновлены ${esc(DATA.updated)}. Даты взяты из открытых источников и могут меняться.</p>`;
-  return html;
+  const now = st.filter((x) => x.st === 'new' || x.st === 'soon').sort((a, b) => (a.st === b.st ? (a.st === 'new' ? lastDays(a.s) - lastDays(b.s) : nd(a.s) < nd(b.s) ? -1 : 1) : a.st === 'new' ? -1 : 1)).map((x) => seriesItem(x.s, today, x.st));
+  const wait = st.filter((x) => x.st === 'wait').sort((a, b) => (nd(a.s) < nd(b.s) ? -1 : 1)).map((x) => seriesItem(x.s, today, 'wait'));
+  const ssoon = DATA.series.filter((s) => sState(s, today) === 'soon').sort((a, b) => { const x = nextEp(a, today), y = nextEp(b, today); return (x ? x.date : '9999') < (y ? y.date : '9999') ? -1 : 1; }).map((s) => seriesItem(s, today, ''));
+  const fsoon = MOVIES.items.filter((m) => m.status !== 'watched' && m.date && m.date >= today).sort((a, b) => (a.date < b.date ? -1 : 1)).map((m) => movieItem(m, today));
+  const prem = (DISC.items || []).filter((it) => !it.rec).map(discItem), recs = (DISC.items || []).filter((it) => it.rec).map(discItem);
+  const groups = [
+    { k: 'now', label: 'Выходят сейчас', c: '#3dff9a', items: now }, { k: 'wait', label: 'Жду следующую серию', c: '#ffd24d', items: wait },
+    { k: 'ssoon', label: 'Сериалы скоро', c: '#4d8bff', items: ssoon }, { k: 'fsoon', label: 'Фильмы скоро', c: '#a58bff', items: fsoon },
+    { k: 'prem', label: 'Премьеры', c: '#ff5d8f', items: prem }, { k: 'recs', label: 'Вам может понравиться', c: '#3dd5ff', items: recs },
+  ].filter((g) => g.items.length);
+  return { key: 'week', groups, ticket: true, below: false };
+}
+function cfgSeries(today) {
+  const nd = (s) => { const n = nextEp(s, today); return n ? n.date : '9999'; };
+  const mk = (k) => DATA.series.filter((s) => effMine(s) === k).sort((a, b) => (nd(a) < nd(b) ? -1 : nd(a) > nd(b) ? 1 : 0)).map((s) => seriesItem(s, today, airState(s, today) === 'new' ? 'new' : ''));
+  return { key: 'list', groups: [{ k: 'watching', label: 'Смотрю', c: '#3dff9a', items: mk('watching') }, { k: 'want', label: 'Хочу посмотреть', c: '#ffd24d', items: mk('want') }], below: true };
+}
+function cfgMovies(today) {
+  const base = MOVIES.items.slice().reverse().filter((m) => m.status !== 'watched');
+  const isSoon = (m) => m.status !== 'watching' && m.date && m.date >= today;
+  return { key: 'movies', below: true, groups: [
+    { k: 'watching', label: 'Смотрю', c: '#3dff9a', items: base.filter((m) => m.status === 'watching').map((m) => movieItem(m, today)) },
+    { k: 'want', label: 'Хочу посмотреть', c: '#ffd24d', items: base.filter((m) => m.status !== 'watching' && !isSoon(m)).map((m) => movieItem(m, today)) },
+    { k: 'soon', label: 'Скоро', c: '#a58bff', items: base.filter(isSoon).sort((a, b) => (a.date < b.date ? -1 : 1)).map((m) => movieItem(m, today)) },
+  ] };
+}
+function cfgLib(today) {
+  const all = libItems().sort((x, y) => ((y.it.rating || 0) - (x.it.rating || 0)) || x.it.title.localeCompare(y.it.title, 'ru'));
+  const conv = (x) => { const o = x.kind === 's' ? seriesItem(x.it, today, '') : movieItem(x.it, today); o.meta = [x.kind === 's' ? 'Сериал' : 'Фильм', x.it.rating ? '★ ' + Number(x.it.rating).toFixed(1) : ''].filter(Boolean).join(' · '); return o; };
+  const b = jfBase(); let jf = [];
+  if (b && jfItems) jf = jfItems.map((x) => ({ id: 'jf-' + x.Id, title: x.Name, kind: 'j', ext: true, href: b + '/web/#/details?id=' + x.Id, act: '', badge: '', src: { id: 'jf-' + x.Id, title: x.Name }, meta: [x.Type === 'Series' ? 'Сериал' : 'Фильм', x.ProductionYear].filter(Boolean).join(' · '),
+    poster: x.ImageTags && x.ImageTags.Primary ? `${b}/Items/${x.Id}/Images/Primary?maxWidth=400&quality=85&tag=${encodeURIComponent(x.ImageTags.Primary)}` : '' }));
+  return { key: 'lib', add: true, search: true, below: true, groups: [
+    { k: 's', label: 'Сериалы', c: '#3dff9a', items: all.filter((x) => x.kind === 's').map(conv) },
+    { k: 'm', label: 'Фильмы', c: '#a58bff', items: all.filter((x) => x.kind === 'm').map(conv) },
+    { k: 'jf', label: 'Сервер', c: '#ffd24d', items: jf, server: true },
+  ] };
 }
 
-function hallTheme(it) {
-  const c = neonOf(it), r = document.documentElement.style;
-  r.setProperty('--g', c); r.setProperty('--g2', shade(c, 0.32));
+/* разметка зала */
+function carouselHtml(cfg, today) {
+  PG.cfg = cfg;
+  if (PG.pageKey !== cfg.key) { PG.q = ''; PG.pageKey = cfg.key; }
+  const saved = PG.saved[cfg.key];
+  const want = cfg.key === 'lib' ? (libfilter === 'all' ? 's' : libfilter) : (saved && saved.active);
+  const first = cfg.groups.find((g) => g.items.length) || cfg.groups[0];
+  PG.active = (cfg.groups.find((g) => g.k === want) || first || { k: '' }).k;
+  let ticket = '';
+  if (cfg.ticket) {
+    const ne = DATA.series.map((s) => ({ s, st: airState(s, today) })).filter((x) => x.st === 'new').sort((a, b) => lastOut(a.s, today).days - lastOut(b.s, today).days)[0];
+    if (ne) {
+      const lo = lastOut(ne.s, today);
+      ticket = `<div class="hticket" id="hticket"><a class="t1" href="#/s/${esc(ne.s.id)}"><div style="min-width:0"><small>Новая серия · ${lo.days === 0 ? 'сегодня' : lo.days === 1 ? 'вчера' : lo.days + ' дн. назад'}</small><b>${esc(ne.s.title)}</b><em>Серия ${lo.e.n}${ne.s.total ? ' из ' + ne.s.total : ''}${ne.s.service ? ' · ' + esc(ne.s.service) : ''}</em></div><div class="stampA">ПРОСМОТРЕНО</div></a><button type="button" class="t2" id="tear" data-sid="${esc(ne.s.id)}"><div class="tx">НАДОРВАТЬ<br>БИЛЕТ</div></button></div>`;
+    }
+  }
+  const chips = cfg.groups.map((g) => `<button type="button" class="hchip${g.k === PG.active ? ' on' : ''}" data-hg="${g.k}" style="--c:${g.c}"><i></i>${esc(g.label)}<em>${g.server && jfItems === null ? '' : g.items.length}</em></button>`).join('');
+  const search = cfg.search ? `<div class="hsrch glass">${MAGN}<input id="hq" type="search" placeholder="Поиск по названию" autocomplete="off" value="${esc(PG.q)}"></div>` : '';
+  return `<section class="hall${cfg.search ? ' hs' : ''}" id="hall"><div class="beam"></div><canvas id="dust"></canvas>
+    <div class="htop">${pageHeader(cfg.add)}${search}<div class="hchips" id="hchips">${chips}</div></div>
+    <div class="screenwrap"><div class="hglow"></div><div class="hstage" id="hstage"></div><div class="hrefl"></div></div>
+    <div class="hinfo" id="hinfo"><h2 id="hit"></h2><p id="him"></p><div class="hbtns"><a class="go" id="hopen" href="#/list"><svg width="18" height="18" viewBox="0 0 24 24"><path d="M7 4.5v15l12-7.5z" fill="#04101c"/></svg>Открыть</a><button type="button" class="glass hround" id="hact" hidden></button><a class="glass hround" href="#/random" aria-label="Случайный фильм или сериал">🎲</a></div></div>
+    ${ticket}
+    <div class="seats"><svg viewBox="0 0 400 150" preserveAspectRatio="none"><g>${STAGE_SEATS}</g></svg></div></section><div class="below" id="hbelow"></div>`;
 }
+viewWeek = function () { const t = todayStr(); return carouselHtml(cfgWeek(t), t) + `<p class="foot">Данные обновлены ${esc(DATA.updated)}. Даты взяты из открытых источников и могут меняться.</p>`; };
+viewList = function () { const t = todayStr(); return carouselHtml(cfgSeries(t), t); };
+viewMovies = function () { const t = todayStr(); return carouselHtml(cfgMovies(t), t); };
+viewLib = function () { const t = todayStr(); return carouselHtml(cfgLib(t), t); };
+
+function curGroup() { return (PG.cfg && PG.cfg.groups.find((g) => g.k === PG.active)) || { items: [] }; }
+function groupList() { const q = PG.q.trim().toLowerCase(); const g = curGroup(); return q ? g.items.filter((x) => x.title.toLowerCase().includes(q)) : g.items.slice(); }
+function hallTheme(it) { const c = neonOf(it.src || it), r = document.documentElement.style; r.setProperty('--g', c); r.setProperty('--g2', shade(c, 0.32)); }
 function hallPlace() {
   const stage = document.getElementById('hstage'); if (!stage) return;
-  const n = HALL.list.length;
+  const n = PG.list.length;
   [...stage.children].forEach((e, i) => {
-    let k = i - HALL.idx; if (k > n / 2) k -= n; if (k < -n / 2) k += n; const a = Math.abs(k);
+    let k = i - PG.idx; if (k > n / 2) k -= n; if (k < -n / 2) k += n; const a = Math.abs(k);
     e.style.transform = `translateX(${k * 64}%) translateZ(${-a * 150}px) rotateY(${-k * 42}deg) scale(${k === 0 ? 1.12 : 1})`;
     e.style.opacity = a > 2 ? 0 : 1 - a * 0.28;
     e.style.filter = k === 0 ? 'none' : `brightness(${0.55 - a * 0.1}) saturate(.8)`;
@@ -140,40 +170,81 @@ function hallPlace() {
   });
 }
 function hallInfo(first) {
-  const it = HALL.list[HALL.idx], el = document.getElementById('hinfo'); if (!it || !el) return;
-  HALL.cur = it;
-  const apply = () => { const t = document.getElementById('hit'); if (!t) return; t.textContent = it.title; document.getElementById('him').textContent = it.meta; document.getElementById('hopen').setAttribute('href', it.href); hallTheme(it); el.classList.remove('sw'); };
+  const it = PG.list[PG.idx], el = document.getElementById('hinfo'); if (!el) return;
+  const apply = () => {
+    const t = document.getElementById('hit'); if (!t) return;
+    const open = document.getElementById('hopen'), act = document.getElementById('hact');
+    if (!it) { t.textContent = 'Здесь пока пусто'; document.getElementById('him').textContent = curGroup().server ? 'Нужно войти на сервер' : 'В этой подборке ничего нет'; open.style.display = 'none'; act.hidden = true; }
+    else {
+      t.textContent = it.title; document.getElementById('him').textContent = it.meta; open.style.display = ''; open.setAttribute('href', it.href);
+      if (it.ext) { open.setAttribute('target', '_blank'); open.setAttribute('rel', 'noopener'); } else { open.removeAttribute('target'); open.removeAttribute('rel'); }
+      if (it.act) { act.hidden = false; act.dataset.act = it.act; act.dataset.id = it.id; act.textContent = it.act === 'seen' ? '✓' : '↺'; act.setAttribute('aria-label', it.act === 'seen' ? 'Серия просмотрена' : 'Вернуть: серия не просмотрена'); } else act.hidden = true;
+      hallTheme(it);
+    }
+    el.classList.remove('sw');
+  };
   if (first) apply(); else { el.classList.add('sw'); setTimeout(apply, 200); }
 }
-function hallGo(i) { const n = HALL.list.length; if (!n) return; HALL.idx = (i + n) % n; hallPlace(); hallInfo(false); const b = document.querySelector('.hall .beam'); if (b) { b.style.opacity = '1'; setTimeout(() => { b.style.opacity = ''; }, 130); } }
+function hallGo(i) { const n = PG.list.length; if (!n) return; PG.idx = (i + n) % n; hallPlace(); hallInfo(false); const b = document.querySelector('.hall .beam'); if (b) { b.style.opacity = '1'; setTimeout(() => { b.style.opacity = ''; }, 130); } saveState(); }
+function saveState() { if (PG.cfg) PG.saved[PG.cfg.key] = { active: PG.active, idx: PG.idx }; }
 function hallBuild() {
   const stage = document.getElementById('hstage'); if (!stage) return;
   stage.innerHTML = '';
-  HALL.list.forEach((it, i) => {
-    const e = document.createElement('div'); const c = neonOf(it), [a, b] = PAL[hash(it.title) % PAL.length];
-    e.className = 'pc' + (it.poster ? '' : ' noimg'); e.dataset.cid = neonKey(it); e.style.setProperty('--c', c); e.style.setProperty('--bgp', `linear-gradient(160deg,${a},${b})`);
+  PG.list.forEach((it, i) => {
+    const e = document.createElement('div'); const c = neonOf(it.src || it), [a, b] = PAL[hash(it.title) % PAL.length];
+    e.className = 'pc' + (it.poster ? '' : ' noimg'); e.dataset.cid = neonKey(it.src || it); e.style.setProperty('--c', c); e.style.setProperty('--bgp', `linear-gradient(160deg,${a},${b})`);
     e.innerHTML = (it.poster ? `<img src="${esc(it.poster)}" alt="">` : '') + (it.badge ? `<i>${esc(it.badge)}</i>` : '') + (it.poster ? '' : `<span>${esc(it.title)}</span>`);
-    e.onclick = () => { if (i === HALL.idx) location.hash = it.href; else { stopHallTimer(); hallGo(i); } };
+    e.onclick = () => { if (i !== PG.idx) { stopHallTimer(); hallGo(i); } else if (it.ext) window.open(it.href, '_blank', 'noopener'); else location.hash = it.href; };
     stage.appendChild(e);
   });
   hallPlace(); hallInfo(true);
+  const sec = document.querySelector('.hall'); if (sec) sec.classList.toggle('empty', !PG.list.length);
+  renderBelow();
 }
-function stopHallTimer() { clearInterval(HALL.timer); HALL.timer = null; }
-function startHallTimer() { stopHallTimer(); HALL.timer = setInterval(() => { if (!document.getElementById('hall')) return stopHallTimer(); if (window.scrollY < 300 && !document.hidden) hallGo(HALL.idx + 1); }, 6500); }
+function renderBelow() {
+  const box = document.getElementById('hbelow'); if (!box || !PG.cfg || !PG.cfg.below) return;
+  const g = curGroup(), today = todayStr();
+  let html = '';
+  if (g.server) {
+    html += (jfItems && jfItems.length && !PG.list.length) ? '<p class="empty">Ничего не найдено.</p>' : '';
+    if (jfItems === null || !jfBase() || !lsGet('jf_token')) html += viewJfServer();
+    else if (!jfItems.length) html += viewJfServer();
+  } else if (!PG.list.length) {
+    html += `<p class="empty">${PG.q ? 'Ничего не найдено.' : PG.cfg.key === 'lib' ? 'Пока пусто. Всё, что вы отметите «Посмотрел», появится здесь. Старое можно добавить кнопкой «+ Добавить».' : 'Здесь пока пусто.'}</p>`;
+  }
+  if (PG.list.length) {
+    html += `<h2 class="hd">${esc(g.label)}</h2><div class="mgrid">` + PG.list.map((it) => {
+      if (it.kind === 's') return pcard(it.src, today, false);
+      const tag = it.meta.split(' · ').slice(-1)[0];
+      return `<a class="pcard" href="${esc(it.href)}"${it.ext ? ' target="_blank" rel="noopener"' : ''}>${poster(it.src && it.kind !== 'j' ? it.src : { id: it.id, title: it.title, poster: it.poster })}<div class="bds"><span class="bl">${esc(tag)}</span></div></a>`;
+    }).join('') + '</div>';
+  }
+  box.innerHTML = html;
+}
+function stopHallTimer() { clearInterval(PG.timer); PG.timer = null; }
+function startHallTimer() { stopHallTimer(); PG.timer = setInterval(() => { if (!document.getElementById('hall')) return stopHallTimer(); if (window.scrollY < 300 && !document.hidden && PG.list.length > 1 && document.activeElement && document.activeElement.id !== 'hq') hallGo(PG.idx + 1); }, 6500); }
+function setGroup(k) {
+  PG.active = k; PG.idx = 0; PG.list = groupList();
+  const stage = document.getElementById('hstage');
+  document.querySelectorAll('#hchips .hchip').forEach((x) => x.classList.toggle('on', x.dataset.hg === k));
+  stage.style.opacity = 0; setTimeout(() => { hallBuild(); stage.style.opacity = 1; saveState(); }, 240);
+  if (PG.cfg.key === 'lib') libfilter = k;
+  if (k === 'jf' && jfItems === null && jfBase() && lsGet('jf_token') && !jfLoading) jfLoad();
+}
 
 function initHall() {
-  stopHallTimer(); cancelAnimationFrame(HALL.raf);
-  const hall = document.getElementById('hall'); if (!hall) return;
-  HALL.filter = 'all'; HALL.list = HALL.items.slice(); HALL.idx = 0;
-  hallBuild(); ensureColors(HALL.items.map((x) => x.src)); ensureColors((DISC.items || []));
+  stopHallTimer(); cancelAnimationFrame(PG.raf);
+  const hall = document.getElementById('hall'); if (!hall || !PG.cfg) return;
+  const sv = PG.saved[PG.cfg.key]; PG.q = PG.q || '';
+  PG.list = groupList();
+  PG.idx = sv && sv.active === PG.active ? Math.min(sv.idx || 0, Math.max(0, PG.list.length - 1)) : 0;
+  hallBuild(); ensureColors(PG.cfg.groups.flatMap((g) => g.items.map((x) => x.src || x)).filter((x) => x.poster));
   const stage = document.getElementById('hstage'); let sx = null;
   stage.addEventListener('pointerdown', (e) => { sx = e.clientX; stopHallTimer(); });
-  stage.addEventListener('pointerup', (e) => { if (sx === null) return; const dx = e.clientX - sx; if (Math.abs(dx) > 40) hallGo(HALL.idx + (dx < 0 ? 1 : -1)); sx = null; });
-  document.querySelectorAll('#hchips .hchip').forEach((b) => { b.onclick = () => {
-    document.querySelectorAll('#hchips .hchip').forEach((x) => x.classList.toggle('on', x === b));
-    const m = b.dataset.hf; HALL.list = m === 'all' ? HALL.items.slice() : HALL.items.filter((x) => x.k === m); if (!HALL.list.length) HALL.list = HALL.items.slice(); HALL.idx = 0;
-    stage.style.opacity = 0; setTimeout(() => { hallBuild(); stage.style.opacity = 1; }, 240);
-  }; });
+  stage.addEventListener('pointerup', (e) => { if (sx === null) return; const dx = e.clientX - sx; if (Math.abs(dx)>40) hallGo(PG.idx + (dx < 0 ? 1 : -1)); sx = null; });
+  document.querySelectorAll('#hchips .hchip').forEach((b) => { b.onclick = () => setGroup(b.dataset.hg); });
+  const q = document.getElementById('hq');
+  if (q) q.addEventListener('input', () => { PG.q = q.value; PG.idx = 0; PG.list = groupList(); hallBuild(); });
   const tear = document.getElementById('tear');
   if (tear) tear.onclick = () => { document.getElementById('hticket').classList.add('torn'); setTimeout(() => markSeen(tear.dataset.sid, true), 1100); };
   startHallTimer();
@@ -189,7 +260,7 @@ function initHall() {
         const px = (0.5 + (p.x - 0.5) * (0.25 + (1 - p.y) * 0.9)) * W, py = p.y * H;
         x.globalAlpha = Math.max(0, p.a * (1 - Math.abs(p.y - 0.5)) * 0.9); x.fillStyle = col; x.shadowColor = col; x.shadowBlur = 8; x.beginPath(); x.arc(px, py, p.r * devicePixelRatio, 0, 6.28); x.fill(); });
     }
-    HALL.raf = requestAnimationFrame(loop);
+    PG.raf = requestAnimationFrame(loop);
   };
   loop();
 }
@@ -332,7 +403,7 @@ const flapT = (s, w) => { s = String(s).toUpperCase(); return s.length > w ? s.s
 window.viewCal = function () {
   const today = todayStr(); calview = 'month';
   const rows = boardRows(today);
-  let html = `<div class="cvh"><h1>Сеансы</h1><p class="sub" style="margin:6px 0 0">Ближайшие выходы на табло</p></div><div class="board"><div class="bh"><b>БЛИЖАЙШИЕ</b><span>ЗАЛ 1</span></div><div id="rows">`;
+  let html = `<div class="pghead">${pageHeader(false)}</div><div class="board"><div class="bh"><b>БЛИЖАЙШИЕ</b><span>ЗАЛ 1</span></div><div id="rows">`;
   if (!rows.length) html += '<p class="empty" style="margin:8px 4px 14px">Ближайших выходов нет.</p>';
   rows.forEach((r, i) => {
     const mon = fmt(r.date, { month: 'short' }).replace('.', '').slice(0, 3);
@@ -365,7 +436,7 @@ function afterRender(page) {
     const p = nav.querySelector('.npill'); if (p) p.style.transform = k < 0 ? 'translateX(-200%)' : `translateX(${k * 100}%)`;
   }
   if (page !== 's') document.documentElement.style.removeProperty('--g');
-  if (page === 'week') { initHall(); maybeIntro(); } else { stopHallTimer(); }
+  if (page === 'week' || page === 'list' || page === 'movies' || page === 'lib') { initHall(); if (page === 'week') maybeIntro(); } else { stopHallTimer(); }
   if (page === 'cal') initBoard();
   if (page === 's') initSeries(decodeURIComponent((location.hash.split('/')[2] || '')));
 }
