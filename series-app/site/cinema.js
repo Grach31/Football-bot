@@ -72,7 +72,7 @@ const MAGN = '<svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M
 
 /* верхняя панель: одна и та же на всех вкладках */
 function pageHeader(add) {
-  return `<div class="hrow1"><a class="hbrand glass" href="#/week"><div class="hlogo"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l12-7.5z"/></svg></div>GRACH FILMS</a>${add ? '<a class="hadd" href="#/addlib">+ Добавить</a>' : ''}<a class="hbtn glass" href="#/settings" aria-label="Настройки">${GEAR}</a></div>`;
+  return `<div class="hrow1"><button type="button" class="hbrand glass" data-intro="1" aria-label="На стартовый экран"><div class="hlogo"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l12-7.5z"/></svg></div>GRACH FILMS</button>${add ? '<a class="hadd" href="#/addlib">+ Добавить</a>' : ''}<a class="hbtn glass" href="#/settings" aria-label="Настройки">${GEAR}</a></div>`;
 }
 const seriesItem = (s, today, st) => ({ id: s.id, title: s.title, poster: s.poster, href: `#/s/${s.id}`, src: s, kind: 's',
   meta: [metaFor(s, today), (badgeFor(s, today)[1] || '')].filter(Boolean).join(' · '), badge: st === 'new' ? 'СЕРИЯ ' + (lastOut(s, today) || { e: {} }).e.n : '',
@@ -96,7 +96,7 @@ function cfgWeek(today) {
     { k: 'ssoon', label: 'Сериалы скоро', c: '#4d8bff', items: ssoon }, { k: 'fsoon', label: 'Фильмы скоро', c: '#a58bff', items: fsoon },
     { k: 'prem', label: 'Премьеры', c: '#ff5d8f', items: prem }, { k: 'recs', label: 'Вам может понравиться', c: '#3dd5ff', items: recs },
   ].filter((g) => g.items.length);
-  return { key: 'week', groups, ticket: true, below: false };
+  return { key: 'week', groups, below: false };
 }
 function cfgSeries(today) {
   const nd = (s) => { const n = nextEp(s, today); return n ? n.date : '9999'; };
@@ -133,21 +133,12 @@ function carouselHtml(cfg, today) {
   const want = cfg.key === 'lib' ? (libfilter === 'all' ? 's' : libfilter) : (saved && saved.active);
   const first = cfg.groups.find((g) => g.items.length) || cfg.groups[0];
   PG.active = (cfg.groups.find((g) => g.k === want) || first || { k: '' }).k;
-  let ticket = '';
-  if (cfg.ticket) {
-    const ne = DATA.series.map((s) => ({ s, st: airState(s, today) })).filter((x) => x.st === 'new').sort((a, b) => lastOut(a.s, today).days - lastOut(b.s, today).days)[0];
-    if (ne) {
-      const lo = lastOut(ne.s, today);
-      ticket = `<div class="hticket" id="hticket"><a class="t1" href="#/s/${esc(ne.s.id)}"><div style="min-width:0"><small>Новая серия · ${lo.days === 0 ? 'сегодня' : lo.days === 1 ? 'вчера' : lo.days + ' дн. назад'}</small><b>${esc(ne.s.title)}</b><em>Серия ${lo.e.n}${ne.s.total ? ' из ' + ne.s.total : ''}${ne.s.service ? ' · ' + esc(ne.s.service) : ''}</em></div><div class="stampA">ПРОСМОТРЕНО</div></a><button type="button" class="t2" id="tear" data-sid="${esc(ne.s.id)}"><div class="tx">НАДОРВАТЬ<br>БИЛЕТ</div></button></div>`;
-    }
-  }
   const chips = cfg.groups.map((g) => `<button type="button" class="hchip${g.k === PG.active ? ' on' : ''}" data-hg="${g.k}" style="--c:${g.c}"><i></i>${esc(g.label)}<em>${g.server && jfItems === null ? '' : g.items.length}</em></button>`).join('');
   const search = cfg.search ? `<div class="hsrch glass">${MAGN}<input id="hq" type="search" placeholder="Поиск по названию" autocomplete="off" value="${esc(PG.q)}"></div>` : '';
   return `<section class="hall${cfg.search ? ' hs' : ''}" id="hall"><div class="beam"></div><canvas id="dust"></canvas>
     <div class="htop">${pageHeader(cfg.add)}${search}<div class="hchips" id="hchips">${chips}</div></div>
     <div class="screenwrap"><div class="hglow"></div><div class="hstage" id="hstage"></div><div class="hrefl"></div></div>
     <div class="hinfo" id="hinfo"><h2 id="hit"></h2><p id="him"></p><div class="hbtns"><a class="go" id="hopen" href="#/list"><svg width="18" height="18" viewBox="0 0 24 24"><path d="M7 4.5v15l12-7.5z" fill="#04101c"/></svg>Открыть</a><button type="button" class="glass hround" id="hact" hidden></button></div><div class="hbtns hbtns2" id="hbtns2" hidden></div><div id="d_msg" class="meta" role="status"></div></div>
-    ${ticket}
     <div class="seats"><svg viewBox="0 0 400 150" preserveAspectRatio="none"><g>${STAGE_SEATS}</g></svg></div></section><div class="below" id="hbelow"></div>`;
 }
 viewWeek = function () { const t = todayStr(); return carouselHtml(cfgWeek(t), t) + `<p class="foot">Данные обновлены ${esc(DATA.updated)}. Даты взяты из открытых источников и могут меняться.</p>`; };
@@ -253,8 +244,6 @@ function initHall() {
   document.querySelectorAll('#hchips .hchip').forEach((b) => { b.onclick = () => setGroup(b.dataset.hg); });
   const q = document.getElementById('hq');
   if (q) q.addEventListener('input', () => { PG.q = q.value; PG.idx = 0; PG.list = groupList(); hallBuild(); });
-  const tear = document.getElementById('tear');
-  if (tear) tear.onclick = () => { document.getElementById('hticket').classList.add('torn'); setTimeout(() => markSeen(tear.dataset.sid, true), 1100); };
   startHallTimer();
   /* пыль в луче */
   const c = document.getElementById('dust'), x = c.getContext('2d'); let W, H; const P = [];
@@ -274,41 +263,77 @@ function initHall() {
 }
 
 /* ---------- вступление и занавес (раз в день) ---------- */
-function introPosters(today) {
-  let pool = [];
-  try { const c = cfgWeek(today); pool = c.groups.flatMap((g) => g.items); } catch (e) { pool = []; }
-  const seen = new Set(), list = [];
-  pool.filter((x) => x.poster).concat(pool.filter((x) => !x.poster)).forEach((x) => { if (list.length < 5 && !seen.has(x.title)) { seen.add(x.title); list.push(x); } });
-  if (!list.length) return '';
-  const POS = [[-132, -15, .78, 0], [-68, -8, .9, 1], [0, 0, 1.08, 2], [68, 8, .9, 1], [132, 15, .78, 0]];
-  const pick = list.length >= 5 ? list : [...list, ...list, ...list].slice(0, 5);
-  return pick.map((x, i) => {
-    const [dx, rot, sc, z] = POS[i], c = neonOf(x.src || x), [a, b] = PAL[hash(x.title) % PAL.length];
-    return `<div class="ip" style="--dx:${dx}px;--r:${rot}deg;--s:${sc};--z:${z};--c:${c};--d:${i * 0.12}s;background:linear-gradient(160deg,${a},${b})">${x.poster ? `<img src="${esc(x.poster)}" alt="">` : `<span>${esc(x.title)}</span>`}</div>`;
-  }).join('');
+/* ---------- вступление: случайный выбор + вход в зал ---------- */
+let introLoading = false;
+async function introNext() {
+  if (rnd) rndMark(rnd.id);
+  rndBuf = rndBuf.filter(rndOk);
+  if (!rndBuf.length && tmdbKey()) { await rndFill(); rndBuf = rndBuf.filter(rndOk); }
+  rnd = rndBuf.shift() || rndFromPool();
+  if (rnd) { rndCache.set(rnd.id, rnd); if (rnd.poster) { const im = new Image(); im.src = rnd.poster; } }
+  if (rndBuf.length < 3) rndFill();
+  return rnd;
+}
+function introPaint() {
+  const box = document.getElementById('irndin'); if (!box) return;
+  if (introLoading) { box.innerHTML = '<div class="irmsg">Подбираю…</div>'; return; }
+  const it = rnd;
+  if (!it) { box.innerHTML = '<div class="irmsg">Не получилось подобрать. Проверьте интернет.</div><button type="button" class="glass gl" id="irnext">Ещё раз</button>'; document.getElementById('irnext').onclick = () => introAdvance(1); return; }
+  const [ga, gb] = palOf(it), added = inCollection(it), c = neonOf(it);
+  const meta = [it.rating ? '★ ' + Number(it.rating).toFixed(1) : '', it.kind === 'film' ? 'Фильм' : 'Сериал', it.year, it.genre].filter(Boolean).join(' · ');
+  box.innerHTML = `<div class="irrow"><div class="irpic" id="irpic" style="--c:${c};background:linear-gradient(160deg,${ga},${gb})">${it.poster ? `<img src="${esc(it.poster)}" alt="">` : ''}</div>` +
+    `<div class="irside">${added ? '<span class="irin">В списке</span>' : '<button type="button" class="iab" id="irwant" aria-label="Хочу посмотреть"><i>＋</i><span>Хочу</span></button><button type="button" class="iab" id="irseen" aria-label="Уже смотрел"><i>✓</i><span>Смотрел</span></button>'}</div></div>` +
+    `<div class="irtitle">${esc(it.title)}</div><div class="irmeta">${esc(meta)}</div><button type="button" class="glass gl irbtn" id="irnext">Дальше →</button><div class="irmsg" id="irmsg"></div>`;
+  document.getElementById('irnext').onclick = () => introAdvance(1);
+  const w = document.getElementById('irwant'), s = document.getElementById('irseen');
+  if (w) w.onclick = () => introAdd(false); if (s) s.onclick = () => introAdd(true);
+  let sx = null; const pic = document.getElementById('irpic');
+  pic.addEventListener('pointerdown', (e) => { sx = e.clientX; });
+  pic.addEventListener('pointerup', (e) => { if (sx === null) return; const dx = e.clientX - sx; sx = null; if (Math.abs(dx) > 40) introAdvance(dx < 0 ? 1 : -1); });
+}
+async function introAdvance(dir) {
+  const pic = document.getElementById('irpic');
+  if (pic) { pic.style.transition = 'transform .22s, opacity .22s'; pic.style.transform = `translateX(${-dir * 90}px) rotate(${-dir * 8}deg)`; pic.style.opacity = 0; }
+  await new Promise((r) => setTimeout(r, 200));
+  await introNext(); introPaint();
+}
+async function introAdd(lib) {
+  const it = rnd, msg = document.getElementById('irmsg'); if (!it || !msg) return;
+  if (!lsGet('gh_token')) { msg.textContent = 'Нужен токен GitHub: «Настройки» → «Токен».'; return; }
+  msg.textContent = 'Сохраняю…';
+  try { await discoverAdd(it.id, lib); } catch (e) {}
+  const m2 = document.getElementById('irmsg'); if (!m2) return;
+  if (inCollection(it)) { m2.textContent = lib ? 'Добавлено в библиотеку' : 'Добавлено в «Хочу посмотреть»'; setTimeout(() => introAdvance(1), 800); } else m2.textContent = 'Не получилось сохранить';
 }
 let introChecked = false;
-function maybeIntro() {
-  if (introChecked) return; introChecked = true;
-  const day = todayStr();
-  if (params.get('nointro')) return;
+function closeIntro(instant) {
+  document.getElementById('intro') && document.getElementById('intro').classList.add('hide');
+  const done = () => { document.body.style.overflow = ''; document.querySelectorAll('.curt,#intro').forEach((e) => e.remove()); document.body.classList.remove('cur-open'); };
+  if (instant) return done();
+  setTimeout(() => { document.body.classList.add('cur-open'); setTimeout(done, 2400); }, 500);
+}
+function showIntro() {
+  document.querySelectorAll('.curt,#intro').forEach((e) => e.remove()); document.body.classList.remove('cur-open');
   const today = todayStr();
   const n1 = DATA.series.filter((s) => effMine(s) === 'watching').length;
   const n2 = DATA.series.filter((s) => sState(s, today) === 'soon').length + MOVIES.items.filter((m) => m.status !== 'watched' && m.date && m.date >= today).length;
   const n3 = DATA.series.filter((s) => airState(s, today) === 'new').length;
   let i = 0; const title = ['Grach', 'films'].map((w) => `<span class="ln">${[...w].map((ch) => `<span class="ch" style="--i:${i++}">${ch}</span>`).join('')}</span>`).join('');
-  const cards = introPosters(today);
   const wrap = document.createElement('div');
-  wrap.innerHTML = `<div class="curt cl"></div><div class="curt cr"></div><section id="intro"><div class="iposters" aria-hidden="true">${cards}</div><div class="ibox"><div class="kick">Личный кинозал</div><h1 id="ititle" aria-label="Grach films">${title}</h1><p class="ilead">Все ваши сериалы и фильмы на одном экране: что смотрите, что скоро выйдет и что посмотреть сегодня вечером.</p><div class="istats"><div><b data-to="${n1}">0</b><small>смотрю</small></div><div><b data-to="${n2}">0</b><small>ждут выхода</small></div><div><b data-to="${n3}">0</b><small>новых серий</small></div></div><div class="ibtns"><button type="button" class="go" id="ienter">Войти в зал <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#04101c" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button><button type="button" class="glass hround" id="irand" aria-label="Случайный фильм или сериал">🎲</button></div></div></section>`;
+  wrap.innerHTML = `<div class="curt cl"></div><div class="curt cr"></div><section id="intro"><div class="irnd" id="irnd"><div id="irndin"></div></div><div class="ibox"><div class="kick">Личный кинозал</div><h1 id="ititle" aria-label="Grach films">${title}</h1><div class="istats"><div><b data-to="${n1}">0</b><small>смотрю</small></div><div><b data-to="${n2}">0</b><small>ждут выхода</small></div><div><b data-to="${n3}">0</b><small>новых серий</small></div></div><button type="button" class="go" id="ienter">Войти в зал <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#04101c" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div></section>`;
   while (wrap.firstChild) document.body.appendChild(wrap.firstChild);
   document.body.style.overflow = 'hidden';
   document.querySelectorAll('.istats b').forEach((el) => { const to = +el.dataset.to; let s = null; const f = (t) => { if (!s) s = t; const p = Math.min(1, (t - s) / 1200); el.textContent = Math.round(to * (1 - Math.pow(1 - p, 3))); if (p < 1) requestAnimationFrame(f); }; setTimeout(() => requestAnimationFrame(f), 1300); });
-  document.getElementById('irand').onclick = () => { document.body.style.overflow = ''; document.querySelectorAll('.curt,#intro').forEach((e) => e.remove()); location.hash = '#/random'; };
-  document.getElementById('ienter').onclick = () => {
-    document.getElementById('intro').classList.add('hide');
-    setTimeout(() => { document.body.classList.add('cur-open'); setTimeout(() => { document.body.style.overflow = ''; document.querySelectorAll('.curt,#intro').forEach((e) => e.remove()); document.body.classList.remove('cur-open'); }, 2400); }, 500);
-  };
+  document.getElementById('ienter').onclick = () => { if ((location.hash || '#/week') !== '#/week') location.hash = '#/week'; closeIntro(false); };
+  introLoading = !rnd; introPaint();
+  if (!rnd) introNext().then(() => { introLoading = false; introPaint(); }); else introLoading = false;
 }
+function maybeIntro() {
+  if (introChecked) return; introChecked = true;
+  if (params.get('nointro')) return;
+  showIntro();
+}
+document.addEventListener('click', (ev) => { if (ev.target.closest('[data-intro]')) { ev.preventDefault(); showIntro(); } });
 
 /* ---------- СТРАНИЦА СЕРИАЛА: плёнка ---------- */
 const FPOS = ['0% 0%', '100% 12%', '50% 100%', '0% 90%', '100% 100%', '50% 0%', '0% 45%', '100% 55%'];
