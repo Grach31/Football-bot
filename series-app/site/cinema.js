@@ -146,7 +146,7 @@ function carouselHtml(cfg, today) {
   return `<section class="hall${cfg.search ? ' hs' : ''}" id="hall"><div class="beam"></div><canvas id="dust"></canvas>
     <div class="htop">${pageHeader(cfg.add)}${search}<div class="hchips" id="hchips">${chips}</div></div>
     <div class="screenwrap"><div class="hglow"></div><div class="hstage" id="hstage"></div><div class="hrefl"></div></div>
-    <div class="hinfo" id="hinfo"><h2 id="hit"></h2><p id="him"></p><div class="hbtns"><a class="go" id="hopen" href="#/list"><svg width="18" height="18" viewBox="0 0 24 24"><path d="M7 4.5v15l12-7.5z" fill="#04101c"/></svg>Открыть</a><button type="button" class="glass hround" id="hact" hidden></button><a class="glass hround" href="#/random" aria-label="Случайный фильм или сериал">🎲</a></div></div>
+    <div class="hinfo" id="hinfo"><h2 id="hit"></h2><p id="him"></p><div class="hbtns"><a class="go" id="hopen" href="#/list"><svg width="18" height="18" viewBox="0 0 24 24"><path d="M7 4.5v15l12-7.5z" fill="#04101c"/></svg>Открыть</a><button type="button" class="glass hround" id="hact" hidden></button></div><div class="hbtns hbtns2" id="hbtns2" hidden></div><div id="d_msg" class="meta" role="status"></div></div>
     ${ticket}
     <div class="seats"><svg viewBox="0 0 400 150" preserveAspectRatio="none"><g>${STAGE_SEATS}</g></svg></div></section><div class="below" id="hbelow"></div>`;
 }
@@ -180,6 +180,14 @@ function hallInfo(first) {
       if (it.ext) { open.setAttribute('target', '_blank'); open.setAttribute('rel', 'noopener'); } else { open.removeAttribute('target'); open.removeAttribute('rel'); }
       if (it.act) { act.hidden = false; act.dataset.act = it.act; act.dataset.id = it.id; act.textContent = it.act === 'seen' ? '✓' : '↺'; act.setAttribute('aria-label', it.act === 'seen' ? 'Серия просмотрена' : 'Вернуть: серия не просмотрена'); } else act.hidden = true;
       hallTheme(it);
+    }
+    const b2 = document.getElementById('hbtns2'), dm = document.getElementById('d_msg'); if (dm) dm.textContent = '';
+    if (b2) {
+      if (it && it.kind === 'd') {
+        b2.hidden = false;
+        if (inCollection(it.src)) b2.innerHTML = '<span class="hin">Уже в вашем списке</span>';
+        else b2.innerHTML = `<button type="button" class="glass gl hwant" data-act="dadd" data-id="${esc(it.id)}">＋ Хочу посмотреть</button>` + (it.src.rec ? `<button type="button" class="glass gl hseen" data-act="dlib" data-id="${esc(it.id)}">✓ Смотрел</button>` : '');
+      } else { b2.hidden = true; b2.innerHTML = ''; }
     }
     el.classList.remove('sw');
   };
@@ -266,23 +274,37 @@ function initHall() {
 }
 
 /* ---------- вступление и занавес (раз в день) ---------- */
+function introPosters(today) {
+  let pool = [];
+  try { const c = cfgWeek(today); pool = c.groups.flatMap((g) => g.items); } catch (e) { pool = []; }
+  const seen = new Set(), list = [];
+  pool.filter((x) => x.poster).concat(pool.filter((x) => !x.poster)).forEach((x) => { if (list.length < 5 && !seen.has(x.title)) { seen.add(x.title); list.push(x); } });
+  if (!list.length) return '';
+  const POS = [[-132, -15, .78, 0], [-68, -8, .9, 1], [0, 0, 1.08, 2], [68, 8, .9, 1], [132, 15, .78, 0]];
+  const pick = list.length >= 5 ? list : [...list, ...list, ...list].slice(0, 5);
+  return pick.map((x, i) => {
+    const [dx, rot, sc, z] = POS[i], c = neonOf(x.src || x), [a, b] = PAL[hash(x.title) % PAL.length];
+    return `<div class="ip" style="--dx:${dx}px;--r:${rot}deg;--s:${sc};--z:${z};--c:${c};--d:${i * 0.12}s;background:linear-gradient(160deg,${a},${b})">${x.poster ? `<img src="${esc(x.poster)}" alt="">` : `<span>${esc(x.title)}</span>`}</div>`;
+  }).join('');
+}
 let introChecked = false;
 function maybeIntro() {
   if (introChecked) return; introChecked = true;
   const day = todayStr();
-  if (params.get('nointro') || (!params.get('intro') && lsGet('intro_day') === day)) return;
+  if (params.get('nointro')) return;
   const today = todayStr();
   const n1 = DATA.series.filter((s) => effMine(s) === 'watching').length;
   const n2 = DATA.series.filter((s) => sState(s, today) === 'soon').length + MOVIES.items.filter((m) => m.status !== 'watched' && m.date && m.date >= today).length;
   const n3 = DATA.series.filter((s) => airState(s, today) === 'new').length;
   let i = 0; const title = ['Grach', 'films'].map((w) => `<span class="ln">${[...w].map((ch) => `<span class="ch" style="--i:${i++}">${ch}</span>`).join('')}</span>`).join('');
+  const cards = introPosters(today);
   const wrap = document.createElement('div');
-  wrap.innerHTML = `<div class="curt cl"></div><div class="curt cr"></div><section id="intro"><div class="ibox"><div class="kick">Личный кинозал</div><h1 id="ititle" aria-label="Grach films">${title}</h1><p class="ilead">Все ваши сериалы и фильмы на одном экране: что смотрите, что скоро выйдет и что посмотреть сегодня вечером.</p><div class="istats"><div><b data-to="${n1}">0</b><small>смотрю</small></div><div><b data-to="${n2}">0</b><small>ждут выхода</small></div><div><b data-to="${n3}">0</b><small>новых серий</small></div></div><button type="button" class="go" id="ienter">Войти в зал <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#04101c" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div></section>`;
+  wrap.innerHTML = `<div class="curt cl"></div><div class="curt cr"></div><section id="intro"><div class="iposters" aria-hidden="true">${cards}</div><div class="ibox"><div class="kick">Личный кинозал</div><h1 id="ititle" aria-label="Grach films">${title}</h1><p class="ilead">Все ваши сериалы и фильмы на одном экране: что смотрите, что скоро выйдет и что посмотреть сегодня вечером.</p><div class="istats"><div><b data-to="${n1}">0</b><small>смотрю</small></div><div><b data-to="${n2}">0</b><small>ждут выхода</small></div><div><b data-to="${n3}">0</b><small>новых серий</small></div></div><div class="ibtns"><button type="button" class="go" id="ienter">Войти в зал <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#04101c" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button><button type="button" class="glass hround" id="irand" aria-label="Случайный фильм или сериал">🎲</button></div></div></section>`;
   while (wrap.firstChild) document.body.appendChild(wrap.firstChild);
   document.body.style.overflow = 'hidden';
   document.querySelectorAll('.istats b').forEach((el) => { const to = +el.dataset.to; let s = null; const f = (t) => { if (!s) s = t; const p = Math.min(1, (t - s) / 1200); el.textContent = Math.round(to * (1 - Math.pow(1 - p, 3))); if (p < 1) requestAnimationFrame(f); }; setTimeout(() => requestAnimationFrame(f), 1300); });
+  document.getElementById('irand').onclick = () => { document.body.style.overflow = ''; document.querySelectorAll('.curt,#intro').forEach((e) => e.remove()); location.hash = '#/random'; };
   document.getElementById('ienter').onclick = () => {
-    lsSet('intro_day', day);
     document.getElementById('intro').classList.add('hide');
     setTimeout(() => { document.body.classList.add('cur-open'); setTimeout(() => { document.body.style.overflow = ''; document.querySelectorAll('.curt,#intro').forEach((e) => e.remove()); document.body.classList.remove('cur-open'); }, 2400); }, 500);
   };
@@ -439,4 +461,17 @@ function afterRender(page) {
   if (page === 'week' || page === 'list' || page === 'movies' || page === 'lib') { initHall(); if (page === 'week') maybeIntro(); } else { stopHallTimer(); }
   if (page === 'cal') initBoard();
   if (page === 's') initSeries(decodeURIComponent((location.hash.split('/')[2] || '')));
+}
+
+/* постеры и рейтинги подставляются при сборке сайта и в репозитории их нет: после любого сохранения переносим их в свежие данные */
+{
+  const _ghEdit = ghEdit;
+  ghEdit = async function (file, mutate, message) {
+    const prevS = DATA.series || [], prevM = MOVIES.items || [];
+    const r = await _ghEdit(file, mutate, message);
+    const carry = (fresh, old) => { const m = new Map(old.map((x) => [x.id, x])); (fresh || []).forEach((x) => { const o = m.get(x.id); if (o) { if (o.poster && !x.poster) x.poster = o.poster; if (o.rating && !x.rating) x.rating = o.rating; } }); };
+    if (r && r.series) carry(r.series, prevS);
+    if (r && r.items && file === 'movies.json') carry(r.items, prevM);
+    return r;
+  };
 }

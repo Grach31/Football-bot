@@ -218,3 +218,19 @@ body.cur-gone .curt { display: none; }
 .pghead { margin-bottom: 4px; }
 .below .hd:first-child { margin-top: 20px; }
 .below .mgrid { padding-bottom: 4px; }
+
+/* кнопки премьер и афиши во вступлении */
+.hbtns2 { flex-wrap: wrap; margin-top: 10px; }
+.hbtns2[hidden] { display: none; }
+.hbtns2 .gl { padding: 11px 16px; font-size: 13px; }
+.hbtns2 .hwant { border-color: rgba(61, 213, 255, .5); color: var(--accent); }
+.hbtns2 .hseen { border-color: rgba(61, 255, 154, .5); color: #3dff9a; }
+.hin { padding: 11px 16px; border-radius: 99px; background: var(--surface2); color: var(--muted); font-size: 13px; font-weight: 700; }
+.hinfo .meta { text-align: center; margin: 8px 0 0; font-size: 13px; }
+.ibtns { display: flex; gap: 12px; align-items: center; }
+.iposters { position: absolute; left: 0; right: 0; top: calc(env(safe-area-inset-top) + 56px); height: 40%; display: flex; align-items: center; justify-content: center; perspective: 900px; pointer-events: none; }
+.ip { position: absolute; width: 36%; max-width: 160px; aspect-ratio: 2 / 3; border-radius: 16px; overflow: hidden; border: 1.5px solid var(--c); box-shadow: 0 0 22px color-mix(in srgb, var(--c) 45%, transparent), 0 28px 50px -10px rgba(0, 0, 0, .8); z-index: var(--z); opacity: 0; transform: translateX(var(--dx)) rotate(var(--r)) scale(var(--s)) translateY(40px); animation: ipin .9s var(--d) cubic-bezier(.2, .9, .2, 1) forwards, ipfloat 6s calc(var(--d) + 1s) ease-in-out infinite; font-family: var(--fh); font-weight: 700; font-size: 12px; padding: 10px; display: flex; align-items: flex-end; }
+.ip img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.ip span { position: relative; z-index: 2; }
+@keyframes ipin { to { opacity: 1; transform: translateX(var(--dx)) rotate(var(--r)) scale(var(--s)); } }
+@keyframes ipfloat { 0%, 100% { translate: 0 0; } 50% { translate: 0 -8px; } }
