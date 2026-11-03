@@ -76,6 +76,8 @@ async function ratingFor(query) {
 }
 
 let ok = 0;
+let missing = 0;
+let failed = 0;
 for (const [s, prefix] of [...data.series.map((x) => [x, '']), ...movies.items.map((x) => [x, 'm-']), ...disc.items.map((x) => [x, 'd-']), ...pool.items.map((x) => [x, ''])]) {
   if (prefix !== 'd-' && s.rating == null) {
     for (const q of [...new Set([s.poster_query, s.title, clean(s.title)].filter(Boolean))]) {
@@ -92,15 +94,20 @@ for (const [s, prefix] of [...data.series.map((x) => [x, '']), ...movies.items.m
     }
     if (url) break;
   }
-  if (!url) { console.log(`Постер не найден: ${s.title}`); continue; }
+  if (!url) { missing += 1; console.log(`Постер не найден: ${s.title}`); continue; }
   try {
     await download(url, path.join(outDir, `${prefix}${s.id}.jpg`));
     s.poster = `posters/${prefix}${s.id}.jpg`;
     ok += 1;
-  } catch (e) { console.warn(`${s.title}: не удалось скачать — ${e.message}`); }
+  } catch (e) { failed += 1; console.warn(`${s.title}: не удалось скачать — ${e.message}`); }
 }
 fs.writeFileSync(dataFile, JSON.stringify(data, null, 2) + '\n');
 if (movies.items.length) fs.writeFileSync(moviesFile, JSON.stringify(movies, null, 2) + '\n');
 if (disc.items.length) fs.writeFileSync(discFile, JSON.stringify(disc, null, 2) + '\n');
 if (pool.items.length) fs.writeFileSync(poolFile, JSON.stringify(pool, null, 2) + '\n');
-console.log(`Постеров загружено: ${ok} из ${data.series.length + movies.items.length}`);
+console.log(`Постеров загружено: ${ok}; не найдено: ${missing}; ошибки загрузки: ${failed}`);
+if (process.env.GITHUB_STEP_SUMMARY) {
+  fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY,
+    `### Постеры Grach Films\n\n- Загружено: ${ok}\n- Не найдено: ${missing}\n- Ошибки скачивания: ${failed}\n`);
+}
+if (missing || failed) console.warn(`::warning::Проблемы с постерами: не найдено ${missing}, ошибок скачивания ${failed}`);
