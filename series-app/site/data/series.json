@@ -977,6 +977,18 @@
       "mine": "done",
       "seen_season": 1,
       "added": "2026-10-28"
+    },
+    {
+      "id": "idealnaya-rabota",
+      "title": "Идеальная работа",
+      "service": "Netflix",
+      "status": "ended",
+      "mine": "want",
+      "season": 1,
+      "total": 8,
+      "added": "2026-11-04",
+      "poster_query": "Dead-End Job Netflix 2026 Kkulalba",
+      "note": "Корейский мистический хоррор-мини-сериал, 8 серий. Все серии вышли на Netflix 30 октября 2026 (Лайфхакер, Metaratings)."
     }
   ]
 }
