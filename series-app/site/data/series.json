@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-03",
+  "updated": "2026-11-04",
   "series": [
     {
       "id": "sedmoy-igrok",
@@ -305,9 +305,10 @@
         }
       ],
       "note": "Серии выходят по две, по четвергам. Финал 29 октября: сразу 7 и 8 серии.",
-      "mine": "watching",
+      "mine": "done",
       "seen_ep": 6,
-      "seen_ep_season": 1
+      "seen_ep_season": 1,
+      "seen_season": 1
     },
     {
       "id": "garri-potter",
