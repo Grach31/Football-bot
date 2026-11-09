@@ -47,43 +47,69 @@ function viewWeek(){
     (!news.length&&!filmPremieres.length&&!soon.length?'<p class="gf-empty">Сейчас нет недавних или ожидаемых релизов. Вся коллекция — во вкладке «Моё».</p>':'')+
     '<p class="gf-version">Расписание: '+esc(DATA.updated||'не указано')+' · v'+APP_V+'</p></div>';
 }
+function gfSearchServer(q){
+  if(!jfBase()||!lsGet('jf_token'))return '';
+  if(jfItems===null){
+    if(!jfLoading&&!jfErr)setTimeout(jfLoad,0);
+    return '<section class="gf-search-group"><h2>Мой сервер · Jellyfin</h2><p class="gf-hint">'+esc(jfErr||'Загружаю медиатеку сервера…')+'</p></section>';
+  }
+  const found=jfItems.filter(x=>(x.Name||'').toLocaleLowerCase('ru').includes(q));
+  if(!found.length)return '';
+  const base=jfBase();
+  return '<section class="gf-search-group"><h2>Мой сервер · Jellyfin <span>'+found.length+'</span></h2><div class="gf-grid">'+
+    found.map(x=>{
+      const img=x.ImageTags&&x.ImageTags.Primary?base+'/Items/'+encodeURIComponent(x.Id)+'/Images/Primary?maxWidth=400&quality=85&tag='+encodeURIComponent(x.ImageTags.Primary):'';
+      const url=base+'/web/#/details?id='+encodeURIComponent(x.Id);
+      return '<a class="gf-grid-card" href="'+esc(url)+'" target="_blank" rel="noopener">'+
+        '<div class="gf-poster-wrap">'+poster({title:x.Name,poster:img})+'</div><strong>'+esc(x.Name)+'</strong>'+
+        '<span class="gf-card-meta">'+(x.Type==='Series'?'Сериал':'Фильм')+' · Jellyfin</span></a>';
+    }).join('')+'</div></section>';
+}
+function gfSearchAll(){
+  const q=sq.trim().toLocaleLowerCase('ru');
+  const groups=[
+    ['Сериалы',(DATA.series||[]).map(obj=>({obj,kind:'s',info:gfInfo(obj,'s')}))],
+    ['Фильмы',(MOVIES.items||[]).map(obj=>({obj,kind:'m',info:gfInfo(obj,'m')}))]
+  ];
+  const own=groups.map(([label,entries])=>[label,entries.filter(x=>(x.obj.title||'').toLocaleLowerCase('ru').includes(q)).sort(gfOrder)]);
+  const server=gfSearchServer(q);
+  const found=own.reduce((sum,[,entries])=>sum+entries.length,0);
+  return '<div class="gf-search-results">'+own.filter(([,entries])=>entries.length).map(([label,entries])=>
+    '<section class="gf-search-group"><h2>'+label+' <span>'+entries.length+'</span></h2><div class="gf-grid">'+entries.map(x=>gfCard(x,true)).join('')+'</div></section>'
+  ).join('')+server+(!found&&!server?'<p class="gf-hint">В коллекции ничего не найдено.</p>':'')+'</div>';
+}
 function viewMine(section){
   const active=['series','movies','server'].includes(section)?section:'series';
   const s=DATA.series||[],m=MOVIES.items||[];
   const nav=[['series','Сериалы',s.length],['movies','Фильмы',m.length],['server','Мой сервер',jfItems?.length||'']];
+  const query=sq.trim();
+  const search='<label class="gf-search-label" for="sq">Поиск по всей медиатеке</label>'+
+    '<input class="gf-search" id="sq" type="search" placeholder="Сериалы, фильмы и Jellyfin" aria-label="Поиск по всей медиатеке" value="'+esc(sq)+'" autocomplete="off">';
   let body='';
-  if(active==='server'){
-    body='<div class="gf-server-note">Отдельная медиатека Jellyfin. Данные сервера не смешиваются с коллекцией.</div>'+
-      '<input class="gf-search" id="sq" type="search" placeholder="Поиск на сервере" value="'+esc(sq)+'">'+
+  if(query){
+    body=gfSearchAll();
+  }else if(active==='server'){
+    body='<div class="gf-server-note">Отдельная медиатека Jellyfin. Общий поиск выше также ищет по серверу после подключения.</div>'+
       chipRow([['all','Все'],['Movie','Фильмы'],['Series','Сериалы']],jfkind,'data-jfkind')+viewJfServer();
   }else{
     const entries=(active==='series'?s.map(obj=>({obj,kind:'s',info:gfInfo(obj,'s')})):m.map(obj=>({obj,kind:'m',info:gfInfo(obj,'m')})))
-      .filter(x=>hit(x.obj.title)).sort((a,b)=>{
+      .sort((a,b)=>{
         const aa=gfArchived(a.obj,a.kind,a.info)||a.info.group==='archive';
         const bb=gfArchived(b.obj,b.kind,b.info)||b.info.group==='archive';
         return Number(aa)-Number(bb)||gfOrder(a,b);
       });
     const current=entries.filter(x=>!(gfArchived(x.obj,x.kind,x.info)||x.info.group==='archive'));
     const old=entries.filter(x=>gfArchived(x.obj,x.kind,x.info)||x.info.group==='archive');
-    body='<div class="gf-collection-toolbar"><span class="gf-subtle">Актуальное — сначала</span><div class="gf-toolbar-actions"><a class="gf-add gf-add-primary" href="'+(active==='series'?'#/add':'#/addm')+'">+ Добавить</a></div></div>'+
-    '<input class="gf-search" id="sq" type="search" placeholder="Поиск по коллекции" value="'+esc(sq)+'">'+
-    '<div class="gf-collection-title">Актуальное <span>'+current.length+'</span></div>'+
-    '<div class="gf-grid">'+current.map(x=>gfCard(x,true)).join('')+'</div>'+
-    (current.length?'':'<p class="gf-hint">Пока нет актуальных релизов.</p>')+
-    '<div class="gf-collection-title gf-archive-title">Архив <span>'+old.length+'</span></div>'+
-    '<div class="gf-grid">'+old.map(x=>gfCard(x,true)).join('')+'</div>'+
-    (old.length?'':'<p class="gf-hint">Архив пока пуст.</p>');
+    body='<div class="gf-collection-title">Актуальное <span>'+current.length+'</span></div>'+
+      '<div class="gf-grid">'+current.map(x=>gfCard(x,true)).join('')+'</div>'+
+      (current.length?'':'<p class="gf-hint">Пока нет актуальных релизов.</p>')+
+      '<div class="gf-collection-title gf-archive-title">Архив <span>'+old.length+'</span></div>'+
+      '<div class="gf-grid">'+old.map(x=>gfCard(x,true)).join('')+'</div>'+
+      (old.length?'':'<p class="gf-hint">Архив пока пуст.</p>');
   }
-  return '<div class="gf-shell">'+gfHeader('Моё')+'<div class="gf-collection-nav">'+nav.map(([id,label,count])=>'<a class="gf-collection-tile'+(id===active?' selected':'')+'" href="#/mine/'+id+'"><strong>'+label+'</strong><span>'+count+(id==='server'?' · Jellyfin':' в коллекции')+'</span></a>').join('')+'</div>'+body+
-    '<p class="gf-version">v'+APP_V+'</p></div>';
+  return '<div class="gf-shell">'+gfHeader('Моё')+'<div class="gf-collection-nav">'+nav.map(([id,label,count])=>'<a class="gf-collection-tile'+(id===active?' selected':'')+'" href="#/mine/'+id+'"><strong>'+label+'</strong><span>'+count+(id==='server'?' · Jellyfin':' в коллекции')+'</span></a>').join('')+'</div>'+
+    '<div class="gf-collection-toolbar"><span class="gf-subtle">Актуальное — сначала</span><div class="gf-toolbar-actions"><a class="gf-add gf-add-primary" href="'+(active==='movies'?'#/addm':'#/add')+'">+ Добавить</a></div></div>'+
+    search+body+'<p class="gf-version">v'+APP_V+'</p></div>';
 }
-function viewSearch(){
-  const q=sq.trim().toLowerCase();
-  const own=[...(DATA.series||[]).map(obj=>({obj,kind:'s',info:gfInfo(obj,'s')})),...(MOVIES.items||[]).map(obj=>({obj,kind:'m',info:gfInfo(obj,'m')}))].filter(x=>q&&x.obj.title.toLowerCase().includes(q));
-  const existing=new Set(own.map(x=>x.obj.title.toLowerCase()));
-  const discovered=(DISC.items||[]).filter(x=>q&&x.title.toLowerCase().includes(q)&&!existing.has(x.title.toLowerCase()));
-  return '<div class="gf-shell">'+gfHeader('Поиск')+'<input class="gf-search" id="sq" type="search" placeholder="Фильм или сериал" value="'+esc(sq)+'" autofocus>'+
-    (q?'<div class="gf-collection-title">В твоей коллекции</div><div class="gf-grid">'+own.map(x=>gfCard(x,true)).join('')+'</div>':'<p class="gf-hint">Поиск по твоей коллекции и рекомендациям.</p>')+
-    (q&&discovered.length?'<div class="gf-collection-title">Из подборок</div><div class="gf-grid">'+discovered.map(obj=>'<a class="gf-grid-card" href="#/d/'+encodeURIComponent(obj.id)+'"><div class="gf-poster-wrap">'+poster(obj)+'</div><strong>'+esc(obj.title)+'</strong></a>').join('')+'</div>':'')+
-    '<div class="gf-shortcuts"><a href="#/add">+ Добавить сериал</a><a href="#/addm">+ Добавить фильм</a></div></div>';
-}
+
+
