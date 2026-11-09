@@ -50,84 +50,6 @@ function lastOut(s, today) {
   const days = Math.round((d0(today) - d0(e.date)) / 86400000);
   return days <= 13 ? { e, days } : null;
 }
-// отметка «посмотрел» последнюю вышедшую серию (хранится в series.json: seen_ep и seen_ep_season)
-const seenEp = (s) => (s.seen_ep && s.seen_ep_season === (s.season || 1) ? s.seen_ep : 0);
-// new — вышла серия, которую не отметили; wait — отметили, ждём следующую; soon — ещё ничего не вышло
-function airState(s, today) {
-  if (s.status !== 'airing') return null;
-  const lo = lastOut(s, today), nu = nextUnaired(s, today);
-  if (!lo) return nu ? 'soon' : null;
-  if (seenEp(s) < lo.e.n) return 'new';
-  return nu ? 'wait' : null;
-}
-
-const palOf = (s) => PAL[hash(s.title) % PAL.length];
-function metaFor(s, today) {
-  const p = [];
-  if (s.season) p.push(`${s.season} сезон`);
-  if (s.status === 'airing') {
-    const n = nextEp(s, today);
-    if (n) p.push(`${n.n} ${unit(s)}${s.total ? ' из ' + s.total : ''}`);
-    else if (s.total) p.push(`${s.total} серий`);
-  }
-  if (s.service) p.push(s.service);
-  return p.join(' · ');
-}
-
-
-
-/* ---------- мои разделы: смотрю / хочу / просмотрено ---------- */
-const MINE = { want: 'Хочу посмотреть', watching: 'Смотрю', done: 'Посмотрел' };
-const MINE_LABEL = MINE;
-// «Смотрю» → «Просмотрено» автоматически через 5 дней после последней серии;
-// «Просмотрено» → «Смотрю», когда появляется новый сезон
-function effMine(s) {
-  const today = todayStr();
-  const list = s.episodes || [];
-  const last = list.length ? list.map((e) => e.date).sort().pop() : null;
-  const aired = list.some((e) => e.date <= today);
-  const finished = last && (s.status === 'ended' || (s.total && list.length >= s.total));
-  // новый сезон объявлен, но первая серия ещё не вышла
-  const announced = s.status === 'waiting' || (list.length > 0 && !aired);
-  if (s.mine === 'watching') {
-    if (finished && addDays(last, 5) <= today) return 'done';
-    return 'watching';
-  }
-  if (s.mine === 'done') {
-    if (announced) return 'watching';
-    if (s.seen_season && (s.season || 1) > s.seen_season && aired) return 'watching';
-    return 'done';
-  }
-  return s.mine || '';
-}
-async function markSeen(id, seen) {
-  const today = todayStr();
-  const sr = DATA.series.find((y) => y.id === id); if (!sr) return;
-  const lo = lastOut(sr, today); if (!lo) return;
-  if (!lsGet('gh_token')) { alert('Чтобы отмечать серии, нужен токен GitHub: «Настройки» (шестерёнка на главной) → «Токен».'); return; }
-  const season = sr.season || 1, n = lo.e.n, prev = { ep: sr.seen_ep, season: sr.seen_ep_season };
-  const apply = (x) => { if (seen) { x.seen_ep = n; x.seen_ep_season = season; } else if (n > 1) { x.seen_ep = n - 1; x.seen_ep_season = season; } else { delete x.seen_ep; delete x.seen_ep_season; } };
-  apply(sr); const y = window.scrollY; render(); window.scrollTo(0, y); // сразу показываем результат
-  try {
-    DATA = await ghEdit('series.json', (d) => { const x = d.series.find((z) => z.id === id); if (x) apply(x); }, seen ? `Сериалы: «${sr.title}» серия ${n} просмотрена` : `Сериалы: «${sr.title}» серия ${n} снова не просмотрена`);
-    render(); window.scrollTo(0, y);
-  } catch (err) {
-    if (prev.ep) { sr.seen_ep = prev.ep; sr.seen_ep_season = prev.season; } else { delete sr.seen_ep; delete sr.seen_ep_season; }
-    render(); alert(err.message || String(err));
-  }
-}
-async function setMine(id, val) {
-  const msg = document.getElementById('s_msg'); if (msg) msg.textContent = 'Сохраняю…';
-  try {
-    DATA = await ghEdit('series.json', (d) => {
-      const x = d.series.find((y) => y.id === id); if (!x) return;
-      if (val) x.mine = val; else delete x.mine;
-      if (val === 'done') x.seen_season = x.season || 1; else delete x.seen_season;
-    }, 'Сериалы: раздел');
-    render();
-  } catch (err) { if (msg) msg.innerHTML = `<span class="warn">${esc(err.message || err)}</span>`; }
-}
-
 let sq = '';
 const hit = (t) => !sq || (t || '').toLowerCase().includes(sq.toLowerCase().trim());
 const chipRow = (arr, cur, attr) => '<div class="chips">' + arr.filter(([k]) => k !== 'all').map(([k, l]) => `<button type="button" class="fbtn ${cur === k ? 'on' : ''}" ${attr}="${k}">${l}</button>`).join('') + '</div>';
@@ -238,7 +160,7 @@ function viewAdd() {
 <button type="submit" class="btn" ${has ? '' : 'disabled'} id="a_submit">Добавить</button>
 <div id="a_msg" class="meta" role="status"></div>
 </form>
-<p class="meta">Сериал появится в списке «Нет даты». Даты выхода серий я подтягиваю при еженедельной проверке.</p></div>
+<p class="meta">Сериал появится в «Моё». Даты уточняются автоматически.</p></div>
 ${tokenPanel()}`;
 }
 
@@ -267,7 +189,7 @@ async function addSeries(e) {
       if (d.series.some((s) => s.title.toLowerCase() === title.toLowerCase())) throw new Error('Такой сериал уже есть в списке.');
       let id = slugify(title); let n = 2; const base = id;
       while (d.series.some((s) => s.id === id)) id = `${base}-${n++}`;
-      const item = { id, title, service, status: 'nodate', mine: 'want', added: todayStr() };
+      const item = { id, title, service, status: 'nodate', added: todayStr() };
       if (note) item.note = note;
       d.series.push(item);
     }, `Сериалы: добавить «${title}»`);
@@ -368,28 +290,19 @@ async function delSub(id) {
 }
 
 
-/* ---------- фильмы ---------- */
-const mMine = (m) => (m.status === 'watched' ? 'done' : m.status === 'watching' ? 'watching' : 'want');
-function viewMovie(id) {
-  const today = todayStr();
-  const m = MOVIES.items.find((x) => x.id === id);
-  if (!m) return '<a class="back" href="#/mine/movies">‹ Фильмы</a><p class="empty">Такого фильма в списке нет.</p>';
-  const [ga] = palOf(m);
-  const has = !!lsGet('gh_token');
-  const watched = m.status === 'watched';
-  const chip = watched ? ['gray', 'Посмотрел'] : m.status === 'watching' ? ['blue', 'Смотрю'] : (m.date && m.date >= today) ? ['amber', 'Выходит ' + longDate(m.date)] : ['blue', 'Хочу посмотреть'];
-  let html = `<div class="shero${m.poster ? ' haspic' : ''}" style="--ga:${ga}"><a class="back" href="#/mine/movies"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>Фильмы</a>` +
-    (m.poster ? `<img class="spic" src="${esc(m.poster)}" alt="">` : '') +
-    `<div class="stitle">${esc(m.title)}</div><div class="cmeta"><span>${esc(m.service || 'Твоё')}</span></div><div class="chip ${chip[0]}" style="margin-top:10px">${esc(chip[1])}</div></div>`;
-  if (m.note) html += `<p class="note">${esc(m.note)}</p>`;
-  html += jfWatch(m.title);
-  if (has) {
-    html += '<div class="chips" style="margin-top:12px">' + Object.entries(MINE).map(([k, l]) => `<button type="button" class="fbtn ${mMine(m) === k ? 'on' : ''}" data-act="mset" data-id="${esc(m.id)}" data-val="${k}">${l}</button>`).join('') + '</div>' +
-      `<button type="button" class="btn ghost wide danger" data-act="mdel" data-id="${esc(m.id)}">${confirmDel === m.id ? 'Точно удалить?' : 'Удалить'}</button><div id="m_msg" class="meta" role="status"></div>`;
-  } else {
-    html += '<p class="meta">Чтобы отмечать и удалять фильмы, добавьте токен GitHub на странице «Добавить сериал».</p>';
-  }
-  return html;
+/* ---------- карточка фильма: только дата релиза ---------- */
+function viewMovie(id){
+  const m=MOVIES.items.find(x=>x.id===id);
+  if(!m)return '<a class="back" href="#/mine/movies">‹ Фильмы</a><p class="empty">Фильм не найден.</p>';
+  const info=gfInfo(m,'m');
+  return '<div class="gf-detail"><a class="back" href="#/mine/movies">‹ Фильмы</a><div class="gf-detail-head">'+
+    (m.poster?'<img class="gf-detail-poster" src="'+esc(m.poster)+'" alt="">':'<div class="gf-detail-poster gf-detail-placeholder">'+esc(m.title)+'</div>')+
+    '<div class="gf-detail-text"><div class="gf-eyebrow">GRACH FILMS · ФИЛЬМ</div><h1>'+esc(m.title)+'</h1>'+
+    '<p class="gf-detail-meta">'+esc(m.service||'Моя коллекция')+'</p><div class="gf-detail-state">'+gfDecor(info)+'</div></div></div>'+
+    (m.note?'<p class="gf-detail-note">'+esc(m.note)+'</p>':'')+jfWatch(m.title)+
+    (gfArchived(m,'m',info)?'<p class="gf-archived-info">Убран с главной на этом устройстве</p>':'')+
+    gfArchiveButton(m,'m',info)+
+    '<div class="gf-detail-foot">Дата кинопремьеры не подтверждает онлайн-доступность.</div></div>';
 }
 function viewAddMovie() {
   const has = !!lsGet('gh_token');
@@ -416,7 +329,7 @@ async function addMovie(e) {
   try {
     MOVIES = await ghEdit('movies.json', (d) => {
       if (d.items.some((x) => x.title.toLowerCase() === title.toLowerCase())) throw new Error('Такой фильм уже есть в списке.');
-      const it = { id: `${slugify(title)}-${Date.now().toString(36).slice(-4)}`, title, service: document.getElementById('m_service').value, status: 'want', added: todayStr() };
+      const it = { id: `${slugify(title)}-${Date.now().toString(36).slice(-4)}`, title, service: document.getElementById('m_service').value, added: todayStr() };
       const date = document.getElementById('m_date').value; if (date) it.date = date;
       const note = document.getElementById('m_note').value.trim(); if (note) it.note = note;
       d.items.push(it);
@@ -426,20 +339,6 @@ async function addMovie(e) {
   } catch (err) { msg.innerHTML = `<span class="warn">${esc(err.message || err)}</span>`; }
   btn.disabled = false;
 }
-async function movieAct(act, id, val) {
-  if (act === 'mdel' && confirmDel !== id) { confirmDel = id; render(); return; }
-  const msg = document.getElementById('m_msg'); if (msg) msg.textContent = 'Сохраняю…';
-  try {
-    if (act === 'mset') {
-      MOVIES = await ghEdit('movies.json', (d) => { const m = d.items.find((x) => x.id === id); if (m) m.status = ({ done: 'watched', watching: 'watching', want: 'want' })[val] || 'want'; }, 'Фильмы: раздел');
-      render();
-    } else {
-      MOVIES = await ghEdit('movies.json', (d) => { d.items = d.items.filter((x) => x.id !== id); }, 'Фильмы: удалить');
-      confirmDel = ''; location.hash = '#/mine/movies';
-    }
-  } catch (err) { if (msg) msg.innerHTML = `<span class="warn">${esc(err.message || err)}</span>`; }
-}
-
 /* ---------- премьеры: подборка раз в неделю ---------- */
 const DFILTERS = [['all', 'Все'], ['series', 'Сериалы'], ['film', 'Фильмы']];
 const inCollection = (it) => { const t = it.title.toLowerCase(); return DATA.series.some((x) => x.title.toLowerCase() === t) || MOVIES.items.some((x) => x.title.toLowerCase() === t); };
@@ -517,7 +416,7 @@ function viewRandom() {
   const ab = (act, ico, label, cls) => `<button type="button" class="ab ${cls || ''}" data-act="${act}" data-id="${esc(it.id)}"${added && act !== 'rnext' ? ' disabled' : ''}><i><svg width="${cls === 'main' ? 28 : 24}" height="${cls === 'main' ? 28 : 24}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${I[ico]}</svg></i><span>${label}</span></button>`;
   const pic = it.poster ? `<img class="spic big" src="${esc(it.poster)}" alt="">` : `<div class="spic big nopic" style="background:linear-gradient(160deg,${ga},${gb})"></div>`;
   let html = `<div class="shero haspic" style="--ga:${ga}">${back}<div class="stage">${pic}<div class="side">` +
-    (added ? ab('dadd', 'plus', 'Хочу', 'dim') + ab('dlib', 'check', 'Смотрел', 'dim') : ab('dadd', 'plus', 'Хочу') + ab('dlib', 'check', 'Смотрел')) + `</div></div>` +
+    ab('dadd', 'plus', added ? 'Добавлено' : 'Добавить', added ? 'dim' : '') + `</div></div>` +
     `<div class="stitle">${esc(it.title)}</div><div class="cmeta">${it.rating ? `<span class="pill">★ ${esc(Number(it.rating).toFixed(1))}</span>` : ''}<span>${it.kind === 'film' ? 'Фильм' : 'Сериал'}${it.year ? ' · ' + esc(String(it.year)) : ''}${it.genre ? ' · ' + esc(it.genre) : ''}</span></div></div>`;
   html += '<p class="swhint">← листайте влево или вправо: следующий →</p>';
   if (it.desc) html += `<p class="note">${esc(it.desc)}</p>`;
@@ -538,7 +437,7 @@ function viewDisc(id) {
   if (it.desc) html += `<p class="note">${esc(it.desc)}</p>`;
   if (it.because) html += `<p class="meta">Почему рекомендую: ${esc(it.because)}</p>`;
   if (it.note) html += `<p class="meta">${esc(it.note)}</p>`;
-  html += added ? '<div class="chip gray" style="margin-top:12px">Уже в вашем списке</div>' : `<button type="button" class="btn wide" data-act="dadd" data-id="${esc(it.id)}">Хочу посмотреть</button>${it.rec ? `<button type="button" class="btn wide ghost" data-act="dlib" data-id="${esc(it.id)}">Уже смотрел: в библиотеку</button>` : ''}`;
+  html += added ? '<div class="chip gray" style="margin-top:12px">Уже в коллекции</div>' : `<button type="button" class="btn wide" data-act="dadd" data-id="${esc(it.id)}">Добавить в коллекцию</button>`;
   html += '<div id="d_msg" class="meta" role="status"></div>';
   if (!added && !has) html += '<p class="meta">Чтобы добавить, сохраните токен GitHub на странице «Добавить сериал».</p>';
   return html;
@@ -552,16 +451,14 @@ async function discoverAdd(id, lib) {
     if (it.kind === 'film') {
       MOVIES = await ghEdit('movies.json', (d) => {
         if (d.items.some((x) => x.title.toLowerCase() === it.title.toLowerCase())) return;
-        const m = { id: `${slugify(it.title)}-${Date.now().toString(36).slice(-4)}`, title: it.title, service: it.service || 'Твоё', status: lib ? 'watched' : 'want', added: todayStr() };
+        const m = { id: `${slugify(it.title)}-${Date.now().toString(36).slice(-4)}`, title: it.title, service: it.service || 'Твоё', added: todayStr() };
         if (!lib) { if (it.date) m.date = it.date; if (it.note) m.note = it.note; }
         d.items.push(m);
       }, lib ? `Фильмы: «${it.title}» в библиотеку` : `Фильмы: «${it.title}» из премьер`);
     } else {
       DATA = await ghEdit('series.json', (d) => {
         if (d.series.some((x) => x.title.toLowerCase() === it.title.toLowerCase())) return;
-        const x = lib
-          ? { id: slugify(it.title), title: it.title, service: null, status: 'ended', mine: 'done', seen_season: 1, added: todayStr() }
-          : { id: slugify(it.title), title: it.title, service: it.service || null, status: it.date || it.when ? 'waiting' : 'nodate', mine: 'want', added: todayStr() };
+        const x = { id: slugify(it.title), title: it.title, service: it.service || null, status: it.date || it.when ? 'waiting' : 'nodate', added: todayStr() };
         if (!lib) { if (it.date) x.date = it.date; if (it.when || it.date) x.when = it.when || longDate(it.date); if (it.note) x.note = it.note; }
         d.series.push(x);
       }, lib ? `Сериалы: «${it.title}» в библиотеку` : `Сериалы: «${it.title}» из премьер`);
@@ -652,7 +549,7 @@ function viewSettings() {
 
 /* ---------- роутер ---------- */
 let lastPage = '', typing = false;
-let mineStatus = 'all', lastMineSection = '';
+let lastMineSection = '';
 function render() {
   const h = location.hash || '#/week';
   const parts = h.replace(/^#\//, '').split('/');
@@ -663,7 +560,7 @@ function render() {
   if (page === 'list' || page === 'posters') { location.replace('#/mine/series'); return; }
   if (page === 'movies') { location.replace('#/mine/movies'); return; }
   if (page === 'lib') { location.replace('#/mine/series'); return; }
-  if (page === 'mine' && (parts[1] || 'series') !== lastMineSection) { mineStatus = 'all'; sq = ''; lastMineSection = parts[1] || 'series'; }
+  if (page === 'mine' && (parts[1] || 'series') !== lastMineSection) { sq = ''; lastMineSection = parts[1] || 'series'; }
   if (page === 'random' && lastPage !== 'random') { rnd = null; rndLoading = false; rndAttempted = false; }
   if (page !== lastPage) { sq = ''; lastPage = page; }
   let html;
@@ -697,8 +594,6 @@ document.addEventListener('input', (ev) => {
   const el = document.getElementById('sq'); if (el) { el.focus(); try { el.setSelectionRange(pos, pos); } catch (e) {} }
 });
 document.addEventListener('click', (ev) => {
-  const ms = ev.target.closest('[data-mine-status]');
-  if (ms) { mineStatus = ms.dataset.mineStatus; const y = window.scrollY; render(); window.scrollTo(0, y); return; }
   const jk = ev.target.closest('[data-jfkind]');
   if (jk) { jfkind = jfkind === jk.dataset.jfkind ? 'all' : jk.dataset.jfkind; render(); return; }
   const st = ev.target.closest('[data-stab]');
@@ -711,18 +606,28 @@ document.addEventListener('click', (ev) => {
   if (a.dataset.act === 'test') testPush();
   if (a.dataset.act === 'copy') copyCode();
   if (a.dataset.act === 'savetoken') { const v = document.getElementById('a_token').value.trim(); if (v) { lsSet('gh_token', v); render(); } }
-  if (a.dataset.act === 'mset' || a.dataset.act === 'mdel') movieAct(a.dataset.act, a.dataset.id, a.dataset.val);
+  if(a.dataset.act==='gfarchive'){
+    const kind=a.dataset.kind, id=a.dataset.id;
+    if(!['s','m'].includes(kind))return;
+    const item=kind==='s'?DATA.series.find(x=>x.id===id):MOVIES.items.find(x=>x.id===id);
+    if(!item)return;
+    const info=gfInfo(item,kind);
+    if(!info.eligibleArchive)return;
+    const key=gfArchiveKey(kind,id);
+    lsSet(key,gfArchived(item,kind,info)?'':info.releaseKey);
+    render();return;
+  }
   if (a.dataset.act === 'delsub') delSub(a.dataset.id);
   if (a.dataset.act === 'rreset') { ev.preventDefault(); rndSeen.clear(); lsSet('rnd_seen', '[]'); rnd = null; rndBuf = []; rndErr = ''; rndAttempted = false; rndNext(); return; }
   if (a.dataset.act === 'rnext') { const st = document.querySelector('.stage'); if (st && !st.classList.contains('busy')) { st.classList.add('busy', 'out'); setTimeout(rndNext, 160); } return; }
   if (a.dataset.act === 'savetmdb') { const v = (document.getElementById('r_key') || {}).value; if (v && v.trim()) { lsSet('tmdb_key', v.trim()); rndBuf = []; rndNext(); } return; }
   if (a.dataset.act === 'deltmdb') { ev.preventDefault(); lsSet('tmdb_key', ''); rndBuf = []; render(); return; }
-  if (a.dataset.act === 'dadd' || a.dataset.act === 'dlib') {
+  if (a.dataset.act === 'dadd') {
     const rid = a.dataset.id, act = a.dataset.act, inRnd = location.hash === '#/random';
     if (inRnd) {
       const st = document.querySelector('.stage'); if (st && st.classList.contains('busy')) return;
       if (st) st.classList.add('busy');
-      discoverAdd(rid, a.dataset.act === 'dlib').then(() => {
+      discoverAdd(rid, false).then(() => {
         if (location.hash !== '#/random' || !rnd || rnd.id !== rid) return;
         if (!inCollection(rnd)) { const s2 = document.querySelector('.stage'); if (s2) s2.classList.remove('busy'); return; }
         const s3 = document.querySelector('.stage'); if (s3) { s3.classList.add('busy', 'ok', 'out'); const nb = s3.querySelector(`.ab[data-act="${act}"]`); if (nb) { nb.classList.add('sel'); nb.classList.remove('dim'); nb.style.opacity = 1; const sv = nb.querySelector('svg'); if (sv) sv.innerHTML = '<path d="M5 12.5l4.5 4.5L19 7.5"/>'; const sp = nb.querySelector('span'); if (sp) sp.textContent = 'Добавлено'; } }
@@ -730,11 +635,9 @@ document.addEventListener('click', (ev) => {
       });
       return;
     }
-    discoverAdd(rid, a.dataset.act === 'dlib');
+    discoverAdd(rid, false);
     return;
   }
-  if (a.dataset.act === 'setmine') setMine(a.dataset.id, a.dataset.val);
-  if (a.dataset.act === 'seen' || a.dataset.act === 'unseen') { ev.preventDefault(); ev.stopPropagation(); markSeen(a.dataset.id, a.dataset.act === 'seen'); }
   if (a.dataset.act === 'deltoken') { lsSet('gh_token', ''); render(); }
   if (a.dataset.act === 'savejf') { const v = document.getElementById('a_jf').value.trim(); if (/^https?:\/\//i.test(v)) { lsSet('jf_url', v); render(); } }
   if (a.dataset.act === 'deljf') { lsSet('jf_url', ''); render(); }
