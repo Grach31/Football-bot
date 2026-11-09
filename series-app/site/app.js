@@ -929,6 +929,10 @@ function render() {
   let page = parts[0] || 'week';
   // Legacy calendar links always return to the main screen.
   if (page === 'cal') { location.replace('#/week'); return; }
+  // Old bookmarks and in-app back links open the new collection, not legacy carousel screens.
+  if (page === 'list' || page === 'posters') { location.replace('#/mine/series'); return; }
+  if (page === 'movies') { location.replace('#/mine/movies'); return; }
+  if (page === 'lib') { location.replace(libfilter === 'jf' ? '#/mine/server' : '#/mine/series'); return; }
   if (page === 'mine' && (parts[1] || 'series') !== lastMineSection) { mineStatus = 'all'; sq = ''; lastMineSection = parts[1] || 'series'; }
   if (page === 'random' && lastPage !== 'random') { rnd = null; rndLoading = false; }
   if (page !== lastPage) { sq = ''; sqOpen = false; lastPage = page; }
