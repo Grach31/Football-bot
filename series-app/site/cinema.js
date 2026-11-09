@@ -1,7 +1,7 @@
 'use strict';
 /* Grach Films: poster theme, series details and credits. Navigation and home live in minimal.js. */
 
-const APP_V = '71';
+const APP_V = '72';
 const NEON = ['#ff8a3d', '#ffd24d', '#3dff9a', '#ff5d8f', '#4d8bff', '#a58bff', '#3dd5ff', '#ff6b6b'];
 let NEON_CACHE = {};
 try { NEON_CACHE = JSON.parse(localStorage.getItem('neon_cache') || '{}'); } catch (e) { NEON_CACHE = {}; }
