@@ -142,8 +142,7 @@ function viewAdd() {
 <button type="submit" class="btn" ${has ? '' : 'disabled'} id="a_submit">Добавить</button>
 <div id="a_msg" class="meta" role="status"></div>
 </form>
-<p class="meta">Сериал появится в «Моё». Даты уточняются автоматически.</p></div>
-${tokenPanel()}`;
+<p class="meta">Сериал появится в «Моё». Даты уточняются автоматически.</p>${has ? '' : '<p class="meta">Для добавления настрой токен в <a href="#/settings" style="color:var(--accent)">настройках</a>.</p>'}</div>`;
 }
 
 function slugify(t) {
@@ -231,7 +230,7 @@ function viewSubs() {
 <select class="inp" id="s_period"><option value="month">Каждый месяц</option><option value="3m">Раз в 3 месяца</option><option value="6m">Раз в полгода</option><option value="year">Раз в год</option><option value="once">Один раз (без продления)</option></select>
 <button type="submit" class="btn" id="s_submit" ${has ? '' : 'disabled'}>Добавить</button>
 <div id="s_msg" class="meta" role="status"></div></form>
-${has ? '' : '<p class="meta">Чтобы сохранять, добавьте токен GitHub на странице <a href="#/add" style="color:var(--accent)">«Добавить сериал»</a>.</p>'}</div>`;
+${has ? '' : '<p class="meta">Чтобы сохранять, добавьте токен GitHub на <a href="#/settings" style="color:var(--accent)">настройках</a>.</p>'}</div>`;
   return html;
 }
 
@@ -403,7 +402,7 @@ function viewRandom() {
   html += '<p class="swhint">← листайте влево или вправо: следующий →</p>';
   if (it.desc) html += `<p class="note">${esc(it.desc)}</p>`;
   html += '<div id="d_msg" class="meta" role="status"></div>';
-  if (!added && !has) html += '<p class="meta">Чтобы добавить, сохраните токен GitHub на странице «Добавить сериал».</p>';
+  if (!added && !has) html += '<p class="meta">Чтобы добавить, сохраните токен GitHub в настройках.</p>';
   if (!tmdbKey()) html += `<div class="panel"><h2>Бесконечная лента</h2><p>Сейчас выпадают тайтлы из готовой подборки. Чтобы лента не заканчивалась, вставьте ключ TMDB (API Key). Он хранится только на этом телефоне.</p><input id="r_key" class="inp" placeholder="Ключ TMDB" autocomplete="off" autocapitalize="off"><button type="button" class="btn wide" data-act="savetmdb">Включить</button></div>`;
   else html += `<p class="foot">Данные и постеры: TMDB.${rndErr ? ' Сейчас TMDB не отвечает, показываю готовую подборку.' : ''} <a href="#/random" data-act="deltmdb" style="text-decoration:underline">Убрать ключ</a></p>`;
   return html;
@@ -427,7 +426,7 @@ function viewDisc(id) {
 async function discoverAdd(id) {
   const it = DISC.items.find((x) => x.id === id) || POOL.items.find((x) => x.id === id) || rndCache.get(id); if (!it) return;
   const msg = document.getElementById('d_msg');
-  if (!lsGet('gh_token')) { if (msg) msg.innerHTML = '<span class="warn">Нужен токен GitHub: «Добавить сериал» → токен.</span>'; return; }
+  if (!lsGet('gh_token')) { if (msg) msg.innerHTML = '<span class="warn">Нужен токен GitHub: Настройки → Токен.</span>'; return; }
   if (msg) msg.textContent = 'Сохраняю…';
   try {
     if (it.kind === 'film') {
@@ -490,7 +489,7 @@ async function jfLoad() {
     else jfItems = (await r.json()).Items || [];
   } catch (e) { jfErr = jfNetErr(e); jfItems = null; }
   jfLoading = false;
-  if (location.hash.startsWith('#/mine/server')) render();
+  if (location.hash.startsWith('#/mine')) render();
 }
 function viewJfServer() {
   const b = jfBase();
@@ -541,7 +540,8 @@ function render() {
   if (page === 'list' || page === 'posters') { location.replace('#/mine/series'); return; }
   if (page === 'movies') { location.replace('#/mine/movies'); return; }
   if (page === 'lib') { location.replace('#/mine/server'); return; }
-  if (page === 'mine' && (parts[1] || 'series') !== lastMineSection) { sq = ''; lastMineSection = parts[1] || 'series'; }
+  if (page === 'search') { location.replace('#/mine/series'); return; }
+  if (page === 'mine' && (parts[1] || 'series') !== lastMineSection) { lastMineSection = parts[1] || 'series'; }
   if (page === 'random' && lastPage !== 'random') { rnd = null; rndLoading = false; rndAttempted = false; }
   if (page !== lastPage) { sq = ''; lastPage = page; }
   let html;
@@ -549,7 +549,6 @@ function render() {
   if (page === 's') html = viewSeries(decodeURIComponent(parts[1] || ''));
   else if (page === 'settings') html = viewSettings();
   else if (page === 'mine') html = viewMine(parts[1] || 'series');
-  else if (page === 'search') html = viewSearch();
   else if (page === 'add') html = viewAdd();
   else if (page === 'discover') html = viewDiscover();
   else if (page === 'd') html = viewDisc(decodeURIComponent(parts[1] || ''));
