@@ -53,14 +53,15 @@ const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&':
 function hash(str) { let h = 0; for (const ch of str) h = (h * 31 + ch.codePointAt(0)) >>> 0; return h; }
 const eps = (s) => s.episodes || [];
 const unit = (s) => s.unit || 'серия';
-const nextEp = (s, today) => eps(s).find((e) => e.date >= today) || null;
+const byAirDate = (a, b) => (a.date + 'T' + (a.time || '00:00')).localeCompare(b.date + 'T' + (b.time || '00:00'));
+const nextEp = (s, today) => eps(s).filter((e) => e.date >= today).sort(byAirDate)[0] || null;
 // серия считается вышедшей: дата прошла, а если в день выхода указано время, то оно наступило
-const nowHM = () => { const d = new Date(); return String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0'); };
+const nowHM = () => new Intl.DateTimeFormat('en-GB', { timeZone: MSK, hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).format(new Date());
 const epAired = (e, today) => e.date < today || (e.date === today && (!e.time || e.time <= nowHM()));
-const nextUnaired = (s, today) => eps(s).find((e) => !epAired(e, today)) || null;
+const nextUnaired = (s, today) => eps(s).filter((e) => !epAired(e, today)).sort(byAirDate)[0] || null;
 // недавно вышедшая серия: держим сериал заметным, пока не выйдет следующая (до 13 дней)
 function lastOut(s, today) {
-  const past = eps(s).filter((e) => epAired(e, today));
+  const past = eps(s).filter((e) => epAired(e, today)).sort(byAirDate);
   if (!past.length) return null;
   const e = past[past.length - 1];
   const days = Math.round((d0(today) - d0(e.date)) / 86400000);
@@ -669,7 +670,7 @@ const DICE = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke
 // Ключ TMDB (только чтение) хранится на телефоне, в код и репозиторий не попадает.
 const tmdbKey = () => lsGet('tmdb_key');
 const TG = { 28: 'боевик', 12: 'приключения', 16: 'мультфильм', 35: 'комедия', 80: 'криминал', 18: 'драма', 10751: 'семейный', 14: 'фэнтези', 36: 'история', 27: 'ужасы', 10402: 'музыка', 9648: 'детектив', 10749: 'мелодрама', 878: 'фантастика', 53: 'триллер', 10752: 'военный', 37: 'вестерн', 10759: 'боевик и приключения', 10765: 'фантастика и фэнтези', 10768: 'война и политика' };
-let rndBuf = [], rndBusy = null, rndLoading = false, rndMax = {}, rndKind = 0, rndErr = '';
+let rndBuf = [], rndBusy = null, rndLoading = false, rndAttempted = false, rndMax = {}, rndKind = 0, rndErr = '';
 const rndCache = new Map();
 let rndSeen = new Set(); try { rndSeen = new Set(JSON.parse(lsGet('rnd_seen') || '[]')); } catch (e) {}
 const rndMark = (id) => { rndSeen.add(id); lsSet('rnd_seen', JSON.stringify([...rndSeen].slice(-400))); };
@@ -703,6 +704,7 @@ function rndFromPool() {
   return list.length ? list[Math.floor(Math.random() * list.length)] : null;
 }
 async function rndNext() {
+  rndAttempted = true;
   if (rnd) rndMark(rnd.id);
   rndBuf = rndBuf.filter(rndOk);
   if (!rndBuf.length && tmdbKey()) { rndLoading = true; render(); await rndFill(); rndLoading = false; rndBuf = rndBuf.filter(rndOk); }
@@ -713,9 +715,9 @@ async function rndNext() {
 }
 function viewRandom() {
   const back = '<a class="back" href="#/week"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>Главная</a>';
-  if (!rnd && !rndLoading) { setTimeout(rndNext, 0); return `${back}<p class="empty">Подбираю…</p>`; }
+  if (!rnd && !rndLoading && !rndAttempted) { rndAttempted = true; setTimeout(rndNext, 0); return `${back}<p class="empty">Подбираю…</p>`; }
   if (rndLoading) return `${back}<p class="empty">Подбираю…</p>`;
-  if (!rnd) return `${back}<p class="empty">Не получилось подобрать: проверьте интернет и откройте раздел ещё раз.</p>`;
+  if (!rnd) return `${back}<p class="empty">Пока нет новых вариантов. ${rndErr ? esc('TMDB: ' + rndErr) : 'Вся доступная подборка уже показана.'}</p><button type="button" class="btn wide ghost" data-act="rreset">Начать подбор заново</button>${!tmdbKey() ? '<div class="panel"><h2>Расширить подборку</h2><p>Можно подключить TMDB, указав API Key. Ключ хранится только на этом устройстве.</p><input id="r_key" class="inp" placeholder="Ключ TMDB" autocomplete="off" autocapitalize="off"><button type="button" class="btn wide" data-act="savetmdb">Подключить</button></div>' : ''}`;
   const it = rnd, [ga, gb] = palOf(it), added = inCollection(it), has = !!lsGet('gh_token');
   const I = {
     plus: '<path d="M12 5v14M5 12h14"/>', check: '<path d="M5 12.5l4.5 4.5L19 7.5"/>', next: '<path d="M5 12h14M13 6l6 6-6 6"/>',
@@ -931,7 +933,7 @@ function render() {
   if (page === 'movies') { location.replace('#/mine/movies'); return; }
   if (page === 'lib') { location.replace(libfilter === 'jf' ? '#/mine/server' : '#/mine/series'); return; }
   if (page === 'mine' && (parts[1] || 'series') !== lastMineSection) { mineStatus = 'all'; sq = ''; lastMineSection = parts[1] || 'series'; }
-  if (page === 'random' && lastPage !== 'random') { rnd = null; rndLoading = false; }
+  if (page === 'random' && lastPage !== 'random') { rnd = null; rndLoading = false; rndAttempted = false; }
   if (page !== lastPage) { sq = ''; sqOpen = false; lastPage = page; }
   let html;
   if (page === 'subs' || page === 'notify' || page === 'jf') { stab = page; page = 'settings'; }
@@ -1001,6 +1003,7 @@ document.addEventListener('click', (ev) => {
   if (a.dataset.act === 'savetoken') { const v = document.getElementById('a_token').value.trim(); if (v) { lsSet('gh_token', v); render(); } }
   if (a.dataset.act === 'mset' || a.dataset.act === 'mdel') movieAct(a.dataset.act, a.dataset.id, a.dataset.val);
   if (a.dataset.act === 'delsub') delSub(a.dataset.id);
+  if (a.dataset.act === 'rreset') { ev.preventDefault(); rndSeen.clear(); lsSet('rnd_seen', '[]'); rnd = null; rndBuf = []; rndErr = ''; rndAttempted = false; rndNext(); return; }
   if (a.dataset.act === 'rnext') { const st = document.querySelector('.stage'); if (st && !st.classList.contains('busy')) { st.classList.add('busy', 'out'); setTimeout(rndNext, 160); } return; }
   if (a.dataset.act === 'savetmdb') { const v = (document.getElementById('r_key') || {}).value; if (v && v.trim()) { lsSet('tmdb_key', v.trim()); rndBuf = []; rndNext(); } return; }
   if (a.dataset.act === 'deltmdb') { ev.preventDefault(); lsSet('tmdb_key', ''); rndBuf = []; render(); return; }
