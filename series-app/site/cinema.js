@@ -3,7 +3,7 @@
    Загружается после app.js и заменяет экраны: главная (зал), страница сериала (плёнка), календарь (табло),
    добавляет титры после финала и вступление. Данные и логика сохранения остаются в app.js. */
 
-const APP_V = '70';
+const APP_V = '71';
 const NEON = ['#ff8a3d', '#ffd24d', '#3dff9a', '#ff5d8f', '#4d8bff', '#a58bff', '#3dd5ff', '#ff6b6b'];
 let NEON_CACHE = {};
 try { NEON_CACHE = JSON.parse(localStorage.getItem('neon_cache') || '{}'); } catch (e) { NEON_CACHE = {}; }
@@ -155,7 +155,6 @@ function carouselHtml(cfg, today) {
     <div class="hinfo" id="hinfo"><h2 id="hit"></h2><p id="him"></p><div class="hbtns"><a class="go" id="hopen" href="#/list"><svg width="18" height="18" viewBox="0 0 24 24"><path d="M7 4.5v15l12-7.5z" fill="#04101c"/></svg>Открыть</a><button type="button" class="glass hround" id="hact" hidden></button></div><div class="hbtns hbtns2" id="hbtns2" hidden></div><div id="d_msg" class="meta" role="status"></div></div>
     <div class="seats"><svg viewBox="0 0 400 150" preserveAspectRatio="none"><g>${STAGE_SEATS}</g></svg></div></section><div class="below" id="hbelow"></div>`;
 }
-viewWeek = function () { const t = todayStr(); return carouselHtml(cfgWeek(t), t) + `<p class="foot">Данные обновлены ${esc(DATA.updated)}. Даты взяты из открытых источников и могут меняться. Версия ${APP_V}.</p>`; };
 viewList = function () { const t = todayStr(); return carouselHtml(cfgSeries(t), t); };
 viewMovies = function () { const t = todayStr(); return carouselHtml(cfgMovies(t), t); };
 viewLib = function () { const t = todayStr(); return carouselHtml(cfgLib(t), t); };
@@ -458,46 +457,6 @@ function showCredits(s) {
 }
 function closeCredits() { const c = document.getElementById('credits'); if (!c) return; c.classList.remove('on'); const nx = document.getElementById('cnext'); if (nx) nx.classList.remove('on'); clearTimeout(window._ct); }
 
-/* ---------- СЕАНСЫ: табло и календарь ---------- */
-const AL = ' АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ0123456789.:-ABCDEFGHIJKLMNOPQRSTUVWXYZ!?+';
-const W1 = 15, W2 = 20;
-function boardRows(today) {
-  const out = [];
-  DATA.series.filter((s) => !s.no_schedule).forEach((s) => eps(s).forEach((e) => { if (e.date >= today) out.push({ date: e.date, title: s.title, sub: `${unit(s)} ${e.n}`, href: `#/s/${s.id}`, c: neonOf(s) }); }));
-  MOVIES.items.filter((m) => m.status !== 'watched' && m.date && m.date >= today).forEach((m) => out.push({ date: m.date, title: m.title, sub: 'фильм', href: `#/m/${m.id}`, c: neonOf(m) }));
-  // у каждого сериала в табло только ближайшая серия
-  const seen = new Set(), res = [];
-  out.sort((a, b) => (a.date < b.date ? -1 : 1)).forEach((r) => { if (seen.has(r.href)) return; seen.add(r.href); res.push(r); });
-  return res.slice(0, 6);
-}
-const flapT = (s, w) => { s = String(s).toUpperCase(); return s.length > w ? s.slice(0, w - 1) + '.' : s; };
-window.viewCal = function () {
-  const today = todayStr(); calview = 'month';
-  const rows = boardRows(today);
-  let html = `<div class="pghead">${pageHeader(false)}</div><div class="board"><div class="bh"><b>БЛИЖАЙШИЕ</b><span>ЗАЛ 1</span></div><div id="rows">`;
-  if (!rows.length) html += '<p class="empty" style="margin:8px 4px 14px">Ближайших выходов нет.</p>';
-  rows.forEach((r, i) => {
-    const mon = fmt(r.date, { month: 'short' }).replace('.', '').slice(0, 3);
-    const line2 = `${weekdayShort(r.date)} ${r.date.slice(8, 10)} ${mon} ${r.sub}`;
-    html += `<a class="rowb" href="${esc(r.href)}" style="--c:${r.c}" data-l1="${esc(flapT(r.title, W1))}" data-l2="${esc(flapT(line2, W2))}"><div class="fl"></div><div class="fl"></div></a>`;
-  });
-  html += `</div></div><div class="hd" style="margin-top:26px">Календарь</div>${calHtml(today)}`;
-  return html;
-};
-function initBoard() {
-  document.querySelectorAll('#rows .rowb').forEach((r, ri) => {
-    const [a, b] = r.querySelectorAll('.fl');
-    const mk = (el, w, cls) => { const cs = []; for (let i = 0; i < w; i++) { const c = document.createElement('div'); c.className = 'cell ' + cls; c.innerHTML = '<span> </span>'; el.appendChild(c); cs.push(c); } return cs; };
-    const A = mk(a, W1, 'big'), B = mk(b, W2, 'sm'), l1 = r.dataset.l1, l2 = r.dataset.l2;
-    const set = (c, ch, delay) => {
-      const target = Math.max(0, AL.indexOf(ch)); let cur = 0; if (!target) return;
-      setTimeout(() => { (function step() { cur = (cur + 1) % AL.length; c.firstChild.textContent = AL[cur]; c.classList.remove('flip'); void c.offsetWidth; c.classList.add('flip'); if (cur !== target) setTimeout(step, 40); })(); }, delay);
-    };
-    for (let i = 0; i < W1; i++) set(A[i], l1[i] || ' ', ri * 170 + i * 26);
-    for (let i = 0; i < W2; i++) set(B[i], l2[i] || ' ', ri * 170 + i * 18 + 110);
-  });
-}
-
 /* ---------- после каждой отрисовки ---------- */
 function afterRender(page) {
   const nav = document.getElementById('tabs');
@@ -507,8 +466,8 @@ function afterRender(page) {
     const p = nav.querySelector('.npill'); if (p) p.style.transform = k < 0 ? 'translateX(-200%)' : `translateX(${k * 100}%)`;
   }
   if (page !== 's') document.documentElement.style.removeProperty('--g');
-  if (page === 'week' || page === 'list' || page === 'movies' || page === 'lib') { initHall(); if (page === 'week') maybeIntro(); } else { stopHallTimer(); cancelAnimationFrame(PG.raf); }
-  if (page === 'cal') initBoard();
+  if (page === 'list' || page === 'movies' || page === 'lib') initHall();
+  else { stopHallTimer(); cancelAnimationFrame(PG.raf); }
   if (page === 's') initSeries(decodeURIComponent((location.hash.split('/')[2] || '')));
 }
 
