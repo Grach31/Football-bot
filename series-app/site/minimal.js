@@ -91,7 +91,7 @@ function viewMine(section) {
       <div class="gf-grid">${rows.map(x=>`<a class="gf-grid-card" href="#/${active==='series'?'s':'m'}/${encodeURIComponent(x.id)}">${poster(x)}${gfReleaseLabel(x,active==='series'?'s':'m',todayStr()) ? `<em class="gf-date">${esc(gfReleaseLabel(x,active==='series'?'s':'m',todayStr()))}</em>` : ''}<strong>${esc(x.title)}</strong><small>${status(x)==='done'?'Посмотрел':status(x)==='watching'?'Смотрю':'Хочу посмотреть'}</small></a>`).join('')}</div>
       ${rows.length?'':'<p class="gf-empty">В этом разделе пока ничего нет.</p>'}`;
   }
-  return `<div class="gf-shell">${gfHeader('Моё')}<div class="gf-collection-nav">${nav}</div>${body}<p class="gf-version">Версия ${APP_V}</p></div>`;
+  return `<div class="gf-shell">${gfHeader('Моё')}<div class="gf-collection-nav">${nav}</div><a class="gf-catalog-search" href="#/search">Поиск по всей коллекции и подборкам ›</a>${body}<p class="gf-version">Версия ${APP_V}</p></div>`;
 }
 function viewSearch() {
   const q=sq.trim().toLowerCase();
@@ -107,6 +107,6 @@ function viewSearch() {
     ${q?gfSection('В твоей коллекции',own.length+' найдено',own):'<p class="gf-hint">Найди уже добавленное или добавь новый фильм или сериал.</p>'}
     ${q?gfSection('Из подборок',suggested.length+' найдено',suggested):''}
     ${q&&!own.length&&!suggested.length?'<p class="gf-empty">Не найдено в сохранённых данных. Можно добавить вручную.</p>':''}
-    <div class="gf-shortcuts"><a href="#/add">+ Добавить сериал</a><a href="#/addm">+ Добавить фильм</a><a href="#/random">Открыть рекомендации</a></div>
+    <div class="gf-shortcuts"><a href="#/add">+ Добавить сериал</a><a href="#/addm">+ Добавить фильм</a></div>
     <p class="gf-version">Версия ${APP_V}</p></div>`;
 }
