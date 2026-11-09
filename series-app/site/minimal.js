@@ -57,22 +57,31 @@ function viewMine(section){
       '<input class="gf-search" id="sq" type="search" placeholder="Поиск на сервере" value="'+esc(sq)+'">'+
       chipRow([['all','Все'],['Movie','Фильмы'],['Series','Сериалы']],jfkind,'data-jfkind')+viewJfServer();
   }else{
-    const entries=(active==='series'?s.map(obj=>({obj,kind:'s',info:gfInfo(obj,'s')})):m.map(obj=>({obj,kind:'m',info:gfInfo(obj,'m')})))
-      .filter(x=>hit(x.obj.title)).sort((a,b)=>{
-        const aa=gfArchived(a.obj,a.kind,a.info)||a.info.group==='archive';
-        const bb=gfArchived(b.obj,b.kind,b.info)||b.info.group==='archive';
-        return Number(aa)-Number(bb)||gfOrder(a,b);
-      });
+    const searching=!!sq.trim();
+    const allMatches=gfEntries(todayStr()).filter(x=>hit(x.obj.title)).sort((a,b)=>{
+      const aa=gfArchived(a.obj,a.kind,a.info)||a.info.group==='archive';
+      const bb=gfArchived(b.obj,b.kind,b.info)||b.info.group==='archive';
+      return Number(aa)-Number(bb)||gfOrder(a,b);
+    });
+    const entries=searching?allMatches:allMatches.filter(x=>x.kind===(active==='series'?'s':'m'));
     const current=entries.filter(x=>!(gfArchived(x.obj,x.kind,x.info)||x.info.group==='archive'));
     const old=entries.filter(x=>gfArchived(x.obj,x.kind,x.info)||x.info.group==='archive');
+    const searchGroup=(title,kind)=> {
+      const matches=allMatches.filter(x=>x.kind===kind);
+      return '<div class="gf-collection-title">'+title+' <span>'+matches.length+'</span></div>'+
+        (matches.length?'<div class="gf-grid">'+matches.map(x=>gfCard(x,true)).join('')+'</div>':'<p class="gf-hint">Ничего не найдено.</p>');
+    };
     body='<div class="gf-collection-toolbar"><span class="gf-subtle">Актуальное — сначала</span><div class="gf-toolbar-actions"><a class="gf-add gf-add-primary" href="'+(active==='series'?'#/add':'#/addm')+'">+ Добавить</a></div></div>'+
-    '<input class="gf-search" id="sq" type="search" placeholder="Поиск по коллекции" value="'+esc(sq)+'">'+
-    '<div class="gf-collection-title">Актуальное <span>'+current.length+'</span></div>'+
-    '<div class="gf-grid">'+current.map(x=>gfCard(x,true)).join('')+'</div>'+
-    (current.length?'':'<p class="gf-hint">Пока нет актуальных релизов.</p>')+
-    '<div class="gf-collection-title gf-archive-title">Архив <span>'+old.length+'</span></div>'+
-    '<div class="gf-grid">'+old.map(x=>gfCard(x,true)).join('')+'</div>'+
-    (old.length?'':'<p class="gf-hint">Архив пока пуст.</p>');
+    '<input class="gf-search" id="sq" type="search" aria-label="Общий поиск по фильмам и сериалам" placeholder="Поиск фильмов и сериалов" value="'+esc(sq)+'">'+
+    (searching?
+      '<p class="gf-search-hint">Поиск по всей коллекции · Сервер Jellyfin отдельно</p>'+
+      searchGroup('Сериалы','s')+searchGroup('Фильмы','m'):
+      '<div class="gf-collection-title">Актуальное <span>'+current.length+'</span></div>'+
+      '<div class="gf-grid">'+current.map(x=>gfCard(x,true)).join('')+'</div>'+
+      (current.length?'':'<p class="gf-hint">Пока нет актуальных релизов.</p>')+
+      '<div class="gf-collection-title gf-archive-title">Архив <span>'+old.length+'</span></div>'+
+      '<div class="gf-grid">'+old.map(x=>gfCard(x,true)).join('')+'</div>'+
+      (old.length?'':'<p class="gf-hint">Архив пока пуст.</p>'));
   }
   return '<div class="gf-shell">'+gfHeader('Моё')+'<div class="gf-collection-nav">'+nav.map(([id,label,count])=>'<a class="gf-collection-tile'+(id===active?' selected':'')+'" href="#/mine/'+id+'"><strong>'+label+'</strong><span>'+count+(id==='server'?' · Jellyfin':' в коллекции')+'</span></a>').join('')+'</div>'+body+
     '<p class="gf-version">v'+APP_V+'</p></div>';
