@@ -590,13 +590,49 @@
     {
       "id": "ayda",
       "title": "Айда!",
-      "service": "Start",
-      "status": "waiting",
-      "mine": "want",
+      "service": "START",
+      "status": "airing",
+      "mine": "watching",
       "added": "2026-10-22",
-      "when": "ноябрь 2026",
-      "note": "Премьера эксклюзивно на START в ноябре 2026, точная дата не объявлена; позже покажет НТВ. 8 серий по данным Кино Mail. Источники: Garry.cool, Кино Mail.",
-      "total": 8
+      "note": "Премьера на START 6 ноября 2026 в 18:00 МСК: сразу две серии. Третья — 13 ноября, далее по пятницам; финал 18 декабря. Источники: https://start.ru/watch/ayda ; https://www.sport-express.net/zozh/movies/serials/news/ayda-raspisanie-vyhoda-seriy-daty-vseh-epizodov-i-finala-2472616/",
+      "total": 8,
+      "season": 1,
+      "episodes": [
+        {
+          "n": 1,
+          "date": "2026-11-06"
+        },
+        {
+          "n": 2,
+          "date": "2026-11-06"
+        },
+        {
+          "n": 3,
+          "date": "2026-11-13"
+        },
+        {
+          "n": 4,
+          "date": "2026-11-20"
+        },
+        {
+          "n": 5,
+          "date": "2026-11-27"
+        },
+        {
+          "n": 6,
+          "date": "2026-12-04"
+        },
+        {
+          "n": 7,
+          "date": "2026-12-11"
+        },
+        {
+          "n": 8,
+          "date": "2026-12-18"
+        }
+      ],
+      "watch_url": "https://start.ru/watch/ayda",
+      "watch_name": "START"
     },
     {
       "id": "rezervaciya",
