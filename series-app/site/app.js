@@ -281,6 +281,7 @@ function viewMovie(id){
     '<div class="gf-detail-text"><div class="gf-eyebrow">GRACH FILMS · ФИЛЬМ</div><h1>'+esc(m.title)+'</h1>'+
     '<p class="gf-detail-meta">'+esc(m.service||'Моя коллекция')+'</p><div class="gf-detail-state">'+gfDecor(info)+'</div></div></div>'+
     (m.note?'<p class="gf-detail-note">'+esc(m.note)+'</p>':'')+jfWatch(m.title)+
+    gfWatchingButton(m,'m',info)+
     (gfArchived(m,'m',info)?'<p class="gf-archived-info">Убран с главной на этом устройстве</p>':'')+
     gfArchiveButton(m,'m',info)+
     '<div class="gf-detail-foot">Дата кинопремьеры не подтверждает онлайн-доступность.</div></div>';
@@ -588,9 +589,13 @@ document.addEventListener('click', (ev) => {
   if (a.dataset.act === 'savetoken') { const v = document.getElementById('a_token').value.trim(); if (v) { lsSet('gh_token', v); render(); } }
   if(a.dataset.act==='gfwatching'){
     ev.preventDefault();
-    const item=DATA.series.find(x=>x.id===a.dataset.id);
+    const kind=a.dataset.kind||'s',id=a.dataset.id;
+    if(kind!=='s'&&kind!=='m')return;
+    const item=kind==='s'?DATA.series.find(x=>x.id===id):MOVIES.items.find(x=>x.id===id);
     if(!item)return;
-    lsSet(gfWatchingKey(item.id),gfWatching(item)?'':'1');
+    // Films can be marked only after their confirmed release date.
+    if(kind==='m'&&!gfInfo(item,'m').eligibleArchive)return;
+    lsSet(gfWatchingKey(kind,item.id),gfWatching(item,kind)?'':'1');
     const y=window.scrollY;
     render();
     window.scrollTo(0,y);
