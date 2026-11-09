@@ -1,0 +1,26 @@
+name: Grach Films checks
+on:
+  pull_request:
+    paths:
+      - 'series-app/site/**'
+      - 'series-app/tests/**'
+      - 'series-app/package.json'
+      - 'series-app/scripts/notify.mjs'
+      - '.github/workflows/grach-films-check.yml'
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    defaults:
+      run:
+        working-directory: series-app
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --no-audit --no-fund
+      - run: npm run test:syntax
+      - run: npm test
