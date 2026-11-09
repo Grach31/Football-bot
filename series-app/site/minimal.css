@@ -87,3 +87,11 @@ body{background:radial-gradient(ellipse 80% 420px at 50% -100px,rgba(159,120,61,
 @keyframes gf-rise{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:translateY(0)}}
 @media(max-width:390px){.gf-collection-nav{gap:6px}.gf-collection-tile{padding:12px 8px}.gf-collection-tile strong{font-size:11px}.gf-block-head h2{font-size:17px}.gf-detail-head{gap:12px}.gf-episode{gap:7px;padding:12px 9px}}
 @media(prefers-reduced-motion:reduce){.gf-block{animation:none!important}.gf-icon,.gf-archive-action{transition:none!important}}
+
+/* Single search across collection and connected Jellyfin. */
+.gf-search-label{display:block;color:var(--muted);font-size:12px;font-weight:650;margin:8px 0 9px}
+.gf-search-results{display:flex;flex-direction:column;gap:24px}
+.gf-search-group{min-width:0}
+.gf-search-group h2{font:700 17px/1.35 var(--fh);margin:0 0 15px}
+.gf-search-group h2 span{font:600 12px var(--fb);color:var(--muted);margin-left:6px}
+.gf-search-group .gf-hint{margin:0}
