@@ -8,11 +8,12 @@ const gfArchiveButton = (item,kind,info=gfInfo(item,kind)) => (!info.eligibleArc
   '<button class="gf-archive-action" type="button" data-act="gfarchive" data-kind="'+kind+'" data-id="'+esc(item.id)+'">'+
   (gfArchived(item,kind,info)?'↶ Вернуть из архива':'↗ Убрать в архив')+'</button>';
 // Personal viewing list, intentionally independent of release dates and manual archive.
-const gfWatchingKey = id => 'gf_watching_v1:s:'+id;
-const gfWatching = item => lsGet(gfWatchingKey(item.id)) === '1';
-const gfWatchingButton = item => '<button type="button" class="gf-watching-action'+(gfWatching(item)?' is-watching':'')+
-  '" data-act="gfwatching" data-id="'+esc(item.id)+'" aria-pressed="'+(gfWatching(item)?'true':'false')+'">'+
-  (gfWatching(item)?'✓ Закончил смотреть':'▶ Смотрю сейчас')+'</button>';
+const gfWatchingKey = (kind,id) => 'gf_watching_v1:'+kind+':'+id;
+const gfWatching = (item,kind='s') => lsGet(gfWatchingKey(kind,item.id)) === '1';
+const gfWatchingButton = (item,kind='s',info=gfInfo(item,kind)) =>
+  (kind==='m'&&!info.eligibleArchive?'':'<button type="button" class="gf-watching-action'+(gfWatching(item,kind)?' is-watching':'')+
+  '" data-act="gfwatching" data-kind="'+kind+'" data-id="'+esc(item.id)+'" aria-pressed="'+(gfWatching(item,kind)?'true':'false')+'">'+
+  (gfWatching(item,kind)?'✓ Закончил смотреть':'▶ Смотрю сейчас')+'</button>');
 const gfDecor = (info) => '<span class="gf-release-label">'+esc(info.label)+'</span><span class="gf-release-detail">'+esc(info.detail)+'</span>';
 const gfHeader = (label) => '<header class="gf-header"><div><div class="gf-eyebrow">GRACH FILMS / PRIVATE CINEMA</div><h1>'+esc(label)+'</h1></div><div class="gf-actions"><a href="#/random" class="gf-icon" aria-label="Случайный фильм или сериал">'+DICE+'</a><a href="#/settings" class="gf-icon" aria-label="Настройки">'+GEAR+'</a></div></header>';
 const gfEntries = (today) => [
@@ -39,7 +40,9 @@ function gfSection(title,subtitle,items,more){
   (more?'<a href="'+esc(more)+'">Все ›</a>':'')+'</div><div class="gf-rail">'+items.slice(0,14).map(x=>gfCard(x)).join('')+'</div></section>';
 }
 function viewWeek(){
-  const today=todayStr(), entries=gfEntries(today).filter(x=>!gfArchived(x.obj,x.kind,x.info)).sort(gfOrder);
+  const today=todayStr(), all=gfEntries(today).sort(gfOrder);
+  const watching=all.filter(x=>gfWatching(x.obj,x.kind));
+  const entries=all.filter(x=>!gfWatching(x.obj,x.kind)&&!gfArchived(x.obj,x.kind,x.info));
   const news=entries.filter(x=>x.kind==='s'&&x.info.group==='new');
   const filmPremieres=entries.filter(x=>x.kind==='m'&&x.info.group==='new');
   const soon=entries.filter(x=>x.info.group==='soon');
@@ -47,6 +50,7 @@ function viewWeek(){
   const recHTML=recommendations.length?'<section class="gf-block"><div class="gf-block-head"><div><h2>Рекомендации</h2><p>Что ещё посмотреть</p></div><a href="#/discover">Все ›</a></div><div class="gf-rail">'+
     recommendations.map(x=>'<a class="gf-card" href="'+x.href+'"><div class="gf-poster-wrap">'+poster(x.obj)+'</div><strong>'+esc(x.obj.title)+'</strong><span class="gf-card-meta">Для тебя</span></a>').join('')+'</div></section>':'';
   return '<div class="gf-shell">'+gfHeader('Твой кинозал')+
+    gfSection('Смотрю сейчас','Твои сериалы и фильмы · независимо от даты релиза',watching)+
     gfSection('Новые серии','Вышли за последние 13 дней',news)+
     gfSection('Скоро выйдет','Подтверждённые даты следующих релизов',soon)+
     gfSection('Премьеры фильмов','Недавние релизы из твоей коллекции',filmPremieres)+recHTML+
@@ -104,14 +108,9 @@ function viewMine(section){
         const bb=gfArchived(b.obj,b.kind,b.info)||b.info.group==='archive';
         return Number(aa)-Number(bb)||gfOrder(a,b);
       });
-    const watching=active==='series'?entries.filter(x=>gfWatching(x.obj)):[];
-    const rest=active==='series'?entries.filter(x=>!gfWatching(x.obj)):entries;
-    const current=rest.filter(x=>!(gfArchived(x.obj,x.kind,x.info)||x.info.group==='archive'));
-    const old=rest.filter(x=>gfArchived(x.obj,x.kind,x.info)||x.info.group==='archive');
-    body=(active==='series'&&watching.length?'<section class="gf-watching-section"><div class="gf-collection-title gf-watching-title">▶ Смотрю сейчас <span>'+watching.length+'</span></div>'+
-      '<p class="gf-watching-subtitle">Твой личный список. Он не зависит от даты выхода.</p>'+
-      '<div class="gf-grid">'+watching.map(x=>gfCard(x,true)).join('')+'</div></section>':'')+
-      '<div class="gf-collection-title">Актуальное <span>'+current.length+'</span></div>'+
+    const current=entries.filter(x=>!(gfArchived(x.obj,x.kind,x.info)||x.info.group==='archive'));
+    const old=entries.filter(x=>gfArchived(x.obj,x.kind,x.info)||x.info.group==='archive');
+    body='<div class="gf-collection-title">Актуальное <span>'+current.length+'</span></div>'+
       '<div class="gf-grid">'+current.map(x=>gfCard(x,true)).join('')+'</div>'+
       (current.length?'':'<p class="gf-hint">Пока нет актуальных релизов.</p>')+
       '<div class="gf-collection-title gf-archive-title">Архив <span>'+old.length+'</span></div>'+
