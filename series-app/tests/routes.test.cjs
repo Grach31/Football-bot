@@ -60,6 +60,27 @@ test('jsdom: all routes, archive, old links, Jellyfin isolation and Cinema Noir'
   assert.ok(w.document.querySelector('[data-act="gfarchive"]'),'movie archive after premiere');
   go('#/mine/movies');
   assert.match(app(),/Вышедший фильм/);
+  // A single search must find both media types from either collection tab.
+  go('#/mine/series');
+  const crossSearch=w.document.querySelector('#sq');
+  assert.match(crossSearch.placeholder,/фильмов и сериалов/);
+  crossSearch.value='Вышедший';
+  crossSearch.dispatchEvent(new w.Event('input',{bubbles:true}));
+  assert.match(app(),/Вышедший фильм/);
+  assert.match(app(),/Фильмы/);
+  assert.doesNotMatch(app(),/Финальный сериал/);
+  go('#/mine/movies');
+  const otherSearch=w.document.querySelector('#sq');
+  otherSearch.value='Финальный';
+  otherSearch.dispatchEvent(new w.Event('input',{bubbles:true}));
+  assert.match(app(),/Финальный сериал/);
+  go('#/mine/server');
+  assert.match(w.document.querySelector('#sq').placeholder,/сервере/);
+  go('#/add');
+  assert.equal(w.document.getElementById('a_token'),null,'token panel not in Add');
+  go('#/settings');
+  w.document.querySelector('[data-stab="token"]').click();
+  assert.ok(w.document.getElementById('a_token'),'token remains in Settings');
   go('#/mine/server');
   assert.match(app(),/Jellyfin/);
   go('#/search');
