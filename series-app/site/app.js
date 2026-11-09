@@ -16,7 +16,6 @@ let DATA = { updated: '', series: [] };
 let CONFIG = {};
 let SUBS = { updated: '', items: [] };
 let MOVIES = { updated: '', items: [] };
-let confirmDel = '';
 let stab = 'subs';
 
 /* ---------- даты ---------- */
@@ -34,27 +33,10 @@ const longDate = (s) => fmt(s, { day: 'numeric', month: 'long' });
 /* ---------- утилиты ---------- */
 const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 function hash(str) { let h = 0; for (const ch of str) h = (h * 31 + ch.codePointAt(0)) >>> 0; return h; }
-const eps = (s) => s.episodes || [];
-const unit = (s) => s.unit || 'серия';
 const byAirDate = (a, b) => (a.date + 'T' + (a.time || '00:00')).localeCompare(b.date + 'T' + (b.time || '00:00'));
-const nextEp = (s, today) => eps(s).filter((e) => e.date >= today).sort(byAirDate)[0] || null;
-// серия считается вышедшей: дата прошла, а если в день выхода указано время, то оно наступило
-const nowHM = () => new Intl.DateTimeFormat('en-GB', { timeZone: MSK, hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).format(new Date());
-const epAired = (e, today) => e.date < today || (e.date === today && (!e.time || e.time <= nowHM()));
-const nextUnaired = (s, today) => eps(s).filter((e) => !epAired(e, today)).sort(byAirDate)[0] || null;
-// недавно вышедшая серия: держим сериал заметным, пока не выйдет следующая (до 13 дней)
-function lastOut(s, today) {
-  const past = eps(s).filter((e) => epAired(e, today)).sort(byAirDate);
-  if (!past.length) return null;
-  const e = past[past.length - 1];
-  const days = Math.round((d0(today) - d0(e.date)) / 86400000);
-  return days <= 13 ? { e, days } : null;
-}
 let sq = '';
 const hit = (t) => !sq || (t || '').toLowerCase().includes(sq.toLowerCase().trim());
 const chipRow = (arr, cur, attr) => '<div class="chips">' + arr.filter(([k]) => k !== 'all').map(([k, l]) => `<button type="button" class="fbtn ${cur === k ? 'on' : ''}" ${attr}="${k}">${l}</button>`).join('') + '</div>';
-
-
 
 
 /* ---------- уведомления ---------- */
@@ -442,7 +424,7 @@ function viewDisc(id) {
   if (!added && !has) html += '<p class="meta">Чтобы добавить, сохраните токен GitHub на странице «Добавить сериал».</p>';
   return html;
 }
-async function discoverAdd(id, lib) {
+async function discoverAdd(id) {
   const it = DISC.items.find((x) => x.id === id) || POOL.items.find((x) => x.id === id) || rndCache.get(id); if (!it) return;
   const msg = document.getElementById('d_msg');
   if (!lsGet('gh_token')) { if (msg) msg.innerHTML = '<span class="warn">Нужен токен GitHub: «Добавить сериал» → токен.</span>'; return; }
@@ -452,22 +434,21 @@ async function discoverAdd(id, lib) {
       MOVIES = await ghEdit('movies.json', (d) => {
         if (d.items.some((x) => x.title.toLowerCase() === it.title.toLowerCase())) return;
         const m = { id: `${slugify(it.title)}-${Date.now().toString(36).slice(-4)}`, title: it.title, service: it.service || 'Твоё', added: todayStr() };
-        if (!lib) { if (it.date) m.date = it.date; if (it.note) m.note = it.note; }
+        if (it.date) m.date = it.date; if (it.note) m.note = it.note;
         d.items.push(m);
-      }, lib ? `Фильмы: «${it.title}» в библиотеку` : `Фильмы: «${it.title}» из премьер`);
+      }, `Фильмы: добавить «${it.title}»`);
     } else {
       DATA = await ghEdit('series.json', (d) => {
         if (d.series.some((x) => x.title.toLowerCase() === it.title.toLowerCase())) return;
         const x = { id: slugify(it.title), title: it.title, service: it.service || null, status: it.date || it.when ? 'waiting' : 'nodate', added: todayStr() };
-        if (!lib) { if (it.date) x.date = it.date; if (it.when || it.date) x.when = it.when || longDate(it.date); if (it.note) x.note = it.note; }
+        if (it.date) x.date = it.date; if (it.when || it.date) x.when = it.when || longDate(it.date); if (it.note) x.note = it.note;
         d.series.push(x);
-      }, lib ? `Сериалы: «${it.title}» в библиотеку` : `Сериалы: «${it.title}» из премьер`);
+      }, `Сериалы: добавить «${it.title}»`);
     }
     render();
   } catch (err) { if (msg) msg.innerHTML = `<span class="warn">${esc(err.message || err)}</span>`; }
 }
 
-/* ---------- библиотека: всё, что посмотрел ---------- */
 /* ---------- настройки: подписки, уведомления, токен ---------- */
 function tokenPanel() {
   const has = !!lsGet('gh_token');
@@ -627,7 +608,7 @@ document.addEventListener('click', (ev) => {
     if (inRnd) {
       const st = document.querySelector('.stage'); if (st && st.classList.contains('busy')) return;
       if (st) st.classList.add('busy');
-      discoverAdd(rid, false).then(() => {
+      discoverAdd(rid).then(() => {
         if (location.hash !== '#/random' || !rnd || rnd.id !== rid) return;
         if (!inCollection(rnd)) { const s2 = document.querySelector('.stage'); if (s2) s2.classList.remove('busy'); return; }
         const s3 = document.querySelector('.stage'); if (s3) { s3.classList.add('busy', 'ok', 'out'); const nb = s3.querySelector(`.ab[data-act="${act}"]`); if (nb) { nb.classList.add('sel'); nb.classList.remove('dim'); nb.style.opacity = 1; const sv = nb.querySelector('svg'); if (sv) sv.innerHTML = '<path d="M5 12.5l4.5 4.5L19 7.5"/>'; const sp = nb.querySelector('span'); if (sp) sp.textContent = 'Добавлено'; } }
@@ -635,7 +616,7 @@ document.addEventListener('click', (ev) => {
       });
       return;
     }
-    discoverAdd(rid, false);
+    discoverAdd(rid);
     return;
   }
   if (a.dataset.act === 'deltoken') { lsSet('gh_token', ''); render(); }
