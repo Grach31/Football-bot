@@ -59,3 +59,6 @@
 }
 .gf-card>em.gf-date {font-style:normal;}
 .gf-grid-card>.gf-date {font-style:normal;}
+
+/* Global catalogue search remains available under My; random picks live in the header. */
+.gf-catalog-search { display:block; width:fit-content; margin:-6px 0 20px; font-size:12px; font-weight:700; color:var(--accent); }
