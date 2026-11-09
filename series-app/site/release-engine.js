@@ -16,7 +16,7 @@
     const date = valid(item.date) ? item.date : '';
     if (movie) {
       const released = !!date && date <= today;
-      const recent = released && plus(date, 13) >= today;
+      const recent = released && plus(date, 13) > today;
       return { kind:'movie', group:recent?'new':date>today?'soon':'archive',
         label:date?'Премьера · '+format(date):'Дата уточняется',
         detail:released?'Фильм вышел':date?'Ожидается премьера':'Дата уточняется',
@@ -33,7 +33,7 @@
     // A confirmed finale requires all episode numbers 1..total, not just N arbitrary entries.
     const finished=!!(total&&!future.length&&Array.from({length:total},(_,i)=>i+1).every(n=>releasedNumbers.has(n)));
     const latestDate=last?.date||(!events.length&&date<=today?date:'');
-    const recent=!!(latestDate&&plus(latestDate,13)>=today);
+    const recent=!!(latestDate&&plus(latestDate,13)>today);
     const soonDate=next?.date||(!events.length&&date>today?date:'');
     const group=recent?'new':soonDate?'soon':'archive';
     let label=aired?'Вышло '+aired+(total?' из '+total:'')+' серий':soonDate?'Премьера · '+format(soonDate):'Дата уточняется';
