@@ -65,7 +65,7 @@ function viewMine(section){
       });
     const current=entries.filter(x=>!(gfArchived(x.obj,x.kind,x.info)||x.info.group==='archive'));
     const old=entries.filter(x=>gfArchived(x.obj,x.kind,x.info)||x.info.group==='archive');
-    body='<div class="gf-collection-toolbar"><span class="gf-subtle">Актуальное — сначала</span><div class="gf-toolbar-actions"><a class="gf-add" href="#/search">Поиск</a><a class="gf-add gf-add-primary" href="'+(active==='series'?'#/add':'#/addm')+'">+ Добавить</a></div></div>'+
+    body='<div class="gf-collection-toolbar"><span class="gf-subtle">Актуальное — сначала</span><div class="gf-toolbar-actions"><a class="gf-add gf-add-primary" href="'+(active==='series'?'#/add':'#/addm')+'">+ Добавить</a></div></div>'+
     '<input class="gf-search" id="sq" type="search" placeholder="Поиск по коллекции" value="'+esc(sq)+'">'+
     '<div class="gf-collection-title">Актуальное <span>'+current.length+'</span></div>'+
     '<div class="gf-grid">'+current.map(x=>gfCard(x,true)).join('')+'</div>'+
