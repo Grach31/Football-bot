@@ -3,6 +3,7 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
+const vm = require('node:vm');
 const { JSDOM } = require('jsdom');
 
 const root = path.resolve(__dirname,'../site');
@@ -33,7 +34,7 @@ test('jsdom: all routes, archive, old links, Jellyfin isolation and Cinema Noir'
     ok:true,
     json:async()=>JSON.parse(JSON.stringify(data[String(url)]||{items:[]}))
   });
-  for(const file of ['release-engine.js','app.js','cinema.js','minimal.js'])w.eval(read(file));
+  for(const file of ['release-engine.js','app.js','cinema.js','minimal.js'])vm.runInContext(read(file),dom.getInternalVMContext(),{filename:file});
   await w.boot(true);
   const app=()=>w.document.getElementById('app').textContent;
   const go=hash=>{w.location.hash=hash;w.render();};
