@@ -1,7 +1,5 @@
 'use strict';
-/* ===== Grach films: новый дизайн «кинозал» =====
-   Загружается после app.js и заменяет экраны: главная (зал), страница сериала (плёнка), календарь (табло),
-   добавляет титры после финала и вступление. Данные и логика сохранения остаются в app.js. */
+/* Grach Films: poster theme, series details and credits. Navigation and home live in minimal.js. */
 
 const APP_V = '71';
 const NEON = ['#ff8a3d', '#ffd24d', '#3dff9a', '#ff5d8f', '#4d8bff', '#a58bff', '#3dd5ff', '#ff6b6b'];
@@ -9,54 +7,6 @@ let NEON_CACHE = {};
 try { NEON_CACHE = JSON.parse(localStorage.getItem('neon_cache') || '{}'); } catch (e) { NEON_CACHE = {}; }
 const neonKey = (s) => String(s.id || s.title);
 const neonOf = (s) => NEON_CACHE[neonKey(s)] || NEON[hash(s.title || neonKey(s)) % NEON.length];
-const shade = (hex, k) => { const n = parseInt(hex.slice(1), 16); const f = (v) => Math.max(0, Math.min(255, Math.round(v * k))); return `rgb(${f(n >> 16)},${f((n >> 8) & 255)},${f(n & 255)})`; };
-
-/* основной цвет постера: неоновая подсветка берётся из картинки */
-function domColor(url) {
-  return new Promise((res) => {
-    const im = new Image();
-    im.onload = () => {
-      try {
-        const W = 24, H = 36, c = document.createElement('canvas'); c.width = W; c.height = H;
-        const x = c.getContext('2d'); x.drawImage(im, 0, 0, W, H);
-        const d = x.getImageData(0, 0, W, H).data, bins = {};
-        for (let i = 0; i < d.length; i += 4) {
-          const r = d[i], g = d[i + 1], b = d[i + 2], mx = Math.max(r, g, b), mn = Math.min(r, g, b);
-          const v = mx / 255, s = mx ? (mx - mn) / mx : 0;
-          if (v < 0.25 || s < 0.25) continue;
-          let h = 0; const df = mx - mn;
-          if (mx === r) h = ((g - b) / df) % 6; else if (mx === g) h = (b - r) / df + 2; else h = (r - g) / df + 4;
-          h = (h * 60 + 360) % 360;
-          const k = Math.round(h / 24), w = s * v;
-          const o = bins[k] || (bins[k] = { w: 0, r: 0, g: 0, b: 0 });
-          o.w += w; o.r += r * w; o.g += g * w; o.b += b * w;
-        }
-        let best = null; for (const k in bins) if (!best || bins[k].w > best.w) best = bins[k];
-        if (!best) return res(null);
-        let r = best.r / best.w, g = best.g / best.w, b = best.b / best.w;
-        const mx = Math.max(r, g, b); const sc = 255 / mx; r *= sc; g *= sc; b *= sc; // яркость до максимума
-        res('#' + [r, g, b].map((v) => Math.round(Math.max(0, Math.min(255, v))).toString(16).padStart(2, '0')).join(''));
-      } catch (e) { res(null); }
-    };
-    im.onerror = () => res(null);
-    im.src = url;
-  });
-}
-const colorQueue = new Set();
-function ensureColors(items) {
-  items.forEach((s) => {
-    if (!s.poster || NEON_CACHE[neonKey(s)] || colorQueue.has(neonKey(s))) return;
-    colorQueue.add(neonKey(s));
-    domColor(s.poster).then((c) => {
-      if (!c) return;
-      NEON_CACHE[neonKey(s)] = c;
-      try { localStorage.setItem('neon_cache', JSON.stringify(NEON_CACHE)); } catch (e) {}
-      document.querySelectorAll(`[data-cid="${CSS.escape(neonKey(s))}"]`).forEach((el) => { el.style.setProperty('--c', c); el.style.setProperty('--pc', c); });
-      const cur = PG.list && PG.list[PG.idx]; if (cur && neonKey(cur.src || cur) === neonKey(s)) hallTheme(cur);
-    });
-  });
-}
-
 /* общий постер: неоновая рамка своего цвета */
 poster = function (s) {
   const [a, b] = PAL[hash(s.title) % PAL.length];
