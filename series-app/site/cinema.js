@@ -3,7 +3,7 @@
    Загружается после app.js и заменяет экраны: главная (зал), страница сериала (плёнка), календарь (табло),
    добавляет титры после финала и вступление. Данные и логика сохранения остаются в app.js. */
 
-const APP_V = '68';
+const APP_V = '69';
 const NEON = ['#ff8a3d', '#ffd24d', '#3dff9a', '#ff5d8f', '#4d8bff', '#a58bff', '#3dd5ff', '#ff6b6b'];
 let NEON_CACHE = {};
 try { NEON_CACHE = JSON.parse(localStorage.getItem('neon_cache') || '{}'); } catch (e) { NEON_CACHE = {}; }
@@ -90,9 +90,22 @@ function cfgWeek(today) {
   const now = st.filter((x) => x.st === 'new' || x.st === 'soon').sort((a, b) => (a.st === b.st ? (a.st === 'new' ? lastDays(a.s) - lastDays(b.s) : nd(a.s) < nd(b.s) ? -1 : 1) : a.st === 'new' ? -1 : 1)).map((x) => seriesItem(x.s, today, x.st));
   const wait = st.filter((x) => x.st === 'wait').sort((a, b) => (nd(a.s) < nd(b.s) ? -1 : 1)).map((x) => seriesItem(x.s, today, 'wait'));
   const ssoon = DATA.series.filter((s) => sState(s, today) === 'soon').sort((a, b) => { const x = nextEp(a, today), y = nextEp(b, today); return (x ? x.date : '9999') < (y ? y.date : '9999') ? -1 : 1; }).map((s) => seriesItem(s, today, ''));
-  const fsoon = MOVIES.items.filter((m) => m.status !== 'watched' && m.date && m.date >= today).sort((a, b) => (a.date < b.date ? -1 : 1)).map((m) => movieItem(m, today));
+  const fsoon = MOVIES.items.filter((m) => m.status !== 'watched' && m.date && m.date > today).sort((a, b) => (a.date < b.date ? -1 : 1)).map((m) => movieItem(m, today));
+  // Premiere day and the following 13 days: surface items from the personal wishlist.
+  // Keep mine/status unchanged; "Хочу посмотреть" is a user preference, not a release state.
+  const recent = (date) => /^\d{4}-\d{2}-\d{2}$/.test(date || '') && date <= today && addDays(date, 13) >= today;
+  const premieredSeries = DATA.series.filter((s) => {
+    if (effMine(s) !== 'want' || s.closed) return false;
+    const first = (s.episodes || []).map((e) => e.date).filter(Boolean).sort()[0] || s.date;
+    return recent(first) && (!s.episodes?.length || s.episodes.some((e) => epAired(e, today)));
+  }).map((s) => ({ date: (s.episodes || []).map((e) => e.date).filter(Boolean).sort()[0] || s.date, item: seriesItem(s, today, airState(s, today)) }));
+  const premieredMovies = MOVIES.items.filter((m) => m.status === 'want' && recent(m.date))
+    .map((m) => ({ date: m.date, item: movieItem(m, today) }));
+  const wishlistPremieres = [...premieredSeries, ...premieredMovies]
+    .sort((a, b) => b.date.localeCompare(a.date)).map(({ item }) => item);
   const prem = (DISC.items || []).filter((it) => !it.rec).map(discItem), recs = (DISC.items || []).filter((it) => it.rec).map(discItem);
   const groups = [
+    { k: 'wishlist-premieres', label: 'Вышло из «Хочу»', c: '#3dff9a', items: wishlistPremieres },
     { k: 'now', label: 'Выходят сейчас', c: '#3dff9a', items: now }, { k: 'wait', label: 'Жду следующую серию', c: '#ffd24d', items: wait },
     { k: 'ssoon', label: 'Сериалы скоро', c: '#4d8bff', items: ssoon }, { k: 'fsoon', label: 'Фильмы скоро', c: '#a58bff', items: fsoon },
     { k: 'prem', label: 'Премьеры', c: '#ff5d8f', items: prem }, { k: 'recs', label: 'Вам может понравиться', c: '#3dd5ff', items: recs },
