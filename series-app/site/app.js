@@ -975,7 +975,7 @@ async function jfLoad() {
     else jfItems = (await r.json()).Items || [];
   } catch (e) { jfErr = jfNetErr(e); jfItems = null; }
   jfLoading = false;
-  if (location.hash === '#/lib' && libfilter === 'jf') render();
+  if ((location.hash === '#/lib' && libfilter === 'jf') || location.hash.startsWith('#/mine/server')) render();
 }
 function viewJfServer() {
   const b = jfBase();
@@ -1015,10 +1015,12 @@ function viewSettings() {
 
 /* ---------- роутер ---------- */
 let lastPage = '', typing = false;
+let mineStatus = 'all', lastMineSection = '';
 function render() {
   const h = location.hash === '#/posters' ? '#/list' : (location.hash || '#/week');
   const parts = h.replace(/^#\//, '').split('/');
   let page = parts[0] || 'week';
+  if (page === 'mine' && (parts[1] || 'series') !== lastMineSection) { mineStatus = 'all'; sq = ''; lastMineSection = parts[1] || 'series'; }
   if (page === 'random' && lastPage !== 'random') { rnd = null; rndLoading = false; }
   if (page !== lastPage) { sq = ''; sqOpen = false; lastPage = page; }
   let html;
@@ -1027,6 +1029,8 @@ function render() {
   else if (page === 's') html = viewSeries(decodeURIComponent(parts[1] || ''));
   else if (page === 'settings') html = viewSettings();
   else if (page === 'lib') html = viewLib();
+  else if (page === 'mine') html = viewMine(parts[1] || 'series');
+  else if (page === 'search') html = viewSearch();
   else if (page === 'addlib') html = viewAddLib();
   else if (page === 'add') html = viewAdd();
   else if (page === 'discover') html = viewDiscover();
@@ -1038,7 +1042,7 @@ function render() {
   else if (page === 'addm') html = viewAddMovie();
   else html = viewWeek();
   $app.innerHTML = html;
-  const tab = page === 's' || page === 'add' ? 'list' : (page === 'm' || page === 'addm') ? 'movies' : page === 'd' || page === 'random' ? 'week' : page === 'addlib' ? 'lib' : page;
+  const tab = ['mine','list','movies','lib','s','m','addlib','add','addm'].includes(page) ? 'mine' : 'week';
   document.querySelectorAll('#tabs a').forEach((a) => a.classList.toggle('on', a.dataset.tab === tab));
   if (!typing) window.scrollTo(0, 0);
   if (typeof afterRender === 'function') afterRender(page);
@@ -1074,6 +1078,8 @@ document.addEventListener('click', (ev) => {
     const img = document.querySelector('.avhero img'); if (img) img.src = HERO[(day + heroOff) % HERO.length];
     return;
   }
+  const ms = ev.target.closest('[data-mine-status]');
+  if (ms) { mineStatus = ms.dataset.mineStatus; const y = window.scrollY; render(); window.scrollTo(0, y); return; }
   const mf = ev.target.closest('[data-mfilter]');
   if (mf) { mfilter = mfilter === mf.dataset.mfilter ? 'all' : mf.dataset.mfilter; const y = window.scrollY; render(); window.scrollTo(0, y); return; }
   const sf = ev.target.closest('[data-sfilter]');

@@ -3,7 +3,7 @@
    Загружается после app.js и заменяет экраны: главная (зал), страница сериала (плёнка), календарь (табло),
    добавляет титры после финала и вступление. Данные и логика сохранения остаются в app.js. */
 
-const APP_V = '69';
+const APP_V = '70';
 const NEON = ['#ff8a3d', '#ffd24d', '#3dff9a', '#ff5d8f', '#4d8bff', '#a58bff', '#3dd5ff', '#ff6b6b'];
 let NEON_CACHE = {};
 try { NEON_CACHE = JSON.parse(localStorage.getItem('neon_cache') || '{}'); } catch (e) { NEON_CACHE = {}; }
