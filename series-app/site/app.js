@@ -1020,6 +1020,7 @@ function render() {
   const h = location.hash === '#/posters' ? '#/list' : (location.hash || '#/week');
   const parts = h.replace(/^#\//, '').split('/');
   let page = parts[0] || 'week';
+  if (page === 'mine' && (parts[1] || 'series') !== lastMineSection) { mineStatus = 'all'; sq = ''; lastMineSection = parts[1] || 'series'; }
   if (page === 'random' && lastPage !== 'random') { rnd = null; rndLoading = false; }
   if (page !== lastPage) { sq = ''; sqOpen = false; lastPage = page; }
   let html;
