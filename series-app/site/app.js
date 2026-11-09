@@ -864,7 +864,7 @@ async function discoverAdd(id, lib) {
         const x = lib
           ? { id: slugify(it.title), title: it.title, service: null, status: 'ended', mine: 'done', seen_season: 1, added: todayStr() }
           : { id: slugify(it.title), title: it.title, service: it.service || null, status: it.date || it.when ? 'waiting' : 'nodate', mine: 'want', added: todayStr() };
-        if (!lib) { if (it.when || it.date) x.when = it.when || longDate(it.date); if (it.note) x.note = it.note; }
+        if (!lib) { if (it.date) x.date = it.date; if (it.when || it.date) x.when = it.when || longDate(it.date); if (it.note) x.note = it.note; }
         d.series.push(x);
       }, lib ? `Сериалы: «${it.title}» в библиотеку` : `Сериалы: «${it.title}» из премьер`);
     }
