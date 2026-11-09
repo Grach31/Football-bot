@@ -87,3 +87,8 @@ body{background:radial-gradient(ellipse 80% 420px at 50% -100px,rgba(159,120,61,
 @keyframes gf-rise{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:translateY(0)}}
 @media(max-width:390px){.gf-collection-nav{gap:6px}.gf-collection-tile{padding:12px 8px}.gf-collection-tile strong{font-size:11px}.gf-block-head h2{font-size:17px}.gf-detail-head{gap:12px}.gf-episode{gap:7px;padding:12px 9px}}
 @media(prefers-reduced-motion:reduce){.gf-block{animation:none!important}.gf-icon,.gf-archive-action{transition:none!important}}
+
+/* v74.2 — Keep iPhone inputs at 16px to avoid automatic focus zoom. */
+input,textarea,select,.gf-search{font-size:16px!important}
+.gf-search-hint{margin:-8px 0 16px;color:var(--muted);font:500 12px/1.45 var(--fb)}
+button,a,input,select{touch-action:manipulation}
