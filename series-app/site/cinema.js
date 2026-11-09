@@ -1,7 +1,7 @@
 'use strict';
 /* Grach Films: poster theme, series details and credits. Navigation and home live in minimal.js. */
 
-const APP_V = '74.2';
+const APP_V = '74.3';
 const NEON = ['#ff8a3d', '#ffd24d', '#3dff9a', '#ff5d8f', '#4d8bff', '#a58bff', '#3dd5ff', '#ff6b6b'];
 const neonKey = (s) => String(s.id || s.title);
 const neonOf = (s) => NEON[hash(s.title || neonKey(s)) % NEON.length];
@@ -35,6 +35,7 @@ function viewSeries(id){
     '<div class="gf-detail-state">'+gfDecor(info)+'</div></div></div>'+
     (s.note?'<p class="gf-detail-note">'+esc(s.note)+'</p>':'')+
     jfWatch(s.title)+
+    gfWatchingButton(s)+
     (gfArchived(s,'s',info)?'<p class="gf-archived-info">Убран с главной на этом устройстве</p>':'')+
     gfArchiveButton(s,'s',info)+episodes+
     '<div class="gf-detail-foot">Расписание обновляется автоматически. Выход серии не означает просмотр.</div></div>';

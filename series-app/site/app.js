@@ -586,6 +586,16 @@ document.addEventListener('click', (ev) => {
   if (a.dataset.act === 'test') testPush();
   if (a.dataset.act === 'copy') copyCode();
   if (a.dataset.act === 'savetoken') { const v = document.getElementById('a_token').value.trim(); if (v) { lsSet('gh_token', v); render(); } }
+  if(a.dataset.act==='gfwatching'){
+    ev.preventDefault();
+    const item=DATA.series.find(x=>x.id===a.dataset.id);
+    if(!item)return;
+    lsSet(gfWatchingKey(item.id),gfWatching(item)?'':'1');
+    const y=window.scrollY;
+    render();
+    window.scrollTo(0,y);
+    return;
+  }
   if(a.dataset.act==='gfarchive'){
     const kind=a.dataset.kind, id=a.dataset.id;
     if(!['s','m'].includes(kind))return;

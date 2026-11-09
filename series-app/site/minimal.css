@@ -95,3 +95,11 @@ body{background:radial-gradient(ellipse 80% 420px at 50% -100px,rgba(159,120,61,
 .gf-search-group h2{font:700 17px/1.35 var(--fh);margin:0 0 15px}
 .gf-search-group h2 span{font:600 12px var(--fb);color:var(--muted);margin-left:6px}
 .gf-search-group .gf-hint{margin:0}
+
+/* Personal watch-in-progress is distinct from release recency and archive. */
+.gf-watching-section{margin:22px 0 28px;padding:0 0 25px;border-bottom:1px solid var(--line)}
+.gf-watching-title{color:var(--accent);margin-bottom:6px}
+.gf-watching-subtitle{font-size:12px;color:var(--muted);line-height:1.5;margin:0 0 17px}
+.gf-watching-action{display:block;width:100%;max-width:340px;min-height:48px;padding:12px 16px;margin:14px 0;border:1px solid rgba(226,189,126,.48);border-radius:13px;background:linear-gradient(120deg,#e5c68c,#cfa66b);color:#251b10;font:800 13px var(--fb);cursor:pointer}
+.gf-watching-action.is-watching{background:#1b1915;color:#ffe0a6;border-color:rgba(226,189,126,.40)}
+.gf-watching-action:active{transform:scale(.985)}
