@@ -1015,7 +1015,7 @@ function viewSettings() {
 
 /* ---------- роутер ---------- */
 let lastPage = '', typing = false;
-let mineStatus = 'all';
+let mineStatus = 'all', lastMineSection = '';
 function render() {
   const h = location.hash === '#/posters' ? '#/list' : (location.hash || '#/week');
   const parts = h.replace(/^#\//, '').split('/');
