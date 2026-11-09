@@ -1,19 +1,17 @@
 'use strict';
 /* Grach Films: poster theme, series details and credits. Navigation and home live in minimal.js. */
 
-const APP_V = '72';
+const APP_V = '73';
 const NEON = ['#ff8a3d', '#ffd24d', '#3dff9a', '#ff5d8f', '#4d8bff', '#a58bff', '#3dd5ff', '#ff6b6b'];
-let NEON_CACHE = {};
-try { NEON_CACHE = JSON.parse(localStorage.getItem('neon_cache') || '{}'); } catch (e) { NEON_CACHE = {}; }
 const neonKey = (s) => String(s.id || s.title);
-const neonOf = (s) => NEON_CACHE[neonKey(s)] || NEON[hash(s.title || neonKey(s)) % NEON.length];
+const neonOf = (s) => NEON[hash(s.title || neonKey(s)) % NEON.length];
 /* общий постер: неоновая рамка своего цвета */
-poster = function (s) {
+function poster(s) {
   const [a, b] = PAL[hash(s.title) % PAL.length];
   const c = neonOf(s);
   const inner = s.poster ? `<img src="${esc(s.poster)}" alt="" loading="lazy" decoding="async">` : `<span class="ptitle">${esc(s.title)}</span>`;
   return `<div class="poster" data-cid="${esc(neonKey(s))}" style="--pc:${c};background:linear-gradient(160deg,${a},${b})" role="img" aria-label="${esc(s.title)}">${inner}</div>`;
-};
+}
 
 /* Settings icon shared by the compact header. The random icon is DICE in app.js. */
 const GEAR = '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>';
@@ -21,15 +19,15 @@ const GEAR = '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M
 /* ---------- СТРАНИЦА СЕРИАЛА: плёнка ---------- */
 const FPOS = ['0% 0%', '100% 12%', '50% 100%', '0% 90%', '100% 100%', '50% 0%', '0% 45%', '100% 55%'];
 const seriesN = (s) => Math.max(s.total || 0, ...eps(s).map((e) => e.n), 0);
-viewSeries = function (id) {
+function viewSeries(id) {
   const today = todayStr();
   const s = DATA.series.find((x) => x.id === id);
-  if (!s) return '<a class="back" href="#/list">‹ Сериалы</a><p class="empty">Такого сериала в списке нет.</p>';
+  if (!s) return '<a class="back" href="#/mine/series">‹ Сериалы</a><p class="empty">Такого сериала в списке нет.</p>';
   const col = neonOf(s);
   const statusText = { airing: 'Выходит сейчас', waiting: 'Ждём: ' + (s.when || ''), nodate: 'Дата не объявлена', ended: s.closed ? 'Закрыт: продолжения не будет' : 'Вышел' }[s.status];
   const N = seriesN(s), list = eps(s), seen = seenEp(s);
   const BACK = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>';
-  let html = `<div class="scov" data-cid="${esc(neonKey(s))}" style="--pc:${col}"><a class="back" href="#/list">${BACK}Сериалы</a><div class="scrow">${s.poster ? `<img class="spic" src="${esc(s.poster)}" alt="">` : ''}<div class="stt"><h1>${esc(s.title)}</h1><div class="sm">${esc(metaFor(s, today))}<br>${esc(statusText)}</div></div></div>`;
+  let html = `<div class="scov" data-cid="${esc(neonKey(s))}" style="--pc:${col}"><a class="back" href="#/mine/series">${BACK}Сериалы</a><div class="scrow">${s.poster ? `<img class="spic" src="${esc(s.poster)}" alt="">` : ''}<div class="stt"><h1>${esc(s.title)}</h1><div class="sm">${esc(metaFor(s, today))}<br>${esc(statusText)}</div></div></div>`;
   if (N && list.length) html += `<div class="sprog"><i id="sbar" data-w="${Math.round(seen / N * 100)}"></i></div><div class="spl"><span id="spl1"></span><span id="spl2"></span></div>`;
   html += '</div>';
   if (s.note) html += `<p class="note">${esc(s.note)}</p>`;
@@ -53,7 +51,7 @@ viewSeries = function (id) {
     if (s.approx) html += '<p class="foot">Число выпусков не подтверждено, список дат будет уточняться.</p>';
   }
   return html;
-};
+}
 function paintStrip(s, anim) {
   const strip = document.getElementById('strip'); if (!strip) return;
   const seen = seenEp(s), N = seriesN(s);
@@ -69,7 +67,6 @@ function paintStrip(s, anim) {
 }
 function initSeries(id) {
   const s = DATA.series.find((x) => x.id === id); if (!s) return;
-  ensureColors([s]);
   const bar = document.getElementById('sbar'); if (bar) { bar.style.width = '0'; setTimeout(() => { bar.style.width = bar.dataset.w + '%'; }, 250); }
   paintStrip(s, false);
   const nx = document.querySelector('.fr.next');

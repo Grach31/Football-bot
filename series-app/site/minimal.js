@@ -41,7 +41,7 @@ const gfSeriesDate = (s) => (s.episodes || []).map(e => e.date).filter(Boolean).
 const gfSeriesNext = (s, today) => (s.episodes || []).filter(e => e.date >= today && !epAired(e,today)).sort((a,b) => a.date.localeCompare(b.date))[0];
 const gfRecent = (d,today) => /^\d{4}-\d{2}-\d{2}$/.test(d || '') && d <= today && addDays(d, 13) >= today;
 
-viewWeek = function () {
+function viewWeek() {
   const today = todayStr();
   const series = DATA.series || [], movies = MOVIES.items || [];
   const watching = [
@@ -71,7 +71,7 @@ viewWeek = function () {
     ${!watching.length&&!fresh.length&&!upcoming.length?empty:''}
     <p class="gf-version">Данные: ${esc(DATA.updated)} · Версия ${APP_V}</p>
   </div>`;
-};
+}
 function viewMine(section) {
   const active = ['series','movies','server'].includes(section) ? section : 'series';
   const s = DATA.series || [], m = MOVIES.items || [];

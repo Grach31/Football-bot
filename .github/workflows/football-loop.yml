@@ -1,17 +1,17 @@
-name: Channel posts
+name: Football loop
 on:
   schedule:
-    # Запуск работает ~6 часов и проверяет каналы раз в минуту.
+    # Запуск работает ~6 часов и проверяет футбол каждые 10 минут.
     # Расписание лишь подхватывает следующий запуск, когда предыдущий закончился.
     - cron: "*/30 * * * *"
   workflow_dispatch:
 permissions:
   contents: write  # чтобы запомнить последний отправленный пост
 concurrency:
-  group: channels
+  group: channels  # прежнее имя группы: новый запуск не пересекается с ещё идущим старым
   cancel-in-progress: false
 jobs:
-  forward:
+  loop:
     runs-on: ubuntu-latest
     timeout-minutes: 360
     steps:
@@ -23,7 +23,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-      - run: python channels.py
+      - run: python football_loop.py
         env:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
@@ -32,10 +32,10 @@ jobs:
           # новинки кино выключены; чтобы включить, верни две строки:
           # KINOPOISK_TOKEN: ${{ secrets.KINOPOISK_TOKEN }}
           # TMDB_TOKEN: ${{ secrets.TMDB_TOKEN }}
-      - name: Запомнить последний пост
+      - name: Запомнить состояние
         if: always()
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add state/channels.json state/football.json state/movies.json 2>/dev/null || true
-          git diff --cached --quiet || (git commit -m "Каналы: последний отправленный пост" && git pull --rebase && git push)
+          git add state/football.json state/movies.json 2>/dev/null || true
+          git diff --cached --quiet || (git commit -m "Футбол и кино: состояние" && git pull --rebase && git push)
