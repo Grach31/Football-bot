@@ -4,7 +4,7 @@ const gfMoscowNow = () => new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/Mosc
 const gfInfo = (item,kind,today=todayStr()) => GFReleases.describe({...item,kind:kind==='m'?'movie':'series'},today,gfMoscowNow());
 const gfArchiveKey = (kind,id) => 'gf_archive_v1:'+kind+':'+id;
 const gfArchived = (item,kind,info=gfInfo(item,kind)) => GFReleases.hiddenByManual(info,lsGet(gfArchiveKey(kind,item.id)));
-const gfArchiveButton = (item,kind,info=gfInfo(item,kind)) => !info.eligibleArchive ? '' :
+const gfArchiveButton = (item,kind,info=gfInfo(item,kind)) => (!info.eligibleArchive || info.group==='archive') ? '' :
   '<button class="gf-archive-action" type="button" data-act="gfarchive" data-kind="'+kind+'" data-id="'+esc(item.id)+'">'+
   (gfArchived(item,kind,info)?'↶ Вернуть из архива':'↗ Убрать в архив')+'</button>';
 const gfDecor = (info) => '<span class="gf-release-label">'+esc(info.label)+'</span><span class="gf-release-detail">'+esc(info.detail)+'</span>';
