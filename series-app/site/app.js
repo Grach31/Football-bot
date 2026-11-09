@@ -55,7 +55,7 @@ const eps = (s) => s.episodes || [];
 const unit = (s) => s.unit || 'серия';
 const nextEp = (s, today) => eps(s).find((e) => e.date >= today) || null;
 // серия считается вышедшей: дата прошла, а если в день выхода указано время, то оно наступило
-const nowHM = () => { const d = new Date(); return String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0'); };
+const nowHM = () => new Intl.DateTimeFormat('en-GB', { timeZone: MSK, hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).format(new Date());
 const epAired = (e, today) => e.date < today || (e.date === today && (!e.time || e.time <= nowHM()));
 const nextUnaired = (s, today) => eps(s).find((e) => !epAired(e, today)) || null;
 // недавно вышедшая серия: держим сериал заметным, пока не выйдет следующая (до 13 дней)
