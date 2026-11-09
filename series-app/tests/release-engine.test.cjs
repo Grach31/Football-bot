@@ -79,3 +79,16 @@ test('future season date, recent film, and expired film groups', () => {
   assert.equal(describe({kind:'movie',date:'2026-11-01'},day).group,'new');
   assert.equal(describe({kind:'movie',date:'2026-10-20'},day).group,'archive');
 });
+
+test('series premiere without an episode grid is still recent for 13 days', () => {
+  const item={kind:'series',date:'2026-11-05',status:'waiting',episodes:[]};
+  assert.equal(describe(item,day).group,'new');
+  assert.equal(describe(item,'2026-11-19').group,'archive');
+});
+
+test('episode numbers must cover the full season before archive is enabled', () => {
+  const item=series([ep(2,'2026-11-01'),ep(3,'2026-11-02'),ep(4,'2026-11-03')]);
+  const info=describe(item,day);
+  assert.equal(info.eligibleArchive,false);
+  assert.equal(info.finished,false);
+});
