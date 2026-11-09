@@ -1,5 +1,5 @@
 'use strict';
-/* Grach Films v71: two destinations, one collection model, independent Jellyfin server.
+/* Grach Films v72: two destinations, one collection model, independent Jellyfin server.
    Retains all legacy routes and their editing capabilities. */
 const gfDateText = (date, today) => {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(date || '')) return '';
@@ -32,7 +32,8 @@ const gfSection = (title, subtitle, items, more) => {
   }).join('');
   return `<section class="gf-block"><div class="gf-block-head"><div><h2>${esc(title)}</h2><p>${esc(subtitle)}</p></div>${more ? `<a href="${esc(more)}" aria-label="Открыть раздел ${esc(title)}">Все ›</a>` : ''}</div><div class="gf-rail">${cards}</div></section>`;
 };
-const gfHeader = (label) => `<header class="gf-header"><div><div class="gf-eyebrow">GRACH FILMS</div><h1>${esc(label)}</h1></div><div class="gf-actions"><a href="#/search" class="gf-icon" aria-label="Поиск">${MAGN}</a><a href="#/settings" class="gf-icon" aria-label="Настройки">${GEAR}</a></div></header>`;
+const GF_DICE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="4"/><circle cx="8.5" cy="8.5" r="1" fill="currentColor" stroke="none"/><circle cx="15.5" cy="8.5" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="8.5" cy="15.5" r="1" fill="currentColor" stroke="none"/><circle cx="15.5" cy="15.5" r="1" fill="currentColor" stroke="none"/></svg>';
+const gfHeader = (label) => `<header class="gf-header"><div><div class="gf-eyebrow">GRACH FILMS</div><h1>${esc(label)}</h1></div><div class="gf-actions"><a href="#/random" class="gf-icon" aria-label="Случайный фильм или сериал" title="Случайный подбор">${GF_DICE}</a><a href="#/settings" class="gf-icon" aria-label="Настройки">${GEAR}</a></div></header>`;
 const gfSeriesDate = (s) => (s.episodes || []).map(e => e.date).filter(Boolean).sort()[0] || s.date || '';
 const gfSeriesNext = (s, today) => (s.episodes || []).filter(e => e.date >= today && !epAired(e,today)).sort((a,b) => a.date.localeCompare(b.date))[0];
 const gfRecent = (d,today) => /^\d{4}-\d{2}-\d{2}$/.test(d || '') && d <= today && addDays(d, 13) >= today;
@@ -45,7 +46,7 @@ viewWeek = function () {
     ...movies.filter(m => m.status === 'watching').map(m => ({obj:m,kind:'m'}))
   ];
   const fresh = [
-    ...series.filter(s => effMine(s)!=='done' && s.status === 'airing' && airState(s,today)==='new')
+    ...series.filter(s => effMine(s)==='want' && s.status === 'airing' && airState(s,today)==='new')
       .map(s => ({obj:s,kind:'s',tag:'Новая серия',date:(lastOut(s,today)||{}).e?.date||today})),
     ...series.filter(s => effMine(s)==='want' && gfRecent(gfSeriesDate(s),today))
       .map(s => ({obj:s,kind:'s',tag:'Премьера',date:gfSeriesDate(s)})),
@@ -56,16 +57,14 @@ viewWeek = function () {
     ...series.filter(s=>effMine(s)==='want').map(s=>({obj:s,kind:'s',date:gfSeriesNext(s,today)?.date||((gfSeriesDate(s)>today)?gfSeriesDate(s):'')})),
     ...movies.filter(m=>m.status==='want'&&m.date>today).map(m=>({obj:m,kind:'m',date:m.date}))
   ].filter(x=>x.date).sort((a,b)=>a.date.localeCompare(b.date)).map(x=>({...x,tag:shortDate(x.date)}));
-  const recommendations = (DISC.items || []).filter(it=>it.rec).slice(0,5).map(it=>({obj:it,kind:it.kind==='film'?'m':'s',href:'#/d/'+encodeURIComponent(it.id),tag:'Для тебя',meta:it.kind==='film'?'Фильм':'Сериал'}));
-  const empty = '<div class="gf-empty">Здесь пока нет записей. Добавь фильм или сериал через поиск.</div>';
+  const recommendations = (DISC.items || []).filter(it=>it.rec && !inCollection(it)).slice(0,5).map(it=>({obj:it,kind:it.kind==='film'?'m':'s',href:'#/d/'+encodeURIComponent(it.id),tag:'Для тебя',meta:it.kind==='film'?'Фильм':'Сериал'}));
+  const empty = '<div class="gf-empty">Пока здесь пусто. Добавь фильм или сериал во вкладке «Моё».</div>';
   return `<div class="gf-shell">${gfHeader('Твой кинозал')}
-    <div class="gf-feature"><div class="gf-feature-title">Сегодня в твоём кино</div><p>Новые серии, премьеры и всё, что ты собираешься посмотреть.</p><a href="#/search" class="gf-primary">Найти фильм или сериал ›</a></div>
-    ${gfSection('Продолжить просмотр','То, что ты смотришь',watching,'#/mine/series')}
-    ${gfSection('Новое для тебя','Вышедшие серии и премьеры из твоего списка',fresh,'#/mine/series')}
+    ${gfSection('Продолжить просмотр','То, что ты смотришь',watching)}
+    ${gfSection('Новое для тебя','Вышедшие серии и премьеры из твоего списка',fresh)}
     ${gfSection('Скоро выйдет','Подтверждённые ближайшие даты',upcoming)}
     ${gfSection('Рекомендации','Подобрано по твоей истории просмотров',recommendations,'#/discover')}
     ${!watching.length&&!fresh.length&&!upcoming.length?empty:''}
-    <div class="gf-shortcuts"><a href="#/random">Подобрать случайное ›</a></div>
     <p class="gf-version">Данные: ${esc(DATA.updated)} · Версия ${APP_V}</p>
   </div>`;
 };
