@@ -28,16 +28,18 @@
     const past = events.filter(e=>isOut(e,today,clock)), future=events.filter(e=>!isOut(e,today,clock));
     const last=past[past.length-1]||null, next=future[0]||null;
     const n=Number(item.total), total=Number.isInteger(n)&&n>0&&!item.approx?n:null;
-    const aired=new Set(past.map(e=>Number(e.n))).size;
-    const finished=!!(total&&aired>=total&&!future.length);
-    const recent=!!(last&&plus(last.date,13)>=today);
+    const releasedNumbers=new Set(past.map(e=>Number(e.n)));
+    const aired=releasedNumbers.size;
+    // A confirmed finale requires all episode numbers 1..total, not just N arbitrary entries.
+    const finished=!!(total&&!future.length&&Array.from({length:total},(_,i)=>i+1).every(n=>releasedNumbers.has(n)));
+    const latestDate=last?.date||(!events.length&&date<=today?date:'');
+    const recent=!!(latestDate&&plus(latestDate,13)>=today);
     const soonDate=next?.date||(!events.length&&date>today?date:'');
     const group=recent?'new':soonDate?'soon':'archive';
     let label=aired?'Вышло '+aired+(total?' из '+total:'')+' серий':soonDate?'Премьера · '+format(soonDate):'Дата уточняется';
     let detail=next?'Следующая серия '+next.n+' · '+format(next.date):finished?'Сезон завершён':item.status==='waiting'&&!soonDate?'Ждём новый сезон':'Следующая дата уточняется';
     if(!past.length&&next){label='Серия '+next.n+' · '+format(next.date);detail='Премьера сезона';}
     if(!events.length&&date&&date<=today){label='Премьера · '+format(date);detail='Расписание серий уточняется';}
-    const latestDate=last?.date||(!events.length&&date<=today?date:'');
     return {kind:'series',group,label,detail,sortDate:group==='soon'?soonDate:latestDate||soonDate||'',latestDate,
       nextDate:soonDate,eligibleArchive:finished,
       releaseKey:finished?'series:'+String(item.season||1)+':'+total+':'+last.date+':'+String(last.n):'',
