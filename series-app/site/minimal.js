@@ -30,9 +30,14 @@ function gfCard(it,compact=false){
   const {obj,kind,info}=it;
   const link='#/'+(kind==='m'?'m':'s')+'/'+encodeURIComponent(obj.id);
   const archived=gfArchived(obj,kind,info)||info.group==='archive';
-  return '<a class="'+(compact?'gf-grid-card':'gf-card')+(archived?' gf-archived':'')+'" href="'+esc(link)+'">'+
+  const canToggle=kind==='s'||info.eligibleArchive||gfWatching(obj,kind);
+  const selected=gfWatching(obj,kind);
+  const toggle=canToggle?'<button type="button" class="gf-card-watch'+(selected?' is-watching':'')+'" data-act="gfwatching" data-kind="'+kind+'" data-id="'+esc(obj.id)+'" aria-label="'+esc((selected?'Закончил смотреть: ':'Смотрю сейчас: ')+obj.title)+'" aria-pressed="'+selected+'" title="'+(selected?'Закончил смотреть':'Смотрю сейчас')+'">'+(selected?'✓':'▶')+'</button>':'';
+  return '<div class="gf-poster-card">'+
+    '<a class="'+(compact?'gf-grid-card':'gf-card')+(archived?' gf-archived':'')+'" href="'+esc(link)+'">'+
     '<div class="gf-poster-wrap">'+poster(obj)+'<span class="gf-poster-badge">'+esc(info.label)+'</span></div>'+
-    '<strong>'+esc(obj.title)+'</strong><span class="gf-card-meta">'+esc(info.detail)+'</span></a>';
+    '<strong>'+esc(obj.title)+'</strong><span class="gf-card-meta">'+esc(info.detail)+'</span></a>'+
+    toggle+'</div>';
 }
 function gfSection(title,subtitle,items,more){
   if(!items.length)return '';
