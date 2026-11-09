@@ -864,7 +864,7 @@ async function discoverAdd(id, lib) {
         const x = lib
           ? { id: slugify(it.title), title: it.title, service: null, status: 'ended', mine: 'done', seen_season: 1, added: todayStr() }
           : { id: slugify(it.title), title: it.title, service: it.service || null, status: it.date || it.when ? 'waiting' : 'nodate', mine: 'want', added: todayStr() };
-        if (!lib) { if (it.when || it.date) x.when = it.when || longDate(it.date); if (it.note) x.note = it.note; }
+        if (!lib) { if (it.date) x.date = it.date; if (it.when || it.date) x.when = it.when || longDate(it.date); if (it.note) x.note = it.note; }
         d.series.push(x);
       }, lib ? `Сериалы: «${it.title}» в библиотеку` : `Сериалы: «${it.title}» из премьер`);
     }
@@ -1172,6 +1172,21 @@ async function boot(manual) {
 }
 if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
 boot();
+// Refresh release states after Moscow midnight and pick up newly published schedules on resume.
+// Avoid overlapping network refreshes while the PWA is in use.
+let lastReleaseDay = todayStr(), lastResumeRefresh = Date.now(), releaseRefreshBusy = false;
+async function refreshReleaseState() {
+  if (document.hidden || releaseRefreshBusy) return;
+  const day = todayStr(), dayChanged = day !== lastReleaseDay;
+  if (!dayChanged && Date.now() - lastResumeRefresh < 15 * 60 * 1000) return;
+  releaseRefreshBusy = true;
+  lastReleaseDay = day;
+  lastResumeRefresh = Date.now();
+  try { await boot(true); } finally { releaseRefreshBusy = false; }
+}
+document.addEventListener('visibilitychange', () => { if (!document.hidden) refreshReleaseState(); });
+window.addEventListener('focus', refreshReleaseState);
+setInterval(refreshReleaseState, 60 * 1000);
 
 /* ---------- свайп между тайтлами из одного списка ---------- */
 let navList = [];
