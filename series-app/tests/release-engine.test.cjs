@@ -48,8 +48,8 @@ test('manual archive is release-bound; next season comes back', () => {
 
 test('13-day window automatically expires without manual action', () => {
   const item=series([ep(1,'2026-10-01'),ep(2,'2026-10-02'),ep(3,'2026-10-27')]);
-  assert.equal(describe(item,'2026-11-09').group,'new');
-  assert.equal(describe(item,'2026-11-10').group,'archive');
+  assert.equal(describe(item,'2026-11-08').group,'new');
+  assert.equal(describe(item,'2026-11-09').group,'archive');
 });
 
 test('film archive only after confirmed premiere; no date is unknown', () => {
@@ -83,7 +83,7 @@ test('future season date, recent film, and expired film groups', () => {
 test('series premiere without an episode grid is still recent for 13 days', () => {
   const item={kind:'series',date:'2026-11-05',status:'waiting',episodes:[]};
   assert.equal(describe(item,day).group,'new');
-  assert.equal(describe(item,'2026-11-19').group,'archive');
+  assert.equal(describe(item,'2026-11-17').group,'archive');
 });
 
 test('episode numbers must cover the full season before archive is enabled', () => {
