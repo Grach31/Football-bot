@@ -1172,6 +1172,21 @@ async function boot(manual) {
 }
 if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
 boot();
+// Refresh release states after Moscow midnight and pick up newly published schedules on resume.
+// Avoid overlapping network refreshes while the PWA is in use.
+let lastReleaseDay = todayStr(), lastResumeRefresh = Date.now(), releaseRefreshBusy = false;
+async function refreshReleaseState() {
+  if (document.hidden || releaseRefreshBusy) return;
+  const day = todayStr(), dayChanged = day !== lastReleaseDay;
+  if (!dayChanged && Date.now() - lastResumeRefresh < 15 * 60 * 1000) return;
+  releaseRefreshBusy = true;
+  lastReleaseDay = day;
+  lastResumeRefresh = Date.now();
+  try { await boot(true); } finally { releaseRefreshBusy = false; }
+}
+document.addEventListener('visibilitychange', () => { if (!document.hidden) refreshReleaseState(); });
+window.addEventListener('focus', refreshReleaseState);
+setInterval(refreshReleaseState, 60 * 1000);
 
 /* ---------- свайп между тайтлами из одного списка ---------- */
 let navList = [];
