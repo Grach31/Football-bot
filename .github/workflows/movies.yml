@@ -1,7 +1,7 @@
 name: Movie releases
 on:
   # По расписанию больше не запускается: в 21:00 МСК подборку присылает
-  # бот каналов (channels.yml). Здесь остался только ручной запуск.
+  # цикл football_loop.py (football-loop.yml). Здесь остался только ручной запуск.
   workflow_dispatch:
     inputs:
       test_date:

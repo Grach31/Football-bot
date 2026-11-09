@@ -26,8 +26,6 @@ PLATFORMS = {
     "KION": ("kion", "кион"),
 }
 SKIP_GENRES = {"документальный", "мультфильм", "аниме"}
-MONTHS = ["JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY",
-          "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"]
 RU_MONTHS = ["января", "февраля", "марта", "апреля", "мая", "июня", "июля",
              "августа", "сентября", "октября", "ноября", "декабря"]
 

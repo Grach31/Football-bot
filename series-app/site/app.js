@@ -7,15 +7,6 @@ const PAL = [
   ['#6C4DFF', '#1B0F55'], ['#FFA94D', '#8C2F00'], ['#FF6AA2', '#6A0F3A'], ['#2FBF71', '#0B3D26'],
   ['#36D1DC', '#0B4F6C'], ['#E8590C', '#4A1500'], ['#4C8DFF', '#0D2A63'], ['#C77DFF', '#3A0F66'],
 ];
-const GROUPS = [
-  ['airing', 'Выходит сейчас'],
-  ['soon', 'Скоро'],
-  ['nodate', 'Дата не объявлена'],
-  ['out', 'Вышел'],
-  ['closed', 'Закрыт: продолжения не будет'],
-];
-const SFILTERS = [['all', 'Все'], ['airing', 'Выходит'], ['soon', 'Скоро'], ['nodate', 'Нет даты'], ['out', 'Вышел'], ['closed', 'Закрыт']];
-const CHEV = '<svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>';
 
 let DISC = { updated: '', items: [] };
 let POOL = { updated: '', items: [] };
@@ -25,13 +16,8 @@ let DATA = { updated: '', series: [] };
 let CONFIG = {};
 let SUBS = { updated: '', items: [] };
 let MOVIES = { updated: '', items: [] };
-let mfilter = 'want';
 let confirmDel = '';
-let filter = 'all';
-let sfilter = 'all';
-let libfilter = 'all';
 let stab = 'subs';
-let msfilter = 'all';
 
 /* ---------- даты ---------- */
 function todayStr() {
@@ -42,11 +28,8 @@ function todayStr() {
 const d0 = (s) => new Date(s + 'T00:00:00Z');
 function addDays(s, n) { const x = d0(s); x.setUTCDate(x.getUTCDate() + n); return x.toISOString().slice(0, 10); }
 const fmt = (s, o) => new Intl.DateTimeFormat('ru-RU', { timeZone: 'UTC', ...o }).format(d0(s));
-const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
 const shortDate = (s) => fmt(s, { day: 'numeric', month: 'short' }).replace('.', '');
 const longDate = (s) => fmt(s, { day: 'numeric', month: 'long' });
-const weekday = (s) => fmt(s, { weekday: 'long' });
-const weekdayShort = (s) => fmt(s, { weekday: 'short' }).replace('.', '');
 
 /* ---------- утилиты ---------- */
 const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -67,7 +50,6 @@ function lastOut(s, today) {
   const days = Math.round((d0(today) - d0(e.date)) / 86400000);
   return days <= 13 ? { e, days } : null;
 }
-const outLabel = (days) => (days === 0 ? 'Вышла сегодня' : days === 1 ? 'Вышла вчера' : days === 2 ? 'Вышла позавчера' : `Вышла ${days} дн. назад`);
 // отметка «посмотрел» последнюю вышедшую серию (хранится в series.json: seen_ep и seen_ep_season)
 const seenEp = (s) => (s.seen_ep && s.seen_ep_season === (s.season || 1) ? s.seen_ep : 0);
 // new — вышла серия, которую не отметили; wait — отметили, ждём следующую; soon — ещё ничего не вышло
@@ -79,51 +61,7 @@ function airState(s, today) {
   return nu ? 'wait' : null;
 }
 
-function tile(s, small) {
-  const kind = s.status === 'waiting' ? 'blue' : (s.status === 'nodate' || s.status === 'ended') ? 'gray' : '';
-  const inner = s.poster ? `<img src="${esc(s.poster)}" alt="">` : esc(s.title.charAt(0));
-  return `<div class="tile ${kind}" aria-hidden="true">${inner}</div>`;
-}
-function poster(s) {
-  const [a, b] = PAL[hash(s.title) % PAL.length];
-  const inner = s.poster ? `<img src="${esc(s.poster)}" alt="" loading="lazy" decoding="async">` : `<span class="ptitle">${esc(s.title)}</span>`;
-  return `<div class="poster" style="background:linear-gradient(160deg,${a},${b})" role="img" aria-label="${esc(s.title)}">${inner}</div>`;
-}
 const palOf = (s) => PAL[hash(s.title) % PAL.length];
-function badgeFor(s, today) {
-  if (s.status === 'airing') {
-    const nu = nextUnaired(s, today);
-    const lo = lastOut(s, today);
-    const st = airState(s, today);
-    const fmt = (e) => `${e.n}${s.total ? '/' + s.total : ''}`;
-    if (lo && st === 'new' && !(nu && nu.date === today)) return [fmt(lo.e), outLabel(lo.days)];
-    if (lo && st === 'new') return [fmt(lo.e), outLabel(lo.days)];
-    const n = nu;
-    const num = n ? fmt(n) : (s.total ? `${s.total}` : '');
-    const when = n ? (n.date === today ? 'Сегодня' + (n.time ? ' ' + n.time : '') : n.date === addDays(today, 1) ? 'Завтра' : shortDate(n.date)) : 'Уточняется';
-    return [num, when];
-  }
-  if (s.status === 'waiting') return ['', s.when || 'Ждём'];
-  if (s.status === 'nodate') return ['', 'Нет даты'];
-  return ['', 'Завершён'];
-}
-function pcard(s, today, withBtn) {
-  const [num, when] = badgeFor(s, today);
-  const st = withBtn ? airState(s, today) : null;
-  const btn = st === 'new' ? `<button type="button" class="seenbtn" data-act="seen" data-id="${esc(s.id)}" aria-label="Отметить, что серия просмотрена"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.500"/></svg></button>`
-    : st === 'wait' ? `<button type="button" class="seenbtn on" data-act="unseen" data-id="${esc(s.id)}" aria-label="Вернуть: серия не просмотрена"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.500"/></svg></button>` : '';
-  return `<a class="pcard${btn ? ' hasbtn' : ''}" href="#/s/${esc(s.id)}">${poster(s)}<div class="bds">${num ? `<span class="bd">${esc(num)}</span>` : ''}<span class="bl">${esc(when)}</span></div>${btn}</a>`;
-}
-function chipFor(s, today) {
-  if (s.status === 'airing') {
-    const n = nextEp(s, today);
-    if (!n) return ['gray', 'график уточняется'];
-    return n.date === today ? ['amber', 'сегодня'] : ['amber', shortDate(n.date)];
-  }
-  if (s.status === 'waiting') return ['blue', s.when || 'ждём'];
-  if (s.status === 'nodate') return ['gray', 'нет даты'];
-  return ['gray', 'завершён'];
-}
 function metaFor(s, today) {
   const p = [];
   if (s.season) p.push(`${s.season} сезон`);
@@ -137,17 +75,10 @@ function metaFor(s, today) {
 }
 
 
-/* ---------- экраны ---------- */
-function viewWeek() { return ''; } // Replaced by minimal.js at load time.
 
-function seg(mode) {
-  return `<div class="seg"><a href="#/list" class="${mode === 'list' ? 'on' : ''}">Список</a><a href="#/posters" class="${mode === 'posters' ? 'on' : ''}">Постеры</a></div>`;
-}
 /* ---------- мои разделы: смотрю / хочу / просмотрено ---------- */
 const MINE = { want: 'Хочу посмотреть', watching: 'Смотрю', done: 'Посмотрел' };
 const MINE_LABEL = MINE;
-const MFILTERS = [['all', 'Все'], ...Object.entries(MINE)];
-const MSFILTERS = [['all', 'Все'], ['soon', 'Скоро'], ['nodate', 'Нет даты'], ['out', 'Вышел']];
 // «Смотрю» → «Просмотрено» автоматически через 5 дней после последней серии;
 // «Просмотрено» → «Смотрю», когда появляется новый сезон
 function effMine(s) {
@@ -197,97 +128,12 @@ async function setMine(id, val) {
   } catch (err) { if (msg) msg.innerHTML = `<span class="warn">${esc(err.message || err)}</span>`; }
 }
 
-// состояние самого сериала (определяю я): выходит / скоро / нет даты / вышел / закрыт
-function sState(s, today) {
-  const list = s.episodes || [];
-  const aired = list.some((e) => e.date <= today);
-  if (s.status === 'waiting' || (list.length > 0 && !aired)) return 'soon';
-  if (s.status === 'airing') return 'airing';
-  if (s.status === 'nodate') return 'nodate';
-  return s.closed ? 'closed' : 'out';
-}
 let sq = '';
-const searchBox = () => `<input class="inp sbox" id="sq" type="search" placeholder="Поиск по названию" value="${esc(sq)}" autocomplete="off">`;
-let sqOpen = false;
-const LOUPE = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>';
-const topBar = (t) => `<div class="hrow"><h1>${t}</h1></div>`;
 const hit = (t) => !sq || (t || '').toLowerCase().includes(sq.toLowerCase().trim());
 const chipRow = (arr, cur, attr) => '<div class="chips">' + arr.filter(([k]) => k !== 'all').map(([k, l]) => `<button type="button" class="fbtn ${cur === k ? 'on' : ''}" ${attr}="${k}">${l}</button>`).join('') + '</div>';
-function viewList(mode) {
-  const today = todayStr();
-  const base = DATA.series.filter((s) => effMine(s) !== 'done' && hit(s.title));
-  const nd = (s) => { const n = nextEp(s, today); return n ? n.date : '9999'; };
-  const groups = [['Смотрю', 'watching'], ['Хочу посмотреть', 'want']].map(([label, k]) => [label, base.filter((s) => effMine(s) === k).sort((a, b) => (nd(a) < nd(b) ? -1 : nd(a) > nd(b) ? 1 : 0))]);
-  let html = topBar('Сериалы');
-  if (!groups.some((g) => g[1].length)) return html + '<p class="empty">Здесь пока пусто. Просмотренное лежит в «Библиотеке».</p>';
-  groups.forEach(([label, list]) => {
-    if (!list.length) return;
-    html += `<div class="group">${label}</div><div class="stack tight">` + list.map((s) => {
-      const [c, t] = chipFor(s, today);
-      return `<a class="card compact" href="#/s/${esc(s.id)}">${poster(s)}<div class="grow"><div class="ttl">${esc(s.title)}</div><div class="meta">${esc(metaFor(s, today))}</div></div><div class="chip ${c}">${esc(t)}</div></a>`;
-    }).join('') + '</div>';
-  });
-  return html;
-}
 
 
-/* ---------- где смотреть (только российские сервисы; зарубежное — через «Твоё») ---------- */
-function watchLink(s) {
-  const q = encodeURIComponent(s.title);
-  const sv = (s.service || '').toLowerCase();
-  let name, url;
-  if (sv.includes('кинопоиск')) { name = 'Кинопоиске'; url = `https://www.kinopoisk.ru/index.php?kp_query=${q}`; }
-  else if (sv.includes('кион') || sv.includes('kion')) { name = 'KION'; url = 'https://kion.ru/'; }
-  else if (sv.includes('иви') || sv.includes('ivi')) { name = 'Иви'; url = `https://www.ivi.ru/search/?q=${q}`; }
-  else if (sv.includes('wink')) { name = 'Wink'; url = 'https://wink.ru/'; }
-  else if (sv.includes('okko')) { name = 'Okko'; url = 'https://okko.tv/'; }
-  else if (sv.includes('start') || sv.includes('старт')) { name = 'Start'; url = 'https://start.ru/'; }
-  else if (sv.includes('premier') || sv.includes('тнт')) { name = 'Premier'; url = 'https://premier.one/'; }
-  else { name = 'Твоё'; url = 'https://tvoe.live/'; }
-  if (s.watch_url) url = s.watch_url;
-  if (s.watch_name) name = s.watch_name;
-  return { name, url, direct: !!s.watch_url };
-}
 
-function viewSeries(id) {
-  const today = todayStr();
-  const s = DATA.series.find((x) => x.id === id);
-  if (!s) return '<a class="back" href="#/list">‹ Сериалы</a><p class="empty">Такого сериала в списке нет.</p>';
-  const [c, t] = chipFor(s, today);
-  const statusText = { airing: 'Выходит сейчас', waiting: 'Ждём: ' + (s.when || ''), nodate: 'Дата не объявлена', ended: s.closed ? 'Закрыт: продолжения не будет' : 'Вышел' }[s.status];
-  const [ga] = palOf(s);
-  const [bnum] = badgeFor(s, today);
-  let html = `<div class="shero${s.poster ? ' haspic' : ''}" style="--ga:${ga}"><a class="back" href="#/list"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>Сериалы</a>` + (s.poster ? `<img class="spic" src="${esc(s.poster)}" alt="">` : '') +
-    `<div class="stitle">${esc(s.title)}</div><div class="cmeta">${bnum ? `<span class="pill">${esc(bnum.replace('/', ' / '))}</span>` : ''}<span>${esc(metaFor(s, today))}</span></div>` +
-    `<div class="chip ${c}" style="margin-top:10px">${esc(statusText)}</div></div>`;
-  if (s.note) html += `<p class="note">${esc(s.note)}</p>`;
-  if (s.status === 'airing' || s.status === 'ended') {
-    html += jfWatch(s.title);
-  }
-  {
-    const cur = effMine(s), has = !!lsGet('gh_token');
-    if (has) html += '<div class="chips" style="margin-top:12px">' + [...Object.entries(MINE), ['', 'Убрать']].map(([k, l]) => `<button type="button" class="fbtn ${cur === k ? 'on' : ''}" data-act="setmine" data-id="${esc(s.id)}" data-val="${k}">${l}</button>`).join('') + '</div><div id="s_msg" class="meta" role="status"></div>';
-    else if (cur) html += `<p class="meta">Мой раздел: ${MINE_LABEL[cur]}</p>`;
-  }
-  const list = eps(s);
-  if (list.length) {
-    const done = list.filter((e) => e.date < today);
-    const upcoming = list.filter((e) => e.date >= today);
-    html += '<div class="group">Серии</div><div class="stack tight">';
-    if (done.length) {
-      const last = done[done.length - 1];
-      html += `<div class="ep done"><span aria-hidden="true">✓</span><span>Вышло ${done.length}${s.total ? ' из ' + s.total : ''} · последняя ${longDate(last.date)}</span></div>`;
-      if (s.total) html += `<div class="prog" aria-hidden="true"><i style="width:${Math.min(100, Math.round(done.length / s.total * 100))}%"></i></div>`;
-    }
-    upcoming.forEach((e, i) => {
-      const r = e.date === today ? 'сегодня' : e.date === addDays(today, 1) ? 'завтра' : (s.total && e.n === s.total ? 'финал' : '');
-      html += `<div class="ep ${i === 0 ? 'next' : ''}"><span class="n">${e.n}</span><span class="d">${longDate(e.date)} · ${weekdayShort(e.date)}${e.time ? ' · ' + esc(e.time) : ''}</span><span class="r">${r}</span></div>`;
-    });
-    html += '</div>';
-    if (s.approx) html += '<p class="foot">Число выпусков не подтверждено, список дат будет уточняться.</p>';
-  }
-  return html;
-}
 
 /* ---------- уведомления ---------- */
 function b64ToU8(b64) {
@@ -393,60 +239,40 @@ function viewAdd() {
 <div id="a_msg" class="meta" role="status"></div>
 </form>
 <p class="meta">Сериал появится в списке «Нет даты». Даты выхода серий я подтягиваю при еженедельной проверке.</p></div>
-<div class="panel"><h2>Доступ к GitHub</h2>
-<p>${has ? '<span class="ok">Токен сохранён на этом телефоне.</span>' : 'Нужен один раз: токен GitHub только для этого репозитория (Contents: Read and write).'}</p>
-<input class="inp" id="a_token" type="password" placeholder="${has ? 'Заменить токен' : 'Вставьте токен'}" autocomplete="off">
-<button type="button" class="btn ghost" data-act="savetoken">Сохранить токен</button>
-${has ? '<button type="button" class="btn ghost" data-act="deltoken">Удалить токен</button>' : ''}
-<a class="meta" href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener" style="display:block;margin-top:8px">Создать токен на GitHub</a></div>`;
+${tokenPanel()}`;
 }
 
 function slugify(t) {
   const m = { а:'a',б:'b',в:'v',г:'g',д:'d',е:'e',ё:'e',ж:'zh',з:'z',и:'i',й:'y',к:'k',л:'l',м:'m',н:'n',о:'o',п:'p',р:'r',с:'s',т:'t',у:'u',ф:'f',х:'h',ц:'c',ч:'ch',ш:'sh',щ:'sch',ъ:'',ы:'y',ь:'',э:'e',ю:'yu',я:'ya' };
   return t.toLowerCase().split('').map((c) => (m[c] !== undefined ? m[c] : c)).join('').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'series';
 }
-const u8ToB64 = (s) => btoa(String.fromCharCode(...new TextEncoder().encode(s)));
+// по частям: String.fromCharCode(...bytes) на большом файле упирается в лимит аргументов (в Safari около 65 тысяч)
+const u8ToB64 = (s) => {
+  const b = new TextEncoder().encode(s); let bin = '';
+  for (let i = 0; i < b.length; i += 0x8000) bin += String.fromCharCode.apply(null, b.subarray(i, i + 0x8000));
+  return btoa(bin);
+};
 const b64ToStr = (b) => new TextDecoder().decode(Uint8Array.from(atob(b.replace(/\n/g, '')), (c) => c.charCodeAt(0)));
 
-async function ghFile(token) {
-  const R = CONFIG.repo;
-  const url = `https://api.github.com/repos/${R.owner}/${R.name}/contents/${R.path}`;
-  const h = { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json' };
-  return { url, h, branch: R.branch };
-}
 async function addSeries(e) {
   e.preventDefault();
   const msg = document.getElementById('a_msg');
   const btn = document.getElementById('a_submit');
-  const token = lsGet('gh_token');
   const title = document.getElementById('a_title').value.trim();
-  if (!title || !token) return;
+  if (!title || !lsGet('gh_token')) return;
+  const service = document.getElementById('a_service').value, note = document.getElementById('a_note').value.trim();
   btn.disabled = true; msg.textContent = 'Сохраняю…';
   try {
-    const { url, h, branch } = await ghFile(token);
-    for (let attempt = 0; attempt < 2; attempt++) {
-      const r = await fetch(`${url}?ref=${branch}`, { headers: h, cache: 'no-store' });
-      if (r.status === 401 || r.status === 403) throw new Error('Токен не подошёл или у него нет прав на запись.');
-      if (!r.ok) throw new Error(`GitHub ответил ${r.status}`);
-      const f = await r.json();
-      const data = JSON.parse(b64ToStr(f.content));
-      if (data.series.some((s) => s.title.toLowerCase() === title.toLowerCase())) throw new Error('Такой сериал уже есть в списке.');
+    DATA = await ghEdit('series.json', (d) => {
+      if (d.series.some((s) => s.title.toLowerCase() === title.toLowerCase())) throw new Error('Такой сериал уже есть в списке.');
       let id = slugify(title); let n = 2; const base = id;
-      while (data.series.some((s) => s.id === id)) id = `${base}-${n++}`;
-      const item = { id, title, service: document.getElementById('a_service').value, status: 'nodate', mine: 'want', added: todayStr() };
-      const note = document.getElementById('a_note').value.trim();
+      while (d.series.some((s) => s.id === id)) id = `${base}-${n++}`;
+      const item = { id, title, service, status: 'nodate', mine: 'want', added: todayStr() };
       if (note) item.note = note;
-      data.series.push(item);
-      data.updated = todayStr();
-      const body = { message: `Сериалы: добавить «${title}»`, content: u8ToB64(JSON.stringify(data, null, 2) + '\n'), sha: f.sha, branch };
-      const p = await fetch(url, { method: 'PUT', headers: { ...h, 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
-      if (p.status === 409 && attempt === 0) continue;
-      if (!p.ok) throw new Error(`Не удалось сохранить (${p.status})`);
-      DATA = data;
-      msg.innerHTML = `<span class="ok">Добавлено.</span> В списке появится через минуту после обновления сайта.`;
-      document.getElementById('addform').reset();
-      break;
-    }
+      d.series.push(item);
+    }, `Сериалы: добавить «${title}»`);
+    msg.innerHTML = '<span class="ok">Добавлено.</span> В списке появится через минуту после обновления сайта.';
+    document.getElementById('addform').reset();
   } catch (err) {
     msg.innerHTML = `<span class="warn">${esc(err.message || err)}</span>`;
   }
@@ -543,49 +369,16 @@ async function delSub(id) {
 
 
 /* ---------- фильмы ---------- */
-function movieBadge(m, today) {
-  if (m.status === 'watched') return 'Посмотрел';
-  if (m.status === 'watching') return 'Смотрю';
-  if (m.date) {
-    if (m.date === today) return 'Сегодня';
-    if (m.date === addDays(today, 1)) return 'Завтра';
-    if (m.date > today) return shortDate(m.date);
-  }
-  return 'В планах';
-}
-const mState = (m, today) => (m.date ? (m.date >= today ? 'soon' : 'out') : 'nodate');
 const mMine = (m) => (m.status === 'watched' ? 'done' : m.status === 'watching' ? 'watching' : 'want');
-function viewMovies() {
-  const today = todayStr();
-  const base = MOVIES.items.slice().reverse().filter((m) => m.status !== 'watched' && hit(m.title));
-  const isSoon = (m) => m.status !== 'watching' && m.date && m.date >= today;
-  const groups = [
-    ['Смотрю', base.filter((m) => m.status === 'watching')],
-    ['Хочу посмотреть', base.filter((m) => m.status !== 'watching' && !isSoon(m))],
-    ['Скоро', base.filter(isSoon).sort((a, b) => (a.date < b.date ? -1 : 1))],
-  ];
-  let html = topBar('Фильмы');
-  if (!groups.some((g) => g[1].length)) return html + '<p class="empty">Здесь пока пусто. Просмотренные фильмы лежат в «Библиотеке».</p>';
-  groups.forEach(([label, g]) => {
-    if (!g.length) return;
-    html += `<div class="group">${label}</div><div class="stack tight">` + g.map((m) => {
-      const soon = isSoon(m);
-      const t = soon ? movieBadge(m, today) : m.status === 'watching' ? 'Смотрю' : (m.date ? 'Вышел' : 'Нет даты');
-      const c = soon ? 'amber' : m.status === 'watching' ? 'blue' : 'gray';
-      return `<a class="card compact" href="#/m/${esc(m.id)}">${poster(m)}<div class="grow"><div class="ttl">${esc(m.title)}</div><div class="meta">${esc(m.service || 'Твоё')}</div></div><div class="chip ${c}">${esc(t)}</div></a>`;
-    }).join('') + '</div>';
-  });
-  return html;
-}
 function viewMovie(id) {
   const today = todayStr();
   const m = MOVIES.items.find((x) => x.id === id);
-  if (!m) return '<a class="back" href="#/movies">‹ Фильмы</a><p class="empty">Такого фильма в списке нет.</p>';
+  if (!m) return '<a class="back" href="#/mine/movies">‹ Фильмы</a><p class="empty">Такого фильма в списке нет.</p>';
   const [ga] = palOf(m);
   const has = !!lsGet('gh_token');
   const watched = m.status === 'watched';
   const chip = watched ? ['gray', 'Посмотрел'] : m.status === 'watching' ? ['blue', 'Смотрю'] : (m.date && m.date >= today) ? ['amber', 'Выходит ' + longDate(m.date)] : ['blue', 'Хочу посмотреть'];
-  let html = `<div class="shero${m.poster ? ' haspic' : ''}" style="--ga:${ga}"><a class="back" href="#/movies"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>Фильмы</a>` +
+  let html = `<div class="shero${m.poster ? ' haspic' : ''}" style="--ga:${ga}"><a class="back" href="#/mine/movies"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>Фильмы</a>` +
     (m.poster ? `<img class="spic" src="${esc(m.poster)}" alt="">` : '') +
     `<div class="stitle">${esc(m.title)}</div><div class="cmeta"><span>${esc(m.service || 'Твоё')}</span></div><div class="chip ${chip[0]}" style="margin-top:10px">${esc(chip[1])}</div></div>`;
   if (m.note) html += `<p class="note">${esc(m.note)}</p>`;
@@ -600,7 +393,7 @@ function viewMovie(id) {
 }
 function viewAddMovie() {
   const has = !!lsGet('gh_token');
-  return `<a class="back" href="#/movies"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>Фильмы</a><h1>Добавить фильм</h1>
+  return `<a class="back" href="#/mine/movies"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>Фильмы</a><h1>Добавить фильм</h1>
 <div class="panel"><form id="mform" autocomplete="off">
 <label class="lbl" for="m_title">Название</label>
 <input class="inp" id="m_title" required placeholder="Например, Дюна">
@@ -642,7 +435,7 @@ async function movieAct(act, id, val) {
       render();
     } else {
       MOVIES = await ghEdit('movies.json', (d) => { d.items = d.items.filter((x) => x.id !== id); }, 'Фильмы: удалить');
-      confirmDel = ''; location.hash = '#/movies';
+      confirmDel = ''; location.hash = '#/mine/movies';
     }
   } catch (err) { if (msg) msg.innerHTML = `<span class="warn">${esc(err.message || err)}</span>`; }
 }
@@ -651,7 +444,6 @@ async function movieAct(act, id, val) {
 const DFILTERS = [['all', 'Все'], ['series', 'Сериалы'], ['film', 'Фильмы']];
 const inCollection = (it) => { const t = it.title.toLowerCase(); return DATA.series.some((x) => x.title.toLowerCase() === t) || MOVIES.items.some((x) => x.title.toLowerCase() === t); };
 function viewDiscover() {
-  const today = todayStr();
   let list = DISC.items.filter((x) => dfilter === 'all' || x.kind === dfilter);
   let html = `<h1>Премьеры</h1><p class="meta">Самые ожидаемые премьеры, российские и зарубежные. Оценку ★ показываю, когда она есть. Подборку обновляю раз в неделю${DISC.updated ? ' · обновлено ' + longDate(DISC.updated) : ''}.</p><div class="chips">` +
     DFILTERS.map(([k, l]) => `<button type="button" class="fbtn ${dfilter === k ? 'on' : ''}" data-dfilter="${k}">${l}</button>`).join('') + '</div>';
@@ -779,67 +571,6 @@ async function discoverAdd(id, lib) {
 }
 
 /* ---------- библиотека: всё, что посмотрел ---------- */
-function libItems() {
-  const a = DATA.series.filter((s) => effMine(s) === 'done').map((it) => ({ it, kind: 's', href: `#/s/${it.id}` }));
-  const b = MOVIES.items.filter((m) => m.status === 'watched').map((it) => ({ it, kind: 'm', href: `#/m/${it.id}` }));
-  return [...a, ...b];
-}
-function viewLib() {
-  if (libfilter === 'jf') {
-    return '<button type="button" class="back" data-libfilter="jf" style="background:none;border:0;padding:0;font:inherit;color:inherit">‹ Библиотека</button><h1>Сервер</h1>' +
-      searchBox() + chipRow([['Series', 'Сериалы'], ['Movie', 'Фильмы']], jfkind, 'data-jfkind') + viewJfServer();
-  }
-  const all = libItems();
-  const list = all.filter((x) => hit(x.it.title) && (libfilter === 'all' || x.kind === libfilter))
-    .sort((x, y) => ((y.it.rating || 0) - (x.it.rating || 0)) || x.it.title.localeCompare(y.it.title, 'ru'));
-  const rated = list.filter((x) => x.it.rating);
-  const avg = rated.length ? (rated.reduce((n, x) => n + x.it.rating, 0) / rated.length).toFixed(1) : null;
-  let html = `<div class="hrow"><h1>Библиотека</h1><a class="addbtn" href="#/addlib">+ Добавить</a></div>` +
-    `<p class="meta">${list.length ? `${list.length} ${plural(list.length, ['тайтл', 'тайтла', 'тайтлов'])}${avg ? ` · средняя оценка ★ ${avg}` : ''} · рейтинг Кинопоиска` : ''}</p>` +
-    searchBox() + chipRow([['s', 'Сериалы'], ['m', 'Фильмы'], ['jf', 'Сервер']], libfilter, 'data-libfilter');
-  if (!list.length) return html + '<p class="empty">Пока пусто. Всё, что вы отметите «Посмотрел», появится здесь. Старое можно добавить кнопкой «+ Добавить».</p>';
-  html += '<div class="mgrid">' + list.map((x) =>
-    `<a class="pcard" href="${esc(x.href)}">${poster(x.it)}<div class="bds"><span class="bl">${x.it.rating ? '★ ' + esc(Number(x.it.rating).toFixed(1)) : '★ —'}</span></div></a>`).join('') + '</div>';
-  return html;
-}
-function viewAddLib() {
-  const has = !!lsGet('gh_token');
-  return `<a class="back" href="#/lib"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>Библиотека</a><h1>Что вы уже смотрели</h1>
-<div class="panel"><form id="libform" autocomplete="off">
-<label class="lbl" for="l_title">Название</label>
-<input class="inp" id="l_title" required placeholder="Например: Во все тяжкие">
-<label class="lbl" for="l_kind">Что это</label>
-<select class="inp" id="l_kind"><option value="s">Сериал</option><option value="m">Фильм</option></select>
-<button type="submit" class="btn" id="l_submit" ${has ? '' : 'disabled'}>Добавить в библиотеку</button>
-<div id="l_msg" class="meta" role="status"></div>
-${has ? '' : '<p class="meta">Нужен токен GitHub: «Настройки» → «Токен».</p>'}</form></div>`;
-}
-async function addLib(e) {
-  e.preventDefault();
-  const msg = document.getElementById('l_msg'); const btn = document.getElementById('l_submit');
-  const title = document.getElementById('l_title').value.trim(); const kind = document.getElementById('l_kind').value;
-  if (!title) return;
-  btn.disabled = true; msg.textContent = 'Сохраняю…';
-  try {
-    if (kind === 's') {
-      DATA = await ghEdit('series.json', (d) => {
-        const x = d.series.find((y) => y.title.toLowerCase() === title.toLowerCase());
-        if (x) { x.mine = 'done'; x.seen_season = x.season || 1; return; }
-        d.series.push({ id: `${slugify(title)}-${Date.now().toString(36).slice(-4)}`, title, service: null, status: 'ended', mine: 'done', seen_season: 1, added: todayStr() });
-      }, `Библиотека: «${title}»`);
-    } else {
-      MOVIES = await ghEdit('movies.json', (d) => {
-        const x = d.items.find((y) => y.title.toLowerCase() === title.toLowerCase());
-        if (x) { x.status = 'watched'; return; }
-        d.items.push({ id: `${slugify(title)}-${Date.now().toString(36).slice(-4)}`, title, service: 'Твоё', status: 'watched', added: todayStr() });
-      }, `Библиотека: «${title}»`);
-    }
-    msg.innerHTML = '<span class="ok">Добавлено.</span> Рейтинг и постер появятся после следующей публикации сайта.';
-    document.getElementById('libform').reset();
-  } catch (err) { msg.innerHTML = `<span class="warn">${esc(err.message || err)}</span>`; }
-  btn.disabled = false;
-}
-
 /* ---------- настройки: подписки, уведомления, токен ---------- */
 function tokenPanel() {
   const has = !!lsGet('gh_token');
@@ -881,7 +612,7 @@ async function jfLoad() {
     else jfItems = (await r.json()).Items || [];
   } catch (e) { jfErr = jfNetErr(e); jfItems = null; }
   jfLoading = false;
-  if ((location.hash === '#/lib' && libfilter === 'jf') || location.hash.startsWith('#/mine/server')) render();
+  if (location.hash.startsWith('#/mine/server')) render();
 }
 function viewJfServer() {
   const b = jfBase();
@@ -923,7 +654,7 @@ function viewSettings() {
 let lastPage = '', typing = false;
 let mineStatus = 'all', lastMineSection = '';
 function render() {
-  const h = location.hash === '#/posters' ? '#/list' : (location.hash || '#/week');
+  const h = location.hash || '#/week';
   const parts = h.replace(/^#\//, '').split('/');
   let page = parts[0] || 'week';
   // Legacy calendar links always return to the main screen.
@@ -931,36 +662,31 @@ function render() {
   // Old bookmarks and in-app back links open the new collection, not legacy carousel screens.
   if (page === 'list' || page === 'posters') { location.replace('#/mine/series'); return; }
   if (page === 'movies') { location.replace('#/mine/movies'); return; }
-  if (page === 'lib') { location.replace(libfilter === 'jf' ? '#/mine/server' : '#/mine/series'); return; }
+  if (page === 'lib') { location.replace('#/mine/series'); return; }
   if (page === 'mine' && (parts[1] || 'series') !== lastMineSection) { mineStatus = 'all'; sq = ''; lastMineSection = parts[1] || 'series'; }
   if (page === 'random' && lastPage !== 'random') { rnd = null; rndLoading = false; rndAttempted = false; }
-  if (page !== lastPage) { sq = ''; sqOpen = false; lastPage = page; }
+  if (page !== lastPage) { sq = ''; lastPage = page; }
   let html;
   if (page === 'subs' || page === 'notify' || page === 'jf') { stab = page; page = 'settings'; }
-  if (page === 'list') html = viewList('list');
-  else if (page === 's') html = viewSeries(decodeURIComponent(parts[1] || ''));
+  if (page === 's') html = viewSeries(decodeURIComponent(parts[1] || ''));
   else if (page === 'settings') html = viewSettings();
-  else if (page === 'lib') html = viewLib();
   else if (page === 'mine') html = viewMine(parts[1] || 'series');
   else if (page === 'search') html = viewSearch();
-  else if (page === 'addlib') html = viewAddLib();
   else if (page === 'add') html = viewAdd();
   else if (page === 'discover') html = viewDiscover();
   else if (page === 'd') html = viewDisc(decodeURIComponent(parts[1] || ''));
   else if (page === 'random') html = viewRandom();
 
-  else if (page === 'movies') html = viewMovies();
   else if (page === 'm') html = viewMovie(decodeURIComponent(parts[1] || ''));
   else if (page === 'addm') html = viewAddMovie();
   else html = viewWeek();
   $app.innerHTML = html;
-  const tab = ['mine','list','movies','lib','s','m','addlib','add','addm'].includes(page) ? 'mine' : 'week';
+  const tab = ['mine','s','m','add','addm'].includes(page) ? 'mine' : 'week';
   document.querySelectorAll('#tabs a').forEach((a) => a.classList.toggle('on', a.dataset.tab === tab));
   if (!typing) window.scrollTo(0, 0);
   if (typeof afterRender === 'function') afterRender(page);
   if (page === 'settings' && stab === 'notify') refreshNotify();
   if (page === 'settings' && stab === 'subs') document.getElementById('subform').addEventListener('submit', addSub);
-  if (page === 'addlib') document.getElementById('libform').addEventListener('submit', addLib);
   if (page === 'addm') document.getElementById('mform').addEventListener('submit', addMovie);
   if (page === 'add') document.getElementById('addform').addEventListener('submit', addSeries);
 }
@@ -971,30 +697,14 @@ document.addEventListener('input', (ev) => {
   const el = document.getElementById('sq'); if (el) { el.focus(); try { el.setSelectionRange(pos, pos); } catch (e) {} }
 });
 document.addEventListener('click', (ev) => {
-  if (ev.target.closest('[data-sqtoggle]')) {
-    if (sqOpen || sq) { sqOpen = false; sq = ''; } else sqOpen = true;
-    const y = window.scrollY; typing = true; render(); typing = false; window.scrollTo(0, y);
-    const el = document.getElementById('sq'); if (el) el.focus();
-    return;
-  }
   const ms = ev.target.closest('[data-mine-status]');
   if (ms) { mineStatus = ms.dataset.mineStatus; const y = window.scrollY; render(); window.scrollTo(0, y); return; }
-  const mf = ev.target.closest('[data-mfilter]');
-  if (mf) { mfilter = mfilter === mf.dataset.mfilter ? 'all' : mf.dataset.mfilter; const y = window.scrollY; render(); window.scrollTo(0, y); return; }
-  const sf = ev.target.closest('[data-sfilter]');
-  if (sf) { sfilter = sfilter === sf.dataset.sfilter ? 'all' : sf.dataset.sfilter; const y = window.scrollY; render(); window.scrollTo(0, y); return; }
-  const msf = ev.target.closest('[data-msfilter]');
-  if (msf) { msfilter = msfilter === msf.dataset.msfilter ? 'all' : msf.dataset.msfilter; const y = window.scrollY; render(); window.scrollTo(0, y); return; }
   const jk = ev.target.closest('[data-jfkind]');
   if (jk) { jfkind = jfkind === jk.dataset.jfkind ? 'all' : jk.dataset.jfkind; render(); return; }
-  const lf = ev.target.closest('[data-libfilter]');
-  if (lf) { libfilter = libfilter === lf.dataset.libfilter ? 'all' : lf.dataset.libfilter; render(); return; }
   const st = ev.target.closest('[data-stab]');
   if (st) { stab = st.dataset.stab; render(); return; }
   const df = ev.target.closest('[data-dfilter]');
   if (df) { dfilter = df.dataset.dfilter; const y = window.scrollY; render(); window.scrollTo(0, y); return; }
-  const f = ev.target.closest('[data-filter]');
-  if (f) { filter = filter === f.dataset.filter ? 'all' : f.dataset.filter; const y = window.scrollY; render(); window.scrollTo(0, y); return; }
   const a = ev.target.closest('[data-act]');
   if (!a) return;
   if (a.dataset.act === 'enable') enablePush();
