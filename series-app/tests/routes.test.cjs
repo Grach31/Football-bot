@@ -26,6 +26,7 @@ test('jsdom: all routes, archive, old links, Jellyfin isolation and Cinema Noir'
   });
   const w=dom.window;
   t.after(()=>w.close());
+  assert.match(w.document.querySelector('meta[name="viewport"]').content,/user-scalable=no/);
   const errors=[];
   w.addEventListener('error',e=>errors.push(e.message));
   w.scrollTo=()=>{};
