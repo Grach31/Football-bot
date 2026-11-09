@@ -183,7 +183,7 @@ function hallInfo(first) {
     }
     el.classList.remove('sw');
   };
-  if (first) apply(); else { el.classList.add('sw'); setTimeout(apply, 200); }
+  if (first) apply(); else { el.classList.add('sw'); setTimeout(apply, 140); }
 }
 function hallGo(i) { const n = PG.list.length; if (!n) return; PG.idx = (i + n) % n; hallPlace(); hallInfo(false); const b = document.querySelector('.hall .beam'); if (b) { b.style.opacity = '1'; setTimeout(() => { b.style.opacity = ''; }, 130); } saveState(); }
 function saveState() { if (PG.cfg) PG.saved[PG.cfg.key] = { active: PG.active, idx: PG.idx }; }
@@ -227,7 +227,7 @@ function setGroup(k) {
   PG.active = k; PG.idx = 0; PG.list = groupList();
   const stage = document.getElementById('hstage');
   document.querySelectorAll('#hchips .hchip').forEach((x) => x.classList.toggle('on', x.dataset.hg === k));
-  stage.style.opacity = 0; setTimeout(() => { hallBuild(); stage.style.opacity = 1; saveState(); }, 240);
+  stage.style.opacity = 0; setTimeout(() => { hallBuild(); stage.style.opacity = 1; saveState(); }, 180);
   if (PG.cfg.key === 'lib') libfilter = k;
   if (k === 'jf' && jfItems === null && jfBase() && lsGet('jf_token') && !jfLoading) jfLoad();
 }
@@ -247,18 +247,28 @@ function initHall() {
   if (q) q.addEventListener('input', () => { PG.q = q.value; PG.idx = 0; PG.list = groupList(); hallBuild(); });
   startHallTimer();
   /* пыль в луче */
-  const c = document.getElementById('dust'), x = c.getContext('2d'); let W, H; const P = [];
-  const rs = () => { const r = c.getBoundingClientRect(); W = c.width = r.width * devicePixelRatio; H = c.height = r.height * devicePixelRatio; }; rs();
-  for (let i = 0; i < 70; i++) P.push({ x: Math.random(), y: Math.random(), r: Math.random() * 1.8 + 0.4, s: Math.random() * 0.0004 + 0.00008, d: Math.random() * 6.28, a: Math.random() * 0.6 + 0.2 });
-  const loop = () => {
+  const c = document.getElementById('dust'), x = c.getContext('2d', { alpha: true }); if (!x) return; let W, H; const P = []; const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+  const rs = () => { const r = c.getBoundingClientRect(); W = c.width = Math.round(r.width * dpr); H = c.height = Math.round(r.height * dpr); }; rs();
+  for (let i = 0; i < 36; i++) P.push({ x: Math.random(), y: Math.random(), r: Math.random() * 1.8 + 0.4, s: Math.random() * 0.0004 + 0.00008, d: Math.random() * 6.28, a: Math.random() * 0.6 + 0.2 });
+  // The ambient dust is decorative: cap redraws at ~30 FPS and skip off-screen frames.
+  let lastFrame = 0;
+  const loop = (now = 0) => {
     if (!document.body.contains(c)) return;
-    if (window.scrollY < 700) {
-      x.clearRect(0, 0, W, H); const col = getComputedStyle(document.documentElement).getPropertyValue('--g').trim() || '#fff';
-      P.forEach((p) => { p.y -= p.s * 2; p.d += 0.008; p.x += Math.sin(p.d) * 0.0004; if (p.y < 0.06) { p.y = 1; p.x = Math.random(); }
-        const px = (0.5 + (p.x - 0.5) * (0.25 + (1 - p.y) * 0.9)) * W, py = p.y * H;
-        x.globalAlpha = Math.max(0, p.a * (1 - Math.abs(p.y - 0.5)) * 0.9); x.fillStyle = col; x.shadowColor = col; x.shadowBlur = 8; x.beginPath(); x.arc(px, py, p.r * devicePixelRatio, 0, 6.28); x.fill(); });
-    }
     PG.raf = requestAnimationFrame(loop);
+    if (document.hidden || window.scrollY >= 700 || now - lastFrame < 33) return;
+    lastFrame = now;
+    x.clearRect(0, 0, W, H);
+    const col = getComputedStyle(document.documentElement).getPropertyValue('--g').trim() || '#fff';
+    x.fillStyle = col;
+    // Avoid a costly per-particle shadowBlur on every frame, especially on iOS.
+    P.forEach((p) => {
+      p.y -= p.s * 3; p.d += 0.012; p.x += Math.sin(p.d) * 0.0006;
+      if (p.y < 0.06) { p.y = 1; p.x = Math.random(); }
+      const px = (0.5 + (p.x - 0.5) * (0.25 + (1 - p.y) * 0.9)) * W, py = p.y * H;
+      x.globalAlpha = Math.max(0, p.a * (1 - Math.abs(p.y - 0.5)) * 0.9);
+      x.beginPath(); x.arc(px, py, p.r * dpr, 0, 6.28); x.fill();
+    });
+    x.globalAlpha = 1;
   };
   loop();
 }
@@ -311,7 +321,7 @@ function closeIntro(instant) {
   document.getElementById('intro') && document.getElementById('intro').classList.add('hide');
   const done = () => { document.body.style.overflow = ''; document.querySelectorAll('.curt,#intro').forEach((e) => e.remove()); document.body.classList.remove('cur-open'); };
   if (instant) return done();
-  setTimeout(() => { document.body.classList.add('cur-open'); setTimeout(done, 2400); }, 500);
+  setTimeout(() => { document.body.classList.add('cur-open'); setTimeout(done, 1220); }, 250);
 }
 function showIntro() {
   document.querySelectorAll('.curt,#intro').forEach((e) => e.remove()); document.body.classList.remove('cur-open');
@@ -484,7 +494,7 @@ function afterRender(page) {
     const p = nav.querySelector('.npill'); if (p) p.style.transform = k < 0 ? 'translateX(-200%)' : `translateX(${k * 100}%)`;
   }
   if (page !== 's') document.documentElement.style.removeProperty('--g');
-  if (page === 'week' || page === 'list' || page === 'movies' || page === 'lib') { initHall(); if (page === 'week') maybeIntro(); } else { stopHallTimer(); }
+  if (page === 'week' || page === 'list' || page === 'movies' || page === 'lib') { initHall(); if (page === 'week') maybeIntro(); } else { stopHallTimer(); cancelAnimationFrame(PG.raf); }
   if (page === 'cal') initBoard();
   if (page === 's') initSeries(decodeURIComponent((location.hash.split('/')[2] || '')));
 }
