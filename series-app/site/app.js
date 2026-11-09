@@ -142,8 +142,7 @@ function viewAdd() {
 <button type="submit" class="btn" ${has ? '' : 'disabled'} id="a_submit">Добавить</button>
 <div id="a_msg" class="meta" role="status"></div>
 </form>
-<p class="meta">Сериал появится в «Моё». Даты уточняются автоматически.</p></div>
-${tokenPanel()}`;
+<p class="meta">Сериал появится в «Моё». Даты уточняются автоматически.</p></div>`;
 }
 
 function slugify(t) {
@@ -231,7 +230,7 @@ function viewSubs() {
 <select class="inp" id="s_period"><option value="month">Каждый месяц</option><option value="3m">Раз в 3 месяца</option><option value="6m">Раз в полгода</option><option value="year">Раз в год</option><option value="once">Один раз (без продления)</option></select>
 <button type="submit" class="btn" id="s_submit" ${has ? '' : 'disabled'}>Добавить</button>
 <div id="s_msg" class="meta" role="status"></div></form>
-${has ? '' : '<p class="meta">Чтобы сохранять, добавьте токен GitHub на странице <a href="#/add" style="color:var(--accent)">«Добавить сериал»</a>.</p>'}</div>`;
+${has ? '' : '<p class="meta">Для добавления настрой токен в <a href="#/settings" style="color:var(--accent)">настройках GitHub</a>.</p>'}</div>`;
   return html;
 }
 
@@ -452,7 +451,7 @@ async function discoverAdd(id) {
 /* ---------- настройки: подписки, уведомления, токен ---------- */
 function tokenPanel() {
   const has = !!lsGet('gh_token');
-  return `<div class="panel"><h2>Токен GitHub</h2><p>${has ? '<span class="ok">Токен сохранён на этом телефоне.</span>' : 'Нужен один раз: токен GitHub только для этого репозитория (Contents: Read and write). Без него нельзя добавлять и переносить сериалы и фильмы.'}</p>
+  return `<div class="panel"><h2>Токен GitHub</h2><p>${has ? '<span class="ok">Токен сохранён на этом телефоне.</span>' : 'Нужен для добавления сериалов и фильмов в коллекцию. Хранится только на этом устройстве.'}</p>
 <input class="inp" id="a_token" type="password" placeholder="${has ? 'Заменить токен' : 'Вставьте токен'}" autocomplete="off">
 <button type="button" class="btn ghost" data-act="savetoken">Сохранить токен</button>
 ${has ? '<button type="button" class="btn ghost" data-act="deltoken">Удалить токен</button>' : ''}
