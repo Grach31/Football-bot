@@ -103,3 +103,15 @@ body{background:radial-gradient(ellipse 80% 420px at 50% -100px,rgba(159,120,61,
 .gf-watching-action{display:block;width:100%;max-width:340px;min-height:48px;padding:12px 16px;margin:14px 0;border:1px solid rgba(226,189,126,.48);border-radius:13px;background:linear-gradient(120deg,#e5c68c,#cfa66b);color:#251b10;font:800 13px var(--fb);cursor:pointer}
 .gf-watching-action.is-watching{background:#1b1915;color:#ffe0a6;border-color:rgba(226,189,126,.40)}
 .gf-watching-action:active{transform:scale(.985)}
+
+
+/* Poster quick action is a sibling of the card link: valid HTML and independent taps. */
+.gf-poster-card{position:relative;min-width:0}
+.gf-rail>.gf-poster-card{flex:0 0 clamp(137px,36vw,175px);scroll-snap-align:start}
+.gf-grid>.gf-poster-card{width:100%}
+.gf-poster-card>.gf-card,.gf-poster-card>.gf-grid-card{display:flex;width:100%;height:100%;flex:0 0 auto;scroll-snap-align:none}
+.gf-card-watch{position:absolute;z-index:4;top:8px;right:8px;width:44px;height:44px;display:grid;place-items:center;cursor:pointer;border:1px solid rgba(246,221,175,.55);border-radius:13px;background:rgba(14,12,10,.86);color:#ffe0a6;font:800 18px var(--fb);-webkit-tap-highlight-color:transparent;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.gf-card-watch.is-watching{color:#251b10;background:#e5c68c;border-color:#e5c68c}
+.gf-card-watch:focus-visible{outline:2px solid #ffe0a6;outline-offset:2px}
+.gf-card-watch:active{transform:scale(.96)}
+@media(prefers-reduced-motion:reduce){.gf-card-watch{transition:none}}
