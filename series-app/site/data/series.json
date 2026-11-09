@@ -997,6 +997,15 @@
       "status": "ended",
       "mine": "watching",
       "added": "2026-11-07"
+    },
+    {
+      "id": "narko",
+      "title": "Нарко",
+      "service": null,
+      "status": "ended",
+      "mine": "done",
+      "seen_season": 1,
+      "added": "2026-11-09"
     }
   ]
 }
