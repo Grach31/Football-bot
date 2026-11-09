@@ -25,7 +25,7 @@ viewWeek = function () {
   const fresh = [
     ...series.filter(s => effMine(s)!=='done' && s.status === 'airing' && airState(s,today)==='new')
       .map(s => ({obj:s,kind:'s',tag:'Новая серия',date:(lastOut(s,today)||{}).e?.date||today})),
-    ...series.filter(s => effMine(s)==='want' && gfRecent(gfSeriesDate(s),today) && s.status !== 'nodate' && s.status !== 'waiting')
+    ...series.filter(s => effMine(s)==='want' && gfRecent(gfSeriesDate(s),today))
       .map(s => ({obj:s,kind:'s',tag:'Премьера',date:gfSeriesDate(s)})),
     ...movies.filter(m => m.status === 'want' && gfRecent(m.date,today))
       .map(m => ({obj:m,kind:'m',tag:'Премьера',date:m.date}))
