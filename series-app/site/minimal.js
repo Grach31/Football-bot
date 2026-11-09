@@ -7,6 +7,12 @@ const gfArchived = (item,kind,info=gfInfo(item,kind)) => GFReleases.hiddenByManu
 const gfArchiveButton = (item,kind,info=gfInfo(item,kind)) => (!info.eligibleArchive || info.group==='archive') ? '' :
   '<button class="gf-archive-action" type="button" data-act="gfarchive" data-kind="'+kind+'" data-id="'+esc(item.id)+'">'+
   (gfArchived(item,kind,info)?'↶ Вернуть из архива':'↗ Убрать в архив')+'</button>';
+// Personal viewing list, intentionally independent of release dates and manual archive.
+const gfWatchingKey = id => 'gf_watching_v1:s:'+id;
+const gfWatching = item => lsGet(gfWatchingKey(item.id)) === '1';
+const gfWatchingButton = item => '<button type="button" class="gf-watching-action'+(gfWatching(item)?' is-watching':'')+
+  '" data-act="gfwatching" data-id="'+esc(item.id)+'" aria-pressed="'+(gfWatching(item)?'true':'false')+'">'+
+  (gfWatching(item)?'✓ Закончил смотреть':'▶ Смотрю сейчас')+'</button>';
 const gfDecor = (info) => '<span class="gf-release-label">'+esc(info.label)+'</span><span class="gf-release-detail">'+esc(info.detail)+'</span>';
 const gfHeader = (label) => '<header class="gf-header"><div><div class="gf-eyebrow">GRACH FILMS / PRIVATE CINEMA</div><h1>'+esc(label)+'</h1></div><div class="gf-actions"><a href="#/random" class="gf-icon" aria-label="Случайный фильм или сериал">'+DICE+'</a><a href="#/settings" class="gf-icon" aria-label="Настройки">'+GEAR+'</a></div></header>';
 const gfEntries = (today) => [
@@ -98,9 +104,14 @@ function viewMine(section){
         const bb=gfArchived(b.obj,b.kind,b.info)||b.info.group==='archive';
         return Number(aa)-Number(bb)||gfOrder(a,b);
       });
-    const current=entries.filter(x=>!(gfArchived(x.obj,x.kind,x.info)||x.info.group==='archive'));
+    const watching=active==='series'?entries.filter(x=>gfWatching(x.obj)):[];
+    const rest=active==='series'?entries.filter(x=>!gfWatching(x.obj)):entries;
+    const current=rest.filter(x=>!(gfArchived(x.obj,x.kind,x.info)||x.info.group==='archive'));
     const old=entries.filter(x=>gfArchived(x.obj,x.kind,x.info)||x.info.group==='archive');
-    body='<div class="gf-collection-title">Актуальное <span>'+current.length+'</span></div>'+
+    body=(active==='series'&&watching.length?'<section class="gf-watching-section"><div class="gf-collection-title gf-watching-title">▶ Смотрю сейчас <span>'+watching.length+'</span></div>'+
+      '<p class="gf-watching-subtitle">Твой личный список. Он не зависит от даты выхода.</p>'+
+      '<div class="gf-grid">'+watching.map(x=>gfCard(x,true)).join('')+'</div></section>':'')+
+      '<div class="gf-collection-title">Актуальное <span>'+current.length+'</span></div>'+
       '<div class="gf-grid">'+current.map(x=>gfCard(x,true)).join('')+'</div>'+
       (current.length?'':'<p class="gf-hint">Пока нет актуальных релизов.</p>')+
       '<div class="gf-collection-title gf-archive-title">Архив <span>'+old.length+'</span></div>'+
