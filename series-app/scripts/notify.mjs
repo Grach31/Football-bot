@@ -35,7 +35,7 @@ try { subsData = JSON.parse(fs.readFileSync(path.join(dataDir, 'subscriptions.js
 let moviesData = { items: [] };
 try { moviesData = JSON.parse(fs.readFileSync(path.join(dataDir, 'movies.json'), 'utf8')); } catch (e) { /* фильмов нет */ }
 function moviePayloads(date) {
-  return (moviesData.items || []).filter((m) => m.status !== 'watched' && m.date === date).map((m) => ({
+  return (moviesData.items || []).filter((m) => m.date === date).map((m) => ({
     title: `${m.title}: выходит сегодня`, body: m.service ? `Фильм · ${m.service}` : 'Фильм', tag: `movie-${m.id}-${date}`, url: `./#/m/${m.id}`,
   }));
 }
