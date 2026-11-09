@@ -1,5 +1,5 @@
 'use strict';
-/* Grach Films v71: two destinations, one collection model, independent Jellyfin server.
+/* Grach Films v72: two destinations, one collection model, independent Jellyfin server.
    Retains all legacy routes and their editing capabilities. */
 const gfDateText = (date, today) => {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(date || '')) return '';
@@ -32,7 +32,7 @@ const gfSection = (title, subtitle, items, more) => {
   }).join('');
   return `<section class="gf-block"><div class="gf-block-head"><div><h2>${esc(title)}</h2><p>${esc(subtitle)}</p></div>${more ? `<a href="${esc(more)}" aria-label="Открыть раздел ${esc(title)}">Все ›</a>` : ''}</div><div class="gf-rail">${cards}</div></section>`;
 };
-const gfHeader = (label) => `<header class="gf-header"><div><div class="gf-eyebrow">GRACH FILMS</div><h1>${esc(label)}</h1></div><div class="gf-actions"><a href="#/search" class="gf-icon" aria-label="Поиск">${MAGN}</a><a href="#/settings" class="gf-icon" aria-label="Настройки">${GEAR}</a></div></header>`;
+const gfHeader = (label) => `<header class="gf-header"><div><div class="gf-eyebrow">GRACH FILMS</div><h1>${esc(label)}</h1></div><div class="gf-actions"><a href="#/random" class="gf-icon" aria-label="Случайный фильм или сериал" title="Случайный фильм или сериал">${DICE}</a><a href="#/settings" class="gf-icon" aria-label="Настройки">${GEAR}</a></div></header>`;
 const gfSeriesDate = (s) => (s.episodes || []).map(e => e.date).filter(Boolean).sort()[0] || s.date || '';
 const gfSeriesNext = (s, today) => (s.episodes || []).filter(e => e.date >= today && !epAired(e,today)).sort((a,b) => a.date.localeCompare(b.date))[0];
 const gfRecent = (d,today) => /^\d{4}-\d{2}-\d{2}$/.test(d || '') && d <= today && addDays(d, 13) >= today;
@@ -59,13 +59,11 @@ viewWeek = function () {
   const recommendations = (DISC.items || []).filter(it=>it.rec).slice(0,5).map(it=>({obj:it,kind:it.kind==='film'?'m':'s',href:'#/d/'+encodeURIComponent(it.id),tag:'Для тебя',meta:it.kind==='film'?'Фильм':'Сериал'}));
   const empty = '<div class="gf-empty">Здесь пока нет записей. Добавь фильм или сериал через поиск.</div>';
   return `<div class="gf-shell">${gfHeader('Твой кинозал')}
-    <div class="gf-feature"><div class="gf-feature-title">Сегодня в твоём кино</div><p>Новые серии, премьеры и всё, что ты собираешься посмотреть.</p><a href="#/search" class="gf-primary">Найти фильм или сериал ›</a></div>
     ${gfSection('Продолжить просмотр','То, что ты смотришь',watching,'#/mine/series')}
     ${gfSection('Новое для тебя','Вышедшие серии и премьеры из твоего списка',fresh,'#/mine/series')}
     ${gfSection('Скоро выйдет','Подтверждённые ближайшие даты',upcoming)}
     ${gfSection('Рекомендации','Подобрано по твоей истории просмотров',recommendations,'#/discover')}
     ${!watching.length&&!fresh.length&&!upcoming.length?empty:''}
-    <div class="gf-shortcuts"><a href="#/random">Подобрать случайное ›</a></div>
     <p class="gf-version">Данные: ${esc(DATA.updated)} · Версия ${APP_V}</p>
   </div>`;
 };
@@ -87,7 +85,7 @@ function viewMine(section) {
     const src = active==='series'?s:m;
     const status = x => active==='series'?effMine(x):(x.status==='watched'?'done':x.status==='watching'?'watching':'want');
     const rows = src.filter(x=>(mineStatus==='all'||status(x)===mineStatus)&&hit(x.title));
-    body = `<div class="gf-collection-toolbar"><div class="gf-filters">${filterNav}</div><a href="${active==='series'?'#/add':'#/addm'}" class="gf-add">+ Добавить</a></div>
+    body = `<div class="gf-collection-toolbar"><div class="gf-filters">${filterNav}</div><div class="gf-toolbar-actions"><a href="#/search" class="gf-add">Поиск</a><a href="${active==='series'?'#/add':'#/addm'}" class="gf-add">+ Добавить</a></div></div>
       <input class="gf-search" id="sq" type="search" placeholder="Поиск в ${active==='series'?'сериалах':'фильмах'}" value="${esc(sq)}">
       <div class="gf-grid">${rows.map(x=>`<a class="gf-grid-card" href="#/${active==='series'?'s':'m'}/${encodeURIComponent(x.id)}">${poster(x)}${gfReleaseLabel(x,active==='series'?'s':'m',todayStr()) ? `<em class="gf-date">${esc(gfReleaseLabel(x,active==='series'?'s':'m',todayStr()))}</em>` : ''}<strong>${esc(x.title)}</strong><small>${status(x)==='done'?'Посмотрел':status(x)==='watching'?'Смотрю':'Хочу посмотреть'}</small></a>`).join('')}</div>
       ${rows.length?'':'<p class="gf-empty">В этом разделе пока ничего нет.</p>'}`;
@@ -108,6 +106,6 @@ function viewSearch() {
     ${q?gfSection('В твоей коллекции',own.length+' найдено',own):'<p class="gf-hint">Найди уже добавленное или добавь новый фильм или сериал.</p>'}
     ${q?gfSection('Из подборок',suggested.length+' найдено',suggested):''}
     ${q&&!own.length&&!suggested.length?'<p class="gf-empty">Не найдено в сохранённых данных. Можно добавить вручную.</p>':''}
-    <div class="gf-shortcuts"><a href="#/add">+ Добавить сериал</a><a href="#/addm">+ Добавить фильм</a><a href="#/random">Открыть рекомендации</a></div>
+    <div class="gf-shortcuts"><a href="#/add">+ Добавить сериал</a><a href="#/addm">+ Добавить фильм</a></div>
     <p class="gf-version">Версия ${APP_V}</p></div>`;
 }
