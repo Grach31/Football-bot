@@ -34,15 +34,17 @@ function gfSection(title,subtitle,items,more){
 }
 function viewWeek(){
   const today=todayStr(), entries=gfEntries(today).filter(x=>!gfArchived(x.obj,x.kind,x.info)).sort(gfOrder);
-  const news=entries.filter(x=>x.info.group==='new');
+  const news=entries.filter(x=>x.kind==='s'&&x.info.group==='new');
+  const filmPremieres=entries.filter(x=>x.kind==='m'&&x.info.group==='new');
   const soon=entries.filter(x=>x.info.group==='soon');
   const recommendations=(DISC.items||[]).filter(x=>x.rec&&!inCollection(x)).slice(0,8).map(obj=>({obj,kind:obj.kind==='film'?'m':'s',info:gfInfo({...obj,date:obj.date||''},obj.kind==='film'?'m':'s',today),href:'#/d/'+encodeURIComponent(obj.id)}));
   const recHTML=recommendations.length?'<section class="gf-block"><div class="gf-block-head"><div><h2>Рекомендации</h2><p>Что ещё посмотреть</p></div><a href="#/discover">Все ›</a></div><div class="gf-rail">'+
     recommendations.map(x=>'<a class="gf-card" href="'+x.href+'"><div class="gf-poster-wrap">'+poster(x.obj)+'</div><strong>'+esc(x.obj.title)+'</strong><span class="gf-card-meta">Для тебя</span></a>').join('')+'</div></section>':'';
   return '<div class="gf-shell">'+gfHeader('Твой кинозал')+
-    gfSection('Новые серии и премьеры','Вышли за последние 13 дней',news)+
-    gfSection('Скоро выйдет','Подтверждённые даты следующих релизов',soon)+recHTML+
-    (!news.length&&!soon.length?'<p class="gf-empty">Сейчас нет недавних или ожидаемых релизов. Вся коллекция — во вкладке «Моё».</p>':'')+
+    gfSection('Новые серии','Вышли за последние 13 дней',news)+
+    gfSection('Скоро выйдет','Подтверждённые даты следующих релизов',soon)+
+    gfSection('Премьеры фильмов','Недавние релизы из твоей коллекции',filmPremieres)+recHTML+
+    (!news.length&&!filmPremieres.length&&!soon.length?'<p class="gf-empty">Сейчас нет недавних или ожидаемых релизов. Вся коллекция — во вкладке «Моё».</p>':'')+
     '<p class="gf-version">Расписание: '+esc(DATA.updated||'не указано')+' · v'+APP_V+'</p></div>';
 }
 function viewMine(section){
