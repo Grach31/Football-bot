@@ -107,7 +107,7 @@ function viewMine(section){
     const watching=active==='series'?entries.filter(x=>gfWatching(x.obj)):[];
     const rest=active==='series'?entries.filter(x=>!gfWatching(x.obj)):entries;
     const current=rest.filter(x=>!(gfArchived(x.obj,x.kind,x.info)||x.info.group==='archive'));
-    const old=entries.filter(x=>gfArchived(x.obj,x.kind,x.info)||x.info.group==='archive');
+    const old=rest.filter(x=>gfArchived(x.obj,x.kind,x.info)||x.info.group==='archive');
     body=(active==='series'&&watching.length?'<section class="gf-watching-section"><div class="gf-collection-title gf-watching-title">▶ Смотрю сейчас <span>'+watching.length+'</span></div>'+
       '<p class="gf-watching-subtitle">Твой личный список. Он не зависит от даты выхода.</p>'+
       '<div class="gf-grid">'+watching.map(x=>gfCard(x,true)).join('')+'</div></section>':'')+
