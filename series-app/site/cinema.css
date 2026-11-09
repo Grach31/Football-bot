@@ -23,10 +23,6 @@ h1, .ctitle, .stitle { font-family: var(--fh); font-weight: 700; text-transform:
 .ep.next .n { background: var(--accent); color: #04101c; }
 .rbtn { border-color: rgba(61, 213, 255, 0.4); }
 .rico { background: var(--grad); }
-.day.sel { background: var(--grad); }
-.day.today { outline-color: var(--accent); }
-.day .dot { background: var(--accent); }
-.cal { background: var(--surface); }
 .prog i { background: var(--grad); box-shadow: 0 0 10px #3dd5ff; }
 .addbtn { border-color: var(--accent); color: var(--accent); }
 
@@ -127,26 +123,6 @@ body::after { content: ""; position: fixed; inset: 0; z-index: 200; pointer-even
 .fr.seen.next .nx { filter: none; }
 .fr.locked .lk { display: block; }
 .lk { display: none; position: absolute; top: 10px; left: 10px; font-size: 10px; font-weight: 800; letter-spacing: .06em; color: #fff; background: rgba(0, 0, 0, .55); padding: 4px 9px; border-radius: 99px; }
-
-/* ===== табло ===== */
-.cvh h1 { font-size: 24px; margin: 0; }
-.board { margin: 16px 0 0; background: #0a0c10; border-radius: 20px; padding: 16px 12px 8px; border: 1px solid #1d222c; box-shadow: inset 0 0 40px #000, 0 30px 60px -20px #000; }
-.bh { display: flex; justify-content: space-between; align-items: center; margin: 0 4px 12px; }
-.bh b { font-family: var(--fh); font-size: 14px; color: var(--amb); letter-spacing: .04em; }
-.bh span { font-size: 12px; color: var(--muted); font-weight: 700; }
-.rowb { position: relative; display: block; padding: 10px 0 12px 10px; border-top: 1px solid #171b24; }
-.rowb:first-of-type { border-top: 0; }
-.rowb::before { content: ""; position: absolute; left: 0; top: 12px; bottom: 14px; width: 3px; border-radius: 3px; background: var(--c); box-shadow: 0 0 10px var(--c); }
-.fl { display: flex; gap: 1px; }
-.fl + .fl { margin-top: 6px; }
-.cell { position: relative; flex: none; background: #14181f; color: #f2e9d8; font-family: var(--fh); font-weight: 700; display: grid; place-items: center; border-radius: 3px; overflow: hidden; }
-.cell::after { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 1px; background: #000; box-shadow: 0 1px 0 rgba(255, 255, 255, .05); z-index: 3; }
-.cell::before { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(255, 255, 255, .06), transparent 50%, rgba(0, 0, 0, .25)); z-index: 2; pointer-events: none; }
-.cell.big { width: 20px; height: 32px; font-size: 16px; }
-.cell.sm { width: 14px; height: 21px; font-size: 9.5px; color: #9bd8ff; }
-.cell.flip span { animation: fp .09s ease-in; }
-@keyframes fp { 0% { transform: rotateX(-80deg) scaleY(.4); opacity: .3; } 100% { transform: none; opacity: 1; } }
-@media (max-width: 380px) { .cell.big { width: 18px; } .cell.sm { width: 13px; } }
 
 /* ===== титры ===== */
 #credits { position: fixed; inset: 0; z-index: 300; background: #000; opacity: 0; visibility: hidden; transition: opacity .8s, visibility .8s; overflow: hidden; }
