@@ -39,7 +39,8 @@ test('jsdom: all routes, archive, old links, Jellyfin isolation and Cinema Noir'
   const app=()=>w.document.getElementById('app').textContent;
   const go=hash=>{w.location.hash=hash;w.render();};
   assert.equal(w.document.querySelectorAll('#tabs a').length,2);
-  assert.match(app(),/Новые серии и премьеры/);
+  assert.match(app(),/Новые серии/);
+  assert.match(app(),/Премьеры фильмов/);
   assert.match(app(),/Финальный сериал/);
   assert.match(app(),/Вышедший фильм/);
   assert.doesNotMatch(app(),/Продолжить просмотр|Посмотрел|Хочу посмотреть/);
