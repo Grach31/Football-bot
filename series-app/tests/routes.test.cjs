@@ -22,7 +22,7 @@ const data = {
 test('jsdom: all routes, archive, old links, Jellyfin isolation and Cinema Noir', async t => {
   const dom = new JSDOM(read('index.html'),{
     url:'https://example.test/series-app/site/?today=2026-11-09#/week',
-    runScripts:'outside-only',pretendToBeVisual:true
+    runScripts:'dangerously',pretendToBeVisual:true
   });
   const w=dom.window;
   t.after(()=>w.close());
