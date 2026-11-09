@@ -17,7 +17,11 @@ const gfReleaseLabel = (x, kind, today) => {
   const events = (x.episodes || []).filter(e => e.date).slice().sort((a,b)=>a.date.localeCompare(b.date));
   const upcoming = events.find(e => !epAired(e,today));
   if (upcoming) return (events.some(e => epAired(e,today)) ? 'Серия ' + upcoming.n : 'Премьера') + ' · ' + gfDateText(upcoming.date,today);
-  if (events.length && gfRecent(events[events.length-1].date,today)) return 'Новая серия · ' + gfDateText(events[events.length-1].date,today);
+  if (events.length && gfRecent(events[events.length-1].date,today)) {
+    const latest = events[events.length-1];
+    if (x.status === 'airing' && seenEp(x) >= latest.n) return '';
+    return (x.status === 'airing' ? 'Новая серия' : 'Вышел') + ' · ' + gfDateText(latest.date,today);
+  }
   if (!events.length && x.date) return x.date > today ? 'Премьера · ' + gfDateText(x.date,today)
     : gfRecent(x.date,today) ? 'Вышел · ' + gfDateText(x.date,today) : '';
   return '';
@@ -45,22 +49,23 @@ viewWeek = function () {
     ...movies.filter(m => m.status === 'watching').map(m => ({obj:m,kind:'m'}))
   ];
   const fresh = [
-    ...series.filter(s => effMine(s)!=='done' && s.status === 'airing' && airState(s,today)==='new')
+    ...series.filter(s => !['done','watching'].includes(effMine(s)) && s.status === 'airing' && airState(s,today)==='new')
       .map(s => ({obj:s,kind:'s',tag:'Новая серия',date:(lastOut(s,today)||{}).e?.date||today})),
     ...series.filter(s => effMine(s)==='want' && gfRecent(gfSeriesDate(s),today))
       .map(s => ({obj:s,kind:'s',tag:'Премьера',date:gfSeriesDate(s)})),
     ...movies.filter(m => m.status === 'want' && gfRecent(m.date,today))
       .map(m => ({obj:m,kind:'m',tag:'Премьера',date:m.date}))
   ].sort((a,b)=>b.date.localeCompare(a.date)).filter((it,i,arr)=>arr.findIndex(z=>z.kind===it.kind&&z.obj.id===it.obj.id)===i);
+  const alreadyShown = new Set([...watching, ...fresh].map(it => it.kind + ':' + it.obj.id));
   const upcoming = [
     ...series.filter(s=>effMine(s)==='want').map(s=>({obj:s,kind:'s',date:gfSeriesNext(s,today)?.date||((gfSeriesDate(s)>today)?gfSeriesDate(s):'')})),
     ...movies.filter(m=>m.status==='want'&&m.date>today).map(m=>({obj:m,kind:'m',date:m.date}))
-  ].filter(x=>x.date).sort((a,b)=>a.date.localeCompare(b.date)).map(x=>({...x,tag:shortDate(x.date)}));
-  const recommendations = (DISC.items || []).filter(it=>it.rec).slice(0,5).map(it=>({obj:it,kind:it.kind==='film'?'m':'s',href:'#/d/'+encodeURIComponent(it.id),tag:'Для тебя',meta:it.kind==='film'?'Фильм':'Сериал'}));
+  ].filter(x=>x.date && !alreadyShown.has(x.kind + ':' + x.obj.id)).sort((a,b)=>a.date.localeCompare(b.date)).map(x=>({...x,tag:shortDate(x.date)}));
+  const recommendations = (DISC.items || []).filter(it=>it.rec && !inCollection(it)).slice(0,5).map(it=>({obj:it,kind:it.kind==='film'?'m':'s',href:'#/d/'+encodeURIComponent(it.id),tag:'Для тебя',meta:it.kind==='film'?'Фильм':'Сериал'}));
   const empty = '<div class="gf-empty">Здесь пока нет записей. Добавь фильм или сериал через поиск.</div>';
   return `<div class="gf-shell">${gfHeader('Твой кинозал')}
-    ${gfSection('Продолжить просмотр','То, что ты смотришь',watching,'#/mine/series')}
-    ${gfSection('Новое для тебя','Вышедшие серии и премьеры из твоего списка',fresh,'#/mine/series')}
+    ${gfSection('Продолжить просмотр','То, что ты смотришь',watching)}
+    ${gfSection('Новое для тебя','Вышедшие серии и премьеры из твоего списка',fresh)}
     ${gfSection('Скоро выйдет','Подтверждённые ближайшие даты',upcoming)}
     ${gfSection('Рекомендации','Подобрано по твоей истории просмотров',recommendations,'#/discover')}
     ${!watching.length&&!fresh.length&&!upcoming.length?empty:''}
