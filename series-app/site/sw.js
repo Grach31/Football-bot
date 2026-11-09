@@ -1,5 +1,5 @@
 'use strict';
-const CACHE = 'series-v70';
+const CACHE = 'series-v71';
 const SHELL = ['./', 'index.html', 'style.css', 'app.js', 'cinema.js', 'cinema.css', 'minimal.css', 'minimal.js', 'fonts.css', 'fonts/unbounded-700-cyr.woff2', 'fonts/unbounded-700-lat.woff2', 'fonts/manrope-400-cyr.woff2', 'fonts/manrope-400-lat.woff2', 'fonts/manrope-600-cyr.woff2', 'fonts/manrope-600-lat.woff2', 'fonts/manrope-700-cyr.woff2', 'fonts/manrope-700-lat.woff2', 'manifest.webmanifest', 'icons/icon-192.png', 'icons/icon-512.png'];
 
 self.addEventListener('install', (e) => {

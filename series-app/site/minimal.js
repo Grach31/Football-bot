@@ -1,18 +1,40 @@
 'use strict';
-/* Grach Films v70: two destinations, one collection model, independent Jellyfin server.
+/* Grach Films v71: two destinations, one collection model, independent Jellyfin server.
    Retains all legacy routes and their editing capabilities. */
+const gfDateText = (date, today) => {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(date || '')) return '';
+  if (date === today) return 'Сегодня';
+  if (date === addDays(today, 1)) return 'Завтра';
+  return shortDate(date) + (date.slice(0,4) !== today.slice(0,4) ? ' ' + date.slice(0,4) : '');
+};
+const gfReleaseLabel = (x, kind, today) => {
+  if (kind === 'm') {
+    if (!x.date || x.status === 'watched') return '';
+    return x.date > today ? 'Премьера · ' + gfDateText(x.date, today)
+      : gfRecent(x.date, today) ? 'Вышел · ' + gfDateText(x.date, today) : '';
+  }
+  if (kind !== 's' || effMine(x) === 'done') return '';
+  const events = (x.episodes || []).filter(e => e.date).slice().sort((a,b)=>a.date.localeCompare(b.date));
+  const upcoming = events.find(e => !epAired(e,today));
+  if (upcoming) return (events.some(e => epAired(e,today)) ? 'Серия ' + upcoming.n : 'Премьера') + ' · ' + gfDateText(upcoming.date,today);
+  if (events.length && gfRecent(events[events.length-1].date,today)) return 'Новая серия · ' + gfDateText(events[events.length-1].date,today);
+  if (!events.length && x.date) return x.date > today ? 'Премьера · ' + gfDateText(x.date,today)
+    : gfRecent(x.date,today) ? 'Вышел · ' + gfDateText(x.date,today) : '';
+  return '';
+};
 const gfSection = (title, subtitle, items, more) => {
   if (!items.length) return '';
   const cards = items.slice(0, 12).map((it) => {
     const obj = it.obj || it, href = it.href || (it.kind === 'm' ? '#/m/' : '#/s/') + encodeURIComponent(obj.id);
+    const badge = gfReleaseLabel(obj, it.kind, todayStr());
     const tag = it.tag || '', meta = it.meta || (it.kind === 'm' ? 'Фильм' : 'Сериал');
-    return `<a class="gf-card" href="${esc(href)}">${poster(obj)}<strong>${esc(obj.title)}</strong><span>${esc(meta)}</span>${tag ? `<em>${esc(tag)}</em>` : ''}</a>`;
+    return `<a class="gf-card" href="${esc(href)}">${poster(obj)}${badge ? `<em class="gf-date">${esc(badge)}</em>` : (tag ? `<em>${esc(tag)}</em>` : '')}<strong>${esc(obj.title)}</strong><span>${esc(meta)}</span></a>`;
   }).join('');
   return `<section class="gf-block"><div class="gf-block-head"><div><h2>${esc(title)}</h2><p>${esc(subtitle)}</p></div>${more ? `<a href="${esc(more)}" aria-label="Открыть раздел ${esc(title)}">Все ›</a>` : ''}</div><div class="gf-rail">${cards}</div></section>`;
 };
 const gfHeader = (label) => `<header class="gf-header"><div><div class="gf-eyebrow">GRACH FILMS</div><h1>${esc(label)}</h1></div><div class="gf-actions"><a href="#/search" class="gf-icon" aria-label="Поиск">${MAGN}</a><a href="#/settings" class="gf-icon" aria-label="Настройки">${GEAR}</a></div></header>`;
 const gfSeriesDate = (s) => (s.episodes || []).map(e => e.date).filter(Boolean).sort()[0] || s.date || '';
-const gfSeriesNext = (s, today) => (s.episodes || []).filter(e => e.date > today).sort((a,b) => a.date.localeCompare(b.date))[0];
+const gfSeriesNext = (s, today) => (s.episodes || []).filter(e => e.date >= today && !epAired(e,today)).sort((a,b) => a.date.localeCompare(b.date))[0];
 const gfRecent = (d,today) => /^\d{4}-\d{2}-\d{2}$/.test(d || '') && d <= today && addDays(d, 13) >= today;
 
 viewWeek = function () {
@@ -40,10 +62,10 @@ viewWeek = function () {
     <div class="gf-feature"><div class="gf-feature-title">Сегодня в твоём кино</div><p>Новые серии, премьеры и всё, что ты собираешься посмотреть.</p><a href="#/search" class="gf-primary">Найти фильм или сериал ›</a></div>
     ${gfSection('Продолжить просмотр','То, что ты смотришь',watching,'#/mine/series')}
     ${gfSection('Новое для тебя','Вышедшие серии и премьеры из твоего списка',fresh,'#/mine/series')}
-    ${gfSection('Скоро выйдет','Подтверждённые ближайшие даты',upcoming,'#/cal')}
+    ${gfSection('Скоро выйдет','Подтверждённые ближайшие даты',upcoming)}
     ${gfSection('Рекомендации','Подобрано по твоей истории просмотров',recommendations,'#/discover')}
     ${!watching.length&&!fresh.length&&!upcoming.length?empty:''}
-    <div class="gf-shortcuts"><a href="#/cal">Календарь премьер ›</a><a href="#/random">Подобрать случайное ›</a></div>
+    <div class="gf-shortcuts"><a href="#/random">Подобрать случайное ›</a></div>
     <p class="gf-version">Данные: ${esc(DATA.updated)} · Версия ${APP_V}</p>
   </div>`;
 };
@@ -67,7 +89,7 @@ function viewMine(section) {
     const rows = src.filter(x=>(mineStatus==='all'||status(x)===mineStatus)&&hit(x.title));
     body = `<div class="gf-collection-toolbar"><div class="gf-filters">${filterNav}</div><a href="${active==='series'?'#/add':'#/addm'}" class="gf-add">+ Добавить</a></div>
       <input class="gf-search" id="sq" type="search" placeholder="Поиск в ${active==='series'?'сериалах':'фильмах'}" value="${esc(sq)}">
-      <div class="gf-grid">${rows.map(x=>`<a class="gf-grid-card" href="#/${active==='series'?'s':'m'}/${encodeURIComponent(x.id)}">${poster(x)}<strong>${esc(x.title)}</strong><small>${status(x)==='done'?'Посмотрел':status(x)==='watching'?'Смотрю':'Хочу посмотреть'}</small></a>`).join('')}</div>
+      <div class="gf-grid">${rows.map(x=>`<a class="gf-grid-card" href="#/${active==='series'?'s':'m'}/${encodeURIComponent(x.id)}">${poster(x)}${gfReleaseLabel(x,active==='series'?'s':'m',todayStr()) ? `<em class="gf-date">${esc(gfReleaseLabel(x,active==='series'?'s':'m',todayStr()))}</em>` : ''}<strong>${esc(x.title)}</strong><small>${status(x)==='done'?'Посмотрел':status(x)==='watching'?'Смотрю':'Хочу посмотреть'}</small></a>`).join('')}</div>
       ${rows.length?'':'<p class="gf-empty">В этом разделе пока ничего нет.</p>'}`;
   }
   return `<div class="gf-shell">${gfHeader('Моё')}<div class="gf-collection-nav">${nav}</div>${body}<p class="gf-version">Версия ${APP_V}</p></div>`;

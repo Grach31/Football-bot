@@ -17,9 +17,6 @@ const GROUPS = [
 const SFILTERS = [['all', 'Все'], ['airing', 'Выходит'], ['soon', 'Скоро'], ['nodate', 'Нет даты'], ['out', 'Вышел'], ['closed', 'Закрыт']];
 const CHEV = '<svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>';
 
-// образы для главной; новые картинки добавляйте в конец списка
-const HERO = ['avatars/fallout.jpg', 'avatars/got.jpg', 'avatars/gangster.jpg', 'avatars/samurai.jpg'];
-{ const i = new Image(); i.src = HERO[Math.floor(Date.parse(new Date().toISOString().slice(0, 10)) / 86400000) % HERO.length]; } // загрузка образа дня заранее
 let DISC = { updated: '', items: [] };
 let POOL = { updated: '', items: [] };
 let rnd = null;
@@ -139,101 +136,8 @@ function metaFor(s, today) {
 }
 
 
-/* ---------- календарь выходов ---------- */
-let calview = 'list', calMonth = '', calDay = '';
-const MONTHS = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
-function calEvents() {
-  const ev = {};
-  const add = (date, o) => { (ev[date] = ev[date] || []).push(o); };
-  DATA.series.filter((sr) => !sr.no_schedule).forEach((sr) => eps(sr).forEach((e) => add(e.date, { href: `#/s/${sr.id}`, title: sr.title, sub: `${e.n} ${unit(sr)}${sr.total ? ' из ' + sr.total : ''}${e.time ? ' · ' + e.time : ''}`, kind: 's' })));
-  MOVIES.items.filter((m) => m.status !== 'watched' && m.date).forEach((m) => add(m.date, { href: `#/m/${m.id}`, title: m.title, sub: 'Фильм' + (m.service ? ' · ' + m.service : ''), kind: 'm' }));
-  return ev;
-}
-function calHtml(today) {
-  if (!calMonth) calMonth = today.slice(0, 7);
-  const [y, mo] = calMonth.split('-').map(Number);
-  const ev = calEvents();
-  const first = new Date(Date.UTC(y, mo - 1, 1));
-  const lead = (first.getUTCDay() + 6) % 7;
-  const days = new Date(Date.UTC(y, mo, 0)).getUTCDate();
-  const prev = new Date(Date.UTC(y, mo - 2, 1)).toISOString().slice(0, 7), next = new Date(Date.UTC(y, mo, 1)).toISOString().slice(0, 7);
-  let h = `<div class="cal"><div class="calhead"><button type="button" class="calnav" data-calmonth="${prev}" aria-label="Предыдущий месяц">‹</button><b>${MONTHS[mo - 1]} ${y}</b><button type="button" class="calnav" data-calmonth="${next}" aria-label="Следующий месяц">›</button></div><div class="calgrid">` +
-    ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'].map((d) => `<span class="dow">${d}</span>`).join('') + '<span></span>'.repeat(lead);
-  for (let d = 1; d <= days; d++) {
-    const date = `${calMonth}-${String(d).padStart(2, '0')}`;
-    const n = (ev[date] || []).length;
-    h += `<button type="button" class="day${date === today ? ' today' : ''}${date === calDay ? ' sel' : ''}" data-calday="${date}">${d}${n ? `<i class="dot${n > 1 ? ' many' : ''}"></i>` : ''}</button>`;
-  }
-  h += '</div></div>';
-  const day = calDay && calDay.startsWith(calMonth) ? calDay : '';
-  if (day) {
-    const list = ev[day] || [];
-    h += `<div class="row-head"><b>${day === today ? 'Сегодня' : cap(weekday(day))}</b><span>${longDate(day)}</span></div>`;
-    h += list.length ? '<div class="stack tight">' + list.map((x) => `<a class="card compact" href="${esc(x.href)}"><div class="grow"><div class="ttl">${esc(x.title)}</div><div class="meta">${esc(x.sub)}</div></div>${CHEV}</a>`).join('') + '</div>' : '<p class="empty" style="margin-top:8px">В этот день выходов нет.</p>';
-  } else h += '<p class="meta" style="margin-top:10px">Нажмите на день, чтобы увидеть, что выходит.</p>';
-  return h;
-}
-
 /* ---------- экраны ---------- */
-function viewWeek() {
-  const today = todayStr();
-  const end = addDays(today, 13);
-  const states = DATA.series.map((s) => ({ s, st: airState(s, today) }));
-  const lastDays = (s) => { const l = lastOut(s, today); return l ? l.days : 99; };
-  const topRow = states.filter((x) => x.st === 'new' || x.st === 'soon')
-    .sort((a, b) => (a.st === b.st ? (a.st === 'new' ? lastDays(a.s) - lastDays(b.s) : ((nextUnaired(a.s, today) || {}).date || '9999') < ((nextUnaired(b.s, today) || {}).date || '9999') ? -1 : 1) : a.st === 'new' ? -1 : 1)).map((x) => x.s);
-  const waitRow = states.filter((x) => x.st === 'wait')
-    .sort((a, b) => (((nextUnaired(a.s, today) || {}).date || '9999') < ((nextUnaired(b.s, today) || {}).date || '9999') ? -1 : 1)).map((x) => x.s);
-  let html = `<div class="brand"><svg width="22" height="22" viewBox="0 0 24 24" fill="#8CC4FF" aria-hidden="true"><path d="M7 4.5v15l12-7.5z"/></svg>Grach films<a class="gear" href="#/settings" aria-label="Настройки"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></a></div>`;
-  // главная картинка: каждый день новый образ
-  const day = Math.floor(d0(today).getTime() / 86400000);
-  html += `<div class="avhero"><img src="${esc(HERO[day % HERO.length])}" alt=""></div>`;
-  html += `<a class="rbtn" href="#/random"><span class="rico">${DICE}</span><span class="rtx"><b>Нечего смотреть?</b><i>Случайный фильм или сериал</i></span>${CHEV}</a>`;
-  if (topRow.length) html += `<h2 class="hd">Выходят сейчас</h2><div class="hrow2">${topRow.map((s) => pcard(s, today, true)).join('')}</div>`;
-  if (waitRow.length) html += `<h2 class="hd">Жду следующую серию</h2><div class="hrow2">${waitRow.map((s) => pcard(s, today, true)).join('')}</div>`;
-  const wait = DATA.series.filter((s) => sState(s, today) === 'soon').sort((a, b) => { const x = nextEp(a, today), y = nextEp(b, today); return (x ? x.date : '9999') < (y ? y.date : '9999') ? -1 : 1; });
-  if (wait.length) html += `<h2 class="hd">Сериалы скоро</h2><div class="hrow2">${wait.map((s) => pcard(s, today)).join('')}</div>`;
-
-  const soonMovies = MOVIES.items.filter((m) => m.status !== 'watched' && m.date && m.date >= today).sort((a, b) => (a.date < b.date ? -1 : 1));
-  if (soonMovies.length) html += `<h2 class="hd">Фильмы скоро</h2><div class="hrow2">${soonMovies.map((m) => `<a class="pcard" href="#/m/${esc(m.id)}">${poster(m)}<div class="bds"><span class="bl">${esc(movieBadge(m, today))}</span></div></a>`).join('')}</div>`;
-
-  const prem = (DISC.items || []).filter((it) => !it.rec);
-  const recs = (DISC.items || []).filter((it) => it.rec);
-  if (prem.length) html += `<h2 class="hd">Премьеры</h2><div class="hrow2">${prem.map((it) => `<a class="pcard" href="#/d/${esc(it.id)}">${poster(it)}<div class="bds">${it.rating ? `<span class="bd">★ ${esc(String(it.rating))}</span>` : ''}<span class="bl">${esc(it.date ? shortDate(it.date) : (it.when || 'ожидается'))}</span></div></a>`).join('')}</div>`;
-  if (recs.length) html += `<h2 class="hd">Вам может понравиться</h2><div class="hrow2">${recs.map((it) => `<a class="pcard" href="#/d/${esc(it.id)}">${poster(it)}<div class="bds">${it.rating ? `<span class="bd">★ ${esc(String(it.rating))}</span>` : ''}<span class="bl">${it.kind === 'film' ? 'Фильм' : 'Сериал'}</span></div></a>`).join('')}</div>`;
-
-  const byDate = {};
-  DATA.series.filter((s) => !s.no_schedule).forEach((s) => eps(s).forEach((e) => {
-    if (e.date >= today && e.date <= end) (byDate[e.date] = byDate[e.date] || []).push({ s, e });
-  }));
-  const dates = Object.keys(byDate).sort();
-  html += `<div class="hrow"><h2 class="hd" style="margin:0">${calview === 'month' ? 'Календарь' : 'Ближайшие две недели'}</h2><div class="chips nowrap"><button type="button" class="fbtn ${calview === 'list' ? 'on' : ''}" data-calview="list">Список</button><button type="button" class="fbtn ${calview === 'month' ? 'on' : ''}" data-calview="month">Месяц</button></div></div>`;
-  if (calview === 'month') html += calHtml(today);
-  else {
-    if (!dates.length) html += '<p class="empty">На ближайшие две недели новых серий нет.</p>';
-    dates.forEach((date) => {
-      const label = date === today ? 'Сегодня' : date === addDays(today, 1) ? 'Завтра' : cap(weekday(date));
-      html += `<div class="row-head"><b>${label}</b><span>${longDate(date)}</span></div><div class="stack">`;
-      byDate[date].forEach(({ s, e }) => {
-        const fin = s.total && e.n === s.total ? ' · финал' : '';
-        const time = e.time ? `<div class="chip amber">${esc(e.time)}</div>` : CHEV;
-        html += `<a class="card" href="#/s/${esc(s.id)}">${tile(s)}<div class="grow"><div class="ttl">${esc(s.title)}</div>` +
-          `<div class="meta">${e.n} ${unit(s)}${s.total ? ' из ' + s.total : ''}${fin}${s.service ? ' · ' + esc(s.service) : ''}</div></div>${time}</a>`;
-      });
-      html += '</div>';
-    });
-    const pending = DATA.series.filter((s) => s.status === 'airing' && !nextEp(s, today) && !lastOut(s, today));
-    if (pending.length) {
-      html += '<div class="row-head"><b>График уточняется</b></div><div class="stack">';
-      pending.forEach((s) => {
-        html += `<a class="card" href="#/s/${esc(s.id)}">${tile(s)}<div class="grow"><div class="ttl">${esc(s.title)}</div><div class="meta">${esc(metaFor(s, today))}</div></div>${CHEV}</a>`;
-      });
-      html += '</div>';
-    }
-  }
-  html += `<p class="foot">Данные обновлены ${esc(DATA.updated)}. Даты взяты из открытых источников и могут меняться.</p>`;
-  return html;
-}
+function viewWeek() { return ''; } // Replaced by minimal.js at load time.
 
 function seg(mode) {
   return `<div class="seg"><a href="#/list" class="${mode === 'list' ? 'on' : ''}">Список</a><a href="#/posters" class="${mode === 'posters' ? 'on' : ''}">Постеры</a></div>`;
@@ -1020,6 +924,12 @@ function render() {
   const h = location.hash === '#/posters' ? '#/list' : (location.hash || '#/week');
   const parts = h.replace(/^#\//, '').split('/');
   let page = parts[0] || 'week';
+  // Legacy calendar links always return to the main screen.
+  if (page === 'cal') { location.replace('#/week'); return; }
+  // Old bookmarks and in-app back links open the new collection, not legacy carousel screens.
+  if (page === 'list' || page === 'posters') { location.replace('#/mine/series'); return; }
+  if (page === 'movies') { location.replace('#/mine/movies'); return; }
+  if (page === 'lib') { location.replace(libfilter === 'jf' ? '#/mine/server' : '#/mine/series'); return; }
   if (page === 'mine' && (parts[1] || 'series') !== lastMineSection) { mineStatus = 'all'; sq = ''; lastMineSection = parts[1] || 'series'; }
   if (page === 'random' && lastPage !== 'random') { rnd = null; rndLoading = false; }
   if (page !== lastPage) { sq = ''; sqOpen = false; lastPage = page; }
@@ -1036,7 +946,7 @@ function render() {
   else if (page === 'discover') html = viewDiscover();
   else if (page === 'd') html = viewDisc(decodeURIComponent(parts[1] || ''));
   else if (page === 'random') html = viewRandom();
-  else if (page === 'cal') html = viewCal();
+
   else if (page === 'movies') html = viewMovies();
   else if (page === 'm') html = viewMovie(decodeURIComponent(parts[1] || ''));
   else if (page === 'addm') html = viewAddMovie();
@@ -1058,24 +968,11 @@ document.addEventListener('input', (ev) => {
   sq = ev.target.value; const pos = ev.target.selectionStart; typing = true; render(); typing = false;
   const el = document.getElementById('sq'); if (el) { el.focus(); try { el.setSelectionRange(pos, pos); } catch (e) {} }
 });
-let heroOff = 0;
 document.addEventListener('click', (ev) => {
-  const cv = ev.target.closest('[data-calview]');
-  if (cv) { calview = cv.dataset.calview; const y = window.scrollY; typing = true; render(); typing = false; window.scrollTo(0, y); return; }
-  const cm = ev.target.closest('[data-calmonth]');
-  if (cm) { calMonth = cm.dataset.calmonth; calDay = ''; const y = window.scrollY; typing = true; render(); typing = false; window.scrollTo(0, y); return; }
-  const cd = ev.target.closest('[data-calday]');
-  if (cd) { calDay = calDay === cd.dataset.calday ? '' : cd.dataset.calday; const y = window.scrollY; typing = true; render(); typing = false; window.scrollTo(0, y); return; }
   if (ev.target.closest('[data-sqtoggle]')) {
     if (sqOpen || sq) { sqOpen = false; sq = ''; } else sqOpen = true;
     const y = window.scrollY; typing = true; render(); typing = false; window.scrollTo(0, y);
     const el = document.getElementById('sq'); if (el) el.focus();
-    return;
-  }
-  if (ev.target.closest('.avhero')) {
-    const day = Math.floor(d0(todayStr()).getTime() / 86400000);
-    heroOff = (heroOff + 1) % HERO.length;
-    const img = document.querySelector('.avhero img'); if (img) img.src = HERO[(day + heroOff) % HERO.length];
     return;
   }
   const ms = ev.target.closest('[data-mine-status]');
