@@ -559,7 +559,7 @@ function render() {
   // Old bookmarks and in-app back links open the new collection, not legacy carousel screens.
   if (page === 'list' || page === 'posters') { location.replace('#/mine/series'); return; }
   if (page === 'movies') { location.replace('#/mine/movies'); return; }
-  if (page === 'lib') { location.replace('#/mine/series'); return; }
+  if (page === 'lib') { location.replace('#/mine/server'); return; }
   if (page === 'mine' && (parts[1] || 'series') !== lastMineSection) { sq = ''; lastMineSection = parts[1] || 'series'; }
   if (page === 'random' && lastPage !== 'random') { rnd = null; rndLoading = false; rndAttempted = false; }
   if (page !== lastPage) { sq = ''; lastPage = page; }
