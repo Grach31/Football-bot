@@ -25,6 +25,13 @@ const val = (n) => { const i = args.indexOf(n); return i >= 0 ? args[i + 1] : un
 const dry = has('--dry-run');
 const test = has('--test');
 const today = val('--date') || new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Moscow' }).format(new Date());
+const nowMsk = val('--date') ? '23:59' : new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Moscow', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).format(new Date());
+const defaultReleaseTime = '10:00'; // No confirmed hour in catalog; notification at 10:00 MSK, not a claim of actual release.
+const due = (time) => /^([01]\\d|2[0-3]):[0-5]\\d$/.test(time || '') ? time <= nowMsk : defaultReleaseTime <= nowMsk;
+const stateFile = path.join(here, '..', '..', 'state', 'grach-films-push.json');
+let state = { sent: {} };
+try { const loaded = JSON.parse(fs.readFileSync(stateFile, 'utf8')); if (loaded && typeof loaded.sent === 'object' && loaded.sent && !Array.isArray(loaded.sent)) state = loaded; } catch (e) { /* initial run */ }
+const saveState = () => { fs.mkdirSync(path.dirname(stateFile), { recursive: true }); fs.writeFileSync(stateFile, JSON.stringify(state, null, 2) + '\\n'); };
 
 const data = JSON.parse(fs.readFileSync(path.join(dataDir, 'series.json'), 'utf8'));
 const config = JSON.parse(fs.readFileSync(path.join(dataDir, 'config.json'), 'utf8'));
@@ -35,7 +42,7 @@ try { subsData = JSON.parse(fs.readFileSync(path.join(dataDir, 'subscriptions.js
 let moviesData = { items: [] };
 try { moviesData = JSON.parse(fs.readFileSync(path.join(dataDir, 'movies.json'), 'utf8')); } catch (e) { /* фильмов нет */ }
 function moviePayloads(date) {
-  return (moviesData.items || []).filter((m) => m.date === date).map((m) => ({
+  return (moviesData.items || []).filter((m) => m.date === date && due(m.time)).map((m) => ({
     title: `${m.title}: выходит сегодня`, body: m.service ? `Фильм · ${m.service}` : 'Фильм', tag: `movie-${m.id}-${date}`, url: `./#/m/${m.id}`,
   }));
 }
@@ -60,7 +67,7 @@ function subPayloads(date) {
   for (const it of subsData.items || []) {
     const nx = subNext(it, date);
     const left = Math.round((d0(nx) - d0(date)) / 86400000);
-    if (left !== 3 && left !== 1 && left !== 0) continue;
+    if ((left !== 3 && left !== 1 && left !== 0) || !due('10:00')) continue;
     const once = it.period === 'once';
     const when = left === 0 ? 'сегодня' : left === 1 ? 'завтра' : 'через 3 дня';
     const title = once ? `${it.service}: доступ заканчивается ${when}` : `${it.service}: списание ${when}`;
@@ -75,32 +82,37 @@ function buildPayloads(date) {
   const out = [];
   for (const s of data.series) {
     if (s.no_schedule) continue;
-    const todays = (s.episodes || []).filter((e) => e.date === date);
+    const todays = (s.episodes || []).filter((e) => e.date === date && due(e.time));
     if (!todays.length) continue;
-    const u = s.unit || 'серия';
-    const verb = u === 'выпуск' ? 'вышел' : 'вышла';
-    const last = todays[todays.length - 1];
-    const fin = s.total && last.n === s.total ? ' (финал)' : '';
-    let title;
-    if (todays.length > 1) {
-      const plural = u === 'выпуск' ? 'выпуски' : 'серии';
-      title = `${s.title}: вышли ${plural} ${todays[0].n}–${last.n}${fin}`;
-    } else {
-      title = `${s.title}: ${verb} ${last.n} ${u}${fin}`;
+    // Episodes on one day with different release times are separate notifications.
+    const groups = new Map();
+    for (const e of todays) {
+      const time = /^([01]\\d|2[0-3]):[0-5]\\d$/.test(e.time || '') ? e.time : defaultReleaseTime;
+      if (!groups.has(time)) groups.set(time, []);
+      groups.get(time).push(e);
     }
-    const parts = [];
-    if (s.service) parts.push(s.service);
-    parts.push(last.time ? `сегодня, ${weekday(date)}, в ${last.time}` : `сегодня, ${weekday(date)}`);
-    out.push({ title, body: parts.join(' · '), tag: `${s.id}-${date}`, url: `./#/s/${s.id}` });
+    for (const [time, episodes] of groups) {
+      const u = s.unit || 'серия';
+      const verb = u === 'выпуск' ? 'вышел' : 'вышла';
+      const last = episodes[episodes.length - 1];
+      const fin = s.total && last.n === s.total ? ' (финал)' : '';
+      const title = episodes.length > 1
+        ? `${s.title}: вышли ${u === 'выпуск' ? 'выпуски' : 'серии'} ${episodes[0].n}–${last.n}${fin}`
+        : `${s.title}: ${verb} ${last.n} ${u}${fin}`;
+      const parts = [];
+      if (s.service) parts.push(s.service);
+      parts.push(`сегодня, ${weekday(date)}${episodes.some(e => e.time) ? ', в ' + time : ''}`);
+      out.push({ title, body: parts.join(' · '), tag: `series-${s.id}-${date}-${time}`, url: `./#/s/${s.id}` });
+    }
   }
   return out;
 }
 
 const payloads = test
   ? [{ title: 'Grach films', body: 'Проверка: уведомления работают', tag: 'test', url: './#/week' }]
-  : [...buildPayloads(today), ...moviePayloads(today), ...subPayloads(today)];
+  : [...buildPayloads(today), ...moviePayloads(today), ...subPayloads(today)].filter(p => !state.sent[p.tag]);
 
-console.log(`Дата: ${today}. Уведомлений к отправке: ${payloads.length}`);
+console.log(`Дата: ${today}, время Москвы: ${nowMsk}. Новых уведомлений к отправке: ${payloads.length}`);
 for (const p of payloads) console.log(` - ${p.title} | ${p.body}`);
 
 if (!payloads.length) process.exit(0);
@@ -126,18 +138,26 @@ webpush.setVapidDetails(process.env.VAPID_SUBJECT || 'mailto:series@example.com'
 
 let sent = 0;
 let failed = 0;
-for (const sub of subs) {
-  for (const p of payloads) {
+for (const p of payloads) {
+  let delivered = 0;
+  for (const sub of subs) {
     try {
       await webpush.sendNotification(sub, JSON.stringify(p), { TTL: 60 * 60 * 12 });
-      sent += 1;
+      sent++;
+      delivered++;
     } catch (err) {
-      failed += 1;
+      failed++;
       const code = err.statusCode;
       if (code === 404 || code === 410) console.error('Подписка устарела: включите уведомления в приложении заново и обновите секрет PUSH_SUBSCRIPTION.');
       else console.error(`Ошибка отправки (${code || 'без кода'}): ${err.body || err.message}`);
     }
   }
+  if (delivered > 0 && !test) state.sent[p.tag] = new Date().toISOString();
 }
-console.log(`Отправлено: ${sent}, ошибок: ${failed}`);
-if (sent === 0) process.exit(1);
+if (!test) {
+  const cutoff = Date.now() - 90 * 86400000;
+  for (const [key, at] of Object.entries(state.sent)) if (Date.parse(at) < cutoff) delete state.sent[key];
+  saveState();
+}
+console.log(`Отправлено: ${sent}, ошибок: ${failed}. Запомнено уведомлений: ${Object.keys(state.sent).length}`);
+if (failed || sent === 0) process.exitCode = 1;
