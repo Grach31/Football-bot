@@ -57,7 +57,7 @@ function viewNotify() {
 <li>Откройте приложение с иконки на экране «Домой» (на iPhone: Safari → «Поделиться» → «На экран Домой»).</li>
 <li>Нажмите «Включить уведомления» и разрешите их.</li>
 <li>Скопируйте «код устройства» и добавьте его в GitHub как секрет <b>PUSH_SUBSCRIPTION</b>.</li>
-<li>Нажмите «Проверить», чтобы убедиться, что уведомление показывается.</li>
+<li>Кнопка «Проверить на телефоне» проверяет только локальный показ. Для проверки реальной доставки откройте GitHub Actions → «Сериалы» → Run workflow → «Отправить тестовое уведомление».</li>
 </ol></div>`;
 }
 
@@ -86,9 +86,9 @@ async function refreshNotify() {
     return;
   }
   if (sub) {
-    st.innerHTML = '<span class="ok">Уведомления включены на этом устройстве.</span>';
-    btns.innerHTML = '<button type="button" class="btn" data-act="test">Проверить</button>';
-    code.innerHTML = `<div class="panel"><h2>Код устройства</h2><p>Добавьте его в GitHub как секрет PUSH_SUBSCRIPTION. Это нужно один раз.</p>` +
+    st.innerHTML = '<span class="ok">Разрешение и push-подписка на устройстве есть.</span> Доставка с GitHub ещё не проверена. Если уведомления не приходят, скопируйте текущий код устройства и обновите секрет PUSH_SUBSCRIPTION в GitHub.';
+    btns.innerHTML = '<button type="button" class="btn" data-act="test">Проверить на телефоне</button>';
+    code.innerHTML = `<div class="panel"><h2>Код устройства</h2><p>Добавьте его в GitHub как секрет PUSH_SUBSCRIPTION. Если переустанавливали приложение или включали push заново — обновите секрет этим кодом.</p>` +
       `<textarea class="code" id="subcode" readonly aria-label="Код устройства">${esc(JSON.stringify(sub.toJSON()))}</textarea>` +
       `<button type="button" class="btn ghost" data-act="copy">Скопировать код</button><span id="copied" class="ok"></span></div>`;
   } else {
@@ -113,8 +113,13 @@ async function enablePush() {
   refreshNotify();
 }
 async function testPush() {
-  const reg = await navigator.serviceWorker.ready;
-  reg.showNotification('Grach films', { body: 'Проверка: уведомления работают', icon: 'icons/icon-192.png', tag: 'test' });
+  try {
+    const reg = await navigator.serviceWorker.ready;
+    await reg.showNotification('Grach films', { body: 'Локальный тест: показ на телефоне работает. Доставка с GitHub не проверена.', icon: 'icons/icon-192.png', tag: 'local-test' });
+  } catch (err) {
+    const st = document.getElementById('nstate');
+    if (st) st.innerHTML = `<span class="warn">Ошибка локального теста:</span> ${esc(err.message || err)}`;
+  }
 }
 async function copyCode() {
   const el = document.getElementById('subcode');
