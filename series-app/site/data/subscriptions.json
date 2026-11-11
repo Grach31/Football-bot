@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-25",
+  "updated": "2026-11-12",
   "items": [
     {
       "id": "kinopoisk-mviok140",
@@ -34,6 +34,13 @@
       "service": "Иви",
       "price": 399,
       "next": "2026-11-24",
+      "period": "month"
+    },
+    {
+      "id": "start-mwcm3x9d",
+      "service": "Start",
+      "price": 499,
+      "next": "2026-12-12",
       "period": "month"
     }
   ]
