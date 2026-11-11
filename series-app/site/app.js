@@ -595,7 +595,7 @@ document.addEventListener('click', (ev) => {
     if(!item)return;
     // Films can be marked only after their confirmed release date.
     if(kind==='m'&&!gfInfo(item,'m').eligibleArchive)return;
-    lsSet(gfWatchingKey(kind,item.id),gfWatching(item,kind)?'':'1');
+    lsSet(gfWatchingKey(kind,item.id),gfWatching(item,kind)?'0':'1');
     const y=window.scrollY;
     render();
     window.scrollTo(0,y);
