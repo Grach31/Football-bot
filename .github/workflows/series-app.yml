@@ -2,7 +2,7 @@ name: Сериалы
 
 on:
   schedule:
-    - cron: '0 7 * * *' # 10:00 по Москве
+    - cron: '*/15 * * * *' # Каждые 15 минут; GitHub Actions может запускаться с задержкой
   workflow_dispatch:
     inputs:
       test_push:
@@ -15,17 +15,16 @@ on:
       - 'series-app/site/**'
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
-
-concurrency:
-  group: series-app
-  cancel-in-progress: false
 
 jobs:
   deploy:
     if: github.event_name != 'schedule'
+    concurrency:
+      group: series-app-deploy
+      cancel-in-progress: false
     runs-on: ubuntu-latest
     environment:
       name: github-pages
@@ -50,10 +49,18 @@ jobs:
         uses: actions/deploy-pages@v4
 
   notify:
-    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && (contains(github.event.head_commit.modified, 'series-app/site/data/series.json') || contains(github.event.head_commit.modified, 'series-app/site/data/movies.json') || contains(github.event.head_commit.added, 'series-app/site/data/series.json') || contains(github.event.head_commit.added, 'series-app/site/data/movies.json')))
+    concurrency:
+      group: series-app-notify
+      cancel-in-progress: false
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: true
+      - name: Обновить данные перед проверкой
+        run: git pull --ff-only origin main
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -66,3 +73,16 @@ jobs:
           VAPID_PRIVATE_KEY: ${{ secrets.VAPID_PRIVATE_KEY }}
           PUSH_SUBSCRIPTION: ${{ secrets.PUSH_SUBSCRIPTION }}
         run: node notify.mjs ${{ github.event.inputs.test_push == 'true' && '--test' || '' }}
+      - name: Сохранить историю доставленных уведомлений
+        if: always() && github.event.inputs.test_push != 'true'
+        run: |
+          if git diff --quiet -- state/grach-films-push.json; then
+            echo "Новых отправок нет"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add state/grach-films-push.json
+          git commit -m "Grach Films: record delivered notifications"
+          git pull --rebase origin main
+          git push origin HEAD:main
