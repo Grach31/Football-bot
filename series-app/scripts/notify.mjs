@@ -27,11 +27,11 @@ const test = has('--test');
 const today = val('--date') || new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Moscow' }).format(new Date());
 const nowMsk = val('--date') ? '23:59' : new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Moscow', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).format(new Date());
 const defaultReleaseTime = '10:00'; // No confirmed hour in catalog; notification at 10:00 MSK, not a claim of actual release.
-const due = (time) => /^([01]\\d|2[0-3]):[0-5]\\d$/.test(time || '') ? time <= nowMsk : defaultReleaseTime <= nowMsk;
+const due = (time) => /^([01]\d|2[0-3]):[0-5]\d$/.test(time || '') ? time <= nowMsk : defaultReleaseTime <= nowMsk;
 const stateFile = path.join(here, '..', '..', 'state', 'grach-films-push.json');
 let state = { sent: {} };
 try { const loaded = JSON.parse(fs.readFileSync(stateFile, 'utf8')); if (loaded && typeof loaded.sent === 'object' && loaded.sent && !Array.isArray(loaded.sent)) state = loaded; } catch (e) { /* initial run */ }
-const saveState = () => { fs.mkdirSync(path.dirname(stateFile), { recursive: true }); fs.writeFileSync(stateFile, JSON.stringify(state, null, 2) + '\\n'); };
+const saveState = () => { fs.mkdirSync(path.dirname(stateFile), { recursive: true }); fs.writeFileSync(stateFile, JSON.stringify(state, null, 2) + '\n'); };
 
 const data = JSON.parse(fs.readFileSync(path.join(dataDir, 'series.json'), 'utf8'));
 const config = JSON.parse(fs.readFileSync(path.join(dataDir, 'config.json'), 'utf8'));
@@ -87,7 +87,7 @@ function buildPayloads(date) {
     // Episodes on one day with different release times are separate notifications.
     const groups = new Map();
     for (const e of todays) {
-      const time = /^([01]\\d|2[0-3]):[0-5]\\d$/.test(e.time || '') ? e.time : defaultReleaseTime;
+      const time = /^([01]\d|2[0-3]):[0-5]\d$/.test(e.time || '') ? e.time : defaultReleaseTime;
       if (!groups.has(time)) groups.set(time, []);
       groups.get(time).push(e);
     }
