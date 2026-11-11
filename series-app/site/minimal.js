@@ -9,7 +9,7 @@ const gfArchiveButton = (item,kind,info=gfInfo(item,kind)) => (!info.eligibleArc
   (gfArchived(item,kind,info)?'↶ Вернуть из архива':'↗ Убрать в архив')+'</button>';
 // Personal viewing list, intentionally independent of release dates and manual archive.
 const gfWatchingKey = (kind,id) => 'gf_watching_v1:'+kind+':'+id;
-const gfWatching = (item,kind='s') => lsGet(gfWatchingKey(kind,item.id)) === '1';
+const gfWatching = (item,kind='s') => { const local = lsGet(gfWatchingKey(kind,item.id)); return local === '1' ? true : local === '0' ? false : item.watching === true; };
 const gfWatchingButton = (item,kind='s',info=gfInfo(item,kind)) =>
   (kind==='m'&&!info.eligibleArchive?'':'<button type="button" class="gf-watching-action'+(gfWatching(item,kind)?' is-watching':'')+
   '" data-act="gfwatching" data-kind="'+kind+'" data-id="'+esc(item.id)+'" aria-pressed="'+(gfWatching(item,kind)?'true':'false')+'">'+
