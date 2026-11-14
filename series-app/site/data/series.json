@@ -1,6 +1,53 @@
 {
-  "updated": "2026-11-12",
+  "updated": "2026-11-14",
   "series": [
+    {
+      "id": "taynyy-gorod-2026",
+      "title": "Тайный город",
+      "service": "ТНТ, Кинопоиск",
+      "season": 1,
+      "status": "waiting",
+      "total": 8,
+      "date": "2026-11-23",
+      "when": "23 ноября 2026",
+      "episodes": [
+        {
+          "n": 1,
+          "date": "2026-11-23"
+        },
+        {
+          "n": 2,
+          "date": "2026-11-24"
+        },
+        {
+          "n": 3,
+          "date": "2026-11-25"
+        },
+        {
+          "n": 4,
+          "date": "2026-11-26"
+        },
+        {
+          "n": 5,
+          "date": "2026-11-30"
+        },
+        {
+          "n": 6,
+          "date": "2026-12-01"
+        },
+        {
+          "n": 7,
+          "date": "2026-12-02"
+        },
+        {
+          "n": 8,
+          "date": "2026-12-03"
+        }
+      ],
+      "poster": "https://media.kg-portal.ru/tv/t/tajnyjgorod/posters/tajnyjgorod_1.jpg",
+      "added": "2026-11-14",
+      "note": "Мистический экшен по романам Вадима Панова. Премьера 23 ноября 2026 на ТНТ и Кинопоиске. 8 серий, по одной с понедельника по четверг; график: https://matchtv.ru/cinema/matchtvnews_NI2383375_TNT_i_Kinopoisk_predstavili_finalnyj_trejler_i_novyje_postery_seriala_Tajnyj_gorod"
+    },
     {
       "id": "sedmoy-igrok",
       "title": "Седьмой игрок",
