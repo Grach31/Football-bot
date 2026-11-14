@@ -2,6 +2,57 @@
   "updated": "2026-11-14",
   "series": [
     {
+      "id": "tyazhelyy-lyuks-2026",
+      "title": "Тяжёлый люкс",
+      "service": "Wink",
+      "season": 1,
+      "status": "airing",
+      "watching": true,
+      "mine": "watching",
+      "total": 8,
+      "date": "2026-11-13",
+      "when": "13 ноября 2026",
+      "episodes": [
+        {
+          "n": 1,
+          "date": "2026-11-13"
+        },
+        {
+          "n": 2,
+          "date": "2026-11-20"
+        },
+        {
+          "n": 3,
+          "date": "2026-11-27"
+        },
+        {
+          "n": 4,
+          "date": "2026-12-04"
+        },
+        {
+          "n": 5,
+          "date": "2026-12-11"
+        },
+        {
+          "n": 6,
+          "date": "2026-12-18"
+        },
+        {
+          "n": 7,
+          "date": "2026-12-25"
+        },
+        {
+          "n": 8,
+          "date": "2027-01-01"
+        }
+      ],
+      "poster_query": "Тяжёлый люкс 2026 Wink официальный постер",
+      "added": "2026-11-14",
+      "watch_url": "https://wink.ru/series/tyazhelyy-lyuks-year-2026",
+      "watch_name": "Wink",
+      "note": "Премьера 13 ноября 2026. 8 серий по пятницам, финал 1 января 2027. Официальное расписание: https://wink.ru/blog/serial-tyazhelyy-lyuks-data-vyhoda-seriy-na-wink. Официальный URL постера пока не подтверждён."
+    },
+    {
       "id": "taynyy-gorod-2026",
       "title": "Тайный город",
       "service": "ТНТ, Кинопоиск",
