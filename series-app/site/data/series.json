@@ -203,7 +203,7 @@
       "note": "Мистический экшен по романам Вадима Панова. Премьера 23 ноября 2026 на ТНТ и Кинопоиске. 8 серий, по одной с понедельника по четверг; график: https://matchtv.ru/cinema/matchtvnews_NI2383375_TNT_i_Kinopoisk_predstavili_finalnyj_trejler_i_novyje_postery_seriala_Tajnyj_gorod",
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-18T11:06:49.129Z",
+        "checkedAt": "2026-11-18T17:08:34.906Z",
         "schema": 2,
         "candidates": [
           {
@@ -341,7 +341,7 @@
         "provider": "kinopoisk",
         "id": 8545317,
         "url": "https://www.kinopoisk.ru/series/8545317/",
-        "checkedAt": "2026-11-18T11:06:49.129Z",
+        "checkedAt": "2026-11-18T17:08:34.906Z",
         "schema": 2,
         "status": "unresolved",
         "candidates": [
@@ -564,7 +564,7 @@
       "seen_ep_season": 1,
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-18T11:06:49.129Z",
+        "checkedAt": "2026-11-18T17:08:34.906Z",
         "schema": 2,
         "candidates": [],
         "issues": [
@@ -756,7 +756,7 @@
       "note": "Съёмки завершены. Netflix убрал сериал из планов на 2026, ориентир: весна или лето 2027.",
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-18T11:06:49.129Z",
+        "checkedAt": "2026-11-18T17:08:34.906Z",
         "schema": 2,
         "candidates": [],
         "issues": [
@@ -852,7 +852,7 @@
         "provider": "kinopoisk",
         "id": 5591410,
         "url": "https://www.kinopoisk.ru/series/5591410/",
-        "checkedAt": "2026-11-18T11:06:49.129Z",
+        "checkedAt": "2026-11-18T17:08:34.906Z",
         "schema": 2,
         "status": "unresolved",
         "candidates": [
@@ -913,7 +913,7 @@
       "mine": "want",
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-18T11:06:49.129Z",
+        "checkedAt": "2026-11-18T17:08:34.906Z",
         "schema": 2,
         "candidates": [],
         "issues": [
@@ -948,7 +948,7 @@
       "note": "Режиссёр Жора Крыжовников объявил запуск 2 сезона (постер «Кровавая двойка»), даты выхода и площадки пока нет (Кино Mail).",
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-18T11:06:49.129Z",
+        "checkedAt": "2026-11-18T17:08:34.906Z",
         "schema": 2,
         "candidates": [],
         "issues": [
@@ -1008,7 +1008,7 @@
         "id": 5106448,
         "url": "https://www.kinopoisk.ru/series/5106448/",
         "managedSeason": 1,
-        "checkedAt": "2026-11-18T11:06:49.129Z",
+        "checkedAt": "2026-11-18T17:08:34.906Z",
         "schema": 2,
         "status": "unresolved",
         "candidates": [
@@ -1308,7 +1308,7 @@
       "poster": "custom/segun.jpg",
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-18T11:06:49.129Z",
+        "checkedAt": "2026-11-18T17:08:34.906Z",
         "schema": 2,
         "candidates": [
           {
@@ -2080,7 +2080,7 @@
         "id": 581937,
         "url": "https://www.kinopoisk.ru/series/581937/",
         "managedSeason": 6,
-        "checkedAt": "2026-11-18T11:06:49.129Z",
+        "checkedAt": "2026-11-18T17:08:34.906Z",
         "schema": 2,
         "status": "unresolved",
         "candidates": [
@@ -2541,7 +2541,7 @@
         "id": 44217,
         "url": "https://www.themoviedb.org/tv/44217",
         "managedSeason": 6,
-        "checkedAt": "2026-11-18T11:06:49.129Z",
+        "checkedAt": "2026-11-18T17:08:34.906Z",
         "schema": 2,
         "status": "unresolved",
         "candidates": [
@@ -2600,7 +2600,7 @@
       "added": "2026-10-23",
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-18T11:06:49.129Z",
+        "checkedAt": "2026-11-18T17:08:34.906Z",
         "schema": 2,
         "candidates": [
           {
@@ -2699,7 +2699,7 @@
         "id": 61068,
         "url": "https://www.themoviedb.org/tv/61068",
         "managedSeason": 5,
-        "checkedAt": "2026-11-18T11:06:49.129Z",
+        "checkedAt": "2026-11-18T17:08:34.906Z",
         "schema": 2,
         "status": "unresolved",
         "candidates": [
@@ -2911,7 +2911,7 @@
         "provider": "kinopoisk",
         "id": 523279,
         "url": "https://www.kinopoisk.ru/series/523279/",
-        "checkedAt": "2026-11-18T11:06:49.129Z",
+        "checkedAt": "2026-11-18T17:08:34.906Z",
         "schema": 2,
         "status": "unresolved",
         "candidates": [
@@ -2952,7 +2952,7 @@
       "note": "Точная дата не названа, премьера запланирована до конца 2026 (Click-or-Die).",
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-18T11:06:49.129Z",
+        "checkedAt": "2026-11-18T17:08:34.906Z",
         "schema": 2,
         "candidates": [
           {
@@ -2995,7 +2995,7 @@
       "added": "2026-10-23",
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-18T11:06:49.129Z",
+        "checkedAt": "2026-11-18T17:08:34.906Z",
         "schema": 2,
         "candidates": [
           {
@@ -3219,7 +3219,7 @@
       "added": "2026-10-26",
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-18T11:06:49.129Z",
+        "checkedAt": "2026-11-18T17:08:34.906Z",
         "schema": 2,
         "candidates": [
           {
@@ -3333,7 +3333,7 @@
       "added": "2026-10-28",
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-18T11:06:49.129Z",
+        "checkedAt": "2026-11-18T17:08:34.906Z",
         "schema": 2,
         "candidates": [
           {
@@ -3496,7 +3496,7 @@
       "note": "Корейский мистический хоррор-мини-сериал, 8 серий. Все серии вышли на Netflix 30 октября 2026 (Лайфхакер, Metaratings).",
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-18T11:06:49.129Z",
+        "checkedAt": "2026-11-18T17:08:34.906Z",
         "schema": 2,
         "candidates": [
           {
@@ -3810,7 +3810,7 @@
       "note": "Российский криминальный триллер с Елизаветой Боярской. Премьера на KION 1 декабря 2025; 8 эпизодов, финал 19 декабря 2025. Источник: https://kion.ru/serial/tonnel",
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-18T11:06:49.129Z",
+        "checkedAt": "2026-11-18T17:08:34.906Z",
         "schema": 2,
         "candidates": [
           {

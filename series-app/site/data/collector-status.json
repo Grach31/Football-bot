@@ -1,15 +1,15 @@
 {
-  "checkedAt": "2026-11-18T17:06:41.747Z",
+  "checkedAt": "2026-11-18T17:08:34.906Z",
   "status": "partial",
   "series": {
-    "checked": 47,
-    "updated": 46,
-    "unresolved": 1,
+    "checked": 20,
+    "updated": 0,
+    "unresolved": 20,
     "failed": 0,
     "locked": 1,
-    "degraded": 1,
+    "degraded": 20,
     "errors": {
-      "kinopoisk:provider_http_402": 1
+      "kinopoisk:provider_http_402": 20
     }
   },
   "movies": {
