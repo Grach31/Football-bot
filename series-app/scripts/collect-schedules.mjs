@@ -67,11 +67,14 @@ export function mergeSeason(item, details, seasons, today) {
 }
 
 export function providerClient({ tmdbToken = '', kpToken = '', request = fetch, pause = ms => new Promise(resolve => setTimeout(resolve,ms)) } = {}) {
+  const blocked = new Map();
   async function json(url, headers = {}) {
+    const host = new URL(url).hostname;
+    if (blocked.has(host)) throw new Error('provider_http_' + blocked.get(host));
     for (let attempt = 0; attempt < 3; attempt++) {
       const response = await request(url, { headers, signal: AbortSignal.timeout(20000) });
       if ((response.status === 429 || response.status >= 500) && attempt < 2) { await pause(Math.min(5000, (Number(response.headers.get('retry-after')) || attempt + 1) * 1000)); continue; }
-      if (!response.ok) throw new Error('provider_http_' + response.status);
+      if (!response.ok) { if ([401,402,403].includes(response.status)) blocked.set(host,response.status); throw new Error('provider_http_' + response.status); }
       return response.json();
     }
   }
@@ -89,10 +92,13 @@ export function providerClient({ tmdbToken = '', kpToken = '', request = fetch, 
       const identity=identityOf(item);
       const options=[];
       const remember=(rows,provider)=>{for(const row of rows.slice(0,5)){const id=Number(row.id || row.kinopoiskId || row.filmId);if(id>0)options.push({provider,id,title:row.nameRu || row.title || row.name || row.original_title || row.original_name || '',original:row.original_title || row.original_name || row.nameEn || row.nameOriginal || '',year:Number(String(row.release_date || row.first_air_date || row.year || '').slice(0,4)) || null});}};
-      let providerError;
+      let providerError, searched = false;
+      const issues=[];
+      const issue=(provider,error)=>{const code=/^provider_http_\d{3}$/.test(error.message)?error.message:'provider_unavailable';issues.push({provider,code});providerError=error;};
       if (tmdbToken) try {
         const id = Number(item.tmdb_id || (item.release_sync?.provider === 'tmdb' && item.release_sync.identity === identity.signature && item.release_sync.id));
         const rows=id>0?[]:(await tmdb('search/'+kind,{query:identity.alias || item.title})).results || [];
+        searched=true;
         const hit=id>0?{id}:matchTitle(item,rows,kind);
         if(!hit)remember(rows,'tmdb');
         if (hit) {
@@ -128,10 +134,11 @@ export function providerClient({ tmdbToken = '', kpToken = '', request = fetch, 
           if ((!item.episodes?.length && !item.total) || item.release_sync?.managedSeason || next.season !== (Number(item.season)||1)) provenance.managedSeason = next.season;
           return { item: next, provenance };
         }
-      } catch (error) { providerError = error; }
-      if (kpToken) {
+      } catch (error) { issue('tmdb',error); }
+      if (kpToken) try {
         const id = Number(item.kinopoisk_id || (item.release_sync?.provider === 'kinopoisk' && item.release_sync.identity === identity.signature && item.release_sync.id));
         const rows=id>0?[]:((await kp('v2.2/films?keyword='+encodeURIComponent(identity.alias || item.title)+'&type=ALL')).items || []).filter(value=>kind==='tv'?['TV_SERIES','MINI_SERIES','TV_SHOW'].includes(value.type):value.type==='FILM');
+        searched=true;
         const hit=id>0?{kinopoiskId:id}:matchTitle(item,rows.map(value=>({...value,media_type:kind})),kind);
         if(!hit)remember(rows,'kinopoisk');
         if (hit) {
@@ -154,8 +161,8 @@ export function providerClient({ tmdbToken = '', kpToken = '', request = fetch, 
           const next = mergeSeason(item, { nextSeason:announced || null }, seasons, today);
           return { item: next, provenance: { provider: 'kinopoisk', id: providerId, identity:identity.signature, url: 'https://www.kinopoisk.ru/series/' + providerId + '/', ...((!item.episodes?.length && !item.total) || item.release_sync?.managedSeason || next.season !== (Number(item.season)||1) ? { managedSeason: next.season } : {}) } };
         }
-      }
-      if (options.length) return {unresolved:true,candidates:options.slice(0,10)};
+      } catch(error) { issue('kinopoisk',error); }
+      if (options.length || searched) return {unresolved:true,candidates:options.slice(0,10),issues};
       if (providerError) throw providerError;
       return null;
     }
@@ -165,7 +172,7 @@ export function providerClient({ tmdbToken = '', kpToken = '', request = fetch, 
 export async function collectCatalog(catalog, kind, { provider, now = new Date(), force = false } = {}) {
   const today = new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Moscow' }).format(now);
   const key = kind === 'tv' ? 'series' : 'items', next = structuredClone(catalog);
-  const counts = { checked: 0, updated: 0, unresolved: 0, failed: 0, locked: 0 };
+  const counts = { checked: 0, updated: 0, unresolved: 0, failed: 0, locked: 0, degraded: 0, errors: {} };
   for (let index = 0; index < next[key].length; index++) {
     const item = next[key][index];
     if (item.schedule_locked || item.no_schedule) { counts.locked++; continue; }
@@ -173,10 +180,12 @@ export async function collectCatalog(catalog, kind, { provider, now = new Date()
     counts.checked++;
     try {
       const result = await provider.collect(item, kind, today);
-      if (!result || result.unresolved) { counts.unresolved++; next[key][index] = { ...item, release_sync: { ...(item.release_sync || {}), schema:2, status: 'unresolved', candidates:result?.candidates || [], checkedAt: now.toISOString() } }; continue; }
+      if (result?.issues?.length) counts.degraded++;
+      for (const issue of result?.issues || []) counts.errors[issue.provider+':'+issue.code]=(counts.errors[issue.provider+':'+issue.code] || 0)+1;
+      if (!result || result.unresolved) { counts.unresolved++; next[key][index] = { ...item, release_sync: { ...(item.release_sync || {}), schema:2, status: 'unresolved', candidates:result?.candidates || [], issues:result?.issues || [], checkedAt: now.toISOString() } }; continue; }
       next[key][index] = { ...result.item, release_sync: { ...result.provenance, schema:2, checkedAt: now.toISOString() } };
       counts.updated++;
-    } catch { counts.failed++; } // Do not persist request URLs, auth headers or provider response bodies.
+    } catch(error) { counts.failed++; const code=/^provider_http_\d{3}$/.test(error.message)?error.message:'provider_unavailable'; counts.errors[code]=(counts.errors[code] || 0)+1; } // Do not persist request URLs, auth headers or provider response bodies.
   }
   if (counts.updated) next.updated = today;
   return { catalog: next, counts };
@@ -193,7 +202,7 @@ async function main() {
     const file = path.join(directory, name + '.json');
     const result = await collectCatalog(JSON.parse(await fs.readFile(file, 'utf8')), kind, { provider, now, force: args.includes('--force') });
     report[name] = result.counts;
-    if (result.counts.failed) report.status = 'partial';
+    if (result.counts.failed || result.counts.degraded) report.status = 'partial';
     if (result.counts.checked) await fs.writeFile(file, JSON.stringify(result.catalog, null, 2) + '\n');
   }
   if (report.series.checked + report.movies.checked) await fs.writeFile(path.join(directory, 'collector-status.json'), JSON.stringify(report, null, 2) + '\n');
