@@ -704,6 +704,7 @@ document.addEventListener('submit', async (ev) => {
 window.addEventListener('hashchange', render);
 
 let familyLoadVersion = 0, familyWritePending = 0;
+const familyTrusted = new Set();
 async function boot(manual) {
   if (familyWritePending) return false;
   const version = ++familyLoadVersion, familyLoadIssues = [];
@@ -733,7 +734,12 @@ async function boot(manual) {
         // постеры и рейтинги подставляются при сборке сайта и в репозитории их нет: переносим из загруженной версии
         const keep = (fresh, old, key) => { const map = new Map((old[key] || []).map((x) => [x.id, x])); (fresh[key] || []).forEach((x) => { const o = map.get(x.id); if (o) { if (o.poster && !x.poster) x.poster = o.poster; if (o.rating && !x.rating) x.rating = o.rating; } }); return fresh; };
         if (!a || !m || !u) familyLoadIssues.push('repository');
-        if (a) next.DATA = keep(a, next.DATA, 'series'); if (m) next.MOVIES = keep(m, next.MOVIES, 'items'); if (u) next.SUBS = u;
+        if (a) { next.DATA = keep(a,next.DATA,'series'); familyTrusted.add('series.json'); }
+        else if (familyTrusted.has('series.json')) next.DATA=keep(DATA,next.DATA,'series');
+        if (m) { next.MOVIES=keep(m,next.MOVIES,'items'); familyTrusted.add('movies.json'); }
+        else if (familyTrusted.has('movies.json')) next.MOVIES=keep(MOVIES,next.MOVIES,'items');
+        if (u) { next.SUBS=u; familyTrusted.add('subscriptions.json'); }
+        else if (familyTrusted.has('subscriptions.json')) next.SUBS=SUBS;
       }
     } catch (e) {}
   } catch (err) {
@@ -749,7 +755,7 @@ async function boot(manual) {
 const familyOriginalWrite = ghEdit;
 ghEdit = async function(...args) {
   familyLoadVersion++; familyWritePending++;
-  try { return await familyOriginalWrite(...args); }
+  try { const result = await familyOriginalWrite(...args); familyTrusted.add(args[0]); return result; }
   finally { familyWritePending--; }
 };
 if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
