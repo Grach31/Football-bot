@@ -130,7 +130,10 @@ if (!test) {
     const delivered=device && state.sent['server-test-'+request.id+':device:'+deviceKey(device)];
     return {id:request.id,deviceId:request.deviceId,status:delivered?'accepted':device?'pending':'unknown_device',at:delivered || request.at};
   });
-  fs.writeFileSync(path.join(dataDir,'notification-delivery.json'),JSON.stringify({checkedAt:new Date().toISOString(),sent,failed,tests},null,2)+'\n');
+  const deliveryFile=path.join(dataDir,'notification-delivery.json');
+  let previousReport;try{previousReport=JSON.parse(fs.readFileSync(deliveryFile,'utf8'));}catch{}
+  // Do not create a self-triggering deployment solely to change a report timestamp.
+  if(sent || failed || JSON.stringify(previousReport?.tests || [])!==JSON.stringify(tests))fs.writeFileSync(deliveryFile,JSON.stringify({checkedAt:new Date().toISOString(),sent,failed,tests},null,2)+'\n');
   const cutoff = Date.now() - 90 * 86400000;
   for (const [key, at] of Object.entries(state.sent)) if (Date.parse(at) < cutoff) delete state.sent[key];
   saveState();
