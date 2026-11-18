@@ -40,13 +40,15 @@ jobs:
         env:
           TMDB_TOKEN: ${{ secrets.TMDB_TOKEN }}
         run: node series-app/scripts/refresh-discovery.mjs --site-dir series-app/site
+      - name: Обновить общий журнал уведомлений
+        run: node series-app/scripts/notification-events.mjs --site-dir series-app/site
       - name: Сохранить расписание без перезаписи чужих изменений
         id: save
         run: |
           if git diff --quiet -- series-app/site/data; then echo 'changed=false' >> "$GITHUB_OUTPUT"; exit 0; fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add series-app/site/data/series.json series-app/site/data/movies.json series-app/site/data/collector-status.json series-app/site/data/pool.json series-app/site/data/discover.json series-app/site/data/discovery-status.json
+          git add series-app/site/data/series.json series-app/site/data/movies.json series-app/site/data/collector-status.json series-app/site/data/pool.json series-app/site/data/discover.json series-app/site/data/discovery-status.json series-app/site/data/notifications.json state/grach-films-events.json
           git commit -m 'Grach Films: refresh confirmed release schedules'
           git push origin HEAD:main
           echo 'changed=true' >> "$GITHUB_OUTPUT"
@@ -97,10 +99,10 @@ jobs:
       - name: Сохранить историю по устройствам
         if: always() && github.event.inputs.test_push != 'true'
         run: |
-          if git diff --quiet -- state/grach-films-push.json; then exit 0; fi
+          if git diff --quiet -- state/grach-films-push.json series-app/site/data/notification-delivery.json; then exit 0; fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add state/grach-films-push.json
+          git add state/grach-films-push.json series-app/site/data/notification-delivery.json
           git commit -m 'Grach Films: record per-device deliveries'
           git pull --rebase origin main
           git push origin HEAD:main

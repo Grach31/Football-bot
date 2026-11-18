@@ -15,6 +15,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import webpush from 'web-push';
+import {releasePayloads,payloadForEvent} from './notification-events.mjs';
 import { createECDH, createDecipheriv, hkdfSync, createHash } from 'node:crypto';
 export function decryptDevice(box, privateKey) {
   if (box?.v !== 1 || typeof box.ciphertext !== 'string' || box.ciphertext.length > 16000) throw new Error('invalid_device');
@@ -31,9 +32,10 @@ export function decryptDevice(box, privateKey) {
   return subscription;
 }
 export const deviceKey = subscription => createHash('sha256').update(subscription.endpoint).digest('hex').slice(0,24);
-export async function deliverToDevices(payloads, devices, { state, legacy = [], test = false, send, now = () => new Date().toISOString(), onError = () => {} }) {
+export async function deliverToDevices(payloads, devices, { state, legacy = [], test = false, send, now = () => new Date().toISOString(), onError = () => {}, shouldSend = () => true }) {
   let sent = 0, failed = 0;
   for (const payload of payloads) for (const device of devices) {
+    if (!shouldSend(payload,device)) continue;
     const key = payload.tag + ':device:' + deviceKey(device);
     if (!test && (state.sent[key] || state.sent[payload.tag] && legacy.some(value => value.endpoint === device.endpoint))) continue;
     try {
@@ -70,77 +72,16 @@ try { subsData = JSON.parse(fs.readFileSync(path.join(dataDir, 'subscriptions.js
 
 let moviesData = { items: [] };
 try { moviesData = JSON.parse(fs.readFileSync(path.join(dataDir, 'movies.json'), 'utf8')); } catch (e) { /* фильмов нет */ }
-function moviePayloads(date) {
-  return (moviesData.items || []).filter((m) => m.date === date && due(m.time)).map((m) => ({
-    title: `${m.title}: выходит сегодня`, body: m.service ? `Фильм · ${m.service}` : 'Фильм', tag: `movie-${m.id}-${date}`, url: `./#/m/${m.id}`,
-  }));
-}
-
-const d0 = (x) => new Date(x + 'T00:00:00Z');
-function addMonths(x, n, day) {
-  const dt = d0(x); const y = dt.getUTCFullYear(), m = dt.getUTCMonth() + n;
-  const last = new Date(Date.UTC(y, m + 1, 0)).getUTCDate();
-  return new Date(Date.UTC(y, m, Math.min(day, last))).toISOString().slice(0, 10);
-}
-function subNext(it, today) {
-  let d = it.next;
-  if (it.period === 'once' || d >= today) return d;
-  const day = +d.slice(8, 10); let i = 0;
-  const step = { month: 1, '3m': 3, '6m': 6, year: 12 }[it.period] || 1;
-  while (d < today && i < 600) { i += 1; d = addMonths(it.next, step * i, day); }
-  return d;
-}
-const money = (n) => `${Number(n).toLocaleString('ru-RU')} ₽`;
-function subPayloads(date) {
-  const out = [];
-  for (const it of subsData.items || []) {
-    const nx = subNext(it, date);
-    const left = Math.round((d0(nx) - d0(date)) / 86400000);
-    if ((left !== 3 && left !== 1 && left !== 0) || !due('10:00')) continue;
-    const once = it.period === 'once';
-    const when = left === 0 ? 'сегодня' : left === 1 ? 'завтра' : 'через 3 дня';
-    const title = once ? `${it.service}: доступ заканчивается ${when}` : `${it.service}: списание ${when}`;
-    out.push({ title, body: once ? 'Продлите, если ещё смотрите' : `${money(it.price)}. Если сервис не нужен, отмените подписку`, tag: `sub-${it.id}-${nx}-${left}`, url: './#/subs' });
-  }
-  return out;
-}
-
-const weekday = (s) => new Intl.DateTimeFormat('ru-RU', { timeZone: 'UTC', weekday: 'long' }).format(new Date(s + 'T00:00:00Z'));
-
-function buildPayloads(date) {
-  const out = [];
-  for (const s of data.series) {
-    if (s.no_schedule) continue;
-    const todays = (s.episodes || []).filter((e) => e.date === date && due(e.time));
-    if (!todays.length) continue;
-    // Episodes on one day with different release times are separate notifications.
-    const groups = new Map();
-    for (const e of todays) {
-      const time = /^([01]\d|2[0-3]):[0-5]\d$/.test(e.time || '') ? e.time : defaultReleaseTime;
-      if (!groups.has(time)) groups.set(time, []);
-      groups.get(time).push(e);
-    }
-    for (const [time, episodes] of groups) {
-      const u = s.unit || 'серия';
-      const verb = u === 'выпуск' ? 'вышел' : 'вышла';
-      const last = episodes[episodes.length - 1];
-      const fin = s.total && last.n === s.total ? ' (финал)' : '';
-      const title = episodes.length > 1
-        ? `${s.title}: вышли ${u === 'выпуск' ? 'выпуски' : 'серии'} ${episodes[0].n}–${last.n}${fin}`
-        : `${s.title}: ${verb} ${last.n} ${u}${fin}`;
-      const parts = [];
-      if (s.service) parts.push(s.service);
-      parts.push(`сегодня, ${weekday(date)}${episodes.some(e => e.time) ? ', в ' + time : ''}`);
-      out.push({ title, body: parts.join(' · '), tag: `series-${s.id}-${date}-${time}`, url: `./#/s/${s.id}` });
-    }
-  }
-  return out;
-}
-
+let journal;
+try {journal=JSON.parse(fs.readFileSync(path.join(dataDir,'notifications.json'),'utf8'));}catch{}
+const recentEvents=(!val('--date') && journal)?.items?.filter(event => Date.parse(event.at)>=Date.now()-72*60*60*1000).map(payloadForEvent);
 const payloads = test
   ? [{ title: 'Grach films', body: 'Проверка: уведомления работают', tag: 'test', url: './#/week' }]
-  : [...buildPayloads(today), ...moviePayloads(today), ...subPayloads(today)];
+  : recentEvents || releasePayloads({series:data.series,movies:moviesData.items,subscriptions:subsData.items,today,nowMsk});
 
+let testRequests=[];
+try {testRequests=JSON.parse(fs.readFileSync(path.join(dataDir,'family-push-tests.json'),'utf8')).items || [];}catch{}
+if(!test)for(const request of testRequests)if(typeof request.id==='string' && typeof request.deviceId==='string' && Date.parse(request.at)>=Date.now()-86400000)payloads.push({title:'МОЁ · Серверный тест',body:'Уведомление отправлено сервером Family Space.',tag:'server-test-'+request.id,url:'./#/notifications',category:'server_test',targetDeviceId:request.deviceId});
 console.log(`Дата: ${today}, время Москвы: ${nowMsk}. Новых уведомлений к отправке: ${payloads.length}`);
 for (const p of payloads) console.log(` - ${p.title} | ${p.body}`);
 
@@ -154,6 +95,7 @@ if (!privateKey) {
   process.exit(1);
 }
 
+const preferences=new Map(),deviceIds=new Map();
 let subs;
 try {
   const parsed = JSON.parse(rawSub || '[]');
@@ -168,7 +110,7 @@ try {
 try {
   const devices=JSON.parse(fs.readFileSync(path.join(dataDir,'family-push-devices.json'),'utf8')).items || [];
   for (const device of devices) {
-    try { const sub=decryptDevice(device.box,privateKey); if(!subs.some(existing=>existing.endpoint===sub.endpoint))subs.push(sub); }
+    try { const sub=decryptDevice(device.box,privateKey); preferences.set(sub.endpoint,device.preferences || {});deviceIds.set(sub.endpoint,device.id); if(!subs.some(existing=>existing.endpoint===sub.endpoint))subs.push(sub); }
     catch { console.error('Family Space: invalid encrypted device (no sensitive details logged)'); }
   }
 } catch { /* Old subscriptions continue to work before device enrollment. */ }
@@ -178,10 +120,17 @@ webpush.setVapidDetails(process.env.VAPID_SUBJECT || 'mailto:series@example.com'
 let legacy=[]; try { const parsed=JSON.parse(rawSub || '[]'); legacy=Array.isArray(parsed)?parsed:[parsed]; } catch {}
 const {sent,failed}=await deliverToDevices(payloads,subs,{
   state,legacy,test,
+  shouldSend:(payload,device)=>payload.targetDeviceId ? deviceIds.get(device.endpoint)===payload.targetDeviceId : test || (preferences.get(device.endpoint)?.pushEnabled!==false && preferences.get(device.endpoint)?.[payload.category]!==false),
   send:(sub,payload)=>webpush.sendNotification(sub,JSON.stringify(payload),{TTL:60*60*12}),
   onError:code=>console.error('Push delivery failed ('+code+'); device data is not logged.')
 });
 if (!test) {
+  const tests=testRequests.map(request=>{
+    const device=subs.find(sub=>deviceIds.get(sub.endpoint)===request.deviceId);
+    const delivered=device && state.sent['server-test-'+request.id+':device:'+deviceKey(device)];
+    return {id:request.id,deviceId:request.deviceId,status:delivered?'accepted':device?'pending':'unknown_device',at:delivered || request.at};
+  });
+  fs.writeFileSync(path.join(dataDir,'notification-delivery.json'),JSON.stringify({checkedAt:new Date().toISOString(),sent,failed,tests},null,2)+'\n');
   const cutoff = Date.now() - 90 * 86400000;
   for (const [key, at] of Object.entries(state.sent)) if (Date.parse(at) < cutoff) delete state.sent[key];
   saveState();
