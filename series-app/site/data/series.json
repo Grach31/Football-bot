@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-14",
+  "updated": "2026-11-18",
   "series": [
     {
       "id": "polyarnyy-season-6-2026",
@@ -9,7 +9,7 @@
       "status": "airing",
       "watching": true,
       "mine": "watching",
-      "total": 16,
+      "total": 12,
       "date": "2026-11-16",
       "when": "16 ноября 2026",
       "episodes": [
@@ -82,7 +82,13 @@
       "added": "2026-11-18",
       "watch_url": "https://www.ivi.ru/watch/polyarnyij/season6",
       "watch_name": "Иви",
-      "note": "Шестой сезон. Премьера 16 ноября 2026 на ТНТ и Иви. 16 эпизодов по две серии в будни до 26 ноября 2026. Официальный график: https://www.ivi.tv/articles/polyarniy-6-sezon-data-vykhoda-na-ivi-i-grafik-seriy. Проверенный URL вертикального постера не найден."
+      "note": "Шестой сезон. Премьера 16 ноября 2026 на ТНТ и Иви. 16 эпизодов по две серии в будни до 26 ноября 2026. Официальный график: https://www.ivi.tv/articles/polyarniy-6-sezon-data-vykhoda-na-ivi-i-grafik-seriy. Проверенный URL вертикального постера не найден.",
+      "release_sync": {
+        "provider": "tmdb",
+        "id": 94947,
+        "url": "https://www.themoviedb.org/tv/94947",
+        "checkedAt": "2026-11-18T09:21:13.938Z"
+      }
     },
     {
       "id": "tyazhelyy-lyuks-2026",
@@ -133,7 +139,13 @@
       "added": "2026-11-14",
       "watch_url": "https://wink.ru/series/tyazhelyy-lyuks-year-2026",
       "watch_name": "Wink",
-      "note": "Премьера 13 ноября 2026. 8 серий по пятницам, финал 1 января 2027. Официальное расписание: https://wink.ru/blog/serial-tyazhelyy-lyuks-data-vyhoda-seriy-na-wink. Официальный URL постера пока не подтверждён."
+      "note": "Премьера 13 ноября 2026. 8 серий по пятницам, финал 1 января 2027. Официальное расписание: https://wink.ru/blog/serial-tyazhelyy-lyuks-data-vyhoda-seriy-na-wink. Официальный URL постера пока не подтверждён.",
+      "release_sync": {
+        "provider": "tmdb",
+        "id": 337738,
+        "url": "https://www.themoviedb.org/tv/337738",
+        "checkedAt": "2026-11-18T09:21:13.938Z"
+      }
     },
     {
       "id": "taynyy-gorod-2026",
@@ -180,7 +192,11 @@
       ],
       "poster": "https://media.kg-portal.ru/tv/t/tajnyjgorod/posters/tajnyjgorod_1.jpg",
       "added": "2026-11-14",
-      "note": "Мистический экшен по романам Вадима Панова. Премьера 23 ноября 2026 на ТНТ и Кинопоиске. 8 серий, по одной с понедельника по четверг; график: https://matchtv.ru/cinema/matchtvnews_NI2383375_TNT_i_Kinopoisk_predstavili_finalnyj_trejler_i_novyje_postery_seriala_Tajnyj_gorod"
+      "note": "Мистический экшен по романам Вадима Панова. Премьера 23 ноября 2026 на ТНТ и Кинопоиске. 8 серий, по одной с понедельника по четверг; график: https://matchtv.ru/cinema/matchtvnews_NI2383375_TNT_i_Kinopoisk_predstavili_finalnyj_trejler_i_novyje_postery_seriala_Tajnyj_gorod",
+      "release_sync": {
+        "status": "unresolved",
+        "checkedAt": "2026-11-18T09:21:13.938Z"
+      }
     },
     {
       "id": "sedmoy-igrok",
@@ -282,7 +298,13 @@
       "mine": "done",
       "seen_ep": 6,
       "seen_ep_season": 1,
-      "seen_season": 1
+      "seen_season": 1,
+      "release_sync": {
+        "provider": "kinopoisk",
+        "id": 8545317,
+        "url": "https://www.kinopoisk.ru/series/8545317/",
+        "checkedAt": "2026-11-18T09:21:13.938Z"
+      }
     },
     {
       "id": "korol-talsy",
@@ -335,7 +357,14 @@
       ],
       "note": "Даты по графику Paramount+, выход по пятницам. На российских сервисах серия может появиться позже.",
       "seen_ep": 1,
-      "seen_ep_season": 4
+      "seen_ep_season": 4,
+      "date": "2026-10-16",
+      "release_sync": {
+        "provider": "tmdb",
+        "id": 153312,
+        "url": "https://www.themoviedb.org/tv/153312",
+        "checkedAt": "2026-11-18T09:21:13.938Z"
+      }
     },
     {
       "id": "gangsterlend",
@@ -389,7 +418,14 @@
       "note": "Даты по графику Paramount+, выход по пятницам. На российских сервисах серия может появиться позже.",
       "mine": "watching",
       "seen_ep": 8,
-      "seen_ep_season": 2
+      "seen_ep_season": 2,
+      "date": "2026-09-18",
+      "release_sync": {
+        "provider": "tmdb",
+        "id": 247718,
+        "url": "https://www.themoviedb.org/tv/247718",
+        "checkedAt": "2026-11-18T09:21:13.938Z"
+      }
     },
     {
       "id": "zvezdy-v-dzhunglyah",
@@ -443,13 +479,17 @@
       "note": "Выпуски по воскресеньям в 18:00 по Москве. Общее число выпусков не подтверждено, даты после 22 ноября появятся позже.",
       "mine": "watching",
       "seen_ep": 6,
-      "seen_ep_season": 1
+      "seen_ep_season": 1,
+      "release_sync": {
+        "status": "unresolved",
+        "checkedAt": "2026-11-18T09:21:13.938Z"
+      }
     },
     {
       "id": "otryad-731",
       "title": "Отряд 731",
       "service": "КИОН, PREMIER",
-      "status": "airing",
+      "status": "ended",
       "total": 8,
       "episodes": [
         {
@@ -489,7 +529,16 @@
       "mine": "done",
       "seen_ep": 8,
       "seen_ep_season": 1,
-      "seen_season": 1
+      "seen_season": 1,
+      "season": 1,
+      "date": "2026-10-08",
+      "release_sync": {
+        "provider": "tmdb",
+        "id": 337067,
+        "url": "https://www.themoviedb.org/tv/337067",
+        "managedSeason": 1,
+        "checkedAt": "2026-11-18T09:21:13.938Z"
+      }
     },
     {
       "id": "garri-potter",
@@ -499,8 +548,7 @@
       "note": "Премьера 1 сезона («Гарри Поттер и философский камень») 25 декабря 2026, 8 серий (T—J, MyShows, 360.ru). Даты после первой серии примерные, по одной в неделю: график в источниках не подтверждён (360.ru).",
       "poster": "custom/garri-potter.jpg",
       "season": 1,
-      "total": 8,
-      "approx": true,
+      "total": 1,
       "episodes": [
         {
           "n": 1,
@@ -535,7 +583,14 @@
           "date": "2027-02-12"
         }
       ],
-      "mine": "want"
+      "mine": "want",
+      "date": "2026-12-25",
+      "release_sync": {
+        "provider": "tmdb",
+        "id": 224377,
+        "url": "https://www.themoviedb.org/tv/224377",
+        "checkedAt": "2026-11-18T09:21:13.938Z"
+      }
     },
     {
       "id": "rycar-semi-korolevstv",
@@ -544,7 +599,14 @@
       "season": 2,
       "status": "waiting",
       "when": "2027",
-      "note": "2 сезон снимают, ориентир по источникам: весна 2027. Официальной даты нет."
+      "note": "2 сезон снимают, ориентир по источникам: весна 2027. Официальной даты нет.",
+      "release_sync": {
+        "provider": "tmdb",
+        "id": 224372,
+        "url": "https://www.themoviedb.org/tv/224372",
+        "managedSeason": 2,
+        "checkedAt": "2026-11-18T09:21:13.938Z"
+      }
     },
     {
       "id": "odni-iz-nas",
@@ -553,7 +615,14 @@
       "season": 3,
       "status": "waiting",
       "when": "2027",
-      "note": "HBO подтвердил 2027 год, точной даты нет. Если вы имели в виду другой сериал, поправьте."
+      "note": "HBO подтвердил 2027 год, точной даты нет. Если вы имели в виду другой сериал, поправьте.",
+      "release_sync": {
+        "provider": "tmdb",
+        "id": 100088,
+        "url": "https://www.themoviedb.org/tv/100088",
+        "managedSeason": 3,
+        "checkedAt": "2026-11-18T09:21:13.938Z"
+      }
     },
     {
       "id": "follaut",
@@ -562,7 +631,14 @@
       "season": 3,
       "status": "waiting",
       "when": "2027",
-      "note": "Съёмки 3 сезона начались летом 2026. Даты нет."
+      "note": "Съёмки 3 сезона начались летом 2026. Даты нет.",
+      "release_sync": {
+        "provider": "tmdb",
+        "id": 106379,
+        "url": "https://www.themoviedb.org/tv/106379",
+        "managedSeason": 3,
+        "checkedAt": "2026-11-18T09:21:13.938Z"
+      }
     },
     {
       "id": "uensdey",
@@ -571,16 +647,63 @@
       "season": 3,
       "status": "waiting",
       "when": "2027",
-      "note": "Съёмки завершены. Netflix убрал сериал из планов на 2026, ориентир: весна или лето 2027."
+      "note": "Съёмки завершены. Netflix убрал сериал из планов на 2026, ориентир: весна или лето 2027.",
+      "release_sync": {
+        "status": "unresolved",
+        "checkedAt": "2026-11-18T09:21:13.938Z"
+      }
     },
     {
       "id": "kak-priruchit-lisu",
       "title": "Как приручить лису",
       "service": "Okko",
       "season": 2,
-      "status": "waiting",
+      "status": "airing",
       "when": "2027",
-      "note": "Съёмки 2 сезона стартовали 20 октября 2026."
+      "note": "Съёмки 2 сезона стартовали 20 октября 2026.",
+      "episodes": [
+        {
+          "n": 1,
+          "date": "2026-11-13"
+        },
+        {
+          "n": 2,
+          "date": "2026-11-20"
+        },
+        {
+          "n": 3,
+          "date": "2026-11-27"
+        },
+        {
+          "n": 4,
+          "date": "2026-12-04"
+        },
+        {
+          "n": 5,
+          "date": "2026-12-11"
+        },
+        {
+          "n": 6,
+          "date": "2026-12-18"
+        },
+        {
+          "n": 7,
+          "date": "2026-12-25"
+        },
+        {
+          "n": 8,
+          "date": "2027-01-01"
+        }
+      ],
+      "total": 8,
+      "date": "2026-11-13",
+      "release_sync": {
+        "provider": "tmdb",
+        "id": 250211,
+        "url": "https://www.themoviedb.org/tv/250211",
+        "managedSeason": 2,
+        "checkedAt": "2026-11-18T09:21:13.938Z"
+      }
     },
     {
       "id": "dom-drakona",
@@ -589,7 +712,14 @@
       "season": 4,
       "status": "waiting",
       "when": "лето 2028",
-      "note": "3 сезон закончился 9 августа 2026. 4 сезон финальный, выйдет летом 2028."
+      "note": "3 сезон закончился 9 августа 2026. 4 сезон финальный, выйдет летом 2028.",
+      "release_sync": {
+        "provider": "tmdb",
+        "id": 94997,
+        "url": "https://www.themoviedb.org/tv/94997",
+        "managedSeason": 4,
+        "checkedAt": "2026-11-18T09:21:13.938Z"
+      }
     },
     {
       "id": "molodoy-sherlok",
@@ -599,7 +729,14 @@
       "status": "waiting",
       "note": "2 сезон, 8 серий, Prime Video. Ориентир: 2027 год, точной даты нет (по КП). Съёмки стартовали летом 2026.",
       "when": "2027",
-      "total": 8
+      "total": 8,
+      "release_sync": {
+        "provider": "kinopoisk",
+        "id": 5591410,
+        "url": "https://www.kinopoisk.ru/series/5591410/",
+        "managedSeason": 2,
+        "checkedAt": "2026-11-18T09:21:13.938Z"
+      }
     },
     {
       "id": "fisher",
@@ -609,7 +746,14 @@
       "status": "waiting",
       "note": "4 сезон («Чёрный проспект») на Wink, 8 серий. Ориентир: 2027 год, точной даты нет (по КП). 3 сезон вышел на Wink 28 мая.",
       "when": "2027",
-      "total": 8
+      "total": 8,
+      "release_sync": {
+        "provider": "tmdb",
+        "id": 220018,
+        "url": "https://www.themoviedb.org/tv/220018",
+        "managedSeason": 4,
+        "checkedAt": "2026-11-18T09:21:13.938Z"
+      }
     },
     {
       "id": "dzhon-uik",
@@ -617,7 +761,11 @@
       "service": null,
       "status": "nodate",
       "note": "Сериал в разработке, платформа и дата не объявлены.",
-      "mine": "want"
+      "mine": "want",
+      "release_sync": {
+        "status": "unresolved",
+        "checkedAt": "2026-11-18T09:21:13.938Z"
+      }
     },
     {
       "id": "kredo-ubiytsy",
@@ -625,22 +773,76 @@
       "service": "Netflix",
       "status": "nodate",
       "note": "Съёмки в Италии шли до октября 2026. Ориентир: не раньше второй половины 2027.",
-      "mine": "want"
+      "mine": "want",
+      "release_sync": {
+        "provider": "tmdb",
+        "id": 209962,
+        "url": "https://www.themoviedb.org/tv/209962",
+        "checkedAt": "2026-11-18T09:21:13.938Z"
+      }
     },
     {
       "id": "slovo-patsana-2",
       "title": "Слово пацана 2",
       "service": null,
       "status": "nodate",
-      "note": "Режиссёр Жора Крыжовников объявил запуск 2 сезона (постер «Кровавая двойка»), даты выхода и площадки пока нет (Кино Mail)."
+      "note": "Режиссёр Жора Крыжовников объявил запуск 2 сезона (постер «Кровавая двойка»), даты выхода и площадки пока нет (Кино Mail).",
+      "release_sync": {
+        "status": "unresolved",
+        "checkedAt": "2026-11-18T09:21:13.938Z"
+      }
     },
     {
       "id": "nulevoy-den",
       "title": "Нулевой день",
       "service": "Netflix",
-      "status": "nodate",
+      "status": "waiting",
       "note": "Продолжение официально не подтверждено.",
-      "mine": "want"
+      "mine": "want",
+      "season": 1,
+      "episodes": [
+        {
+          "n": 1,
+          "date": "2022-12-28"
+        },
+        {
+          "n": 2,
+          "date": "2023-01-04"
+        },
+        {
+          "n": 3,
+          "date": "2023-01-11"
+        },
+        {
+          "n": 4,
+          "date": "2023-01-18"
+        },
+        {
+          "n": 5,
+          "date": "2023-02-03"
+        },
+        {
+          "n": 6,
+          "date": "2023-02-24"
+        },
+        {
+          "n": 7,
+          "date": "2023-03-03"
+        },
+        {
+          "n": 8,
+          "date": "2023-03-10"
+        }
+      ],
+      "total": 8,
+      "date": "2022-12-28",
+      "release_sync": {
+        "provider": "kinopoisk",
+        "id": 5106448,
+        "url": "https://www.kinopoisk.ru/series/5106448/",
+        "managedSeason": 1,
+        "checkedAt": "2026-11-18T09:21:13.938Z"
+      }
     },
     {
       "id": "vor-v-zagone",
@@ -648,34 +850,257 @@
       "service": "ТНТ",
       "status": "ended",
       "total": 16,
-      "note": "Все 16 серий вышли 5–15 октября 2026."
+      "note": "Все 16 серий вышли 5–15 октября 2026.",
+      "season": 1,
+      "episodes": [
+        {
+          "n": 1,
+          "date": "2026-10-05"
+        },
+        {
+          "n": 2,
+          "date": "2026-10-05"
+        },
+        {
+          "n": 3,
+          "date": "2026-10-05"
+        },
+        {
+          "n": 4,
+          "date": "2026-10-05"
+        },
+        {
+          "n": 5,
+          "date": "2026-10-05"
+        },
+        {
+          "n": 6,
+          "date": "2026-10-05"
+        },
+        {
+          "n": 7,
+          "date": "2026-10-05"
+        },
+        {
+          "n": 8,
+          "date": "2026-10-05"
+        },
+        {
+          "n": 9,
+          "date": "2026-10-05"
+        },
+        {
+          "n": 10,
+          "date": "2026-10-05"
+        },
+        {
+          "n": 11,
+          "date": "2026-10-05"
+        },
+        {
+          "n": 12,
+          "date": "2026-10-05"
+        },
+        {
+          "n": 13,
+          "date": "2026-10-05"
+        },
+        {
+          "n": 14,
+          "date": "2026-10-05"
+        },
+        {
+          "n": 15,
+          "date": "2026-10-05"
+        },
+        {
+          "n": 16,
+          "date": "2026-10-05"
+        }
+      ],
+      "date": "2026-10-05",
+      "release_sync": {
+        "provider": "tmdb",
+        "id": 337506,
+        "url": "https://www.themoviedb.org/tv/337506",
+        "managedSeason": 1,
+        "checkedAt": "2026-11-18T09:21:13.938Z"
+      }
     },
     {
       "id": "ted-lasso",
       "title": "Тед Лассо",
       "service": "Apple TV",
       "season": 4,
-      "status": "ended",
+      "status": "waiting",
       "total": 10,
-      "note": "Финал 4 сезона вышел 7 октября 2026."
+      "note": "Финал 4 сезона вышел 7 октября 2026.",
+      "episodes": [
+        {
+          "n": 1,
+          "date": "2026-08-04"
+        },
+        {
+          "n": 2,
+          "date": "2026-08-11"
+        },
+        {
+          "n": 3,
+          "date": "2026-08-18"
+        },
+        {
+          "n": 4,
+          "date": "2026-08-25"
+        },
+        {
+          "n": 5,
+          "date": "2026-09-01"
+        },
+        {
+          "n": 6,
+          "date": "2026-09-08"
+        },
+        {
+          "n": 7,
+          "date": "2026-09-15"
+        },
+        {
+          "n": 8,
+          "date": "2026-09-22"
+        },
+        {
+          "n": 9,
+          "date": "2026-09-29"
+        },
+        {
+          "n": 10,
+          "date": "2026-10-06"
+        }
+      ],
+      "date": "2026-08-04",
+      "release_sync": {
+        "provider": "tmdb",
+        "id": 97546,
+        "url": "https://www.themoviedb.org/tv/97546",
+        "managedSeason": 4,
+        "checkedAt": "2026-11-18T09:21:13.938Z"
+      }
     },
     {
       "id": "dzhentlmeny",
       "title": "Джентльмены",
       "service": "Netflix",
       "season": 2,
-      "status": "ended",
+      "status": "waiting",
       "total": 8,
-      "note": "Все 8 серий 2 сезона вышли 3 сентября 2026. Netflix продлил сериал на 3 сезон: не раньше второй половины 2027 года, даты нет (Plugged In, 24.08.2026)."
+      "note": "Все 8 серий 2 сезона вышли 3 сентября 2026. Netflix продлил сериал на 3 сезон: не раньше второй половины 2027 года, даты нет (Plugged In, 24.08.2026).",
+      "episodes": [
+        {
+          "n": 1,
+          "date": "2026-09-03"
+        },
+        {
+          "n": 2,
+          "date": "2026-09-03"
+        },
+        {
+          "n": 3,
+          "date": "2026-09-03"
+        },
+        {
+          "n": 4,
+          "date": "2026-09-03"
+        },
+        {
+          "n": 5,
+          "date": "2026-09-03"
+        },
+        {
+          "n": 6,
+          "date": "2026-09-03"
+        },
+        {
+          "n": 7,
+          "date": "2026-09-03"
+        },
+        {
+          "n": 8,
+          "date": "2026-09-03"
+        }
+      ],
+      "date": "2026-09-03",
+      "next_season": {
+        "n": 3,
+        "date": null,
+        "total": null,
+        "episodes": []
+      },
+      "release_sync": {
+        "provider": "tmdb",
+        "id": 236235,
+        "url": "https://www.themoviedb.org/tv/236235",
+        "managedSeason": 2,
+        "checkedAt": "2026-11-18T09:21:13.938Z"
+      }
     },
     {
       "id": "izvne",
       "title": "Извне",
       "service": "MGM+",
       "season": 4,
-      "status": "ended",
+      "status": "waiting",
       "total": 10,
-      "note": "Финал 4 сезона вышел 21 июня 2026."
+      "note": "Финал 4 сезона вышел 21 июня 2026.",
+      "episodes": [
+        {
+          "n": 1,
+          "date": "2026-04-19"
+        },
+        {
+          "n": 2,
+          "date": "2026-04-26"
+        },
+        {
+          "n": 3,
+          "date": "2026-05-03"
+        },
+        {
+          "n": 4,
+          "date": "2026-05-10"
+        },
+        {
+          "n": 5,
+          "date": "2026-05-17"
+        },
+        {
+          "n": 6,
+          "date": "2026-05-31"
+        },
+        {
+          "n": 7,
+          "date": "2026-06-07"
+        },
+        {
+          "n": 8,
+          "date": "2026-06-14"
+        },
+        {
+          "n": 9,
+          "date": "2026-06-21"
+        },
+        {
+          "n": 10,
+          "date": "2026-06-28"
+        }
+      ],
+      "date": "2026-04-19",
+      "release_sync": {
+        "provider": "tmdb",
+        "id": 124364,
+        "url": "https://www.themoviedb.org/tv/124364",
+        "managedSeason": 4,
+        "checkedAt": "2026-11-18T09:21:13.938Z"
+      }
     },
     {
       "id": "segun",
@@ -685,44 +1110,226 @@
       "added": "2026-10-22",
       "season": 2,
       "note": "Съёмки 2 сезона завершились в сентябре 2026 года, дата выхода не объявлена.",
-      "poster": "custom/segun.jpg"
+      "poster": "custom/segun.jpg",
+      "release_sync": {
+        "status": "unresolved",
+        "checkedAt": "2026-11-18T09:21:13.938Z"
+      }
     },
     {
       "id": "kapitan-tuman",
       "title": "Капитан Туман",
       "service": "KION",
       "season": 1,
-      "status": "ended",
+      "status": "waiting",
       "total": 10,
       "added": "2026-10-22",
-      "note": "Комедийный детектив с Пореченковым и Бербер. Все 10 серий вышли на KION 28 августа, на ТНТ показ идёт с 28 сентября."
+      "note": "Комедийный детектив с Пореченковым и Бербер. Все 10 серий вышли на KION 28 августа, на ТНТ показ идёт с 28 сентября.",
+      "episodes": [
+        {
+          "n": 1,
+          "date": "2026-08-28"
+        },
+        {
+          "n": 2,
+          "date": "2026-08-28"
+        },
+        {
+          "n": 3,
+          "date": "2026-08-28"
+        },
+        {
+          "n": 4,
+          "date": "2026-08-28"
+        },
+        {
+          "n": 5,
+          "date": "2026-08-28"
+        },
+        {
+          "n": 6,
+          "date": "2026-08-28"
+        },
+        {
+          "n": 7,
+          "date": "2026-08-28"
+        },
+        {
+          "n": 8,
+          "date": "2026-08-28"
+        },
+        {
+          "n": 9,
+          "date": "2026-08-28"
+        },
+        {
+          "n": 10,
+          "date": "2026-08-28"
+        }
+      ],
+      "date": "2026-08-28",
+      "release_sync": {
+        "provider": "tmdb",
+        "id": 318156,
+        "url": "https://www.themoviedb.org/tv/318156",
+        "managedSeason": 1,
+        "checkedAt": "2026-11-18T09:21:13.938Z"
+      }
     },
     {
       "id": "neyromant",
       "title": "Нейромант",
       "service": "Apple TV",
       "season": 1,
-      "status": "waiting",
+      "status": "airing",
       "when": "22 января 2027",
       "total": 10,
       "episodes": [
         {
           "n": 1,
           "date": "2027-01-22"
+        },
+        {
+          "n": 2,
+          "date": "2027-01-21"
+        },
+        {
+          "n": 3,
+          "date": "2027-01-28"
+        },
+        {
+          "n": 4,
+          "date": "2027-02-04"
+        },
+        {
+          "n": 5,
+          "date": "2027-02-11"
+        },
+        {
+          "n": 6,
+          "date": "2027-02-18"
+        },
+        {
+          "n": 7,
+          "date": "2027-02-25"
+        },
+        {
+          "n": 8,
+          "date": "2027-03-04"
+        },
+        {
+          "n": 9,
+          "date": "2027-03-11"
+        },
+        {
+          "n": 10,
+          "date": "2027-03-18"
         }
       ],
       "added": "2026-10-22",
       "note": "Экранизация романа Уильяма Гибсона, 10 серий. Премьера на Apple TV 22 января 2027.",
-      "mine": "want"
+      "mine": "want",
+      "date": "2027-01-22",
+      "release_sync": {
+        "provider": "tmdb",
+        "id": 215528,
+        "url": "https://www.themoviedb.org/tv/215528",
+        "checkedAt": "2026-11-18T09:21:13.938Z"
+      }
     },
     {
       "id": "gulyai-shalnaya",
       "title": "Гуляй, шальная!",
       "service": "ТНТ",
-      "status": "ended",
-      "total": 16,
+      "status": "waiting",
+      "total": 17,
       "poster_query": "Гуляй, шальная",
-      "note": "Вышел 16–26 марта 2026 на ТНТ (по данным КП — 16 серий, в списке 17). Смотреть в Premier."
+      "note": "Вышел 16–26 марта 2026 на ТНТ (по данным КП — 16 серий, в списке 17). Смотреть в Premier.",
+      "season": 1,
+      "episodes": [
+        {
+          "n": 1,
+          "date": "2026-03-16"
+        },
+        {
+          "n": 2,
+          "date": "2026-03-16"
+        },
+        {
+          "n": 3,
+          "date": "2026-03-16"
+        },
+        {
+          "n": 4,
+          "date": "2026-03-17"
+        },
+        {
+          "n": 5,
+          "date": "2026-03-17"
+        },
+        {
+          "n": 6,
+          "date": "2026-03-18"
+        },
+        {
+          "n": 7,
+          "date": "2026-03-18"
+        },
+        {
+          "n": 8,
+          "date": "2026-03-19"
+        },
+        {
+          "n": 9,
+          "date": "2026-03-19"
+        },
+        {
+          "n": 10,
+          "date": "2026-03-23"
+        },
+        {
+          "n": 11,
+          "date": "2026-03-23"
+        },
+        {
+          "n": 12,
+          "date": "2026-03-24"
+        },
+        {
+          "n": 13,
+          "date": "2026-03-24"
+        },
+        {
+          "n": 14,
+          "date": "2026-03-25"
+        },
+        {
+          "n": 15,
+          "date": "2026-03-25"
+        },
+        {
+          "n": 16,
+          "date": "2026-03-26"
+        },
+        {
+          "n": 17,
+          "date": "2026-03-26"
+        }
+      ],
+      "date": "2026-03-16",
+      "next_season": {
+        "n": 2,
+        "date": null,
+        "total": null,
+        "episodes": []
+      },
+      "release_sync": {
+        "provider": "tmdb",
+        "id": 316947,
+        "url": "https://www.themoviedb.org/tv/316947",
+        "managedSeason": 1,
+        "checkedAt": "2026-11-18T09:21:13.938Z"
+      }
     },
     {
       "id": "poluraspad",
@@ -766,7 +1373,16 @@
           "n": 8,
           "date": "2026-11-26"
         }
-      ]
+      ],
+      "season": 1,
+      "date": "2026-10-15",
+      "release_sync": {
+        "provider": "tmdb",
+        "id": 301191,
+        "url": "https://www.themoviedb.org/tv/301191",
+        "managedSeason": 1,
+        "checkedAt": "2026-11-18T09:21:13.938Z"
+      }
     },
     {
       "id": "ayda",
@@ -813,25 +1429,126 @@
         }
       ],
       "watch_url": "https://start.ru/watch/ayda",
-      "watch_name": "START"
+      "watch_name": "START",
+      "date": "2026-11-06",
+      "release_sync": {
+        "provider": "tmdb",
+        "id": 318560,
+        "url": "https://www.themoviedb.org/tv/318560",
+        "checkedAt": "2026-11-18T09:21:13.938Z"
+      }
     },
     {
       "id": "rezervaciya",
       "title": "Резервация",
       "service": "KION",
-      "status": "nodate",
+      "status": "ended",
       "mine": "done",
       "added": "2026-10-22",
-      "seen_season": 1
+      "seen_season": 1,
+      "season": 1,
+      "episodes": [
+        {
+          "n": 1,
+          "date": "2026-02-01"
+        },
+        {
+          "n": 2,
+          "date": "2026-02-01"
+        },
+        {
+          "n": 3,
+          "date": "2026-02-06"
+        },
+        {
+          "n": 4,
+          "date": "2026-02-06"
+        },
+        {
+          "n": 5,
+          "date": "2026-02-13"
+        },
+        {
+          "n": 6,
+          "date": "2026-02-13"
+        },
+        {
+          "n": 7,
+          "date": "2026-02-20"
+        },
+        {
+          "n": 8,
+          "date": "2026-02-20"
+        }
+      ],
+      "total": 8,
+      "date": "2026-02-01",
+      "release_sync": {
+        "provider": "tmdb",
+        "id": 312753,
+        "url": "https://www.themoviedb.org/tv/312753",
+        "managedSeason": 1,
+        "checkedAt": "2026-11-18T09:21:13.938Z"
+      }
     },
     {
       "id": "zahvachennyy-reys",
       "title": "Захваченный рейс",
       "service": "Твоё",
-      "status": "nodate",
+      "status": "waiting",
       "mine": "done",
       "added": "2026-10-22",
-      "seen_season": 1
+      "seen_season": 1,
+      "season_history": {
+        "1": {
+          "episodes": [],
+          "total": null
+        }
+      },
+      "episodes": [
+        {
+          "n": 1,
+          "date": "2026-01-14"
+        },
+        {
+          "n": 2,
+          "date": "2026-01-21"
+        },
+        {
+          "n": 3,
+          "date": "2026-01-28"
+        },
+        {
+          "n": 4,
+          "date": "2026-02-04"
+        },
+        {
+          "n": 5,
+          "date": "2026-02-11"
+        },
+        {
+          "n": 6,
+          "date": "2026-02-18"
+        },
+        {
+          "n": 7,
+          "date": "2026-02-25"
+        },
+        {
+          "n": 8,
+          "date": "2026-03-04"
+        }
+      ],
+      "date": "2026-01-14",
+      "season": 2,
+      "total": 8,
+      "release_sync": {
+        "provider": "tmdb",
+        "id": 198102,
+        "url": "https://www.themoviedb.org/tv/198102",
+        "managedSeason": 2,
+        "checkedAt": "2026-11-18T09:21:13.938Z"
+      }
     },
     {
       "id": "lib-politsejskij-s-rublevki",
@@ -841,7 +1558,57 @@
       "mine": "done",
       "seen_season": 1,
       "poster_query": "Полицейский с Рублёвки",
-      "added": "2026-10-23"
+      "added": "2026-10-23",
+      "season_history": {
+        "1": {
+          "episodes": [],
+          "total": null
+        }
+      },
+      "episodes": [
+        {
+          "n": 1,
+          "date": "2019-12-05"
+        },
+        {
+          "n": 2,
+          "date": "2019-12-06"
+        },
+        {
+          "n": 3,
+          "date": "2019-12-07"
+        },
+        {
+          "n": 4,
+          "date": "2019-12-08"
+        },
+        {
+          "n": 5,
+          "date": "2019-12-09"
+        },
+        {
+          "n": 6,
+          "date": "2019-12-10"
+        },
+        {
+          "n": 7,
+          "date": "2019-12-11"
+        },
+        {
+          "n": 8,
+          "date": "2019-12-12"
+        }
+      ],
+      "date": "2019-12-05",
+      "season": 5,
+      "total": 8,
+      "release_sync": {
+        "provider": "tmdb",
+        "id": 65953,
+        "url": "https://www.themoviedb.org/tv/65953",
+        "managedSeason": 5,
+        "checkedAt": "2026-11-18T09:21:13.938Z"
+      }
     },
     {
       "id": "lib-molodoj-papa",
@@ -851,7 +1618,59 @@
       "mine": "done",
       "seen_season": 1,
       "poster_query": "The Young Pope",
-      "added": "2026-10-23"
+      "added": "2026-10-23",
+      "season": 1,
+      "episodes": [
+        {
+          "n": 1,
+          "date": "2016-10-21"
+        },
+        {
+          "n": 2,
+          "date": "2016-10-21"
+        },
+        {
+          "n": 3,
+          "date": "2016-10-28"
+        },
+        {
+          "n": 4,
+          "date": "2016-10-28"
+        },
+        {
+          "n": 5,
+          "date": "2016-11-04"
+        },
+        {
+          "n": 6,
+          "date": "2016-11-04"
+        },
+        {
+          "n": 7,
+          "date": "2016-11-11"
+        },
+        {
+          "n": 8,
+          "date": "2016-11-11"
+        },
+        {
+          "n": 9,
+          "date": "2016-11-18"
+        },
+        {
+          "n": 10,
+          "date": "2016-11-18"
+        }
+      ],
+      "total": 10,
+      "date": "2016-10-21",
+      "release_sync": {
+        "provider": "tmdb",
+        "id": 62699,
+        "url": "https://www.themoviedb.org/tv/62699",
+        "managedSeason": 1,
+        "checkedAt": "2026-11-18T09:21:13.938Z"
+      }
     },
     {
       "id": "lib-ostrye-kozyrki",
@@ -862,7 +1681,49 @@
       "seen_season": 1,
       "poster_query": "Peaky Blinders",
       "added": "2026-10-23",
-      "closed": true
+      "closed": true,
+      "season_history": {
+        "1": {
+          "episodes": [],
+          "total": null
+        }
+      },
+      "episodes": [
+        {
+          "n": 1,
+          "date": "2022-02-27"
+        },
+        {
+          "n": 2,
+          "date": "2022-03-06"
+        },
+        {
+          "n": 3,
+          "date": "2022-03-13"
+        },
+        {
+          "n": 4,
+          "date": "2022-03-20"
+        },
+        {
+          "n": 5,
+          "date": "2022-03-27"
+        },
+        {
+          "n": 6,
+          "date": "2022-04-03"
+        }
+      ],
+      "date": "2022-02-27",
+      "season": 6,
+      "total": 6,
+      "release_sync": {
+        "provider": "tmdb",
+        "id": 60574,
+        "url": "https://www.themoviedb.org/tv/60574",
+        "managedSeason": 6,
+        "checkedAt": "2026-11-18T09:21:13.938Z"
+      }
     },
     {
       "id": "lib-fargo",
@@ -872,18 +1733,126 @@
       "mine": "done",
       "seen_season": 1,
       "poster_query": "Fargo",
-      "added": "2026-10-23"
+      "added": "2026-10-23",
+      "season_history": {
+        "1": {
+          "episodes": [],
+          "total": null
+        }
+      },
+      "episodes": [
+        {
+          "n": 1,
+          "date": "2023-11-21"
+        },
+        {
+          "n": 2,
+          "date": "2023-11-21"
+        },
+        {
+          "n": 3,
+          "date": "2023-11-28"
+        },
+        {
+          "n": 4,
+          "date": "2023-12-05"
+        },
+        {
+          "n": 5,
+          "date": "2023-12-12"
+        },
+        {
+          "n": 6,
+          "date": "2023-12-19"
+        },
+        {
+          "n": 7,
+          "date": "2023-12-26"
+        },
+        {
+          "n": 8,
+          "date": "2024-01-02"
+        },
+        {
+          "n": 9,
+          "date": "2024-01-09"
+        },
+        {
+          "n": 10,
+          "date": "2024-01-16"
+        }
+      ],
+      "date": "2023-11-21",
+      "season": 5,
+      "total": 10,
+      "release_sync": {
+        "provider": "tmdb",
+        "id": 60622,
+        "url": "https://www.themoviedb.org/tv/60622",
+        "managedSeason": 5,
+        "checkedAt": "2026-11-18T09:21:13.938Z"
+      }
     },
     {
       "id": "lib-kartochnyj-domik",
       "title": "Карточный домик",
       "service": null,
-      "status": "ended",
+      "status": "waiting",
       "mine": "done",
       "seen_season": 1,
       "poster_query": "House of Cards",
       "added": "2026-10-23",
-      "closed": true
+      "closed": true,
+      "season_history": {
+        "1": {
+          "episodes": [],
+          "total": null
+        }
+      },
+      "episodes": [
+        {
+          "n": 1,
+          "date": "2018-11-02"
+        },
+        {
+          "n": 2,
+          "date": "2018-11-02"
+        },
+        {
+          "n": 3,
+          "date": "2018-11-02"
+        },
+        {
+          "n": 4,
+          "date": "2018-11-02"
+        },
+        {
+          "n": 5,
+          "date": "2018-11-02"
+        },
+        {
+          "n": 6,
+          "date": "2018-11-02"
+        },
+        {
+          "n": 7,
+          "date": "2018-11-02"
+        },
+        {
+          "n": 8,
+          "date": "2018-11-02"
+        }
+      ],
+      "date": "2018-11-02",
+      "season": 6,
+      "total": 8,
+      "release_sync": {
+        "provider": "kinopoisk",
+        "id": 581937,
+        "url": "https://www.kinopoisk.ru/series/581937/",
+        "managedSeason": 6,
+        "checkedAt": "2026-11-18T09:21:13.938Z"
+      }
     },
     {
       "id": "lib-otbrosy",
@@ -894,7 +1863,57 @@
       "seen_season": 1,
       "poster_query": "Misfits",
       "added": "2026-10-23",
-      "closed": true
+      "closed": true,
+      "season_history": {
+        "1": {
+          "episodes": [],
+          "total": null
+        }
+      },
+      "episodes": [
+        {
+          "n": 1,
+          "date": "2013-10-23"
+        },
+        {
+          "n": 2,
+          "date": "2013-10-30"
+        },
+        {
+          "n": 3,
+          "date": "2013-11-06"
+        },
+        {
+          "n": 4,
+          "date": "2013-11-13"
+        },
+        {
+          "n": 5,
+          "date": "2013-11-20"
+        },
+        {
+          "n": 6,
+          "date": "2013-11-27"
+        },
+        {
+          "n": 7,
+          "date": "2013-12-04"
+        },
+        {
+          "n": 8,
+          "date": "2013-12-11"
+        }
+      ],
+      "date": "2013-10-23",
+      "season": 5,
+      "total": 8,
+      "release_sync": {
+        "provider": "tmdb",
+        "id": 31295,
+        "url": "https://www.themoviedb.org/tv/31295",
+        "managedSeason": 5,
+        "checkedAt": "2026-11-18T09:21:13.938Z"
+      }
     },
     {
       "id": "lib-poslednee-korolevstvo",
@@ -905,7 +1924,65 @@
       "seen_season": 1,
       "poster_query": "The Last Kingdom",
       "added": "2026-10-23",
-      "closed": true
+      "closed": true,
+      "season_history": {
+        "1": {
+          "episodes": [],
+          "total": null
+        }
+      },
+      "episodes": [
+        {
+          "n": 1,
+          "date": "2022-03-09"
+        },
+        {
+          "n": 2,
+          "date": "2022-03-09"
+        },
+        {
+          "n": 3,
+          "date": "2022-03-09"
+        },
+        {
+          "n": 4,
+          "date": "2022-03-09"
+        },
+        {
+          "n": 5,
+          "date": "2022-03-09"
+        },
+        {
+          "n": 6,
+          "date": "2022-03-09"
+        },
+        {
+          "n": 7,
+          "date": "2022-03-09"
+        },
+        {
+          "n": 8,
+          "date": "2022-03-09"
+        },
+        {
+          "n": 9,
+          "date": "2022-03-09"
+        },
+        {
+          "n": 10,
+          "date": "2022-03-09"
+        }
+      ],
+      "date": "2022-03-09",
+      "season": 5,
+      "total": 10,
+      "release_sync": {
+        "provider": "tmdb",
+        "id": 63333,
+        "url": "https://www.themoviedb.org/tv/63333",
+        "managedSeason": 5,
+        "checkedAt": "2026-11-18T09:21:13.938Z"
+      }
     },
     {
       "id": "lib-sherlok-bbc",
@@ -915,7 +1992,37 @@
       "mine": "done",
       "seen_season": 1,
       "poster_query": "Sherlock",
-      "added": "2026-10-23"
+      "added": "2026-10-23",
+      "season_history": {
+        "1": {
+          "episodes": [],
+          "total": null
+        }
+      },
+      "episodes": [
+        {
+          "n": 1,
+          "date": "2017-01-01"
+        },
+        {
+          "n": 2,
+          "date": "2017-01-08"
+        },
+        {
+          "n": 3,
+          "date": "2017-01-15"
+        }
+      ],
+      "date": "2017-01-01",
+      "season": 4,
+      "total": 3,
+      "release_sync": {
+        "provider": "tmdb",
+        "id": 19885,
+        "url": "https://www.themoviedb.org/tv/19885",
+        "managedSeason": 4,
+        "checkedAt": "2026-11-18T09:21:13.938Z"
+      }
     },
     {
       "id": "lib-mister-robot",
@@ -926,7 +2033,77 @@
       "seen_season": 1,
       "poster_query": "Mr. Robot",
       "added": "2026-10-23",
-      "closed": true
+      "closed": true,
+      "season_history": {
+        "1": {
+          "episodes": [],
+          "total": null
+        }
+      },
+      "episodes": [
+        {
+          "n": 1,
+          "date": "2019-10-06"
+        },
+        {
+          "n": 2,
+          "date": "2019-10-13"
+        },
+        {
+          "n": 3,
+          "date": "2019-10-20"
+        },
+        {
+          "n": 4,
+          "date": "2019-10-27"
+        },
+        {
+          "n": 5,
+          "date": "2019-11-03"
+        },
+        {
+          "n": 6,
+          "date": "2019-11-10"
+        },
+        {
+          "n": 7,
+          "date": "2019-11-17"
+        },
+        {
+          "n": 8,
+          "date": "2019-11-24"
+        },
+        {
+          "n": 9,
+          "date": "2019-12-01"
+        },
+        {
+          "n": 10,
+          "date": "2019-12-08"
+        },
+        {
+          "n": 11,
+          "date": "2019-12-15"
+        },
+        {
+          "n": 12,
+          "date": "2019-12-22"
+        },
+        {
+          "n": 13,
+          "date": "2019-12-22"
+        }
+      ],
+      "date": "2019-10-06",
+      "season": 4,
+      "total": 13,
+      "release_sync": {
+        "provider": "tmdb",
+        "id": 62560,
+        "url": "https://www.themoviedb.org/tv/62560",
+        "managedSeason": 4,
+        "checkedAt": "2026-11-18T09:21:13.938Z"
+      }
     },
     {
       "id": "lib-igra-prestolov",
@@ -937,7 +2114,49 @@
       "seen_season": 1,
       "poster_query": "Game of Thrones",
       "added": "2026-10-23",
-      "closed": true
+      "closed": true,
+      "season_history": {
+        "1": {
+          "episodes": [],
+          "total": null
+        }
+      },
+      "episodes": [
+        {
+          "n": 1,
+          "date": "2019-04-14"
+        },
+        {
+          "n": 2,
+          "date": "2019-04-21"
+        },
+        {
+          "n": 3,
+          "date": "2019-04-28"
+        },
+        {
+          "n": 4,
+          "date": "2019-05-05"
+        },
+        {
+          "n": 5,
+          "date": "2019-05-12"
+        },
+        {
+          "n": 6,
+          "date": "2019-05-19"
+        }
+      ],
+      "date": "2019-04-14",
+      "season": 8,
+      "total": 6,
+      "release_sync": {
+        "provider": "tmdb",
+        "id": 1399,
+        "url": "https://www.themoviedb.org/tv/1399",
+        "managedSeason": 8,
+        "checkedAt": "2026-11-18T09:21:13.938Z"
+      }
     },
     {
       "id": "lib-vikingi",
@@ -948,7 +2167,105 @@
       "seen_season": 1,
       "poster_query": "Vikings",
       "added": "2026-10-23",
-      "closed": true
+      "closed": true,
+      "season_history": {
+        "1": {
+          "episodes": [],
+          "total": null
+        }
+      },
+      "episodes": [
+        {
+          "n": 1,
+          "date": "2019-12-04"
+        },
+        {
+          "n": 2,
+          "date": "2019-12-04"
+        },
+        {
+          "n": 3,
+          "date": "2019-12-11"
+        },
+        {
+          "n": 4,
+          "date": "2019-12-18"
+        },
+        {
+          "n": 5,
+          "date": "2020-01-01"
+        },
+        {
+          "n": 6,
+          "date": "2020-01-08"
+        },
+        {
+          "n": 7,
+          "date": "2020-01-15"
+        },
+        {
+          "n": 8,
+          "date": "2020-01-22"
+        },
+        {
+          "n": 9,
+          "date": "2020-01-29"
+        },
+        {
+          "n": 10,
+          "date": "2020-02-05"
+        },
+        {
+          "n": 11,
+          "date": "2020-12-30"
+        },
+        {
+          "n": 12,
+          "date": "2020-12-30"
+        },
+        {
+          "n": 13,
+          "date": "2020-12-30"
+        },
+        {
+          "n": 14,
+          "date": "2020-12-30"
+        },
+        {
+          "n": 15,
+          "date": "2020-12-30"
+        },
+        {
+          "n": 16,
+          "date": "2020-12-30"
+        },
+        {
+          "n": 17,
+          "date": "2020-12-30"
+        },
+        {
+          "n": 18,
+          "date": "2020-12-30"
+        },
+        {
+          "n": 19,
+          "date": "2020-12-30"
+        },
+        {
+          "n": 20,
+          "date": "2020-12-30"
+        }
+      ],
+      "date": "2019-12-04",
+      "season": 6,
+      "total": 20,
+      "release_sync": {
+        "provider": "tmdb",
+        "id": 44217,
+        "url": "https://www.themoviedb.org/tv/44217",
+        "managedSeason": 6,
+        "checkedAt": "2026-11-18T09:21:13.938Z"
+      }
     },
     {
       "id": "lib-sladkaya-zhizn",
@@ -958,7 +2275,11 @@
       "mine": "done",
       "seen_season": 1,
       "poster_query": "Сладкая жизнь",
-      "added": "2026-10-23"
+      "added": "2026-10-23",
+      "release_sync": {
+        "status": "unresolved",
+        "checkedAt": "2026-11-18T09:21:13.938Z"
+      }
     },
     {
       "id": "lib-gomorra",
@@ -969,7 +2290,65 @@
       "seen_season": 1,
       "poster_query": "Gomorrah",
       "added": "2026-10-23",
-      "closed": true
+      "closed": true,
+      "season_history": {
+        "1": {
+          "episodes": [],
+          "total": null
+        }
+      },
+      "episodes": [
+        {
+          "n": 1,
+          "date": "2021-11-19"
+        },
+        {
+          "n": 2,
+          "date": "2021-11-19"
+        },
+        {
+          "n": 3,
+          "date": "2021-11-26"
+        },
+        {
+          "n": 4,
+          "date": "2021-11-26"
+        },
+        {
+          "n": 5,
+          "date": "2021-12-03"
+        },
+        {
+          "n": 6,
+          "date": "2021-12-03"
+        },
+        {
+          "n": 7,
+          "date": "2021-12-10"
+        },
+        {
+          "n": 8,
+          "date": "2021-12-10"
+        },
+        {
+          "n": 9,
+          "date": "2021-12-17"
+        },
+        {
+          "n": 10,
+          "date": "2021-12-17"
+        }
+      ],
+      "date": "2021-11-19",
+      "season": 5,
+      "total": 10,
+      "release_sync": {
+        "provider": "tmdb",
+        "id": 61068,
+        "url": "https://www.themoviedb.org/tv/61068",
+        "managedSeason": 5,
+        "checkedAt": "2026-11-18T09:21:13.938Z"
+      }
     },
     {
       "id": "mcu-ironheart",
@@ -978,13 +2357,49 @@
       "status": "ended",
       "mine": "want",
       "poster_query": "Ironheart",
-      "added": "2026-10-23"
+      "added": "2026-10-23",
+      "season": 1,
+      "episodes": [
+        {
+          "n": 1,
+          "date": "2025-06-24"
+        },
+        {
+          "n": 2,
+          "date": "2025-06-24"
+        },
+        {
+          "n": 3,
+          "date": "2025-06-24"
+        },
+        {
+          "n": 4,
+          "date": "2025-07-01"
+        },
+        {
+          "n": 5,
+          "date": "2025-07-01"
+        },
+        {
+          "n": 6,
+          "date": "2025-07-01"
+        }
+      ],
+      "total": 6,
+      "date": "2025-06-24",
+      "release_sync": {
+        "provider": "tmdb",
+        "id": 114471,
+        "url": "https://www.themoviedb.org/tv/114471",
+        "managedSeason": 1,
+        "checkedAt": "2026-11-18T09:21:13.938Z"
+      }
     },
     {
       "id": "mcu-visionquest",
       "title": "Квест Вижна",
       "service": "Твоё",
-      "status": "airing",
+      "status": "ended",
       "mine": "watching",
       "poster_query": "VisionQuest",
       "added": "2026-10-23",
@@ -1024,7 +2439,14 @@
           "n": 8,
           "date": "2026-11-11"
         }
-      ]
+      ],
+      "date": "2026-10-14",
+      "release_sync": {
+        "provider": "tmdb",
+        "id": 213375,
+        "url": "https://www.themoviedb.org/tv/213375",
+        "checkedAt": "2026-11-18T09:21:13.938Z"
+      }
     },
     {
       "id": "stavka-na-lyubov",
@@ -1090,7 +2512,13 @@
       "added": "2026-10-23",
       "total": 10,
       "seen_ep": 4,
-      "seen_ep_season": 3
+      "seen_ep_season": 3,
+      "release_sync": {
+        "provider": "kinopoisk",
+        "id": 523279,
+        "url": "https://www.kinopoisk.ru/series/523279/",
+        "checkedAt": "2026-11-18T09:21:13.938Z"
+      }
     },
     {
       "id": "furiya",
@@ -1100,34 +2528,190 @@
       "mine": "want",
       "added": "2026-10-23",
       "when": "до конца 2026",
-      "note": "Точная дата не названа, премьера запланирована до конца 2026 (Click-or-Die)."
+      "note": "Точная дата не названа, премьера запланирована до конца 2026 (Click-or-Die).",
+      "release_sync": {
+        "status": "unresolved",
+        "checkedAt": "2026-11-18T09:21:13.938Z"
+      }
     },
     {
       "id": "chernobyl",
       "title": "Чернобыль",
       "service": null,
-      "status": "ended",
+      "status": "waiting",
       "mine": "done",
       "seen_season": 1,
-      "added": "2026-10-23"
+      "added": "2026-10-23",
+      "season": 1,
+      "episodes": [
+        {
+          "n": 1,
+          "date": "2022-04-19"
+        },
+        {
+          "n": 2,
+          "date": "2022-04-19"
+        },
+        {
+          "n": 3,
+          "date": "2022-04-26"
+        },
+        {
+          "n": 4,
+          "date": "2022-04-26"
+        },
+        {
+          "n": 5,
+          "date": "2022-05-03"
+        },
+        {
+          "n": 6,
+          "date": "2022-05-03"
+        },
+        {
+          "n": 7,
+          "date": "2022-05-10"
+        },
+        {
+          "n": 8,
+          "date": "2022-05-10"
+        },
+        {
+          "n": 9,
+          "date": "2022-05-17"
+        },
+        {
+          "n": 10,
+          "date": "2022-05-17"
+        },
+        {
+          "n": 11,
+          "date": "2022-05-24"
+        },
+        {
+          "n": 12,
+          "date": "2022-05-24"
+        }
+      ],
+      "total": 12,
+      "date": "2022-04-19",
+      "release_sync": {
+        "provider": "kinopoisk",
+        "id": 1169262,
+        "url": "https://www.kinopoisk.ru/series/1169262/",
+        "managedSeason": 1,
+        "checkedAt": "2026-11-18T09:21:13.938Z"
+      }
     },
     {
       "id": "sergiy-protiv-nechisti-t0d2",
       "title": "Сергий против нечисти",
       "service": null,
-      "status": "ended",
+      "status": "waiting",
       "mine": "done",
       "added": "2026-10-26",
-      "seen_season": 1
+      "seen_season": 1,
+      "season_history": {
+        "1": {
+          "episodes": [],
+          "total": null
+        }
+      },
+      "episodes": [
+        {
+          "n": 1,
+          "date": "2026-01-05"
+        },
+        {
+          "n": 2,
+          "date": "2026-01-05"
+        },
+        {
+          "n": 3,
+          "date": "2026-01-05"
+        },
+        {
+          "n": 4,
+          "date": "2026-01-05"
+        },
+        {
+          "n": 5,
+          "date": "2026-01-05"
+        }
+      ],
+      "date": "2026-01-05",
+      "season": 4,
+      "total": 5,
+      "next_season": {
+        "n": 5,
+        "date": null,
+        "total": 1,
+        "episodes": []
+      },
+      "release_sync": {
+        "provider": "tmdb",
+        "id": 154404,
+        "url": "https://www.themoviedb.org/tv/154404",
+        "managedSeason": 4,
+        "checkedAt": "2026-11-18T09:21:13.938Z"
+      }
     },
     {
       "id": "nastoyaschiy-detektiv",
       "title": "Настоящий детектив",
       "service": null,
-      "status": "ended",
+      "status": "waiting",
       "mine": "done",
       "seen_season": 1,
-      "added": "2026-10-26"
+      "added": "2026-10-26",
+      "season_history": {
+        "1": {
+          "episodes": [],
+          "total": null
+        }
+      },
+      "episodes": [
+        {
+          "n": 1,
+          "date": "2024-01-14"
+        },
+        {
+          "n": 2,
+          "date": "2024-01-21"
+        },
+        {
+          "n": 3,
+          "date": "2024-01-28"
+        },
+        {
+          "n": 4,
+          "date": "2024-02-04"
+        },
+        {
+          "n": 5,
+          "date": "2024-02-11"
+        },
+        {
+          "n": 6,
+          "date": "2024-02-18"
+        }
+      ],
+      "date": "2024-01-14",
+      "season": 4,
+      "total": 6,
+      "next_season": {
+        "n": 5,
+        "date": null,
+        "total": null,
+        "episodes": []
+      },
+      "release_sync": {
+        "provider": "tmdb",
+        "id": 46648,
+        "url": "https://www.themoviedb.org/tv/46648",
+        "managedSeason": 4,
+        "checkedAt": "2026-11-18T09:21:13.938Z"
+      }
     },
     {
       "id": "igra-v-kalmara",
@@ -1136,7 +2720,49 @@
       "status": "ended",
       "mine": "done",
       "seen_season": 1,
-      "added": "2026-10-26"
+      "added": "2026-10-26",
+      "season_history": {
+        "1": {
+          "episodes": [],
+          "total": null
+        }
+      },
+      "episodes": [
+        {
+          "n": 1,
+          "date": "2025-06-27"
+        },
+        {
+          "n": 2,
+          "date": "2025-06-27"
+        },
+        {
+          "n": 3,
+          "date": "2025-06-27"
+        },
+        {
+          "n": 4,
+          "date": "2025-06-27"
+        },
+        {
+          "n": 5,
+          "date": "2025-06-27"
+        },
+        {
+          "n": 6,
+          "date": "2025-06-27"
+        }
+      ],
+      "date": "2025-06-27",
+      "season": 3,
+      "total": 6,
+      "release_sync": {
+        "provider": "tmdb",
+        "id": 93405,
+        "url": "https://www.themoviedb.org/tv/93405",
+        "managedSeason": 3,
+        "checkedAt": "2026-11-18T09:21:13.938Z"
+      }
     },
     {
       "id": "bumazhnyy-dom",
@@ -1145,19 +2771,51 @@
       "status": "ended",
       "mine": "done",
       "seen_season": 1,
-      "added": "2026-10-26"
+      "added": "2026-10-26",
+      "release_sync": {
+        "status": "unresolved",
+        "checkedAt": "2026-11-18T09:21:13.938Z"
+      }
     },
     {
       "id": "frisco-king",
       "title": "Король Фриско",
       "service": "Paramount+",
-      "status": "waiting",
+      "status": "airing",
       "season": 1,
       "total": 8,
       "episodes": [
         {
           "n": 1,
           "date": "2026-12-18"
+        },
+        {
+          "n": 2,
+          "date": "2026-12-18"
+        },
+        {
+          "n": 3,
+          "date": "2026-12-25"
+        },
+        {
+          "n": 4,
+          "date": "2027-01-01"
+        },
+        {
+          "n": 5,
+          "date": "2027-01-08"
+        },
+        {
+          "n": 6,
+          "date": "2027-01-15"
+        },
+        {
+          "n": 7,
+          "date": "2027-01-22"
+        },
+        {
+          "n": 8,
+          "date": "2027-01-29"
         }
       ],
       "when": "18 декабря 2026",
@@ -1165,7 +2823,14 @@
       "poster": "custom/frisko-king.jpg",
       "poster_query": "Frisco King",
       "added": "2026-10-27",
-      "note": "Спин-офф «Короля Талсы», Сэмюэл Л. Джексон. Премьера 18 декабря сразу двумя сериями, далее по пятницам (TVLine). 8 серий — по числу сценариев Тейлора Шеридана, официально не подтверждено."
+      "note": "Спин-офф «Короля Талсы», Сэмюэл Л. Джексон. Премьера 18 декабря сразу двумя сериями, далее по пятницам (TVLine). 8 серий — по числу сценариев Тейлора Шеридана, официально не подтверждено.",
+      "date": "2026-12-18",
+      "release_sync": {
+        "provider": "tmdb",
+        "id": 296244,
+        "url": "https://www.themoviedb.org/tv/296244",
+        "checkedAt": "2026-11-18T09:21:13.938Z"
+      }
     },
     {
       "id": "vedmak",
@@ -1174,25 +2839,117 @@
       "status": "ended",
       "mine": "done",
       "seen_season": 1,
-      "added": "2026-10-28"
+      "added": "2026-10-28",
+      "release_sync": {
+        "status": "unresolved",
+        "checkedAt": "2026-11-18T09:21:13.938Z"
+      }
     },
     {
       "id": "den-shakala",
       "title": "День Шакала",
       "service": null,
-      "status": "ended",
+      "status": "waiting",
       "mine": "done",
       "seen_season": 1,
-      "added": "2026-10-28"
+      "added": "2026-10-28",
+      "season": 1,
+      "episodes": [
+        {
+          "n": 1,
+          "date": "2024-11-07"
+        },
+        {
+          "n": 2,
+          "date": "2024-11-07"
+        },
+        {
+          "n": 3,
+          "date": "2024-11-07"
+        },
+        {
+          "n": 4,
+          "date": "2024-11-08"
+        },
+        {
+          "n": 5,
+          "date": "2024-11-08"
+        },
+        {
+          "n": 6,
+          "date": "2024-11-14"
+        },
+        {
+          "n": 7,
+          "date": "2024-11-21"
+        },
+        {
+          "n": 8,
+          "date": "2024-11-28"
+        },
+        {
+          "n": 9,
+          "date": "2024-12-05"
+        },
+        {
+          "n": 10,
+          "date": "2024-12-12"
+        }
+      ],
+      "total": 10,
+      "date": "2024-11-07",
+      "release_sync": {
+        "provider": "tmdb",
+        "id": 222766,
+        "url": "https://www.themoviedb.org/tv/222766",
+        "managedSeason": 1,
+        "checkedAt": "2026-11-18T09:21:13.938Z"
+      }
     },
     {
       "id": "gomorra-istoki-i1w8",
       "title": "Гоморра: Истоки",
       "service": null,
-      "status": "ended",
+      "status": "waiting",
       "mine": "done",
       "seen_season": 1,
-      "added": "2026-10-28"
+      "added": "2026-10-28",
+      "season": 1,
+      "episodes": [
+        {
+          "n": 1,
+          "date": "2026-01-09"
+        },
+        {
+          "n": 2,
+          "date": "2026-01-09"
+        },
+        {
+          "n": 3,
+          "date": "2026-01-16"
+        },
+        {
+          "n": 4,
+          "date": "2026-01-23"
+        },
+        {
+          "n": 5,
+          "date": "2026-01-30"
+        },
+        {
+          "n": 6,
+          "date": "2026-02-06"
+        }
+      ],
+      "total": 6,
+      "date": "2026-01-09",
+      "release_sync": {
+        "provider": "tmdb",
+        "id": 293550,
+        "url": "https://www.themoviedb.org/tv/293550",
+        "managedSeason": 1,
+        "checkedAt": "2026-11-18T09:21:13.938Z"
+      }
     },
     {
       "id": "idealnaya-rabota",
@@ -1204,15 +2961,63 @@
       "total": 8,
       "added": "2026-11-04",
       "poster_query": "Dead-End Job Netflix 2026 Kkulalba",
-      "note": "Корейский мистический хоррор-мини-сериал, 8 серий. Все серии вышли на Netflix 30 октября 2026 (Лайфхакер, Metaratings)."
+      "note": "Корейский мистический хоррор-мини-сериал, 8 серий. Все серии вышли на Netflix 30 октября 2026 (Лайфхакер, Metaratings).",
+      "release_sync": {
+        "status": "unresolved",
+        "checkedAt": "2026-11-18T09:21:13.938Z"
+      }
     },
     {
       "id": "zlye-lyudi-ijle",
       "title": "Злые люди",
       "service": null,
-      "status": "ended",
+      "status": "waiting",
       "mine": "watching",
-      "added": "2026-11-07"
+      "added": "2026-11-07",
+      "season": 1,
+      "episodes": [
+        {
+          "n": 1,
+          "date": "2025-03-27"
+        },
+        {
+          "n": 2,
+          "date": "2025-03-27"
+        },
+        {
+          "n": 3,
+          "date": "2025-04-03"
+        },
+        {
+          "n": 4,
+          "date": "2025-04-03"
+        },
+        {
+          "n": 5,
+          "date": "2025-04-10"
+        },
+        {
+          "n": 6,
+          "date": "2025-04-10"
+        },
+        {
+          "n": 7,
+          "date": "2025-04-17"
+        },
+        {
+          "n": 8,
+          "date": "2025-04-17"
+        }
+      ],
+      "total": 8,
+      "date": "2025-03-27",
+      "release_sync": {
+        "provider": "tmdb",
+        "id": 288133,
+        "url": "https://www.themoviedb.org/tv/288133",
+        "managedSeason": 1,
+        "checkedAt": "2026-11-18T09:21:13.938Z"
+      }
     },
     {
       "id": "narko",
@@ -1221,7 +3026,65 @@
       "status": "ended",
       "mine": "done",
       "seen_season": 1,
-      "added": "2026-11-09"
+      "added": "2026-11-09",
+      "season_history": {
+        "1": {
+          "episodes": [],
+          "total": null
+        }
+      },
+      "episodes": [
+        {
+          "n": 1,
+          "date": "2017-09-01"
+        },
+        {
+          "n": 2,
+          "date": "2017-09-01"
+        },
+        {
+          "n": 3,
+          "date": "2017-09-01"
+        },
+        {
+          "n": 4,
+          "date": "2017-09-01"
+        },
+        {
+          "n": 5,
+          "date": "2017-09-01"
+        },
+        {
+          "n": 6,
+          "date": "2017-09-01"
+        },
+        {
+          "n": 7,
+          "date": "2017-09-01"
+        },
+        {
+          "n": 8,
+          "date": "2017-09-01"
+        },
+        {
+          "n": 9,
+          "date": "2017-09-01"
+        },
+        {
+          "n": 10,
+          "date": "2017-09-01"
+        }
+      ],
+      "date": "2017-09-01",
+      "season": 3,
+      "total": 10,
+      "release_sync": {
+        "provider": "tmdb",
+        "id": 63351,
+        "url": "https://www.themoviedb.org/tv/63351",
+        "managedSeason": 3,
+        "checkedAt": "2026-11-18T09:21:13.938Z"
+      }
     },
     {
       "id": "ohotnik-za-razumom",
@@ -1230,13 +3093,67 @@
       "status": "ended",
       "mine": "done",
       "seen_season": 1,
-      "added": "2026-11-09"
+      "added": "2026-11-09",
+      "season_history": {
+        "1": {
+          "episodes": [],
+          "total": null
+        }
+      },
+      "episodes": [
+        {
+          "n": 1,
+          "date": "2019-08-16"
+        },
+        {
+          "n": 2,
+          "date": "2019-08-16"
+        },
+        {
+          "n": 3,
+          "date": "2019-08-16"
+        },
+        {
+          "n": 4,
+          "date": "2019-08-16"
+        },
+        {
+          "n": 5,
+          "date": "2019-08-16"
+        },
+        {
+          "n": 6,
+          "date": "2019-08-16"
+        },
+        {
+          "n": 7,
+          "date": "2019-08-16"
+        },
+        {
+          "n": 8,
+          "date": "2019-08-16"
+        },
+        {
+          "n": 9,
+          "date": "2019-08-16"
+        }
+      ],
+      "date": "2019-08-16",
+      "season": 2,
+      "total": 9,
+      "release_sync": {
+        "provider": "tmdb",
+        "id": 67744,
+        "url": "https://www.themoviedb.org/tv/67744",
+        "managedSeason": 2,
+        "checkedAt": "2026-11-18T09:21:13.938Z"
+      }
     },
     {
       "id": "ocharovannye-2026",
       "title": "Очарованные",
       "service": "Кинопоиск",
-      "status": "waiting",
+      "status": "airing",
       "season": 1,
       "total": 8,
       "episodes": [
@@ -1276,7 +3193,14 @@
       "poster": "https://avatars.mds.yandex.net/get-kinopoisk-image/10809116/8e6a585c-bd4b-4eaf-9936-3bfe0372a2b9/1920x",
       "mine": "want",
       "added": "2026-11-10",
-      "note": "Славянское фэнтези о сёстрах Злате и Марье, дочерях Ядвиги. Первые две серии — 14 ноября 2026, затем по субботам; финал — 26 декабря. Источник расписания: https://www.kinopoisk.ru/film/10153042/episodes/"
+      "note": "Славянское фэнтези о сёстрах Злате и Марье, дочерях Ядвиги. Первые две серии — 14 ноября 2026, затем по субботам; финал — 26 декабря. Источник расписания: https://www.kinopoisk.ru/film/10153042/episodes/",
+      "date": "2026-11-14",
+      "release_sync": {
+        "provider": "tmdb",
+        "id": 318558,
+        "url": "https://www.themoviedb.org/tv/318558",
+        "checkedAt": "2026-11-18T09:21:13.938Z"
+      }
     },
     {
       "id": "tonnel-2025",
@@ -1324,14 +3248,18 @@
       "added": "2026-11-11",
       "watching": true,
       "mine": "watching",
-      "note": "Российский криминальный триллер с Елизаветой Боярской. Премьера на KION 1 декабря 2025; 8 эпизодов, финал 19 декабря 2025. Источник: https://kion.ru/serial/tonnel"
+      "note": "Российский криминальный триллер с Елизаветой Боярской. Премьера на KION 1 декабря 2025; 8 эпизодов, финал 19 декабря 2025. Источник: https://kion.ru/serial/tonnel",
+      "release_sync": {
+        "status": "unresolved",
+        "checkedAt": "2026-11-18T09:21:13.938Z"
+      }
     },
     {
       "id": "malakhit-2026",
       "title": "Малахит",
       "service": "Okko",
       "season": 1,
-      "status": "ended",
+      "status": "waiting",
       "total": 8,
       "episodes": [
         {
@@ -1373,7 +3301,13 @@
       "mine": "watching",
       "poster_query": "Малахит Okko 2026",
       "note": "Российское семейное фэнтези Okko о подростках, магическом малахите и духе Чёрном Вороне. 8 серий, 12 июня — 17 июля 2026. Официальная страница: https://okko.tv/serial/malakhit. Постер — промо Okko, размещённое на Кино Mail.",
-      "poster": "https://resizer.mail.ru/p/9a480171-e270-5d09-b2bd-877938e46b02/AQAC7hJflBvadoWwjVTltqnDdroy4b-ZNJr9TM5uUrQt-uuWLrgmF1jgAXk5Wf33LUI1a9CqjEqtPUIO0EupjtPdUqk.jpg"
+      "poster": "https://resizer.mail.ru/p/9a480171-e270-5d09-b2bd-877938e46b02/AQAC7hJflBvadoWwjVTltqnDdroy4b-ZNJr9TM5uUrQt-uuWLrgmF1jgAXk5Wf33LUI1a9CqjEqtPUIO0EupjtPdUqk.jpg",
+      "release_sync": {
+        "provider": "tmdb",
+        "id": 317872,
+        "url": "https://www.themoviedb.org/tv/317872",
+        "checkedAt": "2026-11-18T09:21:13.938Z"
+      }
     }
   ]
 }
