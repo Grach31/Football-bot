@@ -3981,6 +3981,30 @@
       },
       "archive_release_key": "",
       "viewing_shared": true
+    },
+    {
+      "id": "tmdb-tv-279382",
+      "title": "Eldorado",
+      "added": "2026-11-18",
+      "service": null,
+      "tmdb_id": 279382,
+      "original_title": "Eldorado",
+      "year": "2026",
+      "poster": "https://image.tmdb.org/t/p/w500/jT2KO2QnY857A4r8V7HRgL5WAKK.jpg",
+      "rating": 8,
+      "date": "2026-11-19",
+      "premieres": [
+        {
+          "date": "2026-11-19",
+          "type": "tmdb_first_release",
+          "region": "WORLD"
+        }
+      ],
+      "viewing_shared": true,
+      "watching": false,
+      "awaiting_release": true,
+      "status": "waiting",
+      "archive_release_key": ""
     }
   ]
 }
