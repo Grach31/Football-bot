@@ -4,7 +4,23 @@ function familyLinkView(nonce) {
   if (!/^[0-9a-f-]{36}$/.test(nonce || '') || !window.opener) return '<h1>Подключение Family Space</h1><p>Начните подключение в Family Space → Настройки → Грач Фильм.</p>';
   return '<h1>Подключить Family Space</h1><div class="panel"><p>Передать сохранённый доступ к коллекции, настройки Jellyfin и отметки просмотра в ваше приложение Family Space?</p><p>Настройки передаются напрямую между окнами браузера. Серверные ключи не переносятся.</p><button class="btn" type="button" data-family-connect="'+esc(nonce)+'">Передать настройки</button><p id="family-connect-status" role="status"></p></div>';
 }
+function familyMarksView() {
+  return '<h1>Старые отметки просмотра</h1><div class="panel"><p>Откройте эту страницу в том браузере или приложении, где вы раньше ставили галочки в Grach Films.</p><p>Файл содержит только отметки «Смотрю сейчас» и архива. Токенов и ключей в нём нет.</p><button type="button" class="btn" data-family-export>Скачать отметки просмотра</button><p id="family-export-status" role="status"></p><p>Затем откройте Family Space → Настройки → Грач Фильм → Токен → «Загрузить отметки из файла».</p></div>';
+}
 document.addEventListener('click', event => {
+  if (event.target.closest('[data-family-export]')) {
+    const marks = {};
+    for (let index=0; index<localStorage.length; index++) {
+      const key=localStorage.key(index), value=localStorage.getItem(key);
+      if (/^gf_(watching|archive)_v1:[sm]:[\w-]{1,200}$/.test(key) && value !== null && value.length <= 500) marks[key]=value;
+    }
+    const status=document.getElementById('family-export-status');
+    if (!Object.keys(marks).length) { status.textContent='В этом браузере старых отметок нет. Откройте прежнее кино там, где вы ставили галочки.'; return; }
+    const blob=new Blob([JSON.stringify({format:'grach-films-viewing',version:1,source:'https://grach31.github.io/Football-bot/',marks},null,2)],{type:'application/json'});
+    const url=URL.createObjectURL(blob), link=document.createElement('a');link.href=url;link.download='grach-films-viewing.json';document.body.appendChild(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),60000);
+    status.textContent='Файл подготовлен. Сохраните его в «Файлы», затем загрузите в Family Space.';
+    return;
+  }
   const button = event.target.closest('[data-family-connect]');
   if (!button || !window.opener) return;
   const settings = {};
@@ -156,21 +172,38 @@ const lsGet = (k) => { const shared = familyViewingValue(k); if (shared !== unde
 function familyViewingValue(key) {
   const match = /^(gf_watching_v1|gf_archive_v1):(s|m):(.+)$/.exec(key);
   if (!match) return undefined;
+  const pending = familyViewingPending.get(match[2] + ':' + match[3]);
+  const field = match[1] === 'gf_watching_v1' ? 'watching' : 'archive_release_key';
+  if (pending && Object.hasOwn(pending, field)) return field === 'watching' ? (pending[field] ? '1' : '0') : pending[field];
   const item = (match[2] === 's' ? DATA.series : MOVIES.items).find(value => value.id === match[3]);
   if (!item?.viewing_shared) return undefined;
   return match[1] === 'gf_watching_v1' ? (item.watching ? '1' : '0') : (item.archive_release_key || '');
 }
-const familyViewingPending = new Set();
+const familyViewingPending = new Map();
+let familyViewingMessage = '';
+function familyRenderViewingStatus() {
+  for (const button of document.querySelectorAll('[data-act=gfwatching],[data-act=gfarchive]')) {
+    const pending = familyViewingPending.has((button.dataset.kind || 's') + ':' + button.dataset.id);
+    button.disabled = pending; button.setAttribute('aria-busy', String(pending));
+  }
+  if (!familyViewingMessage) return;
+  const status = document.createElement('p'); status.className = 'meta family-viewing-status';
+  status.setAttribute('role', 'status'); status.textContent = familyViewingMessage;
+  document.getElementById('app').prepend(status);
+}
 async function familySaveViewing(kind, item, patch, button) {
   if (!lsGet('gh_token')) { alert('Для синхронизации отметок подключите доступ к коллекции в общих настройках → Грач Фильм.'); return; }
   const key = kind + ':' + item.id;
   if (familyViewingPending.has(key)) return;
-  familyViewingPending.add(key); button.disabled = true;
   const scroll = window.scrollY;
+  // Capture the previous native state before projecting the pending change.
+  const watching = gfWatching(item, kind), info = gfInfo(item, kind);
+  const archived = gfArchived(item, kind, info) ? info.releaseKey : '';
+  familyViewingPending.set(key, patch);
+  familyViewingMessage = 'Сохраняем отметку…';
+  render(); window.scrollTo(0, scroll);
   try {
     const file = kind === 's' ? 'series.json' : 'movies.json';
-    const watching = gfWatching(item, kind), info = gfInfo(item, kind);
-    const archived = gfArchived(item, kind, info) ? info.releaseKey : '';
     const data = await ghEdit(file, document => {
       const current = (kind === 's' ? document.series : document.items).find(value => value.id === item.id);
       if (!current) throw new Error('Запись уже удалена. Обновите коллекцию.');
@@ -179,9 +212,13 @@ async function familySaveViewing(kind, item, patch, button) {
     }, 'Grach Films: синхронизировать просмотр');
     if (kind === 's') DATA = data; else MOVIES = data;
     lsSet(gfWatchingKey(kind, item.id), ''); lsSet(gfArchiveKey(kind, item.id), '');
+    familyViewingMessage = 'Отметка сохранена в общей коллекции.';
+  } catch (error) { familyViewingMessage = (error.message || 'Не удалось сохранить.') + ' Отметка возвращена к прежнему состоянию. Повторите нажатие.'; }
+  finally {
+    familyViewingPending.delete(key);
+    if (familyViewingPending.size) familyViewingMessage = 'Сохраняем отметки…';
     render(); window.scrollTo(0, scroll);
-  } catch (error) { alert(error.message || 'Не удалось сохранить. Отметка не изменена.'); }
-  finally { familyViewingPending.delete(key); button.disabled = false; }
+  }
 }
 
 const lsSet = (k, v) => { try { v ? localStorage.setItem(k, v) : localStorage.removeItem(k); } catch (e) {} };
@@ -508,8 +545,10 @@ async function discoverAdd(id) {
 
 /* ---------- настройки: подписки, уведомления, токен ---------- */
 function tokenPanel() {
+  // Reachable inside the installed old PWA, whose browser storage can differ.
+
   const has = !!lsGet('gh_token');
-  return `<div class="panel"><h2>Токен GitHub</h2><p>${has ? '<span class="ok">Токен сохранён на этом телефоне.</span>' : 'Нужен один раз: токен GitHub только для этого репозитория (Contents: Read and write). Без него нельзя добавлять и переносить сериалы и фильмы.'}</p>
+  return `<div class="panel"><h2>Токен GitHub</h2><a class="btn ghost" href="#/family-marks">Перенести отметки в Family Space</a><p>${has ? '<span class="ok">Токен сохранён на этом телефоне.</span>' : 'Нужен один раз: токен GitHub только для этого репозитория (Contents: Read and write). Без него нельзя добавлять и переносить сериалы и фильмы.'}</p>
 <input class="inp" id="a_token" type="password" placeholder="${has ? 'Заменить токен' : 'Вставьте токен'}" autocomplete="off">
 <button type="button" class="btn ghost" data-act="savetoken">Сохранить токен</button>
 ${has ? '<button type="button" class="btn ghost" data-act="deltoken">Удалить токен</button>' : ''}
@@ -604,7 +643,8 @@ function render() {
   if (page !== lastPage) { sq = ''; lastPage = page; }
   let html;
   if (page === 'subs' || page === 'notify' || page === 'jf') { stab = page; page = 'settings'; }
-  if (page === 'family-link') html = familyLinkView(parts[1]);
+  if (page === 'family-marks') html = familyMarksView();
+  else if (page === 'family-link') html = familyLinkView(parts[1]);
   else if (page === 's') html = viewSeries(decodeURIComponent(parts[1] || ''));
   else if (page === 'settings') html = viewSettings();
   else if (page === 'mine') html = viewMine(parts[1] || 'series');
@@ -617,6 +657,7 @@ function render() {
   else if (page === 'addm') html = viewAddMovie();
   else html = viewWeek();
   $app.innerHTML = html;
+  familyRenderViewingStatus();
   const tab = ['mine','s','m','add','addm'].includes(page) ? 'mine' : 'week';
   document.querySelectorAll('#tabs a').forEach((a) => a.classList.toggle('on', a.dataset.tab === tab));
   if (!typing) window.scrollTo(0, 0);
