@@ -1,0 +1,13 @@
+{
+  "checkedAt": "2026-11-18T18:24:05.163Z",
+  "sent": 1,
+  "failed": 0,
+  "tests": [
+    {
+      "id": "verification-29c2dcbe-84e5-4231-a804-4950185f7cef",
+      "deviceId": "55f64832-8641-43cd-838d-b7e14dc57b33",
+      "status": "accepted",
+      "at": "2026-11-18T18:24:05.163Z"
+    }
+  ]
+}
