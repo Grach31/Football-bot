@@ -2,6 +2,19 @@
   "updated": "2026-11-18",
   "items": [
     {
+      "id": "13-dney-13-nochey-2025",
+      "title": "13 дней, 13 ночей",
+      "original_title": "13 jours, 13 nuits",
+      "year": 2025,
+      "service": "Цифровой релиз",
+      "status": "want",
+      "watching": true,
+      "added": "2026-11-18",
+      "date": "2026-04-09",
+      "poster": "https://img.festival-cannes.com/eyJidWNrZXQiOiJtZWRpYSIsImtleSI6InVwbG9hZHNcLzIwMjVcLzA1XC8xODg4NzYtc2NhbGVkLmpwZyIsImVkaXRzIjp7InJlc2l6ZSI6eyJ3aWR0aCI6MTYwMCwiZml0IjoiY292ZXIifX19",
+      "note": "Военный триллер Мартена Бурбулона об эвакуации из Кабула в августе 2021 года. Мировая премьера 23 мая 2025 (Канны), российский прокат с 26 марта 2026, цифровой релиз в России с 9 апреля 2026 (Вольга); конкретный онлайн-кинотеатр не подтверждён. Источники: https://www.kinopoisk.ru/film/7231241/ ; https://www.festival-cannes.com/en/f/13-jours-13-nuits/."
+    },
+    {
       "id": "odisseya",
       "title": "Одиссея",
       "service": "Твоё",
