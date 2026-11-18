@@ -79,7 +79,7 @@ let ok = 0;
 let missing = 0;
 let failed = 0;
 for (const [s, prefix] of [...data.series.map((x) => [x, '']), ...movies.items.map((x) => [x, 'm-']), ...disc.items.map((x) => [x, 'd-']), ...pool.items.map((x) => [x, ''])]) {
-  if (prefix !== 'd-' && s.rating == null) {
+  if (prefix !== 'd-' && s.rating == null && s.catalog_source !== 'tmdb') {
     for (const q of [...new Set([s.poster_query, s.title, clean(s.title)].filter(Boolean))]) {
       try { const r = await ratingFor(q); if (r) { s.rating = r; break; } } catch (e) { console.warn(`${s.title}: рейтинг — ${e.message}`); }
     }

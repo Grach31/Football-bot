@@ -35,13 +35,18 @@ jobs:
           TMDB_TOKEN: ${{ secrets.TMDB_TOKEN }}
           KINOPOISK_TOKEN: ${{ secrets.KINOPOISK_TOKEN }}
         run: node series-app/scripts/collect-schedules.mjs --site-dir series-app/site
+      - name: Обновить случайный подбор и рекомендации
+        continue-on-error: true
+        env:
+          TMDB_TOKEN: ${{ secrets.TMDB_TOKEN }}
+        run: node series-app/scripts/refresh-discovery.mjs --site-dir series-app/site
       - name: Сохранить расписание без перезаписи чужих изменений
         id: save
         run: |
           if git diff --quiet -- series-app/site/data; then echo 'changed=false' >> "$GITHUB_OUTPUT"; exit 0; fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add series-app/site/data/series.json series-app/site/data/movies.json series-app/site/data/collector-status.json
+          git add series-app/site/data/series.json series-app/site/data/movies.json series-app/site/data/collector-status.json series-app/site/data/pool.json series-app/site/data/discover.json series-app/site/data/discovery-status.json
           git commit -m 'Grach Films: refresh confirmed release schedules'
           git push origin HEAD:main
           echo 'changed=true' >> "$GITHUB_OUTPUT"
