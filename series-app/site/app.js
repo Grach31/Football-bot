@@ -1,4 +1,24 @@
 'use strict';
+/* Explicit, one-time handoff from the old origin; never an automatic credential export. */
+function familyLinkView(nonce) {
+  if (!/^[0-9a-f-]{36}$/.test(nonce || '') || !window.opener) return '<h1>Подключение Family Space</h1><p>Начните подключение в Family Space → Настройки → Грач Фильм.</p>';
+  return '<h1>Подключить Family Space</h1><div class="panel"><p>Передать сохранённый доступ к коллекции, настройки Jellyfin и отметки просмотра в ваше приложение Family Space?</p><p>Настройки передаются напрямую между окнами браузера. Серверные ключи не переносятся.</p><button class="btn" type="button" data-family-connect="'+esc(nonce)+'">Передать настройки</button><p id="family-connect-status" role="status"></p></div>';
+}
+document.addEventListener('click', event => {
+  const button = event.target.closest('[data-family-connect]');
+  if (!button || !window.opener) return;
+  const settings = {};
+  const keys = ['gh_token','gh_last_edit','tmdb_key','jf_url','jf_token','jf_uid','rnd_seen'];
+  for (let index=0; index<localStorage.length; index++) {
+    const key=localStorage.key(index);
+    if (/^gf_(watching|archive)_v1:[sm]:[\w-]{1,200}$/.test(key)) keys.push(key);
+  }
+  for (const key of keys) { const value=localStorage.getItem(key); if(value)settings[key]=value; }
+  window.opener.postMessage({type:'family:cinema-connect',nonce:button.dataset.familyConnect,settings},'https://grach-family-space-preview.pages.dev');
+  button.disabled=true; document.getElementById('family-connect-status').textContent='Настройки переданы. Вернитесь в Family Space.';
+});
+
+
 
 const $app = document.getElementById('app');
 const params = new URLSearchParams(location.search);
@@ -131,7 +151,39 @@ async function copyCode() {
 
 /* ---------- добавление сериала ---------- */
 const SERVICES = ['Кинопоиск', 'KION', 'Иви', 'Wink', 'Твоё', 'Okko', 'Premier', 'Start', 'Netflix', 'Apple TV+', 'Prime Video', 'Paramount+', 'Другой'];
-const lsGet = (k) => { try { return localStorage.getItem(k) || ''; } catch (e) { return ''; } };
+const lsGet = (k) => { const shared = familyViewingValue(k); if (shared !== undefined) return shared; try { return localStorage.getItem(k) || ''; } catch (e) { return ''; } };
+// Included in the native cinema closure: keep using its conflict-aware ghEdit.
+function familyViewingValue(key) {
+  const match = /^(gf_watching_v1|gf_archive_v1):(s|m):(.+)$/.exec(key);
+  if (!match) return undefined;
+  const item = (match[2] === 's' ? DATA.series : MOVIES.items).find(value => value.id === match[3]);
+  if (!item?.viewing_shared) return undefined;
+  return match[1] === 'gf_watching_v1' ? (item.watching ? '1' : '0') : (item.archive_release_key || '');
+}
+const familyViewingPending = new Set();
+async function familySaveViewing(kind, item, patch, button) {
+  if (!lsGet('gh_token')) { alert('Для синхронизации отметок подключите доступ к коллекции в общих настройках → Грач Фильм.'); return; }
+  const key = kind + ':' + item.id;
+  if (familyViewingPending.has(key)) return;
+  familyViewingPending.add(key); button.disabled = true;
+  const scroll = window.scrollY;
+  try {
+    const file = kind === 's' ? 'series.json' : 'movies.json';
+    const watching = gfWatching(item, kind), info = gfInfo(item, kind);
+    const archived = gfArchived(item, kind, info) ? info.releaseKey : '';
+    const data = await ghEdit(file, document => {
+      const current = (kind === 's' ? document.series : document.items).find(value => value.id === item.id);
+      if (!current) throw new Error('Запись уже удалена. Обновите коллекцию.');
+      if (!current.viewing_shared) Object.assign(current, { watching, archive_release_key: archived });
+      Object.assign(current, patch, { viewing_shared: true });
+    }, 'Grach Films: синхронизировать просмотр');
+    if (kind === 's') DATA = data; else MOVIES = data;
+    lsSet(gfWatchingKey(kind, item.id), ''); lsSet(gfArchiveKey(kind, item.id), '');
+    render(); window.scrollTo(0, scroll);
+  } catch (error) { alert(error.message || 'Не удалось сохранить. Отметка не изменена.'); }
+  finally { familyViewingPending.delete(key); button.disabled = false; }
+}
+
 const lsSet = (k, v) => { try { v ? localStorage.setItem(k, v) : localStorage.removeItem(k); } catch (e) {} };
 
 function viewAdd() {
@@ -552,7 +604,8 @@ function render() {
   if (page !== lastPage) { sq = ''; lastPage = page; }
   let html;
   if (page === 'subs' || page === 'notify' || page === 'jf') { stab = page; page = 'settings'; }
-  if (page === 's') html = viewSeries(decodeURIComponent(parts[1] || ''));
+  if (page === 'family-link') html = familyLinkView(parts[1]);
+  else if (page === 's') html = viewSeries(decodeURIComponent(parts[1] || ''));
   else if (page === 'settings') html = viewSettings();
   else if (page === 'mine') html = viewMine(parts[1] || 'series');
   else if (page === 'add') html = viewAdd();
@@ -600,10 +653,7 @@ document.addEventListener('click', (ev) => {
     if(!item)return;
     // Films can be marked only after their confirmed release date.
     if(kind==='m'&&!gfInfo(item,'m').eligibleArchive)return;
-    lsSet(gfWatchingKey(kind,item.id),gfWatching(item,kind)?'0':'1');
-    const y=window.scrollY;
-    render();
-    window.scrollTo(0,y);
+    familySaveViewing(kind,item,{watching:!gfWatching(item,kind)},a);
     return;
   }
   if(a.dataset.act==='gfarchive'){
@@ -613,9 +663,8 @@ document.addEventListener('click', (ev) => {
     if(!item)return;
     const info=gfInfo(item,kind);
     if(!info.eligibleArchive)return;
-    const key=gfArchiveKey(kind,id);
-    lsSet(key,gfArchived(item,kind,info)?'':info.releaseKey);
-    render();return;
+    familySaveViewing(kind,item,{archive_release_key:gfArchived(item,kind,info)?'':info.releaseKey},a);
+    return;
   }
   if (a.dataset.act === 'delsub') delSub(a.dataset.id);
   if (a.dataset.act === 'rreset') { ev.preventDefault(); rndSeen.clear(); lsSet('rnd_seen', '[]'); rnd = null; rndBuf = []; rndErr = ''; rndAttempted = false; rndNext(); return; }
@@ -654,31 +703,37 @@ document.addEventListener('submit', async (ev) => {
 });
 window.addEventListener('hashchange', render);
 
+let familyLoadVersion = 0, familyWritePending = 0;
 async function boot(manual) {
+  if (familyWritePending) return false;
+  const version = ++familyLoadVersion, familyLoadIssues = [];
+  const next = { DATA, CONFIG, SUBS, DISC, MOVIES, POOL };
+
   try {
     const [d, c] = await Promise.all([
       fetch('data/series.json', { cache: 'no-cache' }).then((r) => r.json()),
       fetch('data/config.json', { cache: 'no-cache' }).then((r) => r.json()),
     ]);
-    DATA = d; CONFIG = c;
-    try { SUBS = await fetch('data/subscriptions.json', { cache: 'no-cache' }).then((r) => r.json()); } catch (e) {}
-    try { DISC = await fetch('data/discover.json', { cache: 'no-cache' }).then((r) => r.json()); } catch (e) {}
-    try { MOVIES = await fetch('data/movies.json', { cache: 'no-cache' }).then((r) => r.json()); } catch (e) {}
-    try { POOL = await fetch('data/pool.json', { cache: 'no-cache' }).then((r) => r.json()); } catch (e) {}
+    next.DATA = d; next.CONFIG = c;
+    try { next.SUBS = await fetch('data/subscriptions.json', { cache: 'no-cache' }).then((r) => r.json()); } catch (e) { familyLoadIssues.push('subs'); }
+    try { next.DISC = await fetch('data/discover.json', { cache: 'no-cache' }).then((r) => r.json()); } catch (e) { familyLoadIssues.push('disc'); }
+    try { next.MOVIES = await fetch('data/movies.json', { cache: 'no-cache' }).then((r) => r.json()); } catch (e) { familyLoadIssues.push('movies'); }
+    try { next.POOL = await fetch('data/pool.json', { cache: 'no-cache' }).then((r) => r.json()); } catch (e) { familyLoadIssues.push('pool'); }
     // сайт обновляется через пару минут после правки; пока он не пересобрался, берём свежие данные прямо из репозитория
     try {
       const last = Number(lsGet('gh_last_edit') || 0), token = lsGet('gh_token');
-      if (token && (manual || Date.now() - last < 15 * 60 * 1000)) {
-        const R = CONFIG.repo;
+      if (manual || (token && Date.now() - last < 15 * 60 * 1000)) {
+        const R = next.CONFIG.repo;
         const fresh = async (file) => {
-          const r = await fetch(`https://api.github.com/repos/${R.owner}/${R.name}/contents/${R.path.replace('series.json', file)}?ref=${R.branch}`, { headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json' }, cache: 'no-store' });
+          const r = await fetch(`https://api.github.com/repos/${R.owner}/${R.name}/contents/${R.path.replace('series.json', file)}?ref=${R.branch}`, { headers: { ...(token ? { Authorization: `Bearer ${token}` } : {}), Accept: 'application/vnd.github+json' }, cache: 'no-store' });
           if (!r.ok) throw new Error(r.status);
           return JSON.parse(b64ToStr((await r.json()).content));
         };
         const [a, m, u] = await Promise.all([fresh('series.json').catch(() => null), fresh('movies.json').catch(() => null), fresh('subscriptions.json').catch(() => null)]);
         // постеры и рейтинги подставляются при сборке сайта и в репозитории их нет: переносим из загруженной версии
         const keep = (fresh, old, key) => { const map = new Map((old[key] || []).map((x) => [x.id, x])); (fresh[key] || []).forEach((x) => { const o = map.get(x.id); if (o) { if (o.poster && !x.poster) x.poster = o.poster; if (o.rating && !x.rating) x.rating = o.rating; } }); return fresh; };
-        if (a) DATA = keep(a, DATA, 'series'); if (m) MOVIES = keep(m, MOVIES, 'items'); if (u) SUBS = u;
+        if (!a || !m || !u) familyLoadIssues.push('repository');
+        if (a) next.DATA = keep(a, next.DATA, 'series'); if (m) next.MOVIES = keep(m, next.MOVIES, 'items'); if (u) next.SUBS = u;
       }
     } catch (e) {}
   } catch (err) {
@@ -686,25 +741,34 @@ async function boot(manual) {
     $app.innerHTML = '<h1>Сериалы</h1><p class="empty">Не удалось загрузить данные. Проверьте интернет и откройте приложение ещё раз.</p>';
     return;
   }
+  if (version !== familyLoadVersion || familyWritePending) return false;
+  DATA=next.DATA; CONFIG=next.CONFIG; SUBS=next.SUBS; DISC=next.DISC; MOVIES=next.MOVIES; POOL=next.POOL;
   render();
   return true;
 }
+const familyOriginalWrite = ghEdit;
+ghEdit = async function(...args) {
+  familyLoadVersion++; familyWritePending++;
+  try { return await familyOriginalWrite(...args); }
+  finally { familyWritePending--; }
+};
 if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
-boot();
+boot(true);
 // Refresh release states after Moscow midnight and pick up newly published schedules on resume.
 // Avoid overlapping network refreshes while the PWA is in use.
-let lastReleaseDay = todayStr(), lastResumeRefresh = Date.now(), releaseRefreshBusy = false;
-async function refreshReleaseState() {
-  if (document.hidden || releaseRefreshBusy) return;
+let lastReleaseDay = todayStr(), lastResumeRefresh = Date.now(), releaseRefreshBusy = false, releaseRefreshAgain = false;
+async function refreshReleaseState(force = false) {
+  if (document.hidden) return;
+  if (releaseRefreshBusy) { if (force) releaseRefreshAgain = true; return; }
   const day = todayStr(), dayChanged = day !== lastReleaseDay;
-  if (!dayChanged && Date.now() - lastResumeRefresh < 15 * 60 * 1000) return;
+  if (!force && !dayChanged && Date.now() - lastResumeRefresh < 60 * 1000) return;
   releaseRefreshBusy = true;
   lastReleaseDay = day;
   lastResumeRefresh = Date.now();
-  try { await boot(true); } finally { releaseRefreshBusy = false; }
+  try { await boot(true); } finally { releaseRefreshBusy = false; if (releaseRefreshAgain) { releaseRefreshAgain = false; queueMicrotask(() => refreshReleaseState(true)); } }
 }
-document.addEventListener('visibilitychange', () => { if (!document.hidden) refreshReleaseState(); });
-window.addEventListener('focus', refreshReleaseState);
+document.addEventListener('visibilitychange', () => { if (!document.hidden) refreshReleaseState(true); });
+window.addEventListener('focus', () => refreshReleaseState(true));
 setInterval(refreshReleaseState, 60 * 1000);
 
 /* ---------- свайп между тайтлами из одного списка ---------- */

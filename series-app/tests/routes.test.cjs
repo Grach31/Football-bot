@@ -30,10 +30,22 @@ test('jsdom: all routes, archive, old links, Jellyfin isolation and Cinema Noir'
   w.addEventListener('error',e=>errors.push(e.message));
   w.scrollTo=()=>{};
   w.matchMedia=()=>({matches:false,addListener(){},removeListener(){}});
-  w.fetch=async url=>({
-    ok:true,
-    json:async()=>JSON.parse(JSON.stringify(data[String(url)]||{items:[]}))
-  });
+  w.TextEncoder=TextEncoder; w.TextDecoder=TextDecoder;
+  w.localStorage.setItem('gh_token','fixture-only');
+  w.fetch=async (url,options={})=>{
+    let value=data[String(url)]||{items:[]};
+    if(String(url).startsWith('https://api.github.com/')){
+      const filename=new URL(url).pathname.split('/').pop(), key='data/'+filename;
+      if(options.method==='PUT'){
+        const body=JSON.parse(options.body);assert.equal(body.sha,'fixture-sha');
+        data[key]=JSON.parse(Buffer.from(body.content,'base64').toString()); value={content:{sha:'fixture-sha'}};
+      }else value={sha:'fixture-sha',content:Buffer.from(JSON.stringify(data[key]||{items:[]})).toString('base64')};
+    }
+    return {ok:true,status:200,json:async()=>JSON.parse(JSON.stringify(value))};
+  };
+  const clickViewing=async button=>{button.click();for(let i=0;i<30 && vm.runInContext('familyViewingPending.size',dom.getInternalVMContext());i++)await new Promise(resolve=>setImmediate(resolve));assert.equal(vm.runInContext('familyViewingPending.size',dom.getInternalVMContext()),0);};
+  const viewing=(kind,id)=>(kind==='s'?data['data/series.json'].series:data['data/movies.json'].items).find(item=>item.id===id).watching;
+  const archived=(kind,id)=>(kind==='s'?data['data/series.json'].series:data['data/movies.json'].items).find(item=>item.id===id).archive_release_key;
   for(const file of ['release-engine.js','app.js','cinema.js','minimal.js'])vm.runInContext(read(file),dom.getInternalVMContext(),{filename:file});
   await w.boot(true);
   const app=()=>w.document.getElementById('app').textContent;
@@ -49,29 +61,29 @@ test('jsdom: all routes, archive, old links, Jellyfin isolation and Cinema Noir'
   assert.ok(homeToggle,'play toggle directly on series poster');
   assert.equal(homeToggle.getAttribute('aria-pressed'),'false');
   const homeHash=w.location.hash;
-  homeToggle.click();
+  await clickViewing(homeToggle);
   assert.equal(w.location.hash,homeHash,'poster play does not open the detail page');
-  assert.equal(w.localStorage.getItem('gf_watching_v1:s:finished'),'1');
+  assert.equal(viewing('s','finished'),true);
   assert.equal(w.document.querySelectorAll('.gf-card[href="#/s/finished"]').length,1,'watching series has no duplicate home card');
   assert.equal(w.document.querySelector('[data-act="gfwatching"][data-id="finished"]').textContent,'✓');
-  w.document.querySelector('[data-act="gfwatching"][data-id="finished"]').click();
-  assert.equal(w.localStorage.getItem('gf_watching_v1:s:finished'),null,'check removes from watching without navigation');
+  await clickViewing(w.document.querySelector('[data-act="gfwatching"][data-id="finished"]'));
+  assert.equal(viewing('s','finished'),false,'check removes from watching without navigation');
   go('#/mine/movies');
   const movieToggle=w.document.querySelector('.gf-poster-card [data-act="gfwatching"][data-kind="m"][data-id="movie"]');
   assert.ok(movieToggle,'released film has quick button on poster');
   const movieHash=w.location.hash;
-  movieToggle.click();
+  await clickViewing(movieToggle);
   assert.equal(w.location.hash,movieHash,'film poster toggle does not navigate');
-  assert.equal(w.localStorage.getItem('gf_watching_v1:m:movie'),'1');
+  assert.equal(viewing('m','movie'),true);
   go('#/week');
   assert.ok(w.document.querySelector('.gf-block .gf-card[href="#/m/movie"]'),'added film appears in watching rail');
-  w.document.querySelector('[data-act="gfwatching"][data-kind="m"][data-id="movie"]').click();
-  assert.equal(w.localStorage.getItem('gf_watching_v1:m:movie'),null);
+  await clickViewing(w.document.querySelector('[data-act="gfwatching"][data-kind="m"][data-id="movie"]'));
+  assert.equal(viewing('m','movie'),false);
   go('#/s/finished');
   const archive=w.document.querySelector('[data-act="gfarchive"]');
   assert.ok(archive,'finale archive button');
-  archive.click();
-  assert.ok(w.localStorage.getItem('gf_archive_v1:s:finished'));
+  await clickViewing(archive);
+  assert.ok(archived('s','finished'));
   go('#/week');
   assert.doesNotMatch(app(),/Финальный сериал/);
   go('#/mine/series');
@@ -81,10 +93,10 @@ test('jsdom: all routes, archive, old links, Jellyfin isolation and Cinema Noir'
   go('#/s/finished');
   assert.ok(w.document.querySelector('[data-act="gfwatching"]'));
   assert.match(w.document.querySelector('[data-act="gfwatching"]').textContent,/Смотрю сейчас/);
-  w.document.querySelector('[data-act="gfwatching"]').click();
-  assert.equal(w.localStorage.getItem('gf_watching_v1:s:finished'),'1');
+  await clickViewing(w.document.querySelector('[data-act="gfwatching"]'));
+  assert.equal(viewing('s','finished'),true);
   assert.match(w.document.querySelector('[data-act="gfwatching"]').textContent,/Закончил смотреть/);
-  assert.ok(w.localStorage.getItem('gf_archive_v1:s:finished'),'manual archive unchanged');
+  assert.ok(archived('s','finished'),'manual archive unchanged');
   go('#/mine/series');
   assert.doesNotMatch(app(),/Смотрю сейчас/,'personal list removed from collection');
   assert.equal(w.document.querySelectorAll('.gf-grid-card[href="#/s/finished"]').length,1,'archive remains visible in collection');
@@ -93,13 +105,13 @@ test('jsdom: all routes, archive, old links, Jellyfin isolation and Cinema Noir'
   assert.equal(w.document.querySelectorAll('.gf-block')[0].querySelectorAll('.gf-card[href="#/s/finished"]').length,1,'archived series on home');
   assert.equal(w.document.querySelectorAll('.gf-card[href="#/s/finished"]').length,1,'no duplicate between home rails');
   go('#/s/finished');
-  w.document.querySelector('[data-act="gfwatching"]').click();
-  assert.equal(w.localStorage.getItem('gf_watching_v1:s:finished'),null);
-  assert.ok(w.localStorage.getItem('gf_archive_v1:s:finished'),'finishing does not erase release archive');
+  await clickViewing(w.document.querySelector('[data-act="gfwatching"]'));
+  assert.equal(viewing('s','finished'),false);
+  assert.ok(archived('s','finished'),'finishing does not erase release archive');
   go('#/week');
   assert.doesNotMatch(app(),/Финальный сериал/,'archived series no longer on home after finishing');
   go('#/s/upcoming');
-  w.document.querySelector('[data-act="gfwatching"]').click();
+  await clickViewing(w.document.querySelector('[data-act="gfwatching"]'));
   go('#/week');
   assert.ok(w.document.querySelector('.gf-block .gf-card[href="#/s/upcoming"]'),'watching also works for upcoming seasons');
   go('#/s/upcoming');
@@ -107,8 +119,8 @@ test('jsdom: all routes, archive, old links, Jellyfin isolation and Cinema Noir'
   go('#/m/movie');
   assert.ok(w.document.querySelector('[data-act="gfarchive"]'),'movie archive after premiere');
   assert.ok(w.document.querySelector('[data-act="gfwatching"]'),'released movie has personal button');
-  w.document.querySelector('[data-act="gfwatching"]').click();
-  assert.equal(w.localStorage.getItem('gf_watching_v1:m:movie'),'1','movie uses separate local key');
+  await clickViewing(w.document.querySelector('[data-act="gfwatching"]'));
+  assert.equal(viewing('m','movie'),true,'movie uses separate local key');
   go('#/week');
   assert.equal(w.document.querySelectorAll('.gf-block')[0].querySelectorAll('.gf-card').length,2,'combined series and film watching');
   assert.equal(w.document.querySelectorAll('.gf-card[href="#/m/movie"]').length,1,'film not duplicated across home rails');
@@ -116,8 +128,8 @@ test('jsdom: all routes, archive, old links, Jellyfin isolation and Cinema Noir'
   assert.doesNotMatch(app(),/Смотрю сейчас/,'no watching section in Movies');
   assert.equal(w.document.querySelectorAll('.gf-grid-card[href="#/m/movie"]').length,1,'film remains in collection');
   go('#/m/movie');
-  w.document.querySelector('[data-act="gfwatching"]').click();
-  assert.equal(w.localStorage.getItem('gf_watching_v1:m:movie'),null,'movie can be finished');
+  await clickViewing(w.document.querySelector('[data-act="gfwatching"]'));
+  assert.equal(viewing('m','movie'),false,'movie can be finished');
   go('#/mine/movies');
   assert.match(app(),/Вышедший фильм/);
   go('#/mine/movies');

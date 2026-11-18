@@ -15,6 +15,35 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import webpush from 'web-push';
+import { createECDH, createDecipheriv, hkdfSync, createHash } from 'node:crypto';
+export function decryptDevice(box, privateKey) {
+  if (box?.v !== 1 || typeof box.ciphertext !== 'string' || box.ciphertext.length > 16000) throw new Error('invalid_device');
+  const ecdh=createECDH('prime256v1');ecdh.setPrivateKey(Buffer.from(privateKey,'base64url'));
+  const info=Buffer.from('family-space-push-v1');
+  const key=hkdfSync('sha256',ecdh.computeSecret(Buffer.from(box.epk,'base64url')),Buffer.from(box.salt,'base64url'),info,32);
+  const encrypted=Buffer.from(box.ciphertext,'base64url');
+  const decipher=createDecipheriv('aes-256-gcm',key,Buffer.from(box.iv,'base64url'));
+  decipher.setAAD(info);decipher.setAuthTag(encrypted.subarray(-16));
+  const subscription=JSON.parse(Buffer.concat([decipher.update(encrypted.subarray(0,-16)),decipher.final()]).toString());
+  const url=new URL(subscription.endpoint);
+  if (url.protocol !== 'https:' || url.username || url.password || url.port || !['web.push.apple.com','fcm.googleapis.com','updates.push.services.mozilla.com','push.services.mozilla.com'].includes(url.hostname) && !url.hostname.endsWith('.notify.windows.com') && !url.hostname.endsWith('.wns.windows.com')) throw new Error('invalid_push_endpoint');
+  if (!subscription.keys?.auth || !subscription.keys?.p256dh) throw new Error('invalid_push_keys');
+  return subscription;
+}
+export const deviceKey = subscription => createHash('sha256').update(subscription.endpoint).digest('hex').slice(0,24);
+export async function deliverToDevices(payloads, devices, { state, legacy = [], test = false, send, now = () => new Date().toISOString(), onError = () => {} }) {
+  let sent = 0, failed = 0;
+  for (const payload of payloads) for (const device of devices) {
+    const key = payload.tag + ':device:' + deviceKey(device);
+    if (!test && (state.sent[key] || state.sent[payload.tag] && legacy.some(value => value.endpoint === device.endpoint))) continue;
+    try {
+      await send(device, payload); sent++;
+      if (!test) state.sent[key] = now();
+    } catch (error) { failed++; onError(Number(error.statusCode) || 0); }
+  }
+  return { sent, failed };
+}
+
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const dataDir = path.join(here, '..', 'site', 'data');
@@ -110,7 +139,7 @@ function buildPayloads(date) {
 
 const payloads = test
   ? [{ title: 'Grach films', body: 'Проверка: уведомления работают', tag: 'test', url: './#/week' }]
-  : [...buildPayloads(today), ...moviePayloads(today), ...subPayloads(today)].filter(p => !state.sent[p.tag]);
+  : [...buildPayloads(today), ...moviePayloads(today), ...subPayloads(today)];
 
 console.log(`Дата: ${today}, время Москвы: ${nowMsk}. Новых уведомлений к отправке: ${payloads.length}`);
 for (const p of payloads) console.log(` - ${p.title} | ${p.body}`);
@@ -120,44 +149,42 @@ if (dry) { console.log('Пробный запуск, ничего не отпр�
 
 const privateKey = process.env.VAPID_PRIVATE_KEY;
 const rawSub = process.env.PUSH_SUBSCRIPTION;
-if (!privateKey || !rawSub) {
+if (!privateKey) {
   console.error('Не заданы секреты VAPID_PRIVATE_KEY и/или PUSH_SUBSCRIPTION. Добавьте их в Settings → Secrets and variables → Actions.');
   process.exit(1);
 }
 
 let subs;
 try {
-  const parsed = JSON.parse(rawSub);
+  const parsed = JSON.parse(rawSub || '[]');
   subs = Array.isArray(parsed) ? parsed : [parsed];
 } catch (err) {
   console.error('Секрет PUSH_SUBSCRIPTION не похож на JSON. Скопируйте «код устройства» в приложении целиком.');
   process.exit(1);
 }
 
+// Additional Family Space devices are encrypted to the existing VAPID public key.
+// Only this workflow has its private key. No device endpoint or auth secret is public.
+try {
+  const devices=JSON.parse(fs.readFileSync(path.join(dataDir,'family-push-devices.json'),'utf8')).items || [];
+  for (const device of devices) {
+    try { const sub=decryptDevice(device.box,privateKey); if(!subs.some(existing=>existing.endpoint===sub.endpoint))subs.push(sub); }
+    catch { console.error('Family Space: invalid encrypted device (no sensitive details logged)'); }
+  }
+} catch { /* Old subscriptions continue to work before device enrollment. */ }
+if (!subs.length) { console.error('No devices registered'); process.exit(1); }
 webpush.setVapidDetails(process.env.VAPID_SUBJECT || 'mailto:series@example.com', config.vapidPublicKey, privateKey);
 
-let sent = 0;
-let failed = 0;
-for (const p of payloads) {
-  let delivered = 0;
-  for (const sub of subs) {
-    try {
-      await webpush.sendNotification(sub, JSON.stringify(p), { TTL: 60 * 60 * 12 });
-      sent++;
-      delivered++;
-    } catch (err) {
-      failed++;
-      const code = err.statusCode;
-      if (code === 404 || code === 410) console.error('Подписка устарела: включите уведомления в приложении заново и обновите секрет PUSH_SUBSCRIPTION.');
-      else console.error(`Ошибка отправки (${code || 'без кода'}): ${err.body || err.message}`);
-    }
-  }
-  if (delivered > 0 && !test) state.sent[p.tag] = new Date().toISOString();
-}
+let legacy=[]; try { const parsed=JSON.parse(rawSub || '[]'); legacy=Array.isArray(parsed)?parsed:[parsed]; } catch {}
+const {sent,failed}=await deliverToDevices(payloads,subs,{
+  state,legacy,test,
+  send:(sub,payload)=>webpush.sendNotification(sub,JSON.stringify(payload),{TTL:60*60*12}),
+  onError:code=>console.error('Push delivery failed ('+code+'); device data is not logged.')
+});
 if (!test) {
   const cutoff = Date.now() - 90 * 86400000;
   for (const [key, at] of Object.entries(state.sent)) if (Date.parse(at) < cutoff) delete state.sent[key];
   saveState();
 }
 console.log(`Отправлено: ${sent}, ошибок: ${failed}. Запомнено уведомлений: ${Object.keys(state.sent).length}`);
-if (failed || sent === 0) process.exitCode = 1;
+if (failed) process.exitCode = 1;

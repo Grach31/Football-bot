@@ -1,39 +1,67 @@
 name: Сериалы
-
 on:
   schedule:
-    - cron: '*/15 * * * *' # Каждые 15 минут; GitHub Actions может запускаться с задержкой
+    - cron: '*/15 * * * *'
   workflow_dispatch:
     inputs:
       test_push:
-        description: 'Отправить тестовое уведомление'
+        description: Отправить тестовое уведомление
         type: boolean
         default: false
   push:
     branches: [main]
-    paths:
-      - 'series-app/site/**'
-
+    paths: ['series-app/site/**', 'series-app/scripts/**', '.github/workflows/series-app.yml']
 permissions:
   contents: write
   pages: write
   id-token: write
-
+concurrency:
+  group: series-app-pipeline
+  cancel-in-progress: false
 jobs:
-  deploy:
-    if: github.event_name != 'schedule'
-    concurrency:
-      group: series-app-deploy
-      cancel-in-progress: false
+  collect:
+    if: github.event.inputs.test_push != 'true'
     runs-on: ubuntu-latest
+    timeout-minutes: 15
+    outputs:
+      changed: ${{ steps.save.outputs.changed }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {ref: main}
+      - uses: actions/setup-node@v4
+        with: {node-version: 22}
+      - name: Получить проверенный сборщик Family Space
+        run: |
+          curl --fail --silent --show-error --retry 2 --user-agent 'FamilySpaceCinemaCollector/0.7 (+https://github.com/Grach31/Football-bot)' https://grach-family-space-preview.pages.dev/automation/cinema-collector.mjs -o /tmp/cinema-collector.mjs
+          echo '1a81cc59c74830780054470e4a0033c4c88f03f81909507f483dfff15074543e  /tmp/cinema-collector.mjs' | sha256sum --check --strict
+      - name: Проверить сезоны, серии и премьеры
+        env:
+          TMDB_TOKEN: ${{ secrets.TMDB_TOKEN }}
+          KINOPOISK_TOKEN: ${{ secrets.KINOPOISK_TOKEN }}
+        run: node /tmp/cinema-collector.mjs --site-dir series-app/site
+      - name: Сохранить расписание без перезаписи чужих изменений
+        id: save
+        run: |
+          if git diff --quiet -- series-app/site/data; then echo 'changed=false' >> "$GITHUB_OUTPUT"; exit 0; fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add series-app/site/data/series.json series-app/site/data/movies.json series-app/site/data/collector-status.json
+          git commit -m 'Grach Films: refresh confirmed release schedules'
+          git push origin HEAD:main
+          echo 'changed=true' >> "$GITHUB_OUTPUT"
+  deploy:
+    needs: collect
+    if: always() && github.event.inputs.test_push != 'true' && (github.event_name != 'schedule' || needs.collect.outputs.changed == 'true')
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
+        with: {ref: main}
       - uses: actions/setup-node@v4
-        with:
-          node-version: 22
+        with: {node-version: 22}
       - name: Загрузить постеры
         continue-on-error: true
         working-directory: series-app/scripts
@@ -43,46 +71,35 @@ jobs:
         run: node fetch-posters.mjs
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
-        with:
-          path: series-app/site
+        with: {path: series-app/site}
       - id: deployment
         uses: actions/deploy-pages@v4
-
   notify:
-    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && (contains(github.event.head_commit.modified, 'series-app/site/data/series.json') || contains(github.event.head_commit.modified, 'series-app/site/data/movies.json') || contains(github.event.head_commit.added, 'series-app/site/data/series.json') || contains(github.event.head_commit.added, 'series-app/site/data/movies.json')))
-    concurrency:
-      group: series-app-notify
-      cancel-in-progress: false
+    needs: [collect, deploy]
+    if: always() && (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' || github.event_name == 'push')
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: main
-          persist-credentials: true
-      - name: Обновить данные перед проверкой
-        run: git pull --ff-only origin main
+        with: {ref: main, persist-credentials: true}
       - uses: actions/setup-node@v4
-        with:
-          node-version: 22
+        with: {node-version: 22}
       - name: Установить зависимости
         working-directory: series-app/scripts
-        run: npm ci
-      - name: Отправить уведомления
+        run: npm ci --ignore-scripts
+      - name: Отправить уведомления по подтверждённым датам
         working-directory: series-app/scripts
         env:
           VAPID_PRIVATE_KEY: ${{ secrets.VAPID_PRIVATE_KEY }}
           PUSH_SUBSCRIPTION: ${{ secrets.PUSH_SUBSCRIPTION }}
         run: node notify.mjs ${{ github.event.inputs.test_push == 'true' && '--test' || '' }}
-      - name: Сохранить историю доставленных уведомлений
+      - name: Сохранить историю по устройствам
         if: always() && github.event.inputs.test_push != 'true'
         run: |
-          if git diff --quiet -- state/grach-films-push.json; then
-            echo "Новых отправок нет"
-            exit 0
-          fi
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git diff --quiet -- state/grach-films-push.json; then exit 0; fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add state/grach-films-push.json
-          git commit -m "Grach Films: record delivered notifications"
+          git commit -m 'Grach Films: record per-device deliveries'
           git pull --rebase origin main
           git push origin HEAD:main
