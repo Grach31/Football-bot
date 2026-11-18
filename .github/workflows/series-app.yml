@@ -30,15 +30,11 @@ jobs:
         with: {ref: main}
       - uses: actions/setup-node@v4
         with: {node-version: 22}
-      - name: Получить проверенный сборщик Family Space
-        run: |
-          curl --fail --silent --show-error --retry 2 --user-agent 'FamilySpaceCinemaCollector/0.7 (+https://github.com/Grach31/Football-bot)' https://grach-family-space-preview.pages.dev/automation/cinema-collector.mjs -o /tmp/cinema-collector.mjs
-          echo '1a81cc59c74830780054470e4a0033c4c88f03f81909507f483dfff15074543e  /tmp/cinema-collector.mjs' | sha256sum --check --strict
       - name: Проверить сезоны, серии и премьеры
         env:
           TMDB_TOKEN: ${{ secrets.TMDB_TOKEN }}
           KINOPOISK_TOKEN: ${{ secrets.KINOPOISK_TOKEN }}
-        run: node /tmp/cinema-collector.mjs --site-dir series-app/site
+        run: node series-app/scripts/collect-schedules.mjs --site-dir series-app/site
       - name: Сохранить расписание без перезаписи чужих изменений
         id: save
         run: |
