@@ -86,8 +86,10 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 94947,
+        "identity": "полярный:",
         "url": "https://www.themoviedb.org/tv/94947",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -143,8 +145,10 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 337738,
+        "identity": "тяжелыйлюкс:",
         "url": "https://www.themoviedb.org/tv/337738",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -362,8 +366,10 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 153312,
+        "identity": "корольталсы:",
         "url": "https://www.themoviedb.org/tv/153312",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -423,8 +429,10 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 247718,
+        "identity": "гангстерленд:",
         "url": "https://www.themoviedb.org/tv/247718",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -535,8 +543,10 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 337067,
+        "identity": "отряд731:",
         "url": "https://www.themoviedb.org/tv/337067",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -587,8 +597,10 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 224377,
+        "identity": "гаррипоттер:",
         "url": "https://www.themoviedb.org/tv/224377",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       },
       "approx": true
     },
@@ -603,9 +615,11 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 224372,
+        "identity": "рыцарьсемикоролевств:",
         "url": "https://www.themoviedb.org/tv/224372",
         "managedSeason": 2,
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -619,9 +633,11 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 100088,
+        "identity": "одниизнас:",
         "url": "https://www.themoviedb.org/tv/100088",
         "managedSeason": 3,
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -635,9 +651,11 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 106379,
+        "identity": "фоллаут:",
         "url": "https://www.themoviedb.org/tv/106379",
         "managedSeason": 3,
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -700,9 +718,11 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 250211,
+        "identity": "какприручитьлису:",
         "url": "https://www.themoviedb.org/tv/250211",
         "managedSeason": 2,
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -716,9 +736,11 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 94997,
+        "identity": "домдракона:",
         "url": "https://www.themoviedb.org/tv/94997",
         "managedSeason": 4,
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -749,8 +771,10 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 220018,
+        "identity": "фишер:",
         "url": "https://www.themoviedb.org/tv/220018",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -775,8 +799,10 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 209962,
+        "identity": "кредоубийцы:",
         "url": "https://www.themoviedb.org/tv/209962",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -920,8 +946,10 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 337506,
+        "identity": "ворвзагоне:",
         "url": "https://www.themoviedb.org/tv/337506",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -978,8 +1006,10 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 97546,
+        "identity": "тедлассо:",
         "url": "https://www.themoviedb.org/tv/97546",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -1034,8 +1064,10 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 236235,
+        "identity": "джентльмены:",
         "url": "https://www.themoviedb.org/tv/236235",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -1092,8 +1124,10 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 124364,
+        "identity": "извне:",
         "url": "https://www.themoviedb.org/tv/124364",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -1165,8 +1199,10 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 318156,
+        "identity": "капитантуман:",
         "url": "https://www.themoviedb.org/tv/318156",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -1226,8 +1262,10 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 215528,
+        "identity": "нейромант:",
         "url": "https://www.themoviedb.org/tv/215528",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -1315,8 +1353,10 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 316947,
+        "identity": "гуляйшальная:",
         "url": "https://www.themoviedb.org/tv/316947",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -1367,8 +1407,10 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 301191,
+        "identity": "полураспад:",
         "url": "https://www.themoviedb.org/tv/301191",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -1421,8 +1463,10 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 318560,
+        "identity": "айда:",
         "url": "https://www.themoviedb.org/tv/318560",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -1473,9 +1517,11 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 312753,
+        "identity": "резервация:",
         "url": "https://www.themoviedb.org/tv/312753",
         "managedSeason": 1,
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -1532,9 +1578,11 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 198102,
+        "identity": "захваченныйрейс:",
         "url": "https://www.themoviedb.org/tv/198102",
         "managedSeason": 2,
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -1592,9 +1640,11 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 65953,
+        "identity": "полицейскийсрублевки:",
         "url": "https://www.themoviedb.org/tv/65953",
         "managedSeason": 5,
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -1654,9 +1704,11 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 62699,
+        "identity": "theyoungpope:",
         "url": "https://www.themoviedb.org/tv/62699",
         "managedSeason": 1,
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -1707,9 +1759,11 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 60574,
+        "identity": "peakyblinders:",
         "url": "https://www.themoviedb.org/tv/60574",
         "managedSeason": 6,
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -1775,9 +1829,11 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 60622,
+        "identity": "fargo:",
         "url": "https://www.themoviedb.org/tv/60622",
         "managedSeason": 5,
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -1897,9 +1953,11 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 31295,
+        "identity": "misfits:",
         "url": "https://www.themoviedb.org/tv/31295",
         "managedSeason": 5,
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -1966,9 +2024,11 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 63333,
+        "identity": "thelastkingdom:",
         "url": "https://www.themoviedb.org/tv/63333",
         "managedSeason": 5,
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -2006,9 +2066,11 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 19885,
+        "identity": "sherlock:",
         "url": "https://www.themoviedb.org/tv/19885",
         "managedSeason": 4,
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -2087,9 +2149,11 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 62560,
+        "identity": "mrrobot:",
         "url": "https://www.themoviedb.org/tv/62560",
         "managedSeason": 4,
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -2140,9 +2204,11 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 1399,
+        "identity": "gameofthrones:",
         "url": "https://www.themoviedb.org/tv/1399",
         "managedSeason": 8,
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -2377,9 +2443,11 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 114471,
+        "identity": "ironheart:",
         "url": "https://www.themoviedb.org/tv/114471",
         "managedSeason": 1,
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -2431,8 +2499,10 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 213375,
+        "identity": "visionquest:",
         "url": "https://www.themoviedb.org/tv/213375",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -2582,9 +2652,11 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 154404,
+        "identity": "сергийпротивнечисти:",
         "url": "https://www.themoviedb.org/tv/154404",
         "managedSeason": 4,
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -2639,9 +2711,11 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 46648,
+        "identity": "настоящийдетектив:",
         "url": "https://www.themoviedb.org/tv/46648",
         "managedSeason": 4,
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -2690,9 +2764,11 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 93405,
+        "identity": "игравкальмара:",
         "url": "https://www.themoviedb.org/tv/93405",
         "managedSeason": 3,
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -2759,8 +2835,10 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 296244,
+        "identity": "friscoking:",
         "url": "https://www.themoviedb.org/tv/296244",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -2832,9 +2910,11 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 222766,
+        "identity": "деньшакала:",
         "url": "https://www.themoviedb.org/tv/222766",
         "managedSeason": 1,
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -2877,9 +2957,11 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 293550,
+        "identity": "гоморраистоки:",
         "url": "https://www.themoviedb.org/tv/293550",
         "managedSeason": 1,
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -2945,9 +3027,11 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 288133,
+        "identity": "злыелюди:",
         "url": "https://www.themoviedb.org/tv/288133",
         "managedSeason": 1,
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -3012,9 +3096,11 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 63351,
+        "identity": "нарко:",
         "url": "https://www.themoviedb.org/tv/63351",
         "managedSeason": 3,
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -3075,9 +3161,11 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 67744,
+        "identity": "охотникзаразумом:",
         "url": "https://www.themoviedb.org/tv/67744",
         "managedSeason": 2,
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -3129,8 +3217,10 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 318558,
+        "identity": "очарованные:",
         "url": "https://www.themoviedb.org/tv/318558",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -3236,8 +3326,10 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 317872,
+        "identity": "малахит:",
         "url": "https://www.themoviedb.org/tv/317872",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     }
   ]

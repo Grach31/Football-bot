@@ -56,8 +56,10 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 1400336,
+        "identity": "знакомствосфакераминоваяглава:",
         "url": "https://www.themoviedb.org/movie/1400336",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -104,8 +106,10 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 1170608,
+        "identity": "дюначастьтретья:",
         "url": "https://www.themoviedb.org/movie/1170608",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -126,8 +130,10 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 1300968,
+        "identity": "голодныеигрырассветжатвы:",
         "url": "https://www.themoviedb.org/movie/1300968",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -147,8 +153,10 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 1550039,
+        "identity": "черныйшелк:",
         "url": "https://www.themoviedb.org/movie/1550039",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -174,10 +182,12 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 438740,
+        "identity": "салют7:",
         "url": "https://www.themoviedb.org/movie/438740",
         "managedDate": true,
         "region": "RU",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -222,10 +232,12 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 398929,
+        "identity": "alibicom:",
         "url": "https://www.themoviedb.org/movie/398929",
         "managedDate": true,
         "region": "RU",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -258,10 +270,12 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 324786,
+        "identity": "hacksawridge:",
         "url": "https://www.themoviedb.org/movie/324786",
         "managedDate": true,
         "region": "RU",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -282,10 +296,12 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 313297,
+        "identity": "kuboandthetwostrings:",
         "url": "https://www.themoviedb.org/movie/313297",
         "managedDate": true,
         "region": "RU",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -340,10 +356,12 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 6977,
+        "identity": "nocountryforoldmen:",
         "url": "https://www.themoviedb.org/movie/6977",
         "managedDate": true,
         "region": "RU",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -354,9 +372,23 @@
       "poster_query": "American Gangster",
       "added": "2026-10-23",
       "release_sync": {
-        "status": "unresolved",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
-      }
+        "provider": "tmdb",
+        "id": 4982,
+        "identity": "americangangster:",
+        "url": "https://www.themoviedb.org/movie/4982",
+        "managedDate": true,
+        "region": "RU",
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
+      },
+      "premieres": [
+        {
+          "date": "2007-12-13",
+          "type": 3,
+          "region": "RU"
+        }
+      ],
+      "date": "2007-12-13"
     },
     {
       "id": "lib-odnazhdy-v-amerike",
@@ -390,9 +422,23 @@
       "poster_query": "The Nice Guys",
       "added": "2026-10-23",
       "release_sync": {
-        "status": "unresolved",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
-      }
+        "provider": "tmdb",
+        "id": 290250,
+        "identity": "theniceguys:",
+        "url": "https://www.themoviedb.org/movie/290250",
+        "managedDate": true,
+        "region": "RU",
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
+      },
+      "premieres": [
+        {
+          "date": "2016-05-26",
+          "type": 3,
+          "region": "RU"
+        }
+      ],
+      "date": "2016-05-26"
     },
     {
       "id": "lib-illyuziya-obmana-2",
@@ -412,10 +458,12 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 291805,
+        "identity": "nowyouseeme2:",
         "url": "https://www.themoviedb.org/movie/291805",
         "managedDate": true,
         "region": "RU",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -492,10 +540,12 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 10138,
+        "identity": "ironman2:",
         "url": "https://www.themoviedb.org/movie/10138",
         "managedDate": true,
         "region": "RU",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -506,9 +556,23 @@
       "poster_query": "Thor 2011",
       "added": "2026-10-23",
       "release_sync": {
-        "status": "unresolved",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
-      }
+        "provider": "tmdb",
+        "id": 10195,
+        "identity": "thor:2011",
+        "url": "https://www.themoviedb.org/movie/10195",
+        "managedDate": true,
+        "region": "RU",
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
+      },
+      "premieres": [
+        {
+          "date": "2011-04-28",
+          "type": 3,
+          "region": "RU"
+        }
+      ],
+      "date": "2011-04-28"
     },
     {
       "id": "mcu-captain-america-the-first-avenger",
@@ -538,10 +602,12 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 1771,
+        "identity": "captainamericathefirstavenger:",
         "url": "https://www.themoviedb.org/movie/1771",
         "managedDate": true,
         "region": "RU",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -552,9 +618,28 @@
       "poster_query": "The Avengers 2012",
       "added": "2026-10-23",
       "release_sync": {
-        "status": "unresolved",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
-      }
+        "provider": "tmdb",
+        "id": 24428,
+        "identity": "theavengers:2012",
+        "url": "https://www.themoviedb.org/movie/24428",
+        "managedDate": true,
+        "region": "RU",
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
+      },
+      "premieres": [
+        {
+          "date": "2012-05-03",
+          "type": 3,
+          "region": "RU"
+        },
+        {
+          "date": "2012-08-28",
+          "type": 5,
+          "region": "RU"
+        }
+      ],
+      "date": "2012-05-03"
     },
     {
       "id": "mcu-iron-man-3",
@@ -574,10 +659,12 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 68721,
+        "identity": "ironman3:",
         "url": "https://www.themoviedb.org/movie/68721",
         "managedDate": true,
         "region": "RU",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -598,10 +685,12 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 76338,
+        "identity": "thorthedarkworld:",
         "url": "https://www.themoviedb.org/movie/76338",
         "managedDate": true,
         "region": "RU",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -622,10 +711,12 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 100402,
+        "identity": "captainamericathewintersoldier:",
         "url": "https://www.themoviedb.org/movie/100402",
         "managedDate": true,
         "region": "RU",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -646,10 +737,12 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 118340,
+        "identity": "guardiansofthegalaxy:",
         "url": "https://www.themoviedb.org/movie/118340",
         "managedDate": true,
         "region": "RU",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -670,10 +763,12 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 99861,
+        "identity": "avengersageofultron:",
         "url": "https://www.themoviedb.org/movie/99861",
         "managedDate": true,
         "region": "RU",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -694,10 +789,12 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 102899,
+        "identity": "antman:",
         "url": "https://www.themoviedb.org/movie/102899",
         "managedDate": true,
         "region": "RU",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -723,10 +820,12 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 271110,
+        "identity": "captainamericacivilwar:",
         "url": "https://www.themoviedb.org/movie/271110",
         "managedDate": true,
         "region": "RU",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -749,9 +848,23 @@
       "poster_query": "Guardians of the Galaxy Vol. 2",
       "added": "2026-10-23",
       "release_sync": {
-        "status": "unresolved",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
-      }
+        "provider": "tmdb",
+        "id": 283995,
+        "identity": "guardiansofthegalaxyvol2:",
+        "url": "https://www.themoviedb.org/movie/283995",
+        "managedDate": true,
+        "region": "RU",
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
+      },
+      "premieres": [
+        {
+          "date": "2017-05-04",
+          "type": 3,
+          "region": "RU"
+        }
+      ],
+      "date": "2017-05-04"
     },
     {
       "id": "mcu-spider-man-homecoming",
@@ -771,10 +884,12 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 315635,
+        "identity": "spidermanhomecoming:",
         "url": "https://www.themoviedb.org/movie/315635",
         "managedDate": true,
         "region": "RU",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -795,10 +910,12 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 284053,
+        "identity": "thorragnarok:",
         "url": "https://www.themoviedb.org/movie/284053",
         "managedDate": true,
         "region": "RU",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -836,10 +953,12 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 299536,
+        "identity": "avengersinfinitywar:",
         "url": "https://www.themoviedb.org/movie/299536",
         "managedDate": true,
         "region": "RU",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -860,10 +979,12 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 363088,
+        "identity": "antmanandthewasp:",
         "url": "https://www.themoviedb.org/movie/363088",
         "managedDate": true,
         "region": "RU",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -884,10 +1005,12 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 299537,
+        "identity": "captainmarvel:",
         "url": "https://www.themoviedb.org/movie/299537",
         "managedDate": true,
         "region": "RU",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -918,10 +1041,12 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 299534,
+        "identity": "avengersendgame:",
         "url": "https://www.themoviedb.org/movie/299534",
         "managedDate": true,
         "region": "RU",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -947,10 +1072,12 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 429617,
+        "identity": "spidermanfarfromhome:",
         "url": "https://www.themoviedb.org/movie/429617",
         "managedDate": true,
         "region": "RU",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -971,10 +1098,12 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 566525,
+        "identity": "shangchiandthelegendofthetenrings:",
         "url": "https://www.themoviedb.org/movie/566525",
         "managedDate": true,
         "region": "RU",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -995,10 +1124,12 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 634649,
+        "identity": "spidermannowayhome:",
         "url": "https://www.themoviedb.org/movie/634649",
         "managedDate": true,
         "region": "RU",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -1034,10 +1165,12 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 616037,
+        "identity": "thorloveandthunder:",
         "url": "https://www.themoviedb.org/movie/616037",
         "managedDate": true,
         "region": "US",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -1073,10 +1206,12 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 505642,
+        "identity": "blackpantherwakandaforever:",
         "url": "https://www.themoviedb.org/movie/505642",
         "managedDate": true,
         "region": "US",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -1087,9 +1222,48 @@
       "poster_query": "Guardians of the Galaxy Vol. 3",
       "added": "2026-10-23",
       "release_sync": {
-        "status": "unresolved",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
-      }
+        "provider": "tmdb",
+        "id": 447365,
+        "identity": "guardiansofthegalaxyvol3:",
+        "url": "https://www.themoviedb.org/movie/447365",
+        "managedDate": true,
+        "region": "US",
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
+      },
+      "premieres": [
+        {
+          "date": "2023-04-27",
+          "type": 1,
+          "region": "US"
+        },
+        {
+          "date": "2023-05-05",
+          "type": 3,
+          "region": "US"
+        },
+        {
+          "date": "2023-08-02",
+          "type": 4,
+          "region": "US"
+        },
+        {
+          "date": "2023-07-07",
+          "type": 4,
+          "region": "US"
+        },
+        {
+          "date": "2023-08-01",
+          "type": 5,
+          "region": "US"
+        },
+        {
+          "date": "2025-09-28",
+          "type": 6,
+          "region": "US"
+        }
+      ],
+      "date": "2023-08-02"
     },
     {
       "id": "mcu-the-fantastic-four-first-steps",
@@ -1173,10 +1347,12 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 453395,
+        "identity": "doctorstrangeinthemultiverseofmadness:",
         "url": "https://www.themoviedb.org/movie/453395",
         "managedDate": true,
         "region": "US",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -1217,10 +1393,12 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 640146,
+        "identity": "antmanandthewaspquantumania:",
         "url": "https://www.themoviedb.org/movie/640146",
         "managedDate": true,
         "region": "US",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -1266,10 +1444,12 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 533535,
+        "identity": "deadpoolwolverine:",
         "url": "https://www.themoviedb.org/movie/533535",
         "managedDate": true,
         "region": "US",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -1280,9 +1460,43 @@
       "poster_query": "Captain America: Brave New World",
       "added": "2026-10-23",
       "release_sync": {
-        "status": "unresolved",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
-      }
+        "provider": "tmdb",
+        "id": 822119,
+        "identity": "captainamericabravenewworld:",
+        "url": "https://www.themoviedb.org/movie/822119",
+        "managedDate": true,
+        "region": "US",
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
+      },
+      "premieres": [
+        {
+          "date": "2025-02-11",
+          "type": 1,
+          "region": "US"
+        },
+        {
+          "date": "2025-02-14",
+          "type": 3,
+          "region": "US"
+        },
+        {
+          "date": "2025-04-15",
+          "type": 4,
+          "region": "US"
+        },
+        {
+          "date": "2025-05-28",
+          "type": 4,
+          "region": "US"
+        },
+        {
+          "date": "2025-05-13",
+          "type": 5,
+          "region": "US"
+        }
+      ],
+      "date": "2025-04-15"
     },
     {
       "id": "mcu-spider-man-brand-new-day",
@@ -1327,8 +1541,10 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 969681,
+        "identity": "spidermanbrandnewday:",
         "url": "https://www.themoviedb.org/movie/969681",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -1349,10 +1565,12 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 22803,
+        "identity": "lawabidingcitizen:",
         "url": "https://www.themoviedb.org/movie/22803",
         "managedDate": true,
         "region": "RU",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -1424,10 +1642,12 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 68718,
+        "identity": "djangounchained:",
         "url": "https://www.themoviedb.org/movie/68718",
         "managedDate": true,
         "region": "RU",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -1438,9 +1658,23 @@
       "poster_query": "The Great Gatsby 2013",
       "added": "2026-10-23",
       "release_sync": {
-        "status": "unresolved",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
-      }
+        "provider": "tmdb",
+        "id": 64682,
+        "identity": "thegreatgatsby:2013",
+        "url": "https://www.themoviedb.org/movie/64682",
+        "managedDate": true,
+        "region": "RU",
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
+      },
+      "premieres": [
+        {
+          "date": "2013-05-16",
+          "type": 3,
+          "region": "RU"
+        }
+      ],
+      "date": "2013-05-16"
     },
     {
       "id": "lib-inception",
@@ -1450,9 +1684,33 @@
       "poster_query": "Inception",
       "added": "2026-10-23",
       "release_sync": {
-        "status": "unresolved",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
-      }
+        "provider": "tmdb",
+        "id": 27205,
+        "identity": "inception:",
+        "url": "https://www.themoviedb.org/movie/27205",
+        "managedDate": true,
+        "region": "RU",
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
+      },
+      "premieres": [
+        {
+          "date": "2010-07-22",
+          "type": 3,
+          "region": "RU"
+        },
+        {
+          "date": "2020-08-13",
+          "type": 3,
+          "region": "RU"
+        },
+        {
+          "date": "2010-12-07",
+          "type": 5,
+          "region": "RU"
+        }
+      ],
+      "date": "2010-07-22"
     },
     {
       "id": "lib-shutter-island",
@@ -1487,10 +1745,12 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 11324,
+        "identity": "shutterisland:",
         "url": "https://www.themoviedb.org/movie/11324",
         "managedDate": true,
         "region": "RU",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -1526,9 +1786,23 @@
       "poster_query": "Aladdin 2019",
       "added": "2026-10-23",
       "release_sync": {
-        "status": "unresolved",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
-      }
+        "provider": "tmdb",
+        "id": 420817,
+        "identity": "aladdin:2019",
+        "url": "https://www.themoviedb.org/movie/420817",
+        "managedDate": true,
+        "region": "RU",
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
+      },
+      "premieres": [
+        {
+          "date": "2019-05-23",
+          "type": 1,
+          "region": "RU"
+        }
+      ],
+      "date": "2019-05-23"
     },
     {
       "id": "lib-operation-fortune-ruse-de-guerre",
@@ -1548,10 +1822,12 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 739405,
+        "identity": "operationfortunerusedeguerre:",
         "url": "https://www.themoviedb.org/movie/739405",
         "managedDate": true,
         "region": "RU",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -1562,9 +1838,17 @@
       "poster_query": "The Covenant 2023",
       "added": "2026-10-23",
       "release_sync": {
-        "status": "unresolved",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
-      }
+        "provider": "tmdb",
+        "id": 1266409,
+        "identity": "thecovenant:2023",
+        "url": "https://www.themoviedb.org/movie/1266409",
+        "managedDate": true,
+        "region": "WORLD",
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
+      },
+      "premieres": [],
+      "date": "2023-12-01"
     },
     {
       "id": "lib-king-arthur-legend-of-the-sword",
@@ -1574,9 +1858,28 @@
       "poster_query": "King Arthur: Legend of the Sword",
       "added": "2026-10-23",
       "release_sync": {
-        "status": "unresolved",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
-      }
+        "provider": "tmdb",
+        "id": 274857,
+        "identity": "kingarthurlegendofthesword:",
+        "url": "https://www.themoviedb.org/movie/274857",
+        "managedDate": true,
+        "region": "RU",
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
+      },
+      "premieres": [
+        {
+          "date": "2017-05-11",
+          "type": 3,
+          "region": "RU"
+        },
+        {
+          "date": "2017-07-26",
+          "type": 4,
+          "region": "RU"
+        }
+      ],
+      "date": "2017-07-26"
     },
     {
       "id": "lib-the-man-from-u-n-c-l-e",
@@ -1596,10 +1899,12 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 203801,
+        "identity": "themanfromuncle:",
         "url": "https://www.themoviedb.org/movie/203801",
         "managedDate": true,
         "region": "RU",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -1639,9 +1944,33 @@
       "poster_query": "Revolver 2005",
       "added": "2026-10-23",
       "release_sync": {
-        "status": "unresolved",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
-      }
+        "provider": "tmdb",
+        "id": 10851,
+        "identity": "revolver:2005",
+        "url": "https://www.themoviedb.org/movie/10851",
+        "managedDate": true,
+        "region": "RU",
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
+      },
+      "premieres": [
+        {
+          "date": "2005-09-22",
+          "type": 3,
+          "region": "RU"
+        },
+        {
+          "date": "2023-02-23",
+          "type": 3,
+          "region": "RU"
+        },
+        {
+          "date": "2009-12-24",
+          "type": 5,
+          "region": "RU"
+        }
+      ],
+      "date": "2005-09-22"
     },
     {
       "id": "lib-rocknrolla",
@@ -1661,10 +1990,12 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 13809,
+        "identity": "rocknrolla:",
         "url": "https://www.themoviedb.org/movie/13809",
         "managedDate": true,
         "region": "RU",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -1697,10 +2028,12 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 100,
+        "identity": "lockstockandtwosmokingbarrels:",
         "url": "https://www.themoviedb.org/movie/100",
         "managedDate": true,
         "region": "RU",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -1726,10 +2059,12 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 273248,
+        "identity": "thehatefuleight:",
         "url": "https://www.themoviedb.org/movie/273248",
         "managedDate": true,
         "region": "RU",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -1740,9 +2075,28 @@
       "poster_query": "Inglourious Basterds",
       "added": "2026-10-23",
       "release_sync": {
-        "status": "unresolved",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
-      }
+        "provider": "tmdb",
+        "id": 16869,
+        "identity": "inglouriousbasterds:",
+        "url": "https://www.themoviedb.org/movie/16869",
+        "managedDate": true,
+        "region": "RU",
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
+      },
+      "premieres": [
+        {
+          "date": "2009-08-20",
+          "type": 3,
+          "region": "RU"
+        },
+        {
+          "date": "2009-12-08",
+          "type": 5,
+          "region": "RU"
+        }
+      ],
+      "date": "2009-08-20"
     },
     {
       "id": "lib-pulp-fiction",
@@ -1777,10 +2131,12 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 680,
+        "identity": "pulpfiction:",
         "url": "https://www.themoviedb.org/movie/680",
         "managedDate": true,
         "region": "RU",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -1806,10 +2162,12 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 152532,
+        "identity": "dallasbuyersclub:",
         "url": "https://www.themoviedb.org/movie/152532",
         "managedDate": true,
         "region": "RU",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -1830,10 +2188,12 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 10661,
+        "identity": "youdontmesswiththezohan:",
         "url": "https://www.themoviedb.org/movie/10661",
         "managedDate": true,
         "region": "RU",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -1859,10 +2219,12 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 50546,
+        "identity": "justgowithit:",
         "url": "https://www.themoviedb.org/movie/50546",
         "managedDate": true,
         "region": "US",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -1888,10 +2250,12 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 9339,
+        "identity": "click:2006",
         "url": "https://www.themoviedb.org/movie/9339",
         "managedDate": true,
         "region": "US",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -1902,9 +2266,28 @@
       "poster_query": "Grown Ups 2010",
       "added": "2026-10-23",
       "release_sync": {
-        "status": "unresolved",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
-      }
+        "provider": "tmdb",
+        "id": 38365,
+        "identity": "grownups:2010",
+        "url": "https://www.themoviedb.org/movie/38365",
+        "managedDate": true,
+        "region": "US",
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
+      },
+      "premieres": [
+        {
+          "date": "2010-06-24",
+          "type": 3,
+          "region": "US"
+        },
+        {
+          "date": "2010-11-09",
+          "type": 5,
+          "region": "US"
+        }
+      ],
+      "date": "2010-06-24"
     },
     {
       "id": "lib-grown-ups-2",
@@ -1929,10 +2312,12 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 109418,
+        "identity": "grownups2:",
         "url": "https://www.themoviedb.org/movie/109418",
         "managedDate": true,
         "region": "RU",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -1968,10 +2353,12 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 120,
+        "identity": "thelordoftheringsthefellowshipofthering:",
         "url": "https://www.themoviedb.org/movie/120",
         "managedDate": true,
         "region": "RU",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -2007,10 +2394,12 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 121,
+        "identity": "thelordoftheringsthetwotowers:",
         "url": "https://www.themoviedb.org/movie/121",
         "managedDate": true,
         "region": "RU",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -2046,10 +2435,12 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 122,
+        "identity": "thelordoftheringsthereturnoftheking:",
         "url": "https://www.themoviedb.org/movie/122",
         "managedDate": true,
         "region": "RU",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -2070,10 +2461,12 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 49051,
+        "identity": "thehobbitanunexpectedjourney:",
         "url": "https://www.themoviedb.org/movie/49051",
         "managedDate": true,
         "region": "RU",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -2094,10 +2487,12 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 57158,
+        "identity": "thehobbitthedesolationofsmaug:",
         "url": "https://www.themoviedb.org/movie/57158",
         "managedDate": true,
         "region": "RU",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -2118,10 +2513,12 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 122917,
+        "identity": "thehobbitthebattleofthefivearmies:",
         "url": "https://www.themoviedb.org/movie/122917",
         "managedDate": true,
         "region": "RU",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -2200,9 +2597,28 @@
       "poster_query": "Gladiator 2000",
       "added": "2026-10-23",
       "release_sync": {
-        "status": "unresolved",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
-      }
+        "provider": "tmdb",
+        "id": 98,
+        "identity": "gladiator:2000",
+        "url": "https://www.themoviedb.org/movie/98",
+        "managedDate": true,
+        "region": "RU",
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
+      },
+      "premieres": [
+        {
+          "date": "2000-05-18",
+          "type": 3,
+          "region": "RU"
+        },
+        {
+          "date": "2009-10-06",
+          "type": 5,
+          "region": "RU"
+        }
+      ],
+      "date": "2000-05-18"
     },
     {
       "id": "lib-harry-potter-and-the-philosopher-s-stone",
@@ -2232,10 +2648,12 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 671,
+        "identity": "harrypotterandthephilosophersstone:",
         "url": "https://www.themoviedb.org/movie/671",
         "managedDate": true,
         "region": "RU",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -2266,10 +2684,12 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 672,
+        "identity": "harrypotterandthechamberofsecrets:",
         "url": "https://www.themoviedb.org/movie/672",
         "managedDate": true,
         "region": "RU",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -2334,10 +2754,12 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 674,
+        "identity": "harrypotterandthegobletoffire:",
         "url": "https://www.themoviedb.org/movie/674",
         "managedDate": true,
         "region": "RU",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -2368,10 +2790,12 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 675,
+        "identity": "harrypotterandtheorderofthephoenix:",
         "url": "https://www.themoviedb.org/movie/675",
         "managedDate": true,
         "region": "RU",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -2397,10 +2821,12 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 767,
+        "identity": "harrypotterandthehalfbloodprince:",
         "url": "https://www.themoviedb.org/movie/767",
         "managedDate": true,
         "region": "RU",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -2411,9 +2837,33 @@
       "poster_query": "Harry Potter and the Deathly Hallows: Part 1",
       "added": "2026-10-23",
       "release_sync": {
-        "status": "unresolved",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
-      }
+        "provider": "tmdb",
+        "id": 12444,
+        "identity": "harrypotterandthedeathlyhallowspart1:",
+        "url": "https://www.themoviedb.org/movie/12444",
+        "managedDate": true,
+        "region": "RU",
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
+      },
+      "premieres": [
+        {
+          "date": "2010-11-19",
+          "type": 3,
+          "region": "RU"
+        },
+        {
+          "date": "2011-04-14",
+          "type": 5,
+          "region": "RU"
+        },
+        {
+          "date": "2011-05-12",
+          "type": 5,
+          "region": "RU"
+        }
+      ],
+      "date": "2010-11-19"
     },
     {
       "id": "lib-harry-potter-and-the-deathly-hallows-part-2",
@@ -2423,9 +2873,28 @@
       "poster_query": "Harry Potter and the Deathly Hallows: Part 2",
       "added": "2026-10-23",
       "release_sync": {
-        "status": "unresolved",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
-      }
+        "provider": "tmdb",
+        "id": 12445,
+        "identity": "harrypotterandthedeathlyhallowspart2:",
+        "url": "https://www.themoviedb.org/movie/12445",
+        "managedDate": true,
+        "region": "RU",
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
+      },
+      "premieres": [
+        {
+          "date": "2011-07-13",
+          "type": 3,
+          "region": "RU"
+        },
+        {
+          "date": "2011-11-17",
+          "type": 5,
+          "region": "RU"
+        }
+      ],
+      "date": "2011-07-13"
     },
     {
       "id": "lib-pirates-of-the-caribbean-the-curse-of-the-black-pearl",
@@ -2455,10 +2924,12 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 22,
+        "identity": "piratesofthecaribbeanthecurseoftheblackpearl:",
         "url": "https://www.themoviedb.org/movie/22",
         "managedDate": true,
         "region": "RU",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -2489,10 +2960,12 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 58,
+        "identity": "piratesofthecaribbeandeadmanschest:",
         "url": "https://www.themoviedb.org/movie/58",
         "managedDate": true,
         "region": "RU",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -2523,10 +2996,12 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 285,
+        "identity": "piratesofthecaribbeanatworldsend:",
         "url": "https://www.themoviedb.org/movie/285",
         "managedDate": true,
         "region": "RU",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -2552,10 +3027,12 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 1865,
+        "identity": "piratesofthecaribbeanonstrangertides:",
         "url": "https://www.themoviedb.org/movie/1865",
         "managedDate": true,
         "region": "RU",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -2581,10 +3058,12 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 166426,
+        "identity": "piratesofthecaribbeandeadmentellnotales:",
         "url": "https://www.themoviedb.org/movie/166426",
         "managedDate": true,
         "region": "RU",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -2605,10 +3084,12 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 50348,
+        "identity": "thelincolnlawyer:",
         "url": "https://www.themoviedb.org/movie/50348",
         "managedDate": true,
         "region": "RU",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -2643,9 +3124,23 @@
       "poster_query": "The Game 1997",
       "added": "2026-10-23",
       "release_sync": {
-        "status": "unresolved",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
-      }
+        "provider": "tmdb",
+        "id": 2649,
+        "identity": "thegame:1997",
+        "url": "https://www.themoviedb.org/movie/2649",
+        "managedDate": true,
+        "region": "RU",
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
+      },
+      "premieres": [
+        {
+          "date": "1998-06-01",
+          "type": 5,
+          "region": "RU"
+        }
+      ],
+      "date": "1998-06-01"
     },
     {
       "id": "lib-argylle",
@@ -2665,10 +3160,12 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 848538,
+        "identity": "argylle:",
         "url": "https://www.themoviedb.org/movie/848538",
         "managedDate": true,
         "region": "RU",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -2689,10 +3186,12 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 207703,
+        "identity": "kingsmanthesecretservice:",
         "url": "https://www.themoviedb.org/movie/207703",
         "managedDate": true,
         "region": "RU",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -2713,10 +3212,12 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 343668,
+        "identity": "kingsmanthegoldencircle:",
         "url": "https://www.themoviedb.org/movie/343668",
         "managedDate": true,
         "region": "RU",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -2737,10 +3238,12 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 476669,
+        "identity": "thekingsman:",
         "url": "https://www.themoviedb.org/movie/476669",
         "managedDate": true,
         "region": "RU",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -2798,8 +3301,10 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 999592,
+        "identity": "рождениеимперии:",
         "url": "https://www.themoviedb.org/movie/999592",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -2849,10 +3354,12 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 1124,
+        "identity": "престиж:",
         "url": "https://www.themoviedb.org/movie/1124",
         "managedDate": true,
         "region": "RU",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -2873,8 +3380,10 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 1381273,
+        "identity": "бумажныйтигр:",
         "url": "https://www.themoviedb.org/movie/1381273",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -2905,10 +3414,12 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 354912,
+        "identity": "тайнакоко:",
         "url": "https://www.themoviedb.org/movie/354912",
         "managedDate": true,
         "region": "RU",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -2928,10 +3439,12 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 693134,
+        "identity": "дюначастьвторая:",
         "url": "https://www.themoviedb.org/movie/693134",
         "managedDate": true,
         "region": "RU",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -2954,9 +3467,28 @@
       "note": "Боевик Сэма Харгрейва с Джоном Синой по мотивам игрушечных машинок Mattel. Вышел на Apple TV 9 октября 2026 (iTC, Notebookcheck).",
       "poster_query": "Matchbox The Movie",
       "release_sync": {
-        "status": "unresolved",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
-      }
+        "provider": "tmdb",
+        "id": 1148365,
+        "identity": "matchboxthemovie:",
+        "url": "https://www.themoviedb.org/movie/1148365",
+        "managedDate": true,
+        "region": "US",
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
+      },
+      "premieres": [
+        {
+          "date": "2026-10-05",
+          "type": 1,
+          "region": "US"
+        },
+        {
+          "date": "2026-10-08",
+          "type": 4,
+          "region": "US"
+        }
+      ],
+      "date": "2026-10-08"
     },
     {
       "id": "kurer-runner-2026",
@@ -2990,10 +3522,12 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 860508,
+        "identity": "thewhisperman:2026",
         "url": "https://www.themoviedb.org/movie/860508",
         "managedDate": true,
         "region": "US",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -3052,10 +3586,12 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 120467,
+        "identity": "отельграндбудапешт:",
         "url": "https://www.themoviedb.org/movie/120467",
         "managedDate": true,
         "region": "RU",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -3080,10 +3616,12 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 359724,
+        "identity": "fordпротивferrari:",
         "url": "https://www.themoviedb.org/movie/359724",
         "managedDate": true,
         "region": "RU",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -3103,10 +3641,12 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 8321,
+        "identity": "залечьнадновбрюгге:",
         "url": "https://www.themoviedb.org/movie/8321",
         "managedDate": true,
         "region": "RU",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -3137,10 +3677,12 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 245891,
+        "identity": "джонуик:",
         "url": "https://www.themoviedb.org/movie/245891",
         "managedDate": true,
         "region": "RU",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -3167,10 +3709,12 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 162,
+        "identity": "edwardscissorhands:",
         "url": "https://www.themoviedb.org/movie/162",
         "managedDate": true,
         "region": "US",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -3196,8 +3740,10 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 1446602,
+        "identity": "навар:",
         "url": "https://www.themoviedb.org/movie/1446602",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -3217,10 +3763,12 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 333339,
+        "identity": "первомуигрокуприготовиться:",
         "url": "https://www.themoviedb.org/movie/333339",
         "managedDate": true,
         "region": "RU",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -3266,8 +3814,10 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 1290000,
+        "identity": "женаипес:",
         "url": "https://www.themoviedb.org/movie/1290000",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     },
     {
@@ -3296,8 +3846,10 @@
       "release_sync": {
         "provider": "tmdb",
         "id": 1567605,
+        "identity": "ebenezer:2026",
         "url": "https://www.themoviedb.org/movie/1567605",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "schema": 2,
+        "checkedAt": "2026-11-18T09:43:44.735Z"
       }
     }
   ]
