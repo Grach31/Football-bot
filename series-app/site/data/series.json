@@ -100,7 +100,7 @@
       "service": "Wink",
       "season": 1,
       "status": "airing",
-      "watching": true,
+      "watching": false,
       "mine": "watching",
       "total": 8,
       "date": "2026-11-13",
@@ -151,7 +151,9 @@
         "url": "https://www.themoviedb.org/tv/337738",
         "schema": 2,
         "checkedAt": "2026-11-18T09:43:44.735Z"
-      }
+      },
+      "archive_release_key": "",
+      "viewing_shared": true
     },
     {
       "id": "taynyy-gorod-2026",
@@ -371,7 +373,10 @@
             "code": "provider_http_402"
           }
         ]
-      }
+      },
+      "watching": false,
+      "archive_release_key": "series:1:6:2026-10-29:6",
+      "viewing_shared": true
     },
     {
       "id": "korol-talsy",
@@ -433,7 +438,10 @@
         "url": "https://www.themoviedb.org/tv/153312",
         "schema": 2,
         "checkedAt": "2026-11-18T09:43:44.735Z"
-      }
+      },
+      "watching": true,
+      "archive_release_key": "",
+      "viewing_shared": true
     },
     {
       "id": "gangsterlend",
@@ -496,7 +504,10 @@
         "url": "https://www.themoviedb.org/tv/247718",
         "schema": 2,
         "checkedAt": "2026-11-18T09:43:44.735Z"
-      }
+      },
+      "watching": true,
+      "archive_release_key": "",
+      "viewing_shared": true
     },
     {
       "id": "zvezdy-v-dzhunglyah",
@@ -562,7 +573,10 @@
             "code": "provider_http_402"
           }
         ]
-      }
+      },
+      "watching": true,
+      "archive_release_key": "",
+      "viewing_shared": true
     },
     {
       "id": "otryad-731",
@@ -618,7 +632,10 @@
         "url": "https://www.themoviedb.org/tv/337067",
         "schema": 2,
         "checkedAt": "2026-11-18T09:43:44.735Z"
-      }
+      },
+      "watching": false,
+      "archive_release_key": "series:1:8:2026-10-29:8",
+      "viewing_shared": true
     },
     {
       "id": "garri-potter",
@@ -1633,7 +1650,10 @@
         "url": "https://www.themoviedb.org/tv/318560",
         "schema": 2,
         "checkedAt": "2026-11-18T09:43:44.735Z"
-      }
+      },
+      "watching": true,
+      "archive_release_key": "",
+      "viewing_shared": true
     },
     {
       "id": "rezervaciya",
@@ -2916,7 +2936,10 @@
             "code": "provider_http_402"
           }
         ]
-      }
+      },
+      "watching": true,
+      "archive_release_key": "",
+      "viewing_shared": true
     },
     {
       "id": "furiya",
@@ -3733,7 +3756,10 @@
         "url": "https://www.themoviedb.org/tv/318558",
         "schema": 2,
         "checkedAt": "2026-11-18T09:43:44.735Z"
-      }
+      },
+      "watching": true,
+      "archive_release_key": "",
+      "viewing_shared": true
     },
     {
       "id": "tonnel-2025",
