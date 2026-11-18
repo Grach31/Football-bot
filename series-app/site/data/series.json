@@ -199,7 +199,37 @@
       "note": "Мистический экшен по романам Вадима Панова. Премьера 23 ноября 2026 на ТНТ и Кинопоиске. 8 серий, по одной с понедельника по четверг; график: https://matchtv.ru/cinema/matchtvnews_NI2383375_TNT_i_Kinopoisk_predstavili_finalnyj_trejler_i_novyje_postery_seriala_Tajnyj_gorod",
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "checkedAt": "2026-11-18T11:06:49.129Z",
+        "schema": 2,
+        "candidates": [
+          {
+            "provider": "tmdb",
+            "id": 318009,
+            "title": "Тайный город",
+            "original": "Тайный город",
+            "year": 2026
+          },
+          {
+            "provider": "tmdb",
+            "id": 62149,
+            "title": "Тайный город",
+            "original": "Тайный город",
+            "year": 2014
+          },
+          {
+            "provider": "tmdb",
+            "id": 66357,
+            "title": "Тайный город",
+            "original": "Secret City",
+            "year": 2016
+          }
+        ],
+        "issues": [
+          {
+            "provider": "kinopoisk",
+            "code": "provider_http_402"
+          }
+        ]
       }
     },
     {
@@ -307,7 +337,38 @@
         "provider": "kinopoisk",
         "id": 8545317,
         "url": "https://www.kinopoisk.ru/series/8545317/",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "checkedAt": "2026-11-18T11:06:49.129Z",
+        "schema": 2,
+        "status": "unresolved",
+        "candidates": [
+          {
+            "provider": "tmdb",
+            "id": 112766,
+            "title": "Полдень",
+            "original": "Midi trente",
+            "year": 1972
+          },
+          {
+            "provider": "tmdb",
+            "id": 318010,
+            "title": "Полдень",
+            "original": "Полдень",
+            "year": 2026
+          },
+          {
+            "provider": "tmdb",
+            "id": 53005,
+            "title": "Тени исчезают в полдень",
+            "original": "Тени исчезают в полдень",
+            "year": 1972
+          }
+        ],
+        "issues": [
+          {
+            "provider": "kinopoisk",
+            "code": "provider_http_402"
+          }
+        ]
       }
     },
     {
@@ -490,7 +551,15 @@
       "seen_ep_season": 1,
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "checkedAt": "2026-11-18T11:06:49.129Z",
+        "schema": 2,
+        "candidates": [],
+        "issues": [
+          {
+            "provider": "kinopoisk",
+            "code": "provider_http_402"
+          }
+        ]
       }
     },
     {
@@ -668,7 +737,15 @@
       "note": "Съёмки завершены. Netflix убрал сериал из планов на 2026, ориентир: весна или лето 2027.",
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "checkedAt": "2026-11-18T11:06:49.129Z",
+        "schema": 2,
+        "candidates": [],
+        "issues": [
+          {
+            "provider": "kinopoisk",
+            "code": "provider_http_402"
+          }
+        ]
       }
     },
     {
@@ -756,7 +833,38 @@
         "provider": "kinopoisk",
         "id": 5591410,
         "url": "https://www.kinopoisk.ru/series/5591410/",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "checkedAt": "2026-11-18T11:06:49.129Z",
+        "schema": 2,
+        "status": "unresolved",
+        "candidates": [
+          {
+            "provider": "tmdb",
+            "id": 255661,
+            "title": "Молодой Шерлок",
+            "original": "Young Sherlock",
+            "year": 2026
+          },
+          {
+            "provider": "tmdb",
+            "id": 80163,
+            "title": "Молодой Шерлок",
+            "original": "少年神探狄仁杰",
+            "year": 2014
+          },
+          {
+            "provider": "tmdb",
+            "id": 37672,
+            "title": "Молодой Шерлок: Тайна усадьбы",
+            "original": "Young Sherlock: The Mystery of the Manor House",
+            "year": 1982
+          }
+        ],
+        "issues": [
+          {
+            "provider": "kinopoisk",
+            "code": "provider_http_402"
+          }
+        ]
       }
     },
     {
@@ -786,7 +894,15 @@
       "mine": "want",
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "checkedAt": "2026-11-18T11:06:49.129Z",
+        "schema": 2,
+        "candidates": [],
+        "issues": [
+          {
+            "provider": "kinopoisk",
+            "code": "provider_http_402"
+          }
+        ]
       }
     },
     {
@@ -813,7 +929,15 @@
       "note": "Режиссёр Жора Крыжовников объявил запуск 2 сезона (постер «Кровавая двойка»), даты выхода и площадки пока нет (Кино Mail).",
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "checkedAt": "2026-11-18T11:06:49.129Z",
+        "schema": 2,
+        "candidates": [],
+        "issues": [
+          {
+            "provider": "kinopoisk",
+            "code": "provider_http_402"
+          }
+        ]
       }
     },
     {
@@ -865,7 +989,31 @@
         "id": 5106448,
         "url": "https://www.kinopoisk.ru/series/5106448/",
         "managedSeason": 1,
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "checkedAt": "2026-11-18T11:06:49.129Z",
+        "schema": 2,
+        "status": "unresolved",
+        "candidates": [
+          {
+            "provider": "tmdb",
+            "id": 216082,
+            "title": "Нулевой день",
+            "original": "Zero Day",
+            "year": 2025
+          },
+          {
+            "provider": "tmdb",
+            "id": 259823,
+            "title": "Нулевой день",
+            "original": "零日攻擊",
+            "year": 2025
+          }
+        ],
+        "issues": [
+          {
+            "provider": "kinopoisk",
+            "code": "provider_http_402"
+          }
+        ]
       }
     },
     {
@@ -1141,7 +1289,23 @@
       "poster": "custom/segun.jpg",
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "checkedAt": "2026-11-18T11:06:49.129Z",
+        "schema": 2,
+        "candidates": [
+          {
+            "provider": "tmdb",
+            "id": 79068,
+            "title": "Второе солнце",
+            "original": "Segundo Sol",
+            "year": 2018
+          }
+        ],
+        "issues": [
+          {
+            "provider": "kinopoisk",
+            "code": "provider_http_402"
+          }
+        ]
       }
     },
     {
@@ -1894,7 +2058,45 @@
         "id": 581937,
         "url": "https://www.kinopoisk.ru/series/581937/",
         "managedSeason": 6,
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "checkedAt": "2026-11-18T11:06:49.129Z",
+        "schema": 2,
+        "status": "unresolved",
+        "candidates": [
+          {
+            "provider": "tmdb",
+            "id": 1425,
+            "title": "Карточный домик",
+            "original": "House of Cards",
+            "year": 2013
+          },
+          {
+            "provider": "tmdb",
+            "id": 21720,
+            "title": "Карточный домик",
+            "original": "House of Cards",
+            "year": 1990
+          },
+          {
+            "provider": "tmdb",
+            "id": 77041,
+            "title": "Окончательное решение",
+            "original": "The Final Cut",
+            "year": 1995
+          },
+          {
+            "provider": "tmdb",
+            "id": 13868,
+            "title": "Зайти с короля",
+            "original": "To Play the King",
+            "year": 1993
+          }
+        ],
+        "issues": [
+          {
+            "provider": "kinopoisk",
+            "code": "provider_http_402"
+          }
+        ]
       }
     },
     {
@@ -2317,7 +2519,52 @@
         "id": 44217,
         "url": "https://www.themoviedb.org/tv/44217",
         "managedSeason": 6,
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "checkedAt": "2026-11-18T11:06:49.129Z",
+        "schema": 2,
+        "status": "unresolved",
+        "candidates": [
+          {
+            "provider": "tmdb",
+            "id": 44217,
+            "title": "Викинги",
+            "original": "Vikings",
+            "year": 2013
+          },
+          {
+            "provider": "tmdb",
+            "id": 116135,
+            "title": "Викинги: Вальхалла",
+            "original": "Vikings: Valhalla",
+            "year": 2022
+          },
+          {
+            "provider": "tmdb",
+            "id": 68902,
+            "title": "Real Vikings",
+            "original": "Real Vikings",
+            "year": 2016
+          },
+          {
+            "provider": "tmdb",
+            "id": 273096,
+            "title": "Les mythes vikings",
+            "original": "Les mythes vikings",
+            "year": 2024
+          },
+          {
+            "provider": "tmdb",
+            "id": 61856,
+            "title": "Vikings",
+            "original": "Vikings",
+            "year": 2012
+          }
+        ],
+        "issues": [
+          {
+            "provider": "kinopoisk",
+            "code": "provider_http_402"
+          }
+        ]
       }
     },
     {
@@ -2331,7 +2578,37 @@
       "added": "2026-10-23",
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "checkedAt": "2026-11-18T11:06:49.129Z",
+        "schema": 2,
+        "candidates": [
+          {
+            "provider": "tmdb",
+            "id": 64466,
+            "title": "Сладкая Жизнь",
+            "original": "Сладкая Жизнь",
+            "year": 2014
+          },
+          {
+            "provider": "tmdb",
+            "id": 80826,
+            "title": "Сладкая жизнь",
+            "original": "ハッピーシュガーライフ",
+            "year": 2018
+          },
+          {
+            "provider": "tmdb",
+            "id": 130706,
+            "title": "Сладкая жизнь: Лос-Анджелес",
+            "original": "Sweet Life: Los Angeles",
+            "year": 2021
+          }
+        ],
+        "issues": [
+          {
+            "provider": "kinopoisk",
+            "code": "provider_http_402"
+          }
+        ]
       }
     },
     {
@@ -2400,7 +2677,45 @@
         "id": 61068,
         "url": "https://www.themoviedb.org/tv/61068",
         "managedSeason": 5,
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "checkedAt": "2026-11-18T11:06:49.129Z",
+        "schema": 2,
+        "status": "unresolved",
+        "candidates": [
+          {
+            "provider": "tmdb",
+            "id": 314677,
+            "title": "Gomorrah Collection",
+            "original": "Gomorrah Collection",
+            "year": 2026
+          },
+          {
+            "provider": "tmdb",
+            "id": 61068,
+            "title": "Гоморра",
+            "original": "Gomorra - La serie",
+            "year": 2014
+          },
+          {
+            "provider": "tmdb",
+            "id": 293550,
+            "title": "Гоморра – истоки",
+            "original": "Gomorra - Le Origini",
+            "year": 2026
+          },
+          {
+            "provider": "tmdb",
+            "id": 136863,
+            "title": "Una storia chiamata Gomorra - La serie",
+            "original": "Una storia chiamata Gomorra - La serie",
+            "year": 2021
+          }
+        ],
+        "issues": [
+          {
+            "provider": "kinopoisk",
+            "code": "provider_http_402"
+          }
+        ]
       }
     },
     {
@@ -2574,7 +2889,31 @@
         "provider": "kinopoisk",
         "id": 523279,
         "url": "https://www.kinopoisk.ru/series/523279/",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "checkedAt": "2026-11-18T11:06:49.129Z",
+        "schema": 2,
+        "status": "unresolved",
+        "candidates": [
+          {
+            "provider": "tmdb",
+            "id": 299981,
+            "title": "Ставка на любовь",
+            "original": "Ставка на любовь",
+            "year": 2025
+          },
+          {
+            "provider": "tmdb",
+            "id": 13918,
+            "title": "Ставка на любовь",
+            "original": "Apuesta por un amor",
+            "year": 2004
+          }
+        ],
+        "issues": [
+          {
+            "provider": "kinopoisk",
+            "code": "provider_http_402"
+          }
+        ]
       }
     },
     {
@@ -2588,7 +2927,37 @@
       "note": "Точная дата не названа, премьера запланирована до конца 2026 (Click-or-Die).",
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "checkedAt": "2026-11-18T11:06:49.129Z",
+        "schema": 2,
+        "candidates": [
+          {
+            "provider": "tmdb",
+            "id": 280880,
+            "title": "Фурия",
+            "original": "Furia",
+            "year": 2025
+          },
+          {
+            "provider": "tmdb",
+            "id": 130219,
+            "title": "Фурия",
+            "original": "Furia",
+            "year": 2021
+          },
+          {
+            "provider": "tmdb",
+            "id": 250579,
+            "title": "Фурия",
+            "original": "Фурия",
+            "year": null
+          }
+        ],
+        "issues": [
+          {
+            "provider": "kinopoisk",
+            "code": "provider_http_402"
+          }
+        ]
       }
     },
     {
@@ -2601,7 +2970,51 @@
       "added": "2026-10-23",
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "checkedAt": "2026-11-18T11:06:49.129Z",
+        "schema": 2,
+        "candidates": [
+          {
+            "provider": "tmdb",
+            "id": 87108,
+            "title": "Чернобыль",
+            "original": "Chernobyl",
+            "year": 2019
+          },
+          {
+            "provider": "tmdb",
+            "id": 196108,
+            "title": "Чернобыль",
+            "original": "Чернобыль",
+            "year": 2022
+          },
+          {
+            "provider": "tmdb",
+            "id": 64542,
+            "title": "Чернобыль: Зона отчуждения",
+            "original": "Чернобыль: Зона отчуждения",
+            "year": 2014
+          },
+          {
+            "provider": "tmdb",
+            "id": 313406,
+            "title": "Чернобыль: в эпицентре катастрофы",
+            "original": "Chernobyl: Inside the Meltdown",
+            "year": 2026
+          },
+          {
+            "provider": "tmdb",
+            "id": 313437,
+            "title": "Чернобыль: дни, которые потрясли мир",
+            "original": "Chernobyl: Days That Shocked the World",
+            "year": 2026
+          }
+        ],
+        "issues": [
+          {
+            "provider": "kinopoisk",
+            "code": "provider_http_402"
+          }
+        ]
       }
     },
     {
@@ -2781,7 +3194,51 @@
       "added": "2026-10-26",
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "checkedAt": "2026-11-18T11:06:49.129Z",
+        "schema": 2,
+        "candidates": [
+          {
+            "provider": "tmdb",
+            "id": 71446,
+            "title": "Бумажный дом",
+            "original": "La casa de papel",
+            "year": 2017
+          },
+          {
+            "provider": "tmdb",
+            "id": 112836,
+            "title": "Бумажный дом: Корея",
+            "original": "종이의 집: 공동경제구역",
+            "year": 2022
+          },
+          {
+            "provider": "tmdb",
+            "id": 123732,
+            "title": "Бумажный дом",
+            "original": "Kağıt Ev",
+            "year": 2021
+          },
+          {
+            "provider": "tmdb",
+            "id": 132719,
+            "title": "Бумажный дом: от Токио до Берлина",
+            "original": "La casa de papel: De Tokio a Berlín",
+            "year": 2021
+          },
+          {
+            "provider": "tmdb",
+            "id": 308014,
+            "title": "Берлин и Дама с горностаем",
+            "original": "Berlín y la dama del armiño",
+            "year": 2026
+          }
+        ],
+        "issues": [
+          {
+            "provider": "kinopoisk",
+            "code": "provider_http_402"
+          }
+        ]
       }
     },
     {
@@ -2851,7 +3308,44 @@
       "added": "2026-10-28",
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "checkedAt": "2026-11-18T11:06:49.129Z",
+        "schema": 2,
+        "candidates": [
+          {
+            "provider": "tmdb",
+            "id": 71912,
+            "title": "Ведьмак",
+            "original": "The Witcher",
+            "year": 2019
+          },
+          {
+            "provider": "tmdb",
+            "id": 106541,
+            "title": "Ведьмак: происхождение",
+            "original": "The Witcher: Blood Origin",
+            "year": 2022
+          },
+          {
+            "provider": "tmdb",
+            "id": 108987,
+            "title": "Ведьмак. Как создавались эпизоды",
+            "original": "The Witcher: A Look Inside the Episodes",
+            "year": 2020
+          },
+          {
+            "provider": "tmdb",
+            "id": 17625,
+            "title": "Ведьмак",
+            "original": "Wiedźmin",
+            "year": 2002
+          }
+        ],
+        "issues": [
+          {
+            "provider": "kinopoisk",
+            "code": "provider_http_402"
+          }
+        ]
       }
     },
     {
@@ -2977,7 +3471,23 @@
       "note": "Корейский мистический хоррор-мини-сериал, 8 серий. Все серии вышли на Netflix 30 октября 2026 (Лайфхакер, Metaratings).",
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "checkedAt": "2026-11-18T11:06:49.129Z",
+        "schema": 2,
+        "candidates": [
+          {
+            "provider": "tmdb",
+            "id": 289517,
+            "title": "Работа с призрачными перспективами",
+            "original": "꿀알바",
+            "year": 2026
+          }
+        ],
+        "issues": [
+          {
+            "provider": "kinopoisk",
+            "code": "provider_http_402"
+          }
+        ]
       }
     },
     {
@@ -3272,7 +3782,44 @@
       "note": "Российский криминальный триллер с Елизаветой Боярской. Премьера на KION 1 декабря 2025; 8 эпизодов, финал 19 декабря 2025. Источник: https://kion.ru/serial/tonnel",
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-18T09:21:13.938Z"
+        "checkedAt": "2026-11-18T11:06:49.129Z",
+        "schema": 2,
+        "candidates": [
+          {
+            "provider": "tmdb",
+            "id": 70440,
+            "title": "Тоннель",
+            "original": "터널",
+            "year": 2017
+          },
+          {
+            "provider": "tmdb",
+            "id": 307938,
+            "title": "Тоннель",
+            "original": "Тоннель",
+            "year": 2025
+          },
+          {
+            "provider": "tmdb",
+            "id": 318362,
+            "title": "Тоннель",
+            "original": "Тоннель",
+            "year": null
+          },
+          {
+            "provider": "tmdb",
+            "id": 100870,
+            "title": "Туннель",
+            "original": "Tunnel",
+            "year": 2019
+          }
+        ],
+        "issues": [
+          {
+            "provider": "kinopoisk",
+            "code": "provider_http_402"
+          }
+        ]
       }
     },
     {
