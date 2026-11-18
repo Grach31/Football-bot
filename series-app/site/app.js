@@ -1,4 +1,20 @@
 'use strict';
+/* The old Pages publication still serves the shared catalog and posters.
+   Redirect only its UI; explicit on-device migration screens remain available. */
+(function () {
+  if (location.origin !== 'https://grach31.github.io') return;
+  const hash = location.hash || '#/week';
+  if (/^#\/family-link\/[0-9a-f-]{36}$/.test(hash) || hash === '#/family-marks') return;
+  const settings = /^#\/(subs|notify|jf|token)$/.exec(hash);
+  const aliases = {'#/week':'', '#/cal':'', '#/settings':'settings', '#/list':'mine/series', '#/posters':'mine/series', '#/movies':'mine/movies', '#/lib':'mine/server', '#/search':'mine/series'};
+  let target = '#/module/cinema';
+  if (settings) target = '#/settings/cinema/' + settings[1];
+  else if (hash === '#/settings') target = '#/settings';
+  else if (Object.hasOwn(aliases, hash)) target += aliases[hash] ? '/' + aliases[hash] : '';
+  else if (/^#\/(s|m|d)\/[^/?#]{1,600}$/.test(hash) || /^#\/(mine\/(series|movies|server)|random|discover|add|addm)$/.test(hash)) target += hash.slice(1);
+  location.replace('https://grach-family-space-preview.pages.dev/' + target);
+}());
+
 /* Explicit, one-time handoff from the old origin; never an automatic credential export. */
 function familyLinkView(nonce) {
   if (!/^[0-9a-f-]{36}$/.test(nonce || '') || !window.opener) return '<h1>Подключение Family Space</h1><p>Начните подключение в Family Space → Настройки → Грач Фильм.</p>';
