@@ -263,7 +263,10 @@
             "code": "provider_http_402"
           }
         ]
-      }
+      },
+      "watching": true,
+      "archive_release_key": "",
+      "viewing_shared": true
     },
     {
       "id": "mstiteli-sudnyy-den",
