@@ -1,10 +1,10 @@
 {
-  "checkedAt": "2026-11-18T20:31:13.876Z",
+  "checkedAt": "2026-11-19T00:37:15.926Z",
   "status": "ready",
   "series": {
-    "checked": 1,
-    "updated": 1,
-    "unresolved": 0,
+    "checked": 67,
+    "updated": 48,
+    "unresolved": 19,
     "failed": 0,
     "locked": 1,
     "degraded": 0,
