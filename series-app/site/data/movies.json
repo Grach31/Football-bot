@@ -4399,7 +4399,10 @@
         "url": "https://www.themoviedb.org/movie/999592",
         "schema": 2,
         "checkedAt": "2026-11-19T16:57:55.033Z"
-      }
+      },
+      "watching": true,
+      "archive_release_key": "",
+      "viewing_shared": true
     },
     {
       "id": "otel-u-pogibshego-alpinista-842t",
