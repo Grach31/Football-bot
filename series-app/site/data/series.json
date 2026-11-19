@@ -100,7 +100,7 @@
       "service": "Wink",
       "season": 1,
       "status": "airing",
-      "watching": false,
+      "watching": true,
       "mine": "watching",
       "total": 8,
       "date": "2026-11-13",
