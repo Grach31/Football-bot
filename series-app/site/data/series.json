@@ -89,7 +89,7 @@
         "identity": "полярный:",
         "url": "https://www.themoviedb.org/tv/94947",
         "schema": 2,
-        "checkedAt": "2026-11-19T07:55:32.584Z"
+        "checkedAt": "2026-11-19T16:57:55.033Z"
       },
       "archive_release_key": "",
       "viewing_shared": true
@@ -150,7 +150,7 @@
         "identity": "тяжелыйлюкс:",
         "url": "https://www.themoviedb.org/tv/337738",
         "schema": 2,
-        "checkedAt": "2026-11-19T07:55:32.584Z"
+        "checkedAt": "2026-11-19T16:57:55.033Z"
       },
       "archive_release_key": "",
       "viewing_shared": true
@@ -203,7 +203,7 @@
       "note": "Мистический экшен по романам Вадима Панова. Премьера 23 ноября 2026 на ТНТ и Кинопоиске. 8 серий, по одной с понедельника по четверг; график: https://matchtv.ru/cinema/matchtvnews_NI2383375_TNT_i_Kinopoisk_predstavili_finalnyj_trejler_i_novyje_postery_seriala_Tajnyj_gorod",
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-19T07:55:32.584Z",
+        "checkedAt": "2026-11-19T16:57:55.033Z",
         "schema": 2,
         "candidates": [
           {
@@ -226,37 +226,14 @@
             "title": "Тайный город",
             "original": "Secret City",
             "year": 2016
-          },
-          {
-            "provider": "kinopoisk",
-            "id": 841851,
-            "title": "Тайный город 2",
-            "original": "",
-            "year": 2014
-          },
-          {
-            "provider": "kinopoisk",
-            "id": 843375,
-            "title": "Тайный город 3",
-            "original": "",
-            "year": 2017
-          },
-          {
-            "provider": "kinopoisk",
-            "id": 746564,
-            "title": "Тайный город",
-            "original": "",
-            "year": 2014
-          },
-          {
-            "provider": "kinopoisk",
-            "id": 8613334,
-            "title": "Тайный город",
-            "original": "",
-            "year": 2026
           }
         ],
-        "issues": []
+        "issues": [
+          {
+            "provider": "kinopoisk",
+            "code": "provider_http_402"
+          }
+        ]
       }
     },
     {
@@ -364,7 +341,7 @@
         "provider": "kinopoisk",
         "id": 8545317,
         "url": "https://www.kinopoisk.ru/series/8545317/",
-        "checkedAt": "2026-11-19T07:55:32.584Z",
+        "checkedAt": "2026-11-19T16:57:55.033Z",
         "schema": 2,
         "status": "unresolved",
         "candidates": [
@@ -388,23 +365,14 @@
             "title": "Тени исчезают в полдень",
             "original": "Тени исчезают в полдень",
             "year": 1972
-          },
-          {
-            "provider": "kinopoisk",
-            "id": 256218,
-            "title": "Тени исчезают в полдень",
-            "original": "",
-            "year": 1971
-          },
-          {
-            "provider": "kinopoisk",
-            "id": 653805,
-            "title": "В полдень на пристани",
-            "original": "",
-            "year": 2011
           }
         ],
-        "issues": []
+        "issues": [
+          {
+            "provider": "kinopoisk",
+            "code": "provider_http_402"
+          }
+        ]
       },
       "watching": false,
       "archive_release_key": "series:1:6:2026-10-29:6",
@@ -469,7 +437,7 @@
         "identity": "корольталсы:",
         "url": "https://www.themoviedb.org/tv/153312",
         "schema": 2,
-        "checkedAt": "2026-11-19T07:55:32.584Z"
+        "checkedAt": "2026-11-19T16:57:55.033Z"
       },
       "watching": true,
       "archive_release_key": "",
@@ -535,7 +503,7 @@
         "identity": "гангстерленд:",
         "url": "https://www.themoviedb.org/tv/247718",
         "schema": 2,
-        "checkedAt": "2026-11-19T07:55:32.584Z"
+        "checkedAt": "2026-11-19T16:57:55.033Z"
       },
       "watching": true,
       "archive_release_key": "",
@@ -596,10 +564,15 @@
       "seen_ep_season": 1,
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-19T07:55:32.584Z",
+        "checkedAt": "2026-11-19T16:57:55.033Z",
         "schema": 2,
         "candidates": [],
-        "issues": []
+        "issues": [
+          {
+            "provider": "kinopoisk",
+            "code": "provider_http_402"
+          }
+        ]
       },
       "watching": true,
       "archive_release_key": "",
@@ -658,7 +631,7 @@
         "identity": "отряд731:",
         "url": "https://www.themoviedb.org/tv/337067",
         "schema": 2,
-        "checkedAt": "2026-11-19T07:55:32.584Z"
+        "checkedAt": "2026-11-19T16:57:55.033Z"
       },
       "watching": false,
       "archive_release_key": "series:1:8:2026-10-29:8",
@@ -715,7 +688,7 @@
         "identity": "гаррипоттер:",
         "url": "https://www.themoviedb.org/tv/224377",
         "schema": 2,
-        "checkedAt": "2026-11-19T07:55:32.584Z"
+        "checkedAt": "2026-11-19T16:57:55.033Z"
       },
       "approx": true
     },
@@ -734,7 +707,7 @@
         "url": "https://www.themoviedb.org/tv/224372",
         "managedSeason": 2,
         "schema": 2,
-        "checkedAt": "2026-11-19T07:55:32.584Z"
+        "checkedAt": "2026-11-19T16:57:55.033Z"
       }
     },
     {
@@ -752,7 +725,7 @@
         "url": "https://www.themoviedb.org/tv/100088",
         "managedSeason": 3,
         "schema": 2,
-        "checkedAt": "2026-11-19T07:55:32.584Z"
+        "checkedAt": "2026-11-19T16:57:55.033Z"
       }
     },
     {
@@ -770,7 +743,7 @@
         "url": "https://www.themoviedb.org/tv/106379",
         "managedSeason": 3,
         "schema": 2,
-        "checkedAt": "2026-11-19T07:55:32.584Z"
+        "checkedAt": "2026-11-19T16:57:55.033Z"
       }
     },
     {
@@ -783,10 +756,15 @@
       "note": "Съёмки завершены. Netflix убрал сериал из планов на 2026, ориентир: весна или лето 2027.",
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-19T07:55:32.584Z",
+        "checkedAt": "2026-11-19T16:57:55.033Z",
         "schema": 2,
         "candidates": [],
-        "issues": []
+        "issues": [
+          {
+            "provider": "kinopoisk",
+            "code": "provider_http_402"
+          }
+        ]
       }
     },
     {
@@ -840,7 +818,7 @@
         "url": "https://www.themoviedb.org/tv/250211",
         "managedSeason": 2,
         "schema": 2,
-        "checkedAt": "2026-11-19T07:55:32.584Z"
+        "checkedAt": "2026-11-19T16:57:55.033Z"
       }
     },
     {
@@ -858,7 +836,7 @@
         "url": "https://www.themoviedb.org/tv/94997",
         "managedSeason": 4,
         "schema": 2,
-        "checkedAt": "2026-11-19T07:55:32.584Z"
+        "checkedAt": "2026-11-19T16:57:55.033Z"
       }
     },
     {
@@ -876,7 +854,37 @@
         "identity": "молодойшерлок:",
         "url": "https://www.kinopoisk.ru/series/5591410/",
         "schema": 2,
-        "checkedAt": "2026-11-19T07:55:32.584Z"
+        "checkedAt": "2026-11-19T16:57:55.033Z",
+        "status": "unresolved",
+        "candidates": [
+          {
+            "provider": "tmdb",
+            "id": 255661,
+            "title": "Молодой Шерлок",
+            "original": "Young Sherlock",
+            "year": 2026
+          },
+          {
+            "provider": "tmdb",
+            "id": 80163,
+            "title": "Молодой Шерлок",
+            "original": "少年神探狄仁杰",
+            "year": 2014
+          },
+          {
+            "provider": "tmdb",
+            "id": 37672,
+            "title": "Молодой Шерлок: Тайна усадьбы",
+            "original": "Young Sherlock: The Mystery of the Manor House",
+            "year": 1982
+          }
+        ],
+        "issues": [
+          {
+            "provider": "kinopoisk",
+            "code": "provider_http_402"
+          }
+        ]
       }
     },
     {
@@ -894,7 +902,7 @@
         "identity": "фишер:",
         "url": "https://www.themoviedb.org/tv/220018",
         "schema": 2,
-        "checkedAt": "2026-11-19T07:55:32.584Z"
+        "checkedAt": "2026-11-19T16:57:55.033Z"
       }
     },
     {
@@ -906,10 +914,15 @@
       "mine": "want",
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-19T07:55:32.584Z",
+        "checkedAt": "2026-11-19T16:57:55.033Z",
         "schema": 2,
         "candidates": [],
-        "issues": []
+        "issues": [
+          {
+            "provider": "kinopoisk",
+            "code": "provider_http_402"
+          }
+        ]
       }
     },
     {
@@ -925,7 +938,7 @@
         "identity": "кредоубийцы:",
         "url": "https://www.themoviedb.org/tv/209962",
         "schema": 2,
-        "checkedAt": "2026-11-19T07:55:32.584Z"
+        "checkedAt": "2026-11-19T16:57:55.033Z"
       }
     },
     {
@@ -936,10 +949,15 @@
       "note": "Режиссёр Жора Крыжовников объявил запуск 2 сезона (постер «Кровавая двойка»), даты выхода и площадки пока нет (Кино Mail).",
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-19T07:55:32.584Z",
+        "checkedAt": "2026-11-19T16:57:55.033Z",
         "schema": 2,
         "candidates": [],
-        "issues": []
+        "issues": [
+          {
+            "provider": "kinopoisk",
+            "code": "provider_http_402"
+          }
+        ]
       }
     },
     {
@@ -991,7 +1009,7 @@
         "id": 5106448,
         "url": "https://www.kinopoisk.ru/series/5106448/",
         "managedSeason": 1,
-        "checkedAt": "2026-11-19T07:55:32.584Z",
+        "checkedAt": "2026-11-19T16:57:55.033Z",
         "schema": 2,
         "status": "unresolved",
         "candidates": [
@@ -1008,23 +1026,14 @@
             "title": "Нулевой день",
             "original": "零日攻擊",
             "year": 2025
-          },
-          {
-            "provider": "kinopoisk",
-            "id": 5379179,
-            "title": "Нулевой день",
-            "original": "Zero Day",
-            "year": 2025
-          },
-          {
-            "provider": "kinopoisk",
-            "id": 5106448,
-            "title": "Нулевой день",
-            "original": "Sifirinci Gün",
-            "year": 2022
           }
         ],
-        "issues": []
+        "issues": [
+          {
+            "provider": "kinopoisk",
+            "code": "provider_http_402"
+          }
+        ]
       }
     },
     {
@@ -1108,7 +1117,7 @@
         "identity": "ворвзагоне:",
         "url": "https://www.themoviedb.org/tv/337506",
         "schema": 2,
-        "checkedAt": "2026-11-19T07:55:32.584Z"
+        "checkedAt": "2026-11-19T16:57:55.033Z"
       }
     },
     {
@@ -1168,7 +1177,7 @@
         "identity": "тедлассо:",
         "url": "https://www.themoviedb.org/tv/97546",
         "schema": 2,
-        "checkedAt": "2026-11-19T07:55:32.584Z"
+        "checkedAt": "2026-11-19T16:57:55.033Z"
       }
     },
     {
@@ -1226,7 +1235,7 @@
         "identity": "джентльмены:",
         "url": "https://www.themoviedb.org/tv/236235",
         "schema": 2,
-        "checkedAt": "2026-11-19T07:55:32.584Z"
+        "checkedAt": "2026-11-19T16:57:55.033Z"
       }
     },
     {
@@ -1286,7 +1295,7 @@
         "identity": "извне:",
         "url": "https://www.themoviedb.org/tv/124364",
         "schema": 2,
-        "checkedAt": "2026-11-19T07:55:32.584Z"
+        "checkedAt": "2026-11-19T16:57:55.033Z"
       }
     },
     {
@@ -1300,7 +1309,7 @@
       "poster": "custom/segun.jpg",
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-19T07:55:32.584Z",
+        "checkedAt": "2026-11-19T16:57:55.033Z",
         "schema": 2,
         "candidates": [
           {
@@ -1309,16 +1318,14 @@
             "title": "Второе солнце",
             "original": "Segundo Sol",
             "year": 2018
-          },
-          {
-            "provider": "kinopoisk",
-            "id": 408657,
-            "title": "Демон-Бог гражданской войны Госегун",
-            "original": "Sengoku majin Go-Shogun",
-            "year": 1981
           }
         ],
-        "issues": []
+        "issues": [
+          {
+            "provider": "kinopoisk",
+            "code": "provider_http_402"
+          }
+        ]
       }
     },
     {
@@ -1379,7 +1386,7 @@
         "identity": "капитантуман:",
         "url": "https://www.themoviedb.org/tv/318156",
         "schema": 2,
-        "checkedAt": "2026-11-19T07:55:32.584Z"
+        "checkedAt": "2026-11-19T16:57:55.033Z"
       }
     },
     {
@@ -1442,7 +1449,7 @@
         "identity": "нейромант:",
         "url": "https://www.themoviedb.org/tv/215528",
         "schema": 2,
-        "checkedAt": "2026-11-19T07:55:32.584Z"
+        "checkedAt": "2026-11-19T16:57:55.033Z"
       }
     },
     {
@@ -1533,7 +1540,7 @@
         "identity": "гуляйшальная:",
         "url": "https://www.themoviedb.org/tv/316947",
         "schema": 2,
-        "checkedAt": "2026-11-19T07:55:32.584Z"
+        "checkedAt": "2026-11-19T16:57:55.033Z"
       }
     },
     {
@@ -1587,7 +1594,7 @@
         "identity": "полураспад:",
         "url": "https://www.themoviedb.org/tv/301191",
         "schema": 2,
-        "checkedAt": "2026-11-19T07:55:32.584Z"
+        "checkedAt": "2026-11-19T16:57:55.033Z"
       }
     },
     {
@@ -1643,7 +1650,7 @@
         "identity": "айда:",
         "url": "https://www.themoviedb.org/tv/318560",
         "schema": 2,
-        "checkedAt": "2026-11-19T07:55:32.584Z"
+        "checkedAt": "2026-11-19T16:57:55.033Z"
       },
       "watching": true,
       "archive_release_key": "",
@@ -1701,7 +1708,7 @@
         "url": "https://www.themoviedb.org/tv/312753",
         "managedSeason": 1,
         "schema": 2,
-        "checkedAt": "2026-11-19T07:55:32.584Z"
+        "checkedAt": "2026-11-19T16:57:55.033Z"
       }
     },
     {
@@ -1762,7 +1769,7 @@
         "url": "https://www.themoviedb.org/tv/198102",
         "managedSeason": 2,
         "schema": 2,
-        "checkedAt": "2026-11-19T07:55:32.584Z"
+        "checkedAt": "2026-11-19T16:57:55.033Z"
       }
     },
     {
@@ -1824,7 +1831,7 @@
         "url": "https://www.themoviedb.org/tv/65953",
         "managedSeason": 5,
         "schema": 2,
-        "checkedAt": "2026-11-19T07:55:32.584Z"
+        "checkedAt": "2026-11-19T16:57:55.033Z"
       }
     },
     {
@@ -1888,7 +1895,7 @@
         "url": "https://www.themoviedb.org/tv/62699",
         "managedSeason": 1,
         "schema": 2,
-        "checkedAt": "2026-11-19T07:55:32.584Z"
+        "checkedAt": "2026-11-19T16:57:55.033Z"
       }
     },
     {
@@ -1943,7 +1950,7 @@
         "url": "https://www.themoviedb.org/tv/60574",
         "managedSeason": 6,
         "schema": 2,
-        "checkedAt": "2026-11-19T07:55:32.584Z"
+        "checkedAt": "2026-11-19T16:57:55.033Z"
       }
     },
     {
@@ -2013,7 +2020,7 @@
         "url": "https://www.themoviedb.org/tv/60622",
         "managedSeason": 5,
         "schema": 2,
-        "checkedAt": "2026-11-19T07:55:32.584Z"
+        "checkedAt": "2026-11-19T16:57:55.033Z"
       }
     },
     {
@@ -2074,7 +2081,7 @@
         "id": 581937,
         "url": "https://www.kinopoisk.ru/series/581937/",
         "managedSeason": 6,
-        "checkedAt": "2026-11-19T07:55:32.584Z",
+        "checkedAt": "2026-11-19T16:57:55.033Z",
         "schema": 2,
         "status": "unresolved",
         "candidates": [
@@ -2105,23 +2112,14 @@
             "title": "Зайти с короля",
             "original": "To Play the King",
             "year": 1993
-          },
-          {
-            "provider": "kinopoisk",
-            "id": 581937,
-            "title": "Карточный домик",
-            "original": "House of Cards",
-            "year": 2013
-          },
-          {
-            "provider": "kinopoisk",
-            "id": 298288,
-            "title": "Карточный домик",
-            "original": "House of Cards",
-            "year": 1990
           }
         ],
-        "issues": []
+        "issues": [
+          {
+            "provider": "kinopoisk",
+            "code": "provider_http_402"
+          }
+        ]
       }
     },
     {
@@ -2184,7 +2182,7 @@
         "url": "https://www.themoviedb.org/tv/31295",
         "managedSeason": 5,
         "schema": 2,
-        "checkedAt": "2026-11-19T07:55:32.584Z"
+        "checkedAt": "2026-11-19T16:57:55.033Z"
       }
     },
     {
@@ -2255,7 +2253,7 @@
         "url": "https://www.themoviedb.org/tv/63333",
         "managedSeason": 5,
         "schema": 2,
-        "checkedAt": "2026-11-19T07:55:32.584Z"
+        "checkedAt": "2026-11-19T16:57:55.033Z"
       }
     },
     {
@@ -2297,7 +2295,7 @@
         "url": "https://www.themoviedb.org/tv/19885",
         "managedSeason": 4,
         "schema": 2,
-        "checkedAt": "2026-11-19T07:55:32.584Z"
+        "checkedAt": "2026-11-19T16:57:55.033Z"
       }
     },
     {
@@ -2380,7 +2378,7 @@
         "url": "https://www.themoviedb.org/tv/62560",
         "managedSeason": 4,
         "schema": 2,
-        "checkedAt": "2026-11-19T07:55:32.584Z"
+        "checkedAt": "2026-11-19T16:57:55.033Z"
       }
     },
     {
@@ -2435,7 +2433,7 @@
         "url": "https://www.themoviedb.org/tv/1399",
         "managedSeason": 8,
         "schema": 2,
-        "checkedAt": "2026-11-19T07:55:32.584Z"
+        "checkedAt": "2026-11-19T16:57:55.033Z"
       }
     },
     {
@@ -2544,7 +2542,7 @@
         "id": 44217,
         "url": "https://www.themoviedb.org/tv/44217",
         "managedSeason": 6,
-        "checkedAt": "2026-11-19T07:55:32.584Z",
+        "checkedAt": "2026-11-19T16:57:55.033Z",
         "schema": 2,
         "status": "unresolved",
         "candidates": [
@@ -2582,44 +2580,14 @@
             "title": "Vikings",
             "original": "Vikings",
             "year": 2012
-          },
-          {
-            "provider": "kinopoisk",
-            "id": 682255,
-            "title": "Викинги",
-            "original": "Vikings",
-            "year": 2013
-          },
-          {
-            "provider": "kinopoisk",
-            "id": 839358,
-            "title": "Викинги",
-            "original": "Vikings",
-            "year": 2012
-          },
-          {
-            "provider": "kinopoisk",
-            "id": 1415690,
-            "title": "Викинги: Вальхалла",
-            "original": "Vikings: Valhalla",
-            "year": 2022
-          },
-          {
-            "provider": "kinopoisk",
-            "id": 716015,
-            "title": "",
-            "original": "Blood of the Vikings",
-            "year": 2001
-          },
-          {
-            "provider": "kinopoisk",
-            "id": 1171746,
-            "title": "",
-            "original": "Vikings Rising",
-            "year": 2018
           }
         ],
-        "issues": []
+        "issues": [
+          {
+            "provider": "kinopoisk",
+            "code": "provider_http_402"
+          }
+        ]
       }
     },
     {
@@ -2633,7 +2601,7 @@
       "added": "2026-10-23",
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-19T07:55:32.584Z",
+        "checkedAt": "2026-11-19T16:57:55.033Z",
         "schema": 2,
         "candidates": [
           {
@@ -2656,37 +2624,14 @@
             "title": "Сладкая жизнь: Лос-Анджелес",
             "original": "Sweet Life: Los Angeles",
             "year": 2021
-          },
-          {
-            "provider": "kinopoisk",
-            "id": 839711,
-            "title": "Сладкая жизнь",
-            "original": "",
-            "year": 2014
-          },
-          {
-            "provider": "kinopoisk",
-            "id": 736143,
-            "title": "Сладкая жизнь",
-            "original": "Dalkomhan insaeng",
-            "year": 2008
-          },
-          {
-            "provider": "kinopoisk",
-            "id": 1199774,
-            "title": "Сладкая жизнь",
-            "original": "Happy Sugar Life",
-            "year": 2018
-          },
-          {
-            "provider": "kinopoisk",
-            "id": 579609,
-            "title": "Сладкая жизнь",
-            "original": "Tatli Hayat",
-            "year": 2001
           }
         ],
-        "issues": []
+        "issues": [
+          {
+            "provider": "kinopoisk",
+            "code": "provider_http_402"
+          }
+        ]
       }
     },
     {
@@ -2757,7 +2702,44 @@
         "url": "https://www.kinopoisk.ru/series/820540/",
         "managedSeason": 5,
         "schema": 2,
-        "checkedAt": "2026-11-19T07:55:32.584Z"
+        "checkedAt": "2026-11-19T16:57:55.033Z",
+        "status": "unresolved",
+        "candidates": [
+          {
+            "provider": "tmdb",
+            "id": 314677,
+            "title": "Gomorrah Collection",
+            "original": "Gomorrah Collection",
+            "year": 2026
+          },
+          {
+            "provider": "tmdb",
+            "id": 61068,
+            "title": "Гоморра",
+            "original": "Gomorra - La serie",
+            "year": 2014
+          },
+          {
+            "provider": "tmdb",
+            "id": 293550,
+            "title": "Гоморра – истоки",
+            "original": "Gomorra - Le Origini",
+            "year": 2026
+          },
+          {
+            "provider": "tmdb",
+            "id": 136863,
+            "title": "Una storia chiamata Gomorra - La serie",
+            "original": "Una storia chiamata Gomorra - La serie",
+            "year": 2021
+          }
+        ],
+        "issues": [
+          {
+            "provider": "kinopoisk",
+            "code": "provider_http_402"
+          }
+        ]
       }
     },
     {
@@ -2804,7 +2786,7 @@
         "url": "https://www.themoviedb.org/tv/114471",
         "managedSeason": 1,
         "schema": 2,
-        "checkedAt": "2026-11-19T07:55:32.584Z"
+        "checkedAt": "2026-11-19T16:57:55.033Z"
       }
     },
     {
@@ -2859,7 +2841,7 @@
         "identity": "visionquest:",
         "url": "https://www.themoviedb.org/tv/213375",
         "schema": 2,
-        "checkedAt": "2026-11-19T07:55:32.584Z"
+        "checkedAt": "2026-11-19T16:57:55.033Z"
       }
     },
     {
@@ -2931,7 +2913,7 @@
         "provider": "kinopoisk",
         "id": 523279,
         "url": "https://www.kinopoisk.ru/series/523279/",
-        "checkedAt": "2026-11-19T07:55:32.584Z",
+        "checkedAt": "2026-11-19T16:57:55.033Z",
         "schema": 2,
         "status": "unresolved",
         "candidates": [
@@ -2948,23 +2930,14 @@
             "title": "Ставка на любовь",
             "original": "Apuesta por un amor",
             "year": 2004
-          },
-          {
-            "provider": "kinopoisk",
-            "id": 11658997,
-            "title": "Ставка на любовь",
-            "original": "",
-            "year": 2025
-          },
-          {
-            "provider": "kinopoisk",
-            "id": 523279,
-            "title": "Ставка на любовь",
-            "original": "Apuesta por un amor",
-            "year": 2004
           }
         ],
-        "issues": []
+        "issues": [
+          {
+            "provider": "kinopoisk",
+            "code": "provider_http_402"
+          }
+        ]
       },
       "watching": true,
       "archive_release_key": "",
@@ -2981,7 +2954,7 @@
       "note": "Точная дата не названа, премьера запланирована до конца 2026 (Click-or-Die).",
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-19T07:55:32.584Z",
+        "checkedAt": "2026-11-19T16:57:55.033Z",
         "schema": 2,
         "candidates": [
           {
@@ -3004,23 +2977,14 @@
             "title": "Фурия",
             "original": "Фурия",
             "year": null
-          },
-          {
-            "provider": "kinopoisk",
-            "id": 1325310,
-            "title": "Фурия",
-            "original": "Furia",
-            "year": 2021
-          },
-          {
-            "provider": "kinopoisk",
-            "id": 4642825,
-            "title": "Фурия",
-            "original": "",
-            "year": 2026
           }
         ],
-        "issues": []
+        "issues": [
+          {
+            "provider": "kinopoisk",
+            "code": "provider_http_402"
+          }
+        ]
       }
     },
     {
@@ -3033,7 +2997,7 @@
       "added": "2026-10-23",
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-19T07:55:32.584Z",
+        "checkedAt": "2026-11-19T16:57:55.033Z",
         "schema": 2,
         "candidates": [
           {
@@ -3070,44 +3034,14 @@
             "title": "Чернобыль: дни, которые потрясли мир",
             "original": "Chernobyl: Days That Shocked the World",
             "year": 2026
-          },
-          {
-            "provider": "kinopoisk",
-            "id": 1227803,
-            "title": "Чернобыль",
-            "original": "Chernobyl",
-            "year": 2019
-          },
-          {
-            "provider": "kinopoisk",
-            "id": 727157,
-            "title": "Чернобыль: Зона отчуждения",
-            "original": "",
-            "year": 2014
-          },
-          {
-            "provider": "kinopoisk",
-            "id": 1169262,
-            "title": "Чернобыль",
-            "original": "",
-            "year": 2022
-          },
-          {
-            "provider": "kinopoisk",
-            "id": 1209750,
-            "title": "Чернобыль: Зона отчуждения. Финал",
-            "original": "",
-            "year": 2019
-          },
-          {
-            "provider": "kinopoisk",
-            "id": 1115265,
-            "title": "Чернобыль. Эпоха возрождения",
-            "original": "",
-            "year": 2004
           }
         ],
-        "issues": []
+        "issues": [
+          {
+            "provider": "kinopoisk",
+            "code": "provider_http_402"
+          }
+        ]
       }
     },
     {
@@ -3162,7 +3096,7 @@
         "url": "https://www.themoviedb.org/tv/154404",
         "managedSeason": 4,
         "schema": 2,
-        "checkedAt": "2026-11-19T07:55:32.584Z"
+        "checkedAt": "2026-11-19T16:57:55.033Z"
       }
     },
     {
@@ -3221,7 +3155,7 @@
         "url": "https://www.themoviedb.org/tv/46648",
         "managedSeason": 4,
         "schema": 2,
-        "checkedAt": "2026-11-19T07:55:32.584Z"
+        "checkedAt": "2026-11-19T16:57:55.033Z"
       }
     },
     {
@@ -3274,7 +3208,7 @@
         "url": "https://www.themoviedb.org/tv/93405",
         "managedSeason": 3,
         "schema": 2,
-        "checkedAt": "2026-11-19T07:55:32.584Z"
+        "checkedAt": "2026-11-19T16:57:55.033Z"
       }
     },
     {
@@ -3287,7 +3221,7 @@
       "added": "2026-10-26",
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-19T07:55:32.584Z",
+        "checkedAt": "2026-11-19T16:57:55.033Z",
         "schema": 2,
         "candidates": [
           {
@@ -3324,37 +3258,14 @@
             "title": "Берлин и Дама с горностаем",
             "original": "Berlín y la dama del armiño",
             "year": 2026
-          },
-          {
-            "provider": "kinopoisk",
-            "id": 1046206,
-            "title": "Бумажный дом",
-            "original": "La casa de papel",
-            "year": 2017
-          },
-          {
-            "provider": "kinopoisk",
-            "id": 4558638,
-            "title": "Бумажный дом: От Токио до Берлина",
-            "original": "La casa de papel: De Tokio a Berlín",
-            "year": 2021
-          },
-          {
-            "provider": "kinopoisk",
-            "id": 1445215,
-            "title": "Бумажный дом: Корея",
-            "original": "Jongiui jip: gongdonggyeongjeguyeok",
-            "year": 2022
-          },
-          {
-            "provider": "kinopoisk",
-            "id": 4696541,
-            "title": "Бумажный дом",
-            "original": "Kagit Ev",
-            "year": 2021
           }
         ],
-        "issues": []
+        "issues": [
+          {
+            "provider": "kinopoisk",
+            "code": "provider_http_402"
+          }
+        ]
       }
     },
     {
@@ -3411,7 +3322,7 @@
         "identity": "friscoking:",
         "url": "https://www.themoviedb.org/tv/296244",
         "schema": 2,
-        "checkedAt": "2026-11-19T07:55:32.584Z"
+        "checkedAt": "2026-11-19T16:57:55.033Z"
       }
     },
     {
@@ -3424,7 +3335,7 @@
       "added": "2026-10-28",
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-19T07:55:32.584Z",
+        "checkedAt": "2026-11-19T16:57:55.033Z",
         "schema": 2,
         "candidates": [
           {
@@ -3454,37 +3365,14 @@
             "title": "Ведьмак",
             "original": "Wiedźmin",
             "year": 2002
-          },
-          {
-            "provider": "kinopoisk",
-            "id": 416830,
-            "title": "Ведьмак",
-            "original": "Wiedzmin",
-            "year": 2002
-          },
-          {
-            "provider": "kinopoisk",
-            "id": 1044004,
-            "title": "Ведьмак",
-            "original": "The Witcher",
-            "year": 2019
-          },
-          {
-            "provider": "kinopoisk",
-            "id": 1395995,
-            "title": "Ведьмак: Происхождение",
-            "original": "The Witcher: Blood Origin",
-            "year": 2022
-          },
-          {
-            "provider": "kinopoisk",
-            "id": 2045734,
-            "title": "Ведьмак: Взгляд изнутри",
-            "original": "The Witcher: A Look Inside the Episodes",
-            "year": 2020
           }
         ],
-        "issues": []
+        "issues": [
+          {
+            "provider": "kinopoisk",
+            "code": "provider_http_402"
+          }
+        ]
       }
     },
     {
@@ -3547,7 +3435,7 @@
         "url": "https://www.themoviedb.org/tv/222766",
         "managedSeason": 1,
         "schema": 2,
-        "checkedAt": "2026-11-19T07:55:32.584Z"
+        "checkedAt": "2026-11-19T16:57:55.033Z"
       }
     },
     {
@@ -3594,7 +3482,7 @@
         "url": "https://www.themoviedb.org/tv/293550",
         "managedSeason": 1,
         "schema": 2,
-        "checkedAt": "2026-11-19T07:55:32.584Z"
+        "checkedAt": "2026-11-19T16:57:55.033Z"
       }
     },
     {
@@ -3610,7 +3498,7 @@
       "note": "Корейский мистический хоррор-мини-сериал, 8 серий. Все серии вышли на Netflix 30 октября 2026 (Лайфхакер, Metaratings).",
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-19T07:55:32.584Z",
+        "checkedAt": "2026-11-19T16:57:55.033Z",
         "schema": 2,
         "candidates": [
           {
@@ -3621,7 +3509,12 @@
             "year": 2026
           }
         ],
-        "issues": []
+        "issues": [
+          {
+            "provider": "kinopoisk",
+            "code": "provider_http_402"
+          }
+        ]
       }
     },
     {
@@ -3675,7 +3568,7 @@
         "url": "https://www.themoviedb.org/tv/288133",
         "managedSeason": 1,
         "schema": 2,
-        "checkedAt": "2026-11-19T07:55:32.584Z"
+        "checkedAt": "2026-11-19T16:57:55.033Z"
       }
     },
     {
@@ -3744,7 +3637,7 @@
         "url": "https://www.themoviedb.org/tv/63351",
         "managedSeason": 3,
         "schema": 2,
-        "checkedAt": "2026-11-19T07:55:32.584Z"
+        "checkedAt": "2026-11-19T16:57:55.033Z"
       }
     },
     {
@@ -3809,7 +3702,7 @@
         "url": "https://www.themoviedb.org/tv/67744",
         "managedSeason": 2,
         "schema": 2,
-        "checkedAt": "2026-11-19T07:55:32.584Z"
+        "checkedAt": "2026-11-19T16:57:55.033Z"
       }
     },
     {
@@ -3864,7 +3757,7 @@
         "identity": "очарованные:",
         "url": "https://www.themoviedb.org/tv/318558",
         "schema": 2,
-        "checkedAt": "2026-11-19T07:55:32.584Z"
+        "checkedAt": "2026-11-19T16:57:55.033Z"
       },
       "watching": true,
       "archive_release_key": "",
@@ -3919,7 +3812,7 @@
       "note": "Российский криминальный триллер с Елизаветой Боярской. Премьера на KION 1 декабря 2025; 8 эпизодов, финал 19 декабря 2025. Источник: https://kion.ru/serial/tonnel",
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-19T07:55:32.584Z",
+        "checkedAt": "2026-11-19T16:57:55.033Z",
         "schema": 2,
         "candidates": [
           {
@@ -3949,30 +3842,14 @@
             "title": "Туннель",
             "original": "Tunnel",
             "year": 2019
-          },
-          {
-            "provider": "kinopoisk",
-            "id": 7400477,
-            "title": "Тоннель",
-            "original": "",
-            "year": 2025
-          },
-          {
-            "provider": "kinopoisk",
-            "id": 1361441,
-            "title": "Тоннель",
-            "original": "Tunnel",
-            "year": 2019
-          },
-          {
-            "provider": "kinopoisk",
-            "id": 6222388,
-            "title": "Тоннель",
-            "original": "",
-            "year": null
           }
         ],
-        "issues": []
+        "issues": [
+          {
+            "provider": "kinopoisk",
+            "code": "provider_http_402"
+          }
+        ]
       }
     },
     {
@@ -4029,7 +3906,7 @@
         "identity": "малахит:",
         "url": "https://www.themoviedb.org/tv/317872",
         "schema": 2,
-        "checkedAt": "2026-11-19T07:55:32.584Z"
+        "checkedAt": "2026-11-19T16:57:55.033Z"
       }
     },
     {
@@ -4094,38 +3971,15 @@
             "title": "Истребители. Битва за Крым",
             "original": "Истребители. Битва за Крым",
             "year": 2024
-          },
-          {
-            "provider": "kinopoisk",
-            "id": 10086817,
-            "title": "Истребители",
-            "original": "",
-            "year": 2026
-          },
-          {
-            "provider": "kinopoisk",
-            "id": 842589,
-            "title": "Истребители: Последний бой",
-            "original": "",
-            "year": 2015
-          },
-          {
-            "provider": "kinopoisk",
-            "id": 693415,
-            "title": "Истребители",
-            "original": "",
-            "year": 2013
-          },
-          {
-            "provider": "kinopoisk",
-            "id": 5453497,
-            "title": "Истребители. Битва за Крым",
-            "original": "",
-            "year": 2024
           }
         ],
-        "issues": [],
-        "checkedAt": "2026-11-19T07:55:32.584Z"
+        "issues": [
+          {
+            "provider": "kinopoisk",
+            "code": "provider_http_402"
+          }
+        ],
+        "checkedAt": "2026-11-19T16:57:55.033Z"
       },
       "archive_release_key": "",
       "viewing_shared": true
@@ -4188,7 +4042,7 @@
         "url": "https://www.themoviedb.org/tv/279382",
         "managedSeason": 1,
         "schema": 2,
-        "checkedAt": "2026-11-19T07:55:32.584Z"
+        "checkedAt": "2026-11-19T16:57:55.033Z"
       }
     }
   ]
