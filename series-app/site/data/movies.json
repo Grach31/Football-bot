@@ -5124,7 +5124,10 @@
         "url": "https://www.themoviedb.org/movie/1446602",
         "schema": 2,
         "checkedAt": "2026-11-19T16:57:55.033Z"
-      }
+      },
+      "watching": true,
+      "archive_release_key": "",
+      "viewing_shared": true
     },
     {
       "id": "pervomu-igroku-prigotovitsya-glvj",
