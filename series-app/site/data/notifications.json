@@ -1,7 +1,39 @@
 {
   "version": 1,
-  "updated": "2026-11-19T00:37:30.931Z",
+  "updated": "2026-11-19T07:55:41.672Z",
   "items": [
+    {
+      "id": "series-polyarnyy-season-6-2026-2026-11-19-10:00",
+      "category": "episodes",
+      "title": "Полярный: вышли серии 7–8",
+      "body": "ТНТ, Иви · Сезон 6 · сегодня, четверг",
+      "route": "#/module/cinema/s/polyarnyy-season-6-2026",
+      "at": "2026-11-19T10:55:00+03:00"
+    },
+    {
+      "id": "series-poluraspad-2026-11-19-10:00",
+      "category": "episodes",
+      "title": "Полураспад: вышла 7 серия",
+      "body": "Okko · Сезон 1 · сегодня, четверг",
+      "route": "#/module/cinema/s/poluraspad",
+      "at": "2026-11-19T10:55:00+03:00"
+    },
+    {
+      "id": "series-tmdb-tv-279382-2026-11-19-10:00",
+      "category": "episodes",
+      "title": "Eldorado: вышли серии 1–3",
+      "body": "Сезон 1 · сегодня, четверг",
+      "route": "#/module/cinema/s/tmdb-tv-279382",
+      "at": "2026-11-19T10:55:00+03:00"
+    },
+    {
+      "id": "sub-kion-mvjlz59r-2026-11-22-3",
+      "category": "subscriptions",
+      "title": "KION: списание через 3 дня",
+      "body": "399 ₽. Если сервис не нужен, отмените подписку",
+      "route": "#/settings/cinema/subs",
+      "at": "2026-11-19T10:55:00+03:00"
+    },
     {
       "id": "series-polyarnyy-season-6-2026-2026-11-18-10:00",
       "category": "episodes",
