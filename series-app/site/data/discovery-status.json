@@ -1,8 +1,8 @@
 {
-  "checkedAt": "2026-11-19T00:37:30.883Z",
-  "attemptedAt": "2026-11-19T00:37:29.090Z",
+  "checkedAt": "2026-11-19T23:24:09.472Z",
+  "attemptedAt": "2026-11-19T23:24:08.515Z",
   "status": "ready",
   "requests": 22,
-  "pool": 653,
+  "pool": 900,
   "recommendations": 16
 }
