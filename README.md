@@ -5,8 +5,8 @@
 | Что | Где | Как запускается |
 |---|---|---|
 | Приложение **Grach films** (сериалы, фильмы, подборки, Jellyfin) | `series-app/` | сайт публикуется workflow `series-app.yml`, push-уведомления приходят каждый день в 10:00 МСК |
-| Результаты футбола в Telegram | `bot.py`, `football_loop.py` | `football-loop.yml`: 6-часовой цикл, проверка раз в 10 минут; вручную: `football.yml` |
-| Матчи Челси (составы, голы, итог) | `chelsea.py` | `chelsea.yml`, раз в час |
+| Результаты футбола в Telegram | `bot.py`, `football_loop.py` | Отключены: `football-loop.yml` и `football.yml` не отправляют сообщения |
+| Матчи Челси (составы, голы, итог) | `chelsea.py` | Отключены: `chelsea.yml` не отправляет сообщения |
 | Новинки кино в Telegram (сейчас выключены: нет ключей в `football-loop.yml`) | `movies.py` | после 21:00 МСК из цикла или вручную: `movies.yml` |
 
 Состояние ботов лежит в `state/`, его коммитит сам workflow.
