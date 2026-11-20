@@ -1,15 +1,13 @@
 name: Football loop (disabled)
 on:
-  push:
-    branches: [main]
-    paths: [.github/workflows/football-loop.yml]
   workflow_dispatch:
 permissions: {}
 concurrency:
   group: channels
   cancel-in-progress: true
 jobs:
-  stop:
+  loop:
+    if: ${{ false }}
     runs-on: ubuntu-latest
     steps:
-      - run: echo "Football notifications are disabled. Previous football loop cancelled."
+      - run: echo "Football notifications are disabled."
