@@ -1,7 +1,15 @@
 {
   "version": 1,
-  "updated": "2026-11-20T12:49:47.385Z",
+  "updated": "2026-11-20T20:52:16.342Z",
   "items": [
+    {
+      "id": "series-stavka-na-lyubov-2026-11-20-19:00",
+      "category": "episodes",
+      "title": "Ставка на любовь: вышла 6 серия",
+      "body": "Пятница! · Сезон 3 · сегодня, пятница, в 19:00",
+      "route": "#/module/cinema/s/stavka-na-lyubov",
+      "at": "2026-11-20T23:52:00+03:00"
+    },
     {
       "id": "series-tyazhelyy-lyuks-2026-2026-11-20-10:00",
       "category": "episodes",
