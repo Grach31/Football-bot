@@ -1,7 +1,63 @@
 {
   "version": 1,
-  "updated": "2026-11-20T04:07:22.640Z",
+  "updated": "2026-11-20T12:49:47.385Z",
   "items": [
+    {
+      "id": "series-tyazhelyy-lyuks-2026-2026-11-20-10:00",
+      "category": "episodes",
+      "title": "Тяжёлый люкс: вышла 2 серия",
+      "body": "Wink · Сезон 1 · сегодня, пятница",
+      "route": "#/module/cinema/s/tyazhelyy-lyuks-2026",
+      "at": "2026-11-20T15:49:00+03:00"
+    },
+    {
+      "id": "series-korol-talsy-2026-11-20-10:00",
+      "category": "episodes",
+      "title": "Король Талсы: вышла 6 серия",
+      "body": "Paramount+ · Сезон 4 · сегодня, пятница",
+      "route": "#/module/cinema/s/korol-talsy",
+      "at": "2026-11-20T15:49:00+03:00"
+    },
+    {
+      "id": "series-gangsterlend-2026-11-20-10:00",
+      "category": "episodes",
+      "title": "Гангстерленд: вышла 10 серия (финал)",
+      "body": "Paramount+ · Сезон 2 · сегодня, пятница",
+      "route": "#/module/cinema/s/gangsterlend",
+      "at": "2026-11-20T15:49:00+03:00"
+    },
+    {
+      "id": "series-kak-priruchit-lisu-2026-11-20-10:00",
+      "category": "episodes",
+      "title": "Как приручить лису: вышла 2 серия",
+      "body": "Okko · Сезон 2 · сегодня, пятница",
+      "route": "#/module/cinema/s/kak-priruchit-lisu",
+      "at": "2026-11-20T15:49:00+03:00"
+    },
+    {
+      "id": "series-ayda-2026-11-20-10:00",
+      "category": "episodes",
+      "title": "Айда!: вышла 4 серия",
+      "body": "START · Сезон 1 · сегодня, пятница",
+      "route": "#/module/cinema/s/ayda",
+      "at": "2026-11-20T15:49:00+03:00"
+    },
+    {
+      "id": "movie-golodnye-igry-rassvet-zhatvy-ii5t-2026-11-20",
+      "category": "movies",
+      "title": "Голодные игры: Рассвет жатвы: выходит сегодня",
+      "body": "Фильм · Твоё",
+      "route": "#/module/cinema/m/golodnye-igry-rassvet-zhatvy-ii5t",
+      "at": "2026-11-20T15:49:00+03:00"
+    },
+    {
+      "id": "sub-premier-mvjvyvvj-2026-11-23-3",
+      "category": "subscriptions",
+      "title": "Premier: списание через 3 дня",
+      "body": "399 ₽. Если сервис не нужен, отмените подписку",
+      "route": "#/settings/cinema/subs",
+      "at": "2026-11-20T15:49:00+03:00"
+    },
     {
       "id": "series-polyarnyy-season-6-2026-2026-11-19-10:00",
       "category": "episodes",
