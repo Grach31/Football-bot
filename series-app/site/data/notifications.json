@@ -1,7 +1,31 @@
 {
   "version": 1,
-  "updated": "2026-11-21T01:53:18.374Z",
+  "updated": "2026-11-21T08:59:05.199Z",
   "items": [
+    {
+      "id": "series-ocharovannye-2026-2026-11-21-10:00",
+      "category": "episodes",
+      "title": "Очарованные: вышла 3 серия",
+      "body": "Кинопоиск · Сезон 1 · сегодня, суббота",
+      "route": "#/module/cinema/s/ocharovannye-2026",
+      "at": "2026-11-21T11:59:00+03:00"
+    },
+    {
+      "id": "sub-kion-mvjlz59r-2026-11-22-1",
+      "category": "subscriptions",
+      "title": "KION: списание завтра",
+      "body": "399 ₽. Если сервис не нужен, отмените подписку",
+      "route": "#/settings/cinema/subs",
+      "at": "2026-11-21T11:59:00+03:00"
+    },
+    {
+      "id": "sub-ivi-mvo79dho-2026-11-24-3",
+      "category": "subscriptions",
+      "title": "Иви: списание через 3 дня",
+      "body": "399 ₽. Если сервис не нужен, отмените подписку",
+      "route": "#/settings/cinema/subs",
+      "at": "2026-11-21T11:59:00+03:00"
+    },
     {
       "id": "series-stavka-na-lyubov-2026-11-20-19:00",
       "category": "episodes",
