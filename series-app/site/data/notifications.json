@@ -1,7 +1,15 @@
 {
   "version": 1,
-  "updated": "2026-11-22T09:05:09.975Z",
+  "updated": "2026-11-22T17:06:36.020Z",
   "items": [
+    {
+      "id": "series-zvezdy-v-dzhunglyah-2026-11-22-18:00",
+      "category": "episodes",
+      "title": "Звёзды в джунглях. Суперсезон: вышел 8 выпуск",
+      "body": "Иви · сегодня, воскресенье, в 18:00",
+      "route": "#/module/cinema/s/zvezdy-v-dzhunglyah",
+      "at": "2026-11-22T20:06:00+03:00"
+    },
     {
       "id": "sub-kion-mvjlz59r-2026-11-22-0",
       "category": "subscriptions",
