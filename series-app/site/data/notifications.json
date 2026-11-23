@@ -1,7 +1,39 @@
 {
   "version": 1,
-  "updated": "2026-11-23T06:21:25.438Z",
+  "updated": "2026-11-23T11:44:32.201Z",
   "items": [
+    {
+      "id": "series-polyarnyy-season-6-2026-2026-11-23-10:00",
+      "category": "episodes",
+      "title": "Полярный: вышли серии 9–10",
+      "body": "ТНТ, Иви · Сезон 6 · сегодня, понедельник",
+      "route": "#/module/cinema/s/polyarnyy-season-6-2026",
+      "at": "2026-11-23T14:44:00+03:00"
+    },
+    {
+      "id": "series-taynyy-gorod-2026-2026-11-23-10:00",
+      "category": "episodes",
+      "title": "Тайный город: вышла 1 серия",
+      "body": "ТНТ, Кинопоиск · Сезон 1 · сегодня, понедельник",
+      "route": "#/module/cinema/s/taynyy-gorod-2026",
+      "at": "2026-11-23T14:44:00+03:00"
+    },
+    {
+      "id": "sub-premier-mvjvyvvj-2026-11-23-0",
+      "category": "subscriptions",
+      "title": "Premier: списание сегодня",
+      "body": "399 ₽. Если сервис не нужен, отмените подписку",
+      "route": "#/settings/cinema/subs",
+      "at": "2026-11-23T14:44:00+03:00"
+    },
+    {
+      "id": "sub-ivi-mvo79dho-2026-11-24-1",
+      "category": "subscriptions",
+      "title": "Иви: списание завтра",
+      "body": "399 ₽. Если сервис не нужен, отмените подписку",
+      "route": "#/settings/cinema/subs",
+      "at": "2026-11-23T14:44:00+03:00"
+    },
     {
       "id": "series-zvezdy-v-dzhunglyah-2026-11-22-18:00",
       "category": "episodes",
