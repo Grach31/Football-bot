@@ -1,24 +1,22 @@
 {
-  "checkedAt": "2026-11-22T22:26:50.257Z",
-  "status": "partial",
+  "checkedAt": "2026-11-23T02:57:07.397Z",
+  "status": "ready",
   "series": {
-    "checked": 0,
-    "updated": 0,
-    "unresolved": 0,
+    "checked": 68,
+    "updated": 49,
+    "unresolved": 19,
     "failed": 0,
     "locked": 1,
     "degraded": 0,
     "errors": {}
   },
   "movies": {
-    "checked": 142,
-    "updated": 105,
-    "unresolved": 37,
+    "checked": 0,
+    "updated": 0,
+    "unresolved": 0,
     "failed": 0,
     "locked": 0,
-    "degraded": 37,
-    "errors": {
-      "kinopoisk:provider_http_402": 37
-    }
+    "degraded": 0,
+    "errors": {}
   }
 }
