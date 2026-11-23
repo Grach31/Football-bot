@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-23",
+  "updated": "2026-11-24",
   "items": [
     {
       "id": "13-dney-13-nochey-2025",
@@ -31,7 +31,7 @@
         "identity": "13jours13nuits:2025",
         "url": "https://www.themoviedb.org/movie/1254135",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       },
       "archive_release_key": "",
       "viewing_shared": true
@@ -46,7 +46,7 @@
       "note": "Фильм Кристофера Нолана. Цифровой релиз и Blu-ray за рубежом 17 ноября 2026 (по данным Variety). Дата на российских сервисах не объявлена.",
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-22T22:26:50.257Z",
+        "checkedAt": "2026-11-23T22:55:42.176Z",
         "schema": 2,
         "candidates": [
           {
@@ -55,6 +55,13 @@
             "title": "Одиссея",
             "original": "The Odyssey",
             "year": 2026
+          },
+          {
+            "provider": "tmdb",
+            "id": 975511,
+            "title": "Возвращение Одиссея",
+            "original": "The Return",
+            "year": 2024
           },
           {
             "provider": "tmdb",
@@ -76,13 +83,6 @@
             "title": "Одиссея 1989",
             "original": "Одиссея 1989",
             "year": 2003
-          },
-          {
-            "provider": "tmdb",
-            "id": 975511,
-            "title": "Возвращение Одиссея",
-            "original": "The Return",
-            "year": 2024
           }
         ],
         "issues": [
@@ -102,7 +102,7 @@
       "note": "Премьера на Твоё. С Марком Уолбергом и Яхьей Абдул-Матином II.",
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-22T22:26:50.257Z",
+        "checkedAt": "2026-11-23T22:55:42.176Z",
         "schema": 2,
         "candidates": [
           {
@@ -158,7 +158,7 @@
       "note": "Дату и точное название фильма нужно уточнить: под этим названием несколько проектов.",
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-22T22:26:50.257Z",
+        "checkedAt": "2026-11-23T22:55:42.176Z",
         "schema": 2,
         "candidates": [
           {
@@ -226,7 +226,7 @@
         "identity": "знакомствосфакераминоваяглава:",
         "url": "https://www.themoviedb.org/movie/1400336",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -239,7 +239,7 @@
       "note": "Фильм Дэвида Литча (Amazon MGM Studios), мировая премьера 4 сентября 2026. Появление на российских сервисах уточню.",
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-22T22:26:50.257Z",
+        "checkedAt": "2026-11-23T22:55:42.176Z",
         "schema": 2,
         "candidates": [
           {
@@ -278,7 +278,7 @@
       "note": "Фильм Marvel, мировая премьера в кино 18 декабря 2026. В России дата пока не объявлена.",
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-22T22:26:50.257Z",
+        "checkedAt": "2026-11-23T22:55:42.176Z",
         "schema": 2,
         "candidates": [
           {
@@ -318,7 +318,7 @@
         "identity": "дюначастьтретья:",
         "url": "https://www.themoviedb.org/movie/1170608",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -342,7 +342,7 @@
         "identity": "голодныеигрырассветжатвы:",
         "url": "https://www.themoviedb.org/movie/1300968",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -365,7 +365,7 @@
         "identity": "черныйшелк:",
         "url": "https://www.themoviedb.org/movie/1550039",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -396,7 +396,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -408,7 +408,7 @@
       "added": "2026-10-23",
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-22T22:26:50.257Z",
+        "checkedAt": "2026-11-23T22:55:42.176Z",
         "schema": 2,
         "candidates": [
           {
@@ -464,7 +464,7 @@
       "added": "2026-10-23",
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-22T22:26:50.257Z",
+        "checkedAt": "2026-11-23T22:55:42.176Z",
         "schema": 2,
         "candidates": [
           {
@@ -476,13 +476,6 @@
           },
           {
             "provider": "tmdb",
-            "id": 187978,
-            "title": "Сделано в Америке",
-            "original": "American Made Movie",
-            "year": 2013
-          },
-          {
-            "provider": "tmdb",
             "id": 1278963,
             "title": "American Made",
             "original": "American Made",
@@ -490,10 +483,10 @@
           },
           {
             "provider": "tmdb",
-            "id": 1808628,
-            "title": "Made for Her: A Native American Fashion Film",
-            "original": "Made for Her: A Native American Fashion Film",
-            "year": 2026
+            "id": 187978,
+            "title": "Сделано в Америке",
+            "original": "American Made Movie",
+            "year": 2013
           },
           {
             "provider": "tmdb",
@@ -501,6 +494,13 @@
             "title": "This American Life Live: The Invisible Made Visible",
             "original": "This American Life Live: The Invisible Made Visible",
             "year": 2012
+          },
+          {
+            "provider": "tmdb",
+            "id": 1808628,
+            "title": "Made for Her: A Native American Fashion Film",
+            "original": "Made for Her: A Native American Fashion Film",
+            "year": 2026
           }
         ],
         "issues": [
@@ -534,7 +534,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -546,7 +546,7 @@
       "added": "2026-10-23",
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-22T22:26:50.257Z",
+        "checkedAt": "2026-11-23T22:55:42.176Z",
         "schema": 2,
         "candidates": [
           {
@@ -572,16 +572,16 @@
           },
           {
             "provider": "tmdb",
-            "id": 775533,
-            "title": "Zodiac",
-            "original": "Zodiac",
-            "year": 2001
-          },
-          {
-            "provider": "tmdb",
             "id": 11345,
             "title": "Зодиак",
             "original": "The Zodiac",
+            "year": 2005
+          },
+          {
+            "provider": "tmdb",
+            "id": 28721,
+            "title": "Zodiac Killer",
+            "original": "Zodiac Killer",
             "year": 2005
           }
         ],
@@ -616,7 +616,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -642,7 +642,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -666,7 +666,7 @@
         "url": "https://www.themoviedb.org/movie/308266",
         "managedDate": true,
         "region": "RU",
-        "checkedAt": "2026-11-22T22:26:50.257Z",
+        "checkedAt": "2026-11-23T22:55:42.176Z",
         "schema": 2,
         "status": "unresolved",
         "candidates": [
@@ -679,17 +679,17 @@
           },
           {
             "provider": "tmdb",
-            "id": 390168,
-            "title": "War Dogs",
-            "original": "War Dogs",
-            "year": 1942
-          },
-          {
-            "provider": "tmdb",
             "id": 20681,
             "title": "Псы войны",
             "original": "The Dogs of War",
             "year": 1980
+          },
+          {
+            "provider": "tmdb",
+            "id": 390168,
+            "title": "War Dogs",
+            "original": "War Dogs",
+            "year": 1942
           },
           {
             "provider": "tmdb",
@@ -747,7 +747,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -765,7 +765,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       },
       "premieres": [
         {
@@ -797,7 +797,7 @@
         "url": "https://www.themoviedb.org/movie/311",
         "managedDate": true,
         "region": "RU",
-        "checkedAt": "2026-11-22T22:26:50.257Z",
+        "checkedAt": "2026-11-23T22:55:42.176Z",
         "schema": 2,
         "status": "unresolved",
         "candidates": [
@@ -846,7 +846,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       },
       "premieres": [
         {
@@ -880,7 +880,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -892,7 +892,7 @@
       "added": "2026-10-23",
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-22T22:26:50.257Z",
+        "checkedAt": "2026-11-23T22:55:42.176Z",
         "schema": 2,
         "candidates": [
           {
@@ -980,7 +980,7 @@
         "url": "https://www.themoviedb.org/movie/1724",
         "managedDate": true,
         "region": "US",
-        "checkedAt": "2026-11-22T22:26:50.257Z",
+        "checkedAt": "2026-11-23T22:55:42.176Z",
         "schema": 2,
         "status": "unresolved",
         "candidates": [
@@ -1051,7 +1051,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -1069,7 +1069,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       },
       "premieres": [
         {
@@ -1094,12 +1094,12 @@
           "region": "RU"
         },
         {
-          "date": "2011-12-15",
+          "date": "2011-12-08",
           "type": 5,
           "region": "RU"
         },
         {
-          "date": "2011-12-08",
+          "date": "2011-12-15",
           "type": 5,
           "region": "RU"
         }
@@ -1113,7 +1113,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -1131,7 +1131,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       },
       "premieres": [
         {
@@ -1170,7 +1170,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -1196,7 +1196,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -1222,7 +1222,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -1248,7 +1248,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -1274,7 +1274,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -1300,7 +1300,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -1331,7 +1331,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -1343,7 +1343,7 @@
       "added": "2026-10-23",
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-22T22:26:50.257Z",
+        "checkedAt": "2026-11-23T22:55:42.176Z",
         "schema": 2,
         "candidates": [
           {
@@ -1405,7 +1405,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       },
       "premieres": [
         {
@@ -1439,7 +1439,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -1465,7 +1465,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -1477,7 +1477,7 @@
       "added": "2026-10-23",
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-22T22:26:50.257Z",
+        "checkedAt": "2026-11-23T22:55:42.176Z",
         "schema": 2,
         "candidates": [
           {
@@ -1552,7 +1552,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -1578,7 +1578,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -1604,7 +1604,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -1640,7 +1640,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -1671,7 +1671,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -1697,7 +1697,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -1723,7 +1723,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -1764,7 +1764,7 @@
         "managedDate": true,
         "region": "US",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -1805,7 +1805,7 @@
         "managedDate": true,
         "region": "US",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -1823,7 +1823,7 @@
         "managedDate": true,
         "region": "US",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       },
       "premieres": [
         {
@@ -1905,7 +1905,7 @@
         "url": "https://www.themoviedb.org/movie/617126",
         "managedDate": true,
         "region": "US",
-        "checkedAt": "2026-11-22T22:26:50.257Z",
+        "checkedAt": "2026-11-23T22:55:42.176Z",
         "schema": 2,
         "status": "unresolved",
         "candidates": [
@@ -1970,7 +1970,7 @@
         "managedDate": true,
         "region": "US",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -2016,7 +2016,7 @@
         "managedDate": true,
         "region": "US",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -2067,7 +2067,7 @@
         "managedDate": true,
         "region": "US",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -2085,7 +2085,7 @@
         "managedDate": true,
         "region": "US",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       },
       "premieres": [
         {
@@ -2162,7 +2162,7 @@
         "identity": "spidermanbrandnewday:",
         "url": "https://www.themoviedb.org/movie/969681",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -2188,7 +2188,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -2200,7 +2200,7 @@
       "added": "2026-10-23",
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-22T22:26:50.257Z",
+        "checkedAt": "2026-11-23T22:55:42.176Z",
         "schema": 2,
         "candidates": [
           {
@@ -2212,17 +2212,17 @@
           },
           {
             "provider": "tmdb",
-            "id": 107309,
-            "title": "Смертельная игра",
-            "original": "Catch Me If You Can",
-            "year": 1998
-          },
-          {
-            "provider": "tmdb",
             "id": 34745,
             "title": "Поймай меня, если сможешь",
             "original": "Catch Me... If You Can",
             "year": 1989
+          },
+          {
+            "provider": "tmdb",
+            "id": 107309,
+            "title": "Смертельная игра",
+            "original": "Catch Me If You Can",
+            "year": 1998
           },
           {
             "provider": "tmdb",
@@ -2278,7 +2278,7 @@
         "url": "https://www.themoviedb.org/movie/106646",
         "managedDate": true,
         "region": "RU",
-        "checkedAt": "2026-11-22T22:26:50.257Z",
+        "checkedAt": "2026-11-23T22:55:42.176Z",
         "schema": 2,
         "status": "unresolved",
         "candidates": [
@@ -2347,7 +2347,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -2365,7 +2365,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       },
       "premieres": [
         {
@@ -2391,7 +2391,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       },
       "premieres": [
         {
@@ -2450,7 +2450,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -2462,7 +2462,7 @@
       "added": "2026-10-23",
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-22T22:26:50.257Z",
+        "checkedAt": "2026-11-23T22:55:42.176Z",
         "schema": 2,
         "candidates": [
           {
@@ -2519,7 +2519,7 @@
       "note": "Фильм Гая Ричи 2026 (In the Grey).",
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-22T22:26:50.257Z",
+        "checkedAt": "2026-11-23T22:55:42.176Z",
         "schema": 2,
         "candidates": [
           {
@@ -2581,7 +2581,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       },
       "premieres": [
         {
@@ -2615,7 +2615,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -2633,7 +2633,7 @@
         "managedDate": true,
         "region": "WORLD",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       },
       "premieres": [],
       "date": "2023-12-01"
@@ -2653,7 +2653,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       },
       "premieres": [
         {
@@ -2692,7 +2692,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -2721,7 +2721,7 @@
         "url": "https://www.themoviedb.org/movie/522627",
         "managedDate": true,
         "region": "RU",
-        "checkedAt": "2026-11-22T22:26:50.257Z",
+        "checkedAt": "2026-11-23T22:55:42.176Z",
         "schema": 2,
         "status": "unresolved",
         "candidates": [
@@ -2784,7 +2784,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       },
       "premieres": [
         {
@@ -2828,7 +2828,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -2840,7 +2840,7 @@
       "added": "2026-10-23",
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-22T22:26:50.257Z",
+        "checkedAt": "2026-11-23T22:55:42.176Z",
         "schema": 2,
         "candidates": [
           {
@@ -2866,10 +2866,10 @@
           },
           {
             "provider": "tmdb",
-            "id": 816829,
-            "title": "Oriental Snatch",
-            "original": "Oriental Snatch",
-            "year": 1996
+            "id": 392334,
+            "title": "Operation Snatch",
+            "original": "Operation Snatch",
+            "year": 1962
           },
           {
             "provider": "tmdb",
@@ -2910,7 +2910,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -2941,7 +2941,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -2959,7 +2959,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       },
       "premieres": [
         {
@@ -3013,7 +3013,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -3044,7 +3044,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -3070,7 +3070,7 @@
         "managedDate": true,
         "region": "US",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -3101,7 +3101,7 @@
         "managedDate": true,
         "region": "US",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -3132,7 +3132,7 @@
         "managedDate": true,
         "region": "US",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -3150,7 +3150,7 @@
         "managedDate": true,
         "region": "US",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       },
       "premieres": [
         {
@@ -3194,7 +3194,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -3235,7 +3235,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -3276,7 +3276,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -3317,7 +3317,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -3343,7 +3343,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -3369,7 +3369,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -3395,7 +3395,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -3424,7 +3424,7 @@
         "url": "https://www.themoviedb.org/movie/77338",
         "managedDate": true,
         "region": "RU",
-        "checkedAt": "2026-11-22T22:26:50.257Z",
+        "checkedAt": "2026-11-23T22:55:42.176Z",
         "schema": 2,
         "status": "unresolved",
         "candidates": [
@@ -3494,7 +3494,7 @@
         "url": "https://www.themoviedb.org/movie/550",
         "managedDate": true,
         "region": "RU",
-        "checkedAt": "2026-11-22T22:26:50.257Z",
+        "checkedAt": "2026-11-23T22:55:42.176Z",
         "schema": 2,
         "status": "unresolved",
         "candidates": [
@@ -3528,10 +3528,10 @@
           },
           {
             "provider": "tmdb",
-            "id": 259016,
-            "title": "Insane Fight Club",
-            "original": "Insane Fight Club",
-            "year": 2014
+            "id": 1656143,
+            "title": "MDK Fight Club 2026",
+            "original": "MDK Fight Club 2026",
+            "year": 2026
           }
         ],
         "issues": [
@@ -3557,7 +3557,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       },
       "premieres": [
         {
@@ -3606,7 +3606,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -3642,7 +3642,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -3676,7 +3676,7 @@
         "url": "https://www.themoviedb.org/movie/673",
         "managedDate": true,
         "region": "RU",
-        "checkedAt": "2026-11-22T22:26:50.257Z",
+        "checkedAt": "2026-11-23T22:55:42.176Z",
         "schema": 2,
         "status": "unresolved",
         "candidates": [
@@ -3736,7 +3736,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -3772,7 +3772,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -3803,7 +3803,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -3821,7 +3821,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       },
       "premieres": [
         {
@@ -3857,7 +3857,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       },
       "premieres": [
         {
@@ -3906,7 +3906,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -3942,7 +3942,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -3978,7 +3978,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -4009,7 +4009,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -4040,7 +4040,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -4066,7 +4066,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -4090,7 +4090,7 @@
         "url": "https://www.themoviedb.org/movie/546554",
         "managedDate": true,
         "region": "RU",
-        "checkedAt": "2026-11-22T22:26:50.257Z",
+        "checkedAt": "2026-11-23T22:55:42.176Z",
         "schema": 2,
         "status": "unresolved",
         "candidates": [
@@ -4146,7 +4146,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       },
       "premieres": [
         {
@@ -4180,7 +4180,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -4206,7 +4206,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -4232,7 +4232,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -4258,7 +4258,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -4270,7 +4270,7 @@
       "added": "2026-10-23",
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-22T22:26:50.257Z",
+        "checkedAt": "2026-11-23T22:55:42.176Z",
         "schema": 2,
         "candidates": [
           {
@@ -4332,7 +4332,7 @@
         "url": "https://www.themoviedb.org/movie/87428",
         "managedDate": true,
         "region": "RU",
-        "checkedAt": "2026-11-22T22:26:50.257Z",
+        "checkedAt": "2026-11-23T22:55:42.176Z",
         "schema": 2,
         "status": "unresolved",
         "candidates": [
@@ -4401,7 +4401,7 @@
         "identity": "рождениеимперии:",
         "url": "https://www.themoviedb.org/movie/999592",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       },
       "watching": true,
       "archive_release_key": "",
@@ -4417,7 +4417,7 @@
       "note": "Дата по Лайфхакеру; площадка не названа.",
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-22T22:26:50.257Z",
+        "checkedAt": "2026-11-23T22:55:42.176Z",
         "schema": 2,
         "candidates": [
           {
@@ -4452,7 +4452,7 @@
       "note": "Оценка Кинопоиска 7,7 (топ-250 фильмов).",
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-22T22:26:50.257Z",
+        "checkedAt": "2026-11-23T22:55:42.176Z",
         "schema": 2,
         "candidates": [
           {
@@ -4512,7 +4512,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -4536,7 +4536,7 @@
         "identity": "бумажныйтигр:",
         "url": "https://www.themoviedb.org/movie/1381273",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -4547,7 +4547,7 @@
       "added": "2026-10-26",
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-22T22:26:50.257Z",
+        "checkedAt": "2026-11-23T22:55:42.176Z",
         "schema": 2,
         "candidates": [
           {
@@ -4616,7 +4616,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -4641,7 +4641,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -4652,7 +4652,7 @@
       "added": "2026-10-26",
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-22T22:26:50.257Z",
+        "checkedAt": "2026-11-23T22:55:42.176Z",
         "schema": 2,
         "candidates": [
           {
@@ -4715,7 +4715,7 @@
         "managedDate": true,
         "region": "US",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       },
       "premieres": [
         {
@@ -4744,7 +4744,7 @@
       "poster_query": "Runner 2026 Owen Wilson",
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-22T22:26:50.257Z",
+        "checkedAt": "2026-11-23T22:55:42.176Z",
         "schema": 2,
         "candidates": [
           {
@@ -4815,7 +4815,7 @@
         "managedDate": true,
         "region": "US",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -4840,7 +4840,7 @@
         "url": "https://www.themoviedb.org/movie/1621552",
         "managedDate": true,
         "region": "MX",
-        "checkedAt": "2026-11-22T22:26:50.257Z",
+        "checkedAt": "2026-11-23T22:55:42.176Z",
         "schema": 2,
         "status": "unresolved",
         "candidates": [
@@ -4871,7 +4871,7 @@
       "note": "Tuner (2025): криминальный триллер Дэниэла Роэра. Пианист-настройщик с повышенной чувствительностью к звукам вскрывает сейфы по звуку механизмов. В ролях Лео Вудалл, Дастин Хоффман и Жан Рено. Уже скачан, смотреть можно на своём сервере. В российском прокате с 5 ноября 2026, прокатчик «Триада Про» (Metaratings).",
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-22T22:26:50.257Z",
+        "checkedAt": "2026-11-23T22:55:42.176Z",
         "schema": 2,
         "candidates": [
           {
@@ -4940,7 +4940,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -4970,7 +4970,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -4995,7 +4995,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -5006,7 +5006,7 @@
       "added": "2026-10-28",
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-22T22:26:50.257Z",
+        "checkedAt": "2026-11-23T22:55:42.176Z",
         "schema": 2,
         "candidates": [
           {
@@ -5068,7 +5068,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -5100,7 +5100,7 @@
         "managedDate": true,
         "region": "US",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -5129,7 +5129,7 @@
         "identity": "навар:",
         "url": "https://www.themoviedb.org/movie/1446602",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       },
       "watching": true,
       "archive_release_key": "",
@@ -5157,7 +5157,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -5168,7 +5168,7 @@
       "added": "2026-11-03",
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-22T22:26:50.257Z",
+        "checkedAt": "2026-11-23T22:55:42.176Z",
         "schema": 2,
         "candidates": [
           {
@@ -5226,7 +5226,7 @@
       "note": "Комедия, криминал, 2026, режиссёр Мейкон Блэр. Два неудачника-водителя везут богатого подростка в рехаб (Дэйв Франко, О'Ши Джексон-мл., Мейсон Темс). В кино США с 28 августа 2026; в России шёл как «Кретины» (The Numbers). Сервис в России не подтверждён.",
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-22T22:26:50.257Z",
+        "checkedAt": "2026-11-23T22:55:42.176Z",
         "schema": 2,
         "candidates": [
           {
@@ -5252,17 +5252,17 @@
           },
           {
             "provider": "tmdb",
-            "id": 1567268,
-            "title": "Useful Idiots",
-            "original": "Useful Idiots",
-            "year": null
+            "id": 116090,
+            "title": "Idiots Deluxe",
+            "original": "Idiots Deluxe",
+            "year": 1945
           },
           {
             "provider": "tmdb",
-            "id": 1684236,
-            "title": "IDIOTS",
-            "original": "IDIOTS",
-            "year": 2026
+            "id": 101168,
+            "title": "Idiots",
+            "original": "Idiots",
+            "year": 2011
           }
         ],
         "issues": [
@@ -5294,7 +5294,7 @@
         "identity": "женаипес:",
         "url": "https://www.themoviedb.org/movie/1290000",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     },
     {
@@ -5326,7 +5326,7 @@
         "identity": "ebenezer:2026",
         "url": "https://www.themoviedb.org/movie/1567605",
         "schema": 2,
-        "checkedAt": "2026-11-22T22:26:50.257Z"
+        "checkedAt": "2026-11-23T22:55:42.176Z"
       }
     }
   ]
