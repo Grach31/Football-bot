@@ -1,7 +1,31 @@
 {
   "version": 1,
-  "updated": "2026-11-24T06:38:16.543Z",
+  "updated": "2026-11-24T18:19:02.420Z",
   "items": [
+    {
+      "id": "series-polyarnyy-season-6-2026-2026-11-24-10:00",
+      "category": "episodes",
+      "title": "Полярный: вышли серии 11–12",
+      "body": "ТНТ, Иви · Сезон 6 · сегодня, вторник",
+      "route": "#/module/cinema/s/polyarnyy-season-6-2026",
+      "at": "2026-11-24T21:19:00+03:00"
+    },
+    {
+      "id": "series-taynyy-gorod-2026-2026-11-24-10:00",
+      "category": "episodes",
+      "title": "Тайный город: вышла 2 серия",
+      "body": "ТНТ, Кинопоиск · Сезон 1 · сегодня, вторник",
+      "route": "#/module/cinema/s/taynyy-gorod-2026",
+      "at": "2026-11-24T21:19:00+03:00"
+    },
+    {
+      "id": "sub-ivi-mvo79dho-2026-11-24-0",
+      "category": "subscriptions",
+      "title": "Иви: списание сегодня",
+      "body": "399 ₽. Если сервис не нужен, отмените подписку",
+      "route": "#/settings/cinema/subs",
+      "at": "2026-11-24T21:19:00+03:00"
+    },
     {
       "id": "series-polyarnyy-season-6-2026-2026-11-23-10:00",
       "category": "episodes",
