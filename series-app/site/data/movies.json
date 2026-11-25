@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-24",
+  "updated": "2026-11-25",
   "items": [
     {
       "id": "13-dney-13-nochey-2025",
@@ -31,7 +31,7 @@
         "identity": "13jours13nuits:2025",
         "url": "https://www.themoviedb.org/movie/1254135",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       },
       "archive_release_key": "",
       "viewing_shared": true
@@ -46,7 +46,7 @@
       "note": "Фильм Кристофера Нолана. Цифровой релиз и Blu-ray за рубежом 17 ноября 2026 (по данным Variety). Дата на российских сервисах не объявлена.",
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-23T22:55:42.176Z",
+        "checkedAt": "2026-11-25T02:40:22.041Z",
         "schema": 2,
         "candidates": [
           {
@@ -58,17 +58,17 @@
           },
           {
             "provider": "tmdb",
-            "id": 975511,
-            "title": "Возвращение Одиссея",
-            "original": "The Return",
-            "year": 2024
-          },
-          {
-            "provider": "tmdb",
             "id": 62,
             "title": "2001 год: Космическая одиссея",
             "original": "2001: A Space Odyssey",
             "year": 1968
+          },
+          {
+            "provider": "tmdb",
+            "id": 975511,
+            "title": "Возвращение Одиссея",
+            "original": "The Return",
+            "year": 2024
           },
           {
             "provider": "tmdb",
@@ -79,18 +79,48 @@
           },
           {
             "provider": "tmdb",
-            "id": 332814,
-            "title": "Одиссея 1989",
-            "original": "Одиссея 1989",
-            "year": 2003
-          }
-        ],
-        "issues": [
+            "id": 332794,
+            "title": "Одиссея",
+            "original": "L'Odyssée",
+            "year": 2016
+          },
           {
             "provider": "kinopoisk",
-            "code": "provider_http_402"
+            "id": 5238462,
+            "title": "Река — одиссея жизни",
+            "original": "The River — Odyssey of Life",
+            "year": 2013
+          },
+          {
+            "provider": "kinopoisk",
+            "id": 6385370,
+            "title": "Одиссея",
+            "original": "The Odyssey",
+            "year": 2026
+          },
+          {
+            "provider": "kinopoisk",
+            "id": 146365,
+            "title": "Одиссея Жака Кусто: Мир без солнца",
+            "original": "Le Monde sans soleil",
+            "year": 1964
+          },
+          {
+            "provider": "kinopoisk",
+            "id": 42729,
+            "title": "Одиссея капитана Блада",
+            "original": "",
+            "year": 1991
+          },
+          {
+            "provider": "kinopoisk",
+            "id": 139126,
+            "title": "BBC: Космическая одиссея. Путешествие по галактике",
+            "original": "Space Odyssey: Voyage to the Planets",
+            "year": 2004
           }
-        ]
+        ],
+        "issues": []
       }
     },
     {
@@ -102,7 +132,7 @@
       "note": "Премьера на Твоё. С Марком Уолбергом и Яхьей Абдул-Матином II.",
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-23T22:55:42.176Z",
+        "checkedAt": "2026-11-25T02:40:22.041Z",
         "schema": 2,
         "candidates": [
           {
@@ -139,14 +169,44 @@
             "title": "Любой ценой",
             "original": "Whatever It Takes",
             "year": 2000
-          }
-        ],
-        "issues": [
+          },
           {
             "provider": "kinopoisk",
-            "code": "provider_http_402"
+            "id": 5447062,
+            "title": "Свое гнездо, любой ценой",
+            "original": "Ұялам, но үй алам",
+            "year": 2024
+          },
+          {
+            "provider": "kinopoisk",
+            "id": 5308994,
+            "title": "Дубай любой ценой",
+            "original": "",
+            "year": 2023
+          },
+          {
+            "provider": "kinopoisk",
+            "id": 88721,
+            "title": "Следствие ведут знатоки: Любой ценой",
+            "original": "",
+            "year": 1977
+          },
+          {
+            "provider": "kinopoisk",
+            "id": 726794,
+            "title": "Любой ценой",
+            "original": "Hell or High Water",
+            "year": 2016
+          },
+          {
+            "provider": "kinopoisk",
+            "id": 9806,
+            "title": "Любой ценой",
+            "original": "Ad ogni costo",
+            "year": 1967
           }
-        ]
+        ],
+        "issues": []
       }
     },
     {
@@ -158,22 +218,22 @@
       "note": "Дату и точное название фильма нужно уточнить: под этим названием несколько проектов.",
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-23T22:55:42.176Z",
+        "checkedAt": "2026-11-25T02:40:22.041Z",
         "schema": 2,
         "candidates": [
-          {
-            "provider": "tmdb",
-            "id": 618617,
-            "title": "Ноктюрн Шопена",
-            "original": "Ноктюрн Шопена",
-            "year": 1913
-          },
           {
             "provider": "tmdb",
             "id": 466869,
             "title": "Ноктюрн Шопена",
             "original": "Ноктюрн Шопена",
             "year": 1992
+          },
+          {
+            "provider": "tmdb",
+            "id": 618617,
+            "title": "Ноктюрн Шопена",
+            "original": "Ноктюрн Шопена",
+            "year": 1913
           },
           {
             "provider": "tmdb",
@@ -195,14 +255,44 @@
             "title": "Ноктюрн 1931 года",
             "original": "Ноктюрн 1931 года",
             "year": 1989
-          }
-        ],
-        "issues": [
+          },
           {
             "provider": "kinopoisk",
-            "code": "provider_http_402"
+            "id": 58246,
+            "title": "Индийский ноктюрн",
+            "original": "Nocturne indien",
+            "year": 1989
+          },
+          {
+            "provider": "kinopoisk",
+            "id": 453163,
+            "title": "Ноктюрн",
+            "original": "",
+            "year": 1966
+          },
+          {
+            "provider": "kinopoisk",
+            "id": 11794,
+            "title": "Ноктюрн",
+            "original": "Nocturne",
+            "year": 1946
+          },
+          {
+            "provider": "kinopoisk",
+            "id": 22603,
+            "title": "Ноктюрн",
+            "original": "Nocturne",
+            "year": 1980
+          },
+          {
+            "provider": "kinopoisk",
+            "id": 1311855,
+            "title": "Ноктюрн",
+            "original": "Nocturne",
+            "year": 2020
           }
-        ]
+        ],
+        "issues": []
       }
     },
     {
@@ -226,7 +316,7 @@
         "identity": "знакомствосфакераминоваяглава:",
         "url": "https://www.themoviedb.org/movie/1400336",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -239,7 +329,7 @@
       "note": "Фильм Дэвида Литча (Amazon MGM Studios), мировая премьера 4 сентября 2026. Появление на российских сервисах уточню.",
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-23T22:55:42.176Z",
+        "checkedAt": "2026-11-25T02:40:22.041Z",
         "schema": 2,
         "candidates": [
           {
@@ -255,14 +345,30 @@
             "title": "Как ограбить банк",
             "original": "How to Rob a Bank",
             "year": 2007
-          }
-        ],
-        "issues": [
+          },
           {
             "provider": "kinopoisk",
-            "code": "provider_http_402"
+            "id": 252820,
+            "title": "Как ограбить банк",
+            "original": "How to Rob a Bank (and 10 Tips to Actually Get Away with It)",
+            "year": 2007
+          },
+          {
+            "provider": "kinopoisk",
+            "id": 7708133,
+            "title": "Как ограбить банк",
+            "original": "How to Rob a Bank",
+            "year": 2026
+          },
+          {
+            "provider": "kinopoisk",
+            "id": 6382694,
+            "title": "Как ограбить банк",
+            "original": "4 Kids Walk Into a Bank",
+            "year": 2026
           }
-        ]
+        ],
+        "issues": []
       },
       "watching": true,
       "archive_release_key": "",
@@ -278,7 +384,7 @@
       "note": "Фильм Marvel, мировая премьера в кино 18 декабря 2026. В России дата пока не объявлена.",
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-23T22:55:42.176Z",
+        "checkedAt": "2026-11-25T02:40:22.041Z",
         "schema": 2,
         "candidates": [
           {
@@ -289,12 +395,7 @@
             "year": 2026
           }
         ],
-        "issues": [
-          {
-            "provider": "kinopoisk",
-            "code": "provider_http_402"
-          }
-        ]
+        "issues": []
       }
     },
     {
@@ -318,7 +419,7 @@
         "identity": "дюначастьтретья:",
         "url": "https://www.themoviedb.org/movie/1170608",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -342,7 +443,7 @@
         "identity": "голодныеигрырассветжатвы:",
         "url": "https://www.themoviedb.org/movie/1300968",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -365,7 +466,7 @@
         "identity": "черныйшелк:",
         "url": "https://www.themoviedb.org/movie/1550039",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -396,7 +497,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -408,7 +509,7 @@
       "added": "2026-10-23",
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-23T22:55:42.176Z",
+        "checkedAt": "2026-11-25T02:40:22.041Z",
         "schema": 2,
         "candidates": [
           {
@@ -434,25 +535,55 @@
           },
           {
             "provider": "tmdb",
+            "id": 47219,
+            "title": "Чужеземец",
+            "original": "The Foreigner",
+            "year": 1978
+          },
+          {
+            "provider": "tmdb",
             "id": 792534,
             "title": "The Foreigner",
             "original": "The Foreigner",
             "year": 2012
           },
           {
-            "provider": "tmdb",
-            "id": 271986,
-            "title": "The Foreigner",
+            "provider": "kinopoisk",
+            "id": 618287,
+            "title": "Иностранец",
             "original": "The Foreigner",
-            "year": 1997
-          }
-        ],
-        "issues": [
+            "year": 2017
+          },
           {
             "provider": "kinopoisk",
-            "code": "provider_http_402"
+            "id": 18828,
+            "title": "Иностранец",
+            "original": "The Foreigner",
+            "year": 2002
+          },
+          {
+            "provider": "kinopoisk",
+            "id": 90993,
+            "title": "",
+            "original": "Phyllis and the Foreigner",
+            "year": 1915
+          },
+          {
+            "provider": "kinopoisk",
+            "id": 661664,
+            "title": "Иностранец",
+            "original": "The Foreigner",
+            "year": 2012
+          },
+          {
+            "provider": "kinopoisk",
+            "id": 857281,
+            "title": "",
+            "original": "The Foreigner",
+            "year": 2015
           }
-        ]
+        ],
+        "issues": []
       }
     },
     {
@@ -464,7 +595,7 @@
       "added": "2026-10-23",
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-23T22:55:42.176Z",
+        "checkedAt": "2026-11-25T02:40:22.041Z",
         "schema": 2,
         "candidates": [
           {
@@ -501,14 +632,44 @@
             "title": "Made for Her: A Native American Fashion Film",
             "original": "Made for Her: A Native American Fashion Film",
             "year": 2026
-          }
-        ],
-        "issues": [
+          },
           {
             "provider": "kinopoisk",
-            "code": "provider_http_402"
+            "id": 837552,
+            "title": "Сделано в Америке",
+            "original": "American Made",
+            "year": 2017
+          },
+          {
+            "provider": "kinopoisk",
+            "id": 829496,
+            "title": "",
+            "original": "American Made",
+            "year": 2003
+          },
+          {
+            "provider": "kinopoisk",
+            "id": 7942,
+            "title": "",
+            "original": "American Made",
+            "year": 2003
+          },
+          {
+            "provider": "kinopoisk",
+            "id": 877162,
+            "title": "",
+            "original": "American Made",
+            "year": 2014
+          },
+          {
+            "provider": "kinopoisk",
+            "id": 1151635,
+            "title": "",
+            "original": "American Made",
+            "year": 2018
           }
-        ]
+        ],
+        "issues": []
       }
     },
     {
@@ -534,7 +695,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -545,53 +706,23 @@
       "poster_query": "Zodiac",
       "added": "2026-10-23",
       "release_sync": {
-        "status": "unresolved",
-        "checkedAt": "2026-11-23T22:55:42.176Z",
+        "provider": "kinopoisk",
+        "id": 102838,
+        "identity": "zodiac:",
+        "url": "https://www.kinopoisk.ru/film/102838/",
+        "managedDate": true,
+        "region": "США",
         "schema": 2,
-        "candidates": [
-          {
-            "provider": "tmdb",
-            "id": 1949,
-            "title": "Зодиак",
-            "original": "Zodiac",
-            "year": 2007
-          },
-          {
-            "provider": "tmdb",
-            "id": 285135,
-            "title": "Зодиак: Предвестия апокалипсиса",
-            "original": "Zodiac",
-            "year": 2014
-          },
-          {
-            "provider": "tmdb",
-            "id": 455476,
-            "title": "Рыцари Зодиака",
-            "original": "Knights of the Zodiac",
-            "year": 2023
-          },
-          {
-            "provider": "tmdb",
-            "id": 11345,
-            "title": "Зодиак",
-            "original": "The Zodiac",
-            "year": 2005
-          },
-          {
-            "provider": "tmdb",
-            "id": 28721,
-            "title": "Zodiac Killer",
-            "original": "Zodiac Killer",
-            "year": 2005
-          }
-        ],
-        "issues": [
-          {
-            "provider": "kinopoisk",
-            "code": "provider_http_402"
-          }
-        ]
-      }
+        "checkedAt": "2026-11-25T02:40:22.041Z"
+      },
+      "premieres": [
+        {
+          "date": "2007-02-28",
+          "type": 3,
+          "region": "США"
+        }
+      ],
+      "date": "2007-02-28"
     },
     {
       "id": "lib-po-soobrazheniyam-sovesti",
@@ -616,7 +747,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -642,7 +773,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -666,7 +797,7 @@
         "url": "https://www.themoviedb.org/movie/308266",
         "managedDate": true,
         "region": "RU",
-        "checkedAt": "2026-11-23T22:55:42.176Z",
+        "checkedAt": "2026-11-25T02:40:22.041Z",
         "schema": 2,
         "status": "unresolved",
         "candidates": [
@@ -704,14 +835,44 @@
             "title": "Ужасы войны",
             "original": "Dogs of War!",
             "year": 1923
-          }
-        ],
-        "issues": [
+          },
           {
             "provider": "kinopoisk",
-            "code": "provider_http_402"
+            "id": 602749,
+            "title": "Парни со стволами",
+            "original": "War Dogs",
+            "year": 2016
+          },
+          {
+            "provider": "kinopoisk",
+            "id": 221835,
+            "title": "Собаки войны",
+            "original": "War Dogs",
+            "year": 1943
+          },
+          {
+            "provider": "kinopoisk",
+            "id": 450277,
+            "title": "",
+            "original": "War Dogs of the Pacific",
+            "year": 2009
+          },
+          {
+            "provider": "kinopoisk",
+            "id": 533527,
+            "title": "",
+            "original": "War Dogs",
+            "year": 1917
+          },
+          {
+            "provider": "kinopoisk",
+            "id": 679348,
+            "title": "",
+            "original": "War Dogs",
+            "year": 2015
           }
-        ]
+        ],
+        "issues": []
       }
     },
     {
@@ -747,7 +908,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -765,7 +926,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       },
       "premieres": [
         {
@@ -785,50 +946,21 @@
       "added": "2026-10-23",
       "premieres": [
         {
-          "date": "2012-05-24",
-          "type": 5,
-          "region": "RU"
+          "date": "1984-05-20",
+          "type": 3,
+          "region": "Франция"
         }
       ],
-      "date": "2012-05-24",
+      "date": "1984-05-20",
       "release_sync": {
-        "provider": "tmdb",
-        "id": 311,
-        "url": "https://www.themoviedb.org/movie/311",
+        "provider": "kinopoisk",
+        "id": 469,
+        "identity": "onceuponatimeinamerica:",
+        "url": "https://www.kinopoisk.ru/film/469/",
         "managedDate": true,
-        "region": "RU",
-        "checkedAt": "2026-11-23T22:55:42.176Z",
+        "region": "Франция",
         "schema": 2,
-        "status": "unresolved",
-        "candidates": [
-          {
-            "provider": "tmdb",
-            "id": 311,
-            "title": "Однажды в Америке",
-            "original": "Once Upon a Time in America",
-            "year": 1984
-          },
-          {
-            "provider": "tmdb",
-            "id": 926319,
-            "title": "Once Upon a Time in America",
-            "original": "Once Upon a Time in America",
-            "year": 2020
-          },
-          {
-            "provider": "tmdb",
-            "id": 10620,
-            "title": "Американские приключения",
-            "original": "黃飛鴻之西域雄獅",
-            "year": 1997
-          }
-        ],
-        "issues": [
-          {
-            "provider": "kinopoisk",
-            "code": "provider_http_402"
-          }
-        ]
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -846,7 +978,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       },
       "premieres": [
         {
@@ -880,7 +1012,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -891,53 +1023,23 @@
       "poster_query": "Iron Man",
       "added": "2026-10-23",
       "release_sync": {
-        "status": "unresolved",
-        "checkedAt": "2026-11-23T22:55:42.176Z",
+        "provider": "kinopoisk",
+        "id": 61237,
+        "identity": "ironman:",
+        "url": "https://www.kinopoisk.ru/film/61237/",
+        "managedDate": true,
+        "region": "Австралия",
         "schema": 2,
-        "candidates": [
-          {
-            "provider": "tmdb",
-            "id": 1726,
-            "title": "Железный человек",
-            "original": "Iron Man",
-            "year": 2008
-          },
-          {
-            "provider": "tmdb",
-            "id": 10138,
-            "title": "Железный человек 2",
-            "original": "Iron Man 2",
-            "year": 2010
-          },
-          {
-            "provider": "tmdb",
-            "id": 68721,
-            "title": "Железный человек 3",
-            "original": "Iron Man 3",
-            "year": 2013
-          },
-          {
-            "provider": "tmdb",
-            "id": 9313,
-            "title": "Человек в железной маске",
-            "original": "The Man in the Iron Mask",
-            "year": 1998
-          },
-          {
-            "provider": "tmdb",
-            "id": 69592,
-            "title": "Iron Man",
-            "original": "Iron Man",
-            "year": 1951
-          }
-        ],
-        "issues": [
-          {
-            "provider": "kinopoisk",
-            "code": "provider_http_402"
-          }
-        ]
-      }
+        "checkedAt": "2026-11-25T02:40:22.041Z"
+      },
+      "premieres": [
+        {
+          "date": "2008-04-14",
+          "type": 3,
+          "region": "Австралия"
+        }
+      ],
+      "date": "2008-04-14"
     },
     {
       "id": "mcu-the-incredible-hulk",
@@ -980,7 +1082,7 @@
         "url": "https://www.themoviedb.org/movie/1724",
         "managedDate": true,
         "region": "US",
-        "checkedAt": "2026-11-23T22:55:42.176Z",
+        "checkedAt": "2026-11-25T02:40:22.041Z",
         "schema": 2,
         "status": "unresolved",
         "candidates": [
@@ -1018,14 +1120,44 @@
             "title": "Невероятный Халк: Испытание",
             "original": "The Trial of the Incredible Hulk",
             "year": 1989
-          }
-        ],
-        "issues": [
+          },
           {
             "provider": "kinopoisk",
-            "code": "provider_http_402"
+            "id": 255380,
+            "title": "Невероятный Халк",
+            "original": "The Incredible Hulk",
+            "year": 2008
+          },
+          {
+            "provider": "kinopoisk",
+            "id": 295724,
+            "title": "Невероятный Халк: Испытание",
+            "original": "The Trial of the Incredible Hulk",
+            "year": 1989
+          },
+          {
+            "provider": "kinopoisk",
+            "id": 297724,
+            "title": "Смерть невероятного Халка",
+            "original": "The Death of the Incredible Hulk",
+            "year": 1990
+          },
+          {
+            "provider": "kinopoisk",
+            "id": 327014,
+            "title": "Невероятный Халк: Возвращение",
+            "original": "The Incredible Hulk Returns",
+            "year": 1988
+          },
+          {
+            "provider": "kinopoisk",
+            "id": 6531555,
+            "title": "",
+            "original": "The Incredible Hulk",
+            "year": 1977
           }
-        ]
+        ],
+        "issues": []
       }
     },
     {
@@ -1051,7 +1183,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -1069,7 +1201,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       },
       "premieres": [
         {
@@ -1113,7 +1245,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -1131,7 +1263,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       },
       "premieres": [
         {
@@ -1170,7 +1302,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -1196,7 +1328,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -1222,7 +1354,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -1248,7 +1380,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -1274,7 +1406,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -1300,7 +1432,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -1331,7 +1463,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -1342,53 +1474,23 @@
       "poster_query": "Doctor Strange",
       "added": "2026-10-23",
       "release_sync": {
-        "status": "unresolved",
-        "checkedAt": "2026-11-23T22:55:42.176Z",
+        "provider": "kinopoisk",
+        "id": 409600,
+        "identity": "doctorstrange:",
+        "url": "https://www.kinopoisk.ru/film/409600/",
+        "managedDate": true,
+        "region": "Гонконг",
         "schema": 2,
-        "candidates": [
-          {
-            "provider": "tmdb",
-            "id": 284052,
-            "title": "Доктор Стрэндж",
-            "original": "Doctor Strange",
-            "year": 2016
-          },
-          {
-            "provider": "tmdb",
-            "id": 453395,
-            "title": "Доктор Стрэндж: В мультивселенной безумия",
-            "original": "Doctor Strange in the Multiverse of Madness",
-            "year": 2022
-          },
-          {
-            "provider": "tmdb",
-            "id": 14830,
-            "title": "Доктор Стрэндж и Тайна Ордена магов",
-            "original": "Doctor Strange",
-            "year": 2007
-          },
-          {
-            "provider": "tmdb",
-            "id": 448383,
-            "title": "Doctor Strange: The Score-Cerer Supreme",
-            "original": "Doctor Strange: The Score-Cerer Supreme",
-            "year": 2017
-          },
-          {
-            "provider": "tmdb",
-            "id": 1772354,
-            "title": "Untitled Doctor Strange Movie",
-            "original": "Untitled Doctor Strange Movie",
-            "year": null
-          }
-        ],
-        "issues": [
-          {
-            "provider": "kinopoisk",
-            "code": "provider_http_402"
-          }
-        ]
-      }
+        "checkedAt": "2026-11-25T02:40:22.041Z"
+      },
+      "premieres": [
+        {
+          "date": "2016-10-13",
+          "type": 3,
+          "region": "Гонконг"
+        }
+      ],
+      "date": "2016-10-13"
     },
     {
       "id": "mcu-guardians-of-the-galaxy-vol-2",
@@ -1405,7 +1507,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       },
       "premieres": [
         {
@@ -1439,7 +1541,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -1465,7 +1567,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -1476,53 +1578,23 @@
       "poster_query": "Black Panther",
       "added": "2026-10-23",
       "release_sync": {
-        "status": "unresolved",
-        "checkedAt": "2026-11-23T22:55:42.176Z",
+        "provider": "kinopoisk",
+        "id": 623250,
+        "identity": "blackpanther:",
+        "url": "https://www.kinopoisk.ru/film/623250/",
+        "managedDate": true,
+        "region": "США",
         "schema": 2,
-        "candidates": [
-          {
-            "provider": "tmdb",
-            "id": 284054,
-            "title": "Чёрная Пантера",
-            "original": "Black Panther",
-            "year": 2018
-          },
-          {
-            "provider": "tmdb",
-            "id": 505642,
-            "title": "Чёрная Пантера: Ваканда навеки",
-            "original": "Black Panther: Wakanda Forever",
-            "year": 2022
-          },
-          {
-            "provider": "tmdb",
-            "id": 1386618,
-            "title": "Черная Пантера 3",
-            "original": "Black Panther 3",
-            "year": 2028
-          },
-          {
-            "provider": "tmdb",
-            "id": 86841,
-            "title": "Black Panther",
-            "original": "Black Panther",
-            "year": 2010
-          },
-          {
-            "provider": "tmdb",
-            "id": 106876,
-            "title": "The Black Panther",
-            "original": "The Black Panther",
-            "year": 1977
-          }
-        ],
-        "issues": [
-          {
-            "provider": "kinopoisk",
-            "code": "provider_http_402"
-          }
-        ]
-      }
+        "checkedAt": "2026-11-25T02:40:22.041Z"
+      },
+      "premieres": [
+        {
+          "date": "2018-01-29",
+          "type": 3,
+          "region": "США"
+        }
+      ],
+      "date": "2018-01-29"
     },
     {
       "id": "mcu-avengers-infinity-war",
@@ -1552,7 +1624,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -1578,7 +1650,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -1604,7 +1676,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -1640,7 +1712,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -1671,7 +1743,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -1697,7 +1769,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -1723,7 +1795,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -1764,7 +1836,7 @@
         "managedDate": true,
         "region": "US",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -1805,7 +1877,7 @@
         "managedDate": true,
         "region": "US",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -1823,7 +1895,7 @@
         "managedDate": true,
         "region": "US",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       },
       "premieres": [
         {
@@ -1868,68 +1940,21 @@
       "added": "2026-10-23",
       "premieres": [
         {
-          "date": "2025-07-21",
-          "type": 1,
-          "region": "US"
-        },
-        {
-          "date": "2025-07-25",
+          "date": "2025-07-22",
           "type": 3,
-          "region": "US"
-        },
-        {
-          "date": "2025-09-23",
-          "type": 4,
-          "region": "US"
-        },
-        {
-          "date": "2025-11-05",
-          "type": 4,
-          "region": "US"
-        },
-        {
-          "date": "2025-10-14",
-          "type": 5,
-          "region": "US"
-        },
-        {
-          "date": "2026-12-13",
-          "type": 6,
-          "region": "US"
+          "region": "Испания"
         }
       ],
-      "date": "2025-09-23",
+      "date": "2025-07-22",
       "release_sync": {
-        "provider": "tmdb",
-        "id": 617126,
-        "url": "https://www.themoviedb.org/movie/617126",
+        "provider": "kinopoisk",
+        "id": 1287545,
+        "identity": "thefantasticfourfirststeps:",
+        "url": "https://www.kinopoisk.ru/film/1287545/",
         "managedDate": true,
-        "region": "US",
-        "checkedAt": "2026-11-23T22:55:42.176Z",
+        "region": "Испания",
         "schema": 2,
-        "status": "unresolved",
-        "candidates": [
-          {
-            "provider": "tmdb",
-            "id": 617126,
-            "title": "Фантастическая четвёрка: Первые шаги",
-            "original": "The Fantastic 4: First Steps",
-            "year": 2025
-          },
-          {
-            "provider": "tmdb",
-            "id": 1516738,
-            "title": "Marvel Studios' The Fantastic Four: First Steps - World Premiere",
-            "original": "Marvel Studios' The Fantastic Four: First Steps - World Premiere",
-            "year": 2025
-          }
-        ],
-        "issues": [
-          {
-            "provider": "kinopoisk",
-            "code": "provider_http_402"
-          }
-        ]
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -1970,7 +1995,7 @@
         "managedDate": true,
         "region": "US",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -2016,7 +2041,7 @@
         "managedDate": true,
         "region": "US",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -2067,7 +2092,7 @@
         "managedDate": true,
         "region": "US",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -2085,7 +2110,7 @@
         "managedDate": true,
         "region": "US",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       },
       "premieres": [
         {
@@ -2162,7 +2187,7 @@
         "identity": "spidermanbrandnewday:",
         "url": "https://www.themoviedb.org/movie/969681",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -2188,7 +2213,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -2200,7 +2225,7 @@
       "added": "2026-10-23",
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-23T22:55:42.176Z",
+        "checkedAt": "2026-11-25T02:40:22.041Z",
         "schema": 2,
         "candidates": [
           {
@@ -2237,14 +2262,44 @@
             "title": "If You Can Catch Me",
             "original": "If You Can Catch Me",
             "year": null
-          }
-        ],
-        "issues": [
+          },
           {
             "provider": "kinopoisk",
-            "code": "provider_http_402"
+            "id": 324,
+            "title": "Поймай меня, если сможешь",
+            "original": "Catch Me If You Can",
+            "year": 2002
+          },
+          {
+            "provider": "kinopoisk",
+            "id": 161187,
+            "title": "Смертельная игра",
+            "original": "Catch Me If You Can",
+            "year": 1998
+          },
+          {
+            "provider": "kinopoisk",
+            "id": 2788,
+            "title": "Поймай меня, если сможешь",
+            "original": "Catch Me If You Can",
+            "year": 1989
+          },
+          {
+            "provider": "kinopoisk",
+            "id": 1002942,
+            "title": "",
+            "original": "Catch Me If You Can",
+            "year": 1996
+          },
+          {
+            "provider": "kinopoisk",
+            "id": 1147490,
+            "title": "",
+            "original": "Catch Me If You Can",
+            "year": 2018
           }
-        ]
+        ],
+        "issues": []
       }
     },
     {
@@ -2278,7 +2333,7 @@
         "url": "https://www.themoviedb.org/movie/106646",
         "managedDate": true,
         "region": "RU",
-        "checkedAt": "2026-11-23T22:55:42.176Z",
+        "checkedAt": "2026-11-25T02:40:22.041Z",
         "schema": 2,
         "status": "unresolved",
         "candidates": [
@@ -2309,14 +2364,23 @@
             "title": "The PM, the Playboy and the Wolf of Wall Street",
             "original": "The PM, the Playboy and the Wolf of Wall Street",
             "year": 2019
-          }
-        ],
-        "issues": [
+          },
           {
             "provider": "kinopoisk",
-            "code": "provider_http_402"
+            "id": 462682,
+            "title": "Волк с Уолл-стрит",
+            "original": "The Wolf of Wall Street",
+            "year": 2013
+          },
+          {
+            "provider": "kinopoisk",
+            "id": 180137,
+            "title": "",
+            "original": "The Wolf of Wall Street",
+            "year": 1929
           }
-        ]
+        ],
+        "issues": []
       }
     },
     {
@@ -2347,7 +2411,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -2365,7 +2429,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       },
       "premieres": [
         {
@@ -2391,7 +2455,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       },
       "premieres": [
         {
@@ -2450,7 +2514,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -2462,7 +2526,7 @@
       "added": "2026-10-23",
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-23T22:55:42.176Z",
+        "checkedAt": "2026-11-25T02:40:22.041Z",
         "schema": 2,
         "candidates": [
           {
@@ -2499,14 +2563,44 @@
             "title": "The Revenant Choir",
             "original": "The Revenant Choir",
             "year": null
-          }
-        ],
-        "issues": [
+          },
           {
             "provider": "kinopoisk",
-            "code": "provider_http_402"
+            "id": 522941,
+            "title": "Выживший",
+            "original": "The Revenant",
+            "year": 2015
+          },
+          {
+            "provider": "kinopoisk",
+            "id": 968766,
+            "title": "Невиданный мир: Выживший",
+            "original": "A World Unseen: The Revenant",
+            "year": 2016
+          },
+          {
+            "provider": "kinopoisk",
+            "id": 435378,
+            "title": "Мертвеход",
+            "original": "The Revenant",
+            "year": 2009
+          },
+          {
+            "provider": "kinopoisk",
+            "id": 834247,
+            "title": "",
+            "original": "3010 Children of the Revenant",
+            "year": 2012
+          },
+          {
+            "provider": "kinopoisk",
+            "id": 790572,
+            "title": "",
+            "original": "The Apostate: Call of the Revenant",
+            "year": 2015
           }
-        ]
+        ],
+        "issues": []
       }
     },
     {
@@ -2519,7 +2613,7 @@
       "note": "Фильм Гая Ричи 2026 (In the Grey).",
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-23T22:55:42.176Z",
+        "checkedAt": "2026-11-25T02:40:22.041Z",
         "schema": 2,
         "candidates": [
           {
@@ -2556,14 +2650,44 @@
             "title": "The Small Woman in Grey",
             "original": "The Small Woman in Grey",
             "year": 2017
-          }
-        ],
-        "issues": [
+          },
           {
             "provider": "kinopoisk",
-            "code": "provider_http_402"
+            "id": 5437609,
+            "title": "Грязные деньги",
+            "original": "In the Grey",
+            "year": 2025
+          },
+          {
+            "provider": "kinopoisk",
+            "id": 1282261,
+            "title": "Экстрасенс. Дело Софи",
+            "original": "They Live in the Grey",
+            "year": 2021
+          },
+          {
+            "provider": "kinopoisk",
+            "id": 675675,
+            "title": "",
+            "original": "In the Grey",
+            "year": 2012
+          },
+          {
+            "provider": "kinopoisk",
+            "id": 1410777,
+            "title": "",
+            "original": "In the Grey",
+            "year": 2019
+          },
+          {
+            "provider": "kinopoisk",
+            "id": 4966408,
+            "title": "",
+            "original": "In the Grey Light",
+            "year": null
           }
-        ]
+        ],
+        "issues": []
       }
     },
     {
@@ -2581,7 +2705,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       },
       "premieres": [
         {
@@ -2615,7 +2739,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -2633,7 +2757,7 @@
         "managedDate": true,
         "region": "WORLD",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       },
       "premieres": [],
       "date": "2023-12-01"
@@ -2653,7 +2777,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       },
       "premieres": [
         {
@@ -2692,7 +2816,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -2704,69 +2828,21 @@
       "added": "2026-10-23",
       "premieres": [
         {
-          "date": "2020-02-13",
+          "date": "2019-12-03",
           "type": 3,
-          "region": "RU"
-        },
-        {
-          "date": "2020-03-31",
-          "type": 4,
-          "region": "RU"
+          "region": "Великобритания"
         }
       ],
-      "date": "2020-03-31",
+      "date": "2019-12-03",
       "release_sync": {
-        "provider": "tmdb",
-        "id": 522627,
-        "url": "https://www.themoviedb.org/movie/522627",
+        "provider": "kinopoisk",
+        "id": 1143242,
+        "identity": "thegentlemen:2019",
+        "url": "https://www.kinopoisk.ru/film/1143242/",
         "managedDate": true,
-        "region": "RU",
-        "checkedAt": "2026-11-23T22:55:42.176Z",
+        "region": "Великобритания",
         "schema": 2,
-        "status": "unresolved",
-        "candidates": [
-          {
-            "provider": "tmdb",
-            "id": 522627,
-            "title": "Джентльмены",
-            "original": "The Gentlemen",
-            "year": 2020
-          },
-          {
-            "provider": "tmdb",
-            "id": 8698,
-            "title": "Лига выдающихся джентльменов",
-            "original": "The League of Extraordinary Gentlemen",
-            "year": 2003
-          },
-          {
-            "provider": "tmdb",
-            "id": 1290486,
-            "title": "Веселые господа",
-            "original": "The Merry Gentlemen",
-            "year": 2024
-          },
-          {
-            "provider": "tmdb",
-            "id": 1085003,
-            "title": "The Gentlemen",
-            "original": "The Gentlemen",
-            "year": 2009
-          },
-          {
-            "provider": "tmdb",
-            "id": 46724,
-            "title": "Лига джентльменов",
-            "original": "The League of Gentlemen",
-            "year": 1960
-          }
-        ],
-        "issues": [
-          {
-            "provider": "kinopoisk",
-            "code": "provider_http_402"
-          }
-        ]
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -2784,7 +2860,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       },
       "premieres": [
         {
@@ -2828,7 +2904,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -2839,53 +2915,23 @@
       "poster_query": "Snatch",
       "added": "2026-10-23",
       "release_sync": {
-        "status": "unresolved",
-        "checkedAt": "2026-11-23T22:55:42.176Z",
+        "provider": "kinopoisk",
+        "id": 526,
+        "identity": "snatch:",
+        "url": "https://www.kinopoisk.ru/film/526/",
+        "managedDate": true,
+        "region": "Великобритания",
         "schema": 2,
-        "candidates": [
-          {
-            "provider": "tmdb",
-            "id": 107,
-            "title": "Большой куш",
-            "original": "Snatch",
-            "year": 2000
-          },
-          {
-            "provider": "tmdb",
-            "id": 1106095,
-            "title": "Snatch",
-            "original": "Snatch",
-            "year": 2023
-          },
-          {
-            "provider": "tmdb",
-            "id": 357659,
-            "title": "Создавая «Большой куш»",
-            "original": "Making 'Snatch'",
-            "year": 2001
-          },
-          {
-            "provider": "tmdb",
-            "id": 392334,
-            "title": "Operation Snatch",
-            "original": "Operation Snatch",
-            "year": 1962
-          },
-          {
-            "provider": "tmdb",
-            "id": 1526887,
-            "title": "Snatch",
-            "original": "Snatch",
-            "year": null
-          }
-        ],
-        "issues": [
-          {
-            "provider": "kinopoisk",
-            "code": "provider_http_402"
-          }
-        ]
-      }
+        "checkedAt": "2026-11-25T02:40:22.041Z"
+      },
+      "premieres": [
+        {
+          "date": "2000-08-23",
+          "type": 3,
+          "region": "Великобритания"
+        }
+      ],
+      "date": "2000-08-23"
     },
     {
       "id": "lib-lock-stock-and-two-smoking-barrels",
@@ -2910,7 +2956,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -2941,7 +2987,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -2959,7 +3005,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       },
       "premieres": [
         {
@@ -3013,7 +3059,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -3044,7 +3090,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -3070,7 +3116,7 @@
         "managedDate": true,
         "region": "US",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -3101,7 +3147,7 @@
         "managedDate": true,
         "region": "US",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -3132,7 +3178,7 @@
         "managedDate": true,
         "region": "US",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -3150,7 +3196,7 @@
         "managedDate": true,
         "region": "US",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       },
       "premieres": [
         {
@@ -3194,7 +3240,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -3235,7 +3281,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -3276,7 +3322,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -3317,7 +3363,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -3343,7 +3389,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -3369,7 +3415,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -3395,7 +3441,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -3424,7 +3470,7 @@
         "url": "https://www.themoviedb.org/movie/77338",
         "managedDate": true,
         "region": "RU",
-        "checkedAt": "2026-11-23T22:55:42.176Z",
+        "checkedAt": "2026-11-25T02:40:22.041Z",
         "schema": 2,
         "status": "unresolved",
         "candidates": [
@@ -3450,12 +3496,7 @@
             "year": null
           }
         ],
-        "issues": [
-          {
-            "provider": "kinopoisk",
-            "code": "provider_http_402"
-          }
-        ]
+        "issues": []
       }
     },
     {
@@ -3467,79 +3508,21 @@
       "added": "2026-10-23",
       "premieres": [
         {
-          "date": "2019-07-25",
-          "type": 2,
-          "region": "RU"
-        },
-        {
-          "date": "2000-01-13",
+          "date": "1999-09-10",
           "type": 3,
-          "region": "RU"
-        },
-        {
-          "date": "2007-08-09",
-          "type": 5,
-          "region": "RU"
-        },
-        {
-          "date": "2009-12-17",
-          "type": 5,
-          "region": "RU"
+          "region": "Италия"
         }
       ],
-      "date": "2000-01-13",
+      "date": "1999-09-10",
       "release_sync": {
-        "provider": "tmdb",
-        "id": 550,
-        "url": "https://www.themoviedb.org/movie/550",
+        "provider": "kinopoisk",
+        "id": 361,
+        "identity": "fightclub:",
+        "url": "https://www.kinopoisk.ru/film/361/",
         "managedDate": true,
-        "region": "RU",
-        "checkedAt": "2026-11-23T22:55:42.176Z",
+        "region": "Италия",
         "schema": 2,
-        "status": "unresolved",
-        "candidates": [
-          {
-            "provider": "tmdb",
-            "id": 550,
-            "title": "Бойцовский клуб",
-            "original": "Fight Club",
-            "year": 1999
-          },
-          {
-            "provider": "tmdb",
-            "id": 1213076,
-            "title": "Fight Club",
-            "original": "Fight Club",
-            "year": 2023
-          },
-          {
-            "provider": "tmdb",
-            "id": 347807,
-            "title": "Fight Club: Members Only",
-            "original": "Fight Club: Members Only",
-            "year": 2006
-          },
-          {
-            "provider": "tmdb",
-            "id": 883656,
-            "title": "GCW Fight Club",
-            "original": "GCW Fight Club",
-            "year": 2021
-          },
-          {
-            "provider": "tmdb",
-            "id": 1656143,
-            "title": "MDK Fight Club 2026",
-            "original": "MDK Fight Club 2026",
-            "year": 2026
-          }
-        ],
-        "issues": [
-          {
-            "provider": "kinopoisk",
-            "code": "provider_http_402"
-          }
-        ]
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -3557,7 +3540,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       },
       "premieres": [
         {
@@ -3587,12 +3570,12 @@
           "region": "RU"
         },
         {
-          "date": "2008-12-23",
+          "date": "2002-08-28",
           "type": 5,
           "region": "RU"
         },
         {
-          "date": "2002-08-28",
+          "date": "2008-12-23",
           "type": 5,
           "region": "RU"
         }
@@ -3606,7 +3589,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -3642,7 +3625,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -3654,53 +3637,21 @@
       "added": "2026-10-23",
       "premieres": [
         {
-          "date": "2004-06-03",
+          "date": "2004-05-23",
           "type": 3,
-          "region": "RU"
-        },
-        {
-          "date": "2004-09-16",
-          "type": 5,
-          "region": "RU"
-        },
-        {
-          "date": "2008-12-23",
-          "type": 5,
-          "region": "RU"
+          "region": "США"
         }
       ],
-      "date": "2004-06-03",
+      "date": "2004-05-23",
       "release_sync": {
-        "provider": "tmdb",
-        "id": 673,
-        "url": "https://www.themoviedb.org/movie/673",
+        "provider": "kinopoisk",
+        "id": 322,
+        "identity": "harrypotterandtheprisonerofazkaban:",
+        "url": "https://www.kinopoisk.ru/film/322/",
         "managedDate": true,
-        "region": "RU",
-        "checkedAt": "2026-11-23T22:55:42.176Z",
+        "region": "США",
         "schema": 2,
-        "status": "unresolved",
-        "candidates": [
-          {
-            "provider": "tmdb",
-            "id": 673,
-            "title": "Гарри Поттер и узник Азкабана",
-            "original": "Harry Potter and the Prisoner of Azkaban",
-            "year": 2004
-          },
-          {
-            "provider": "tmdb",
-            "id": 1803114,
-            "title": "Harry Potter And The Prisoner Of Azkaban",
-            "original": "Harry Potter And The Prisoner Of Azkaban",
-            "year": null
-          }
-        ],
-        "issues": [
-          {
-            "provider": "kinopoisk",
-            "code": "provider_http_402"
-          }
-        ]
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -3736,7 +3687,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -3772,7 +3723,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -3803,7 +3754,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -3821,7 +3772,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       },
       "premieres": [
         {
@@ -3857,7 +3808,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       },
       "premieres": [
         {
@@ -3906,7 +3857,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -3942,7 +3893,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -3978,7 +3929,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -4009,7 +3960,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -4040,7 +3991,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -4066,7 +4017,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -4078,57 +4029,21 @@
       "added": "2026-10-23",
       "premieres": [
         {
-          "date": "2019-11-28",
+          "date": "2019-09-07",
           "type": 3,
-          "region": "RU"
+          "region": "Канада"
         }
       ],
-      "date": "2019-11-28",
+      "date": "2019-09-07",
       "release_sync": {
-        "provider": "tmdb",
-        "id": 546554,
-        "url": "https://www.themoviedb.org/movie/546554",
+        "provider": "kinopoisk",
+        "id": 1188529,
+        "identity": "knivesout:",
+        "url": "https://www.kinopoisk.ru/film/1188529/",
         "managedDate": true,
-        "region": "RU",
-        "checkedAt": "2026-11-23T22:55:42.176Z",
+        "region": "Канада",
         "schema": 2,
-        "status": "unresolved",
-        "candidates": [
-          {
-            "provider": "tmdb",
-            "id": 546554,
-            "title": "Достать ножи",
-            "original": "Knives Out",
-            "year": 2019
-          },
-          {
-            "provider": "tmdb",
-            "id": 661374,
-            "title": "Достать ножи: Стеклянная луковица",
-            "original": "Glass Onion: A Knives Out Mystery",
-            "year": 2022
-          },
-          {
-            "provider": "tmdb",
-            "id": 812583,
-            "title": "Достать ножи: Воскрешение покойника",
-            "original": "Wake Up Dead Man: A Knives Out Mystery",
-            "year": 2025
-          },
-          {
-            "provider": "tmdb",
-            "id": 481638,
-            "title": "Knives out",
-            "original": "Knives out",
-            "year": 2016
-          }
-        ],
-        "issues": [
-          {
-            "provider": "kinopoisk",
-            "code": "provider_http_402"
-          }
-        ]
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -4146,7 +4061,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       },
       "premieres": [
         {
@@ -4180,7 +4095,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -4206,7 +4121,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -4232,7 +4147,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -4258,7 +4173,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -4269,46 +4184,23 @@
       "poster_query": "Reservoir Dogs",
       "added": "2026-10-23",
       "release_sync": {
-        "status": "unresolved",
-        "checkedAt": "2026-11-23T22:55:42.176Z",
+        "provider": "kinopoisk",
+        "id": 394,
+        "identity": "reservoirdogs:",
+        "url": "https://www.kinopoisk.ru/film/394/",
+        "managedDate": true,
+        "region": "США",
         "schema": 2,
-        "candidates": [
-          {
-            "provider": "tmdb",
-            "id": 500,
-            "title": "Бешеные псы",
-            "original": "Reservoir Dogs",
-            "year": 1992
-          },
-          {
-            "provider": "tmdb",
-            "id": 443129,
-            "title": "Reservoir Dogs",
-            "original": "Reservoir Dogs",
-            "year": 1991
-          },
-          {
-            "provider": "tmdb",
-            "id": 754721,
-            "title": "Reservoir Dogs Revisited",
-            "original": "Reservoir Dogs Revisited",
-            "year": 2005
-          },
-          {
-            "provider": "tmdb",
-            "id": 710198,
-            "title": "Reservoir Dogs: Playing It Fast & Loose",
-            "original": "Reservoir Dogs: Playing It Fast & Loose",
-            "year": 2006
-          }
-        ],
-        "issues": [
-          {
-            "provider": "kinopoisk",
-            "code": "provider_http_402"
-          }
-        ]
-      }
+        "checkedAt": "2026-11-25T02:40:22.041Z"
+      },
+      "premieres": [
+        {
+          "date": "1992-01-21",
+          "type": 3,
+          "region": "США"
+        }
+      ],
+      "date": "1992-01-21"
     },
     {
       "id": "lib-papa-dosvidos",
@@ -4332,7 +4224,7 @@
         "url": "https://www.themoviedb.org/movie/87428",
         "managedDate": true,
         "region": "RU",
-        "checkedAt": "2026-11-23T22:55:42.176Z",
+        "checkedAt": "2026-11-25T02:40:22.041Z",
         "schema": 2,
         "status": "unresolved",
         "candidates": [
@@ -4370,14 +4262,44 @@
             "title": "That's My Boy",
             "original": "That's My Boy",
             "year": 2015
-          }
-        ],
-        "issues": [
+          },
           {
             "provider": "kinopoisk",
-            "code": "provider_http_402"
+            "id": 462884,
+            "title": "Папа-досвидос",
+            "original": "That's My Boy",
+            "year": 2012
+          },
+          {
+            "provider": "kinopoisk",
+            "id": 1180,
+            "title": "",
+            "original": "That's My Boy",
+            "year": 1932
+          },
+          {
+            "provider": "kinopoisk",
+            "id": 20393,
+            "title": "Это мой парень",
+            "original": "That's My Boy",
+            "year": 1951
+          },
+          {
+            "provider": "kinopoisk",
+            "id": 1393686,
+            "title": "",
+            "original": "That's My Boy",
+            "year": null
+          },
+          {
+            "provider": "kinopoisk",
+            "id": 4765549,
+            "title": "",
+            "original": "That's My Boy!",
+            "year": 2020
           }
-        ]
+        ],
+        "issues": []
       }
     },
     {
@@ -4401,7 +4323,7 @@
         "identity": "рождениеимперии:",
         "url": "https://www.themoviedb.org/movie/999592",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       },
       "watching": true,
       "archive_release_key": "",
@@ -4417,7 +4339,7 @@
       "note": "Дата по Лайфхакеру; площадка не названа.",
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-23T22:55:42.176Z",
+        "checkedAt": "2026-11-25T02:40:22.041Z",
         "schema": 2,
         "candidates": [
           {
@@ -4433,14 +4355,30 @@
             "title": "Отель «У погибшего альпиниста»",
             "original": "Hukkunud Alpinisti hotell",
             "year": 1979
-          }
-        ],
-        "issues": [
+          },
           {
             "provider": "kinopoisk",
-            "code": "provider_http_402"
+            "id": 44646,
+            "title": "Отель «У погибшего альпиниста»",
+            "original": "",
+            "year": 1979
+          },
+          {
+            "provider": "kinopoisk",
+            "id": 1105420,
+            "title": "Отель «У погибшего альпиниста»",
+            "original": "Hotel pod poległym alpinistą",
+            "year": 1976
+          },
+          {
+            "provider": "kinopoisk",
+            "id": 4291584,
+            "title": "Отель «У погибшего альпиниста»",
+            "original": "",
+            "year": null
           }
-        ]
+        ],
+        "issues": []
       }
     },
     {
@@ -4452,7 +4390,7 @@
       "note": "Оценка Кинопоиска 7,7 (топ-250 фильмов).",
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-23T22:55:42.176Z",
+        "checkedAt": "2026-11-25T02:40:22.041Z",
         "schema": 2,
         "candidates": [
           {
@@ -4475,14 +4413,44 @@
             "title": "Отступники",
             "original": "The Opportunists",
             "year": 2000
-          }
-        ],
-        "issues": [
+          },
           {
             "provider": "kinopoisk",
-            "code": "provider_http_402"
+            "id": 81314,
+            "title": "Отступники",
+            "original": "The Departed",
+            "year": 2006
+          },
+          {
+            "provider": "kinopoisk",
+            "id": 4550,
+            "title": "Отступники",
+            "original": "The Opportunists",
+            "year": 1999
+          },
+          {
+            "provider": "kinopoisk",
+            "id": 94170,
+            "title": "Отступники",
+            "original": "The Defectors",
+            "year": 2001
+          },
+          {
+            "provider": "kinopoisk",
+            "id": 201736,
+            "title": "Отступники",
+            "original": "Renegades",
+            "year": 1946
+          },
+          {
+            "provider": "kinopoisk",
+            "id": 231354,
+            "title": "Оклахомские отступники",
+            "original": "Oklahoma Renegades",
+            "year": 1940
           }
-        ]
+        ],
+        "issues": []
       }
     },
     {
@@ -4512,7 +4480,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -4536,7 +4504,7 @@
         "identity": "бумажныйтигр:",
         "url": "https://www.themoviedb.org/movie/1381273",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -4547,7 +4515,7 @@
       "added": "2026-10-26",
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-23T22:55:42.176Z",
+        "checkedAt": "2026-11-25T02:40:22.041Z",
         "schema": 2,
         "candidates": [
           {
@@ -4566,13 +4534,6 @@
           },
           {
             "provider": "tmdb",
-            "id": 841,
-            "title": "Дюна",
-            "original": "Dune",
-            "year": 1984
-          },
-          {
-            "provider": "tmdb",
             "id": 1170608,
             "title": "Дюна: Часть третья",
             "original": "Dune: Part Three",
@@ -4580,18 +4541,55 @@
           },
           {
             "provider": "tmdb",
+            "id": 841,
+            "title": "Дюна",
+            "original": "Dune",
+            "year": 1984
+          },
+          {
+            "provider": "tmdb",
             "id": 633787,
             "title": "Золотая дюна",
             "original": "Золотая дюна",
             "year": 2021
-          }
-        ],
-        "issues": [
+          },
           {
             "provider": "kinopoisk",
-            "code": "provider_http_402"
+            "id": 4540126,
+            "title": "Дюна: Часть вторая",
+            "original": "Dune: Part Two",
+            "year": 2024
+          },
+          {
+            "provider": "kinopoisk",
+            "id": 742858,
+            "title": "«Дюна» Ходоровского",
+            "original": "Jodorowsky's Dune",
+            "year": 2013
+          },
+          {
+            "provider": "kinopoisk",
+            "id": 409424,
+            "title": "Дюна",
+            "original": "Dune: Part One",
+            "year": 2021
+          },
+          {
+            "provider": "kinopoisk",
+            "id": 2882,
+            "title": "Дюна",
+            "original": "Dune",
+            "year": 1984
+          },
+          {
+            "provider": "kinopoisk",
+            "id": 5078981,
+            "title": "Золотая дюна",
+            "original": "",
+            "year": 2021
           }
-        ]
+        ],
+        "issues": []
       }
     },
     {
@@ -4616,7 +4614,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -4641,7 +4639,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -4652,7 +4650,7 @@
       "added": "2026-10-26",
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-23T22:55:42.176Z",
+        "checkedAt": "2026-11-25T02:40:22.041Z",
         "schema": 2,
         "candidates": [
           {
@@ -4671,10 +4669,17 @@
           },
           {
             "provider": "tmdb",
-            "id": 1377067,
-            "title": "Царский гнев",
-            "original": "Царский гнев",
-            "year": 1912
+            "id": 1124142,
+            "title": "Гнев улья",
+            "original": "The Rivals of Amziah King",
+            "year": 2026
+          },
+          {
+            "provider": "tmdb",
+            "id": 57165,
+            "title": "Гнев титанов",
+            "original": "Wrath of the Titans",
+            "year": 2012
           },
           {
             "provider": "tmdb",
@@ -4684,19 +4689,42 @@
             "year": 1975
           },
           {
-            "provider": "tmdb",
-            "id": 57165,
-            "title": "Гнев титанов",
-            "original": "Wrath of the Titans",
-            "year": 2012
-          }
-        ],
-        "issues": [
+            "provider": "kinopoisk",
+            "id": 346,
+            "title": "12 разгневанных мужчин",
+            "original": "12 Angry Men",
+            "year": 1956
+          },
           {
             "provider": "kinopoisk",
-            "code": "provider_http_402"
+            "id": 6889,
+            "title": "Гнев",
+            "original": "Man on Fire",
+            "year": 2004
+          },
+          {
+            "provider": "kinopoisk",
+            "id": 85566,
+            "title": "12 разгневанных мужчин",
+            "original": "12 Angry Men",
+            "year": 1997
+          },
+          {
+            "provider": "kinopoisk",
+            "id": 36631,
+            "title": "Трое разгневанных мужчин",
+            "original": "Tridev",
+            "year": 1989
+          },
+          {
+            "provider": "kinopoisk",
+            "id": 8206,
+            "title": "Агирре, гнев божий",
+            "original": "Aguirre, der Zorn Gottes",
+            "year": 1972
           }
-        ]
+        ],
+        "issues": []
       }
     },
     {
@@ -4715,7 +4743,7 @@
         "managedDate": true,
         "region": "US",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       },
       "premieres": [
         {
@@ -4743,53 +4771,23 @@
       "note": "Runner (2026): боевик-триллер Скотта Во с Оуэном Уилсоном и Аланом Ричсоном. Курьер за три часа должен доставить орган для спасения ребёнка. В российском прокате с 17 сентября 2026 (peterburg2.ru). Не путать с российским «Курьером» 2027 года.",
       "poster_query": "Runner 2026 Owen Wilson",
       "release_sync": {
-        "status": "unresolved",
-        "checkedAt": "2026-11-23T22:55:42.176Z",
+        "provider": "kinopoisk",
+        "id": 7178187,
+        "identity": "runner:2026",
+        "url": "https://www.kinopoisk.ru/film/7178187/",
+        "managedDate": true,
+        "region": "Нидерланды",
         "schema": 2,
-        "candidates": [
-          {
-            "provider": "tmdb",
-            "id": 1377237,
-            "title": "Курьер",
-            "original": "Runner",
-            "year": 2026
-          },
-          {
-            "provider": "tmdb",
-            "id": 335984,
-            "title": "Бегущий по лезвию 2049",
-            "original": "Blade Runner 2049",
-            "year": 2017
-          },
-          {
-            "provider": "tmdb",
-            "id": 78,
-            "title": "Бегущий по лезвию",
-            "original": "Blade Runner",
-            "year": 1982
-          },
-          {
-            "provider": "tmdb",
-            "id": 1386315,
-            "title": "Бегущая",
-            "original": "The Runner",
-            "year": 2026
-          },
-          {
-            "provider": "tmdb",
-            "id": 198663,
-            "title": "Бегущий в лабиринте",
-            "original": "The Maze Runner",
-            "year": 2014
-          }
-        ],
-        "issues": [
-          {
-            "provider": "kinopoisk",
-            "code": "provider_http_402"
-          }
-        ]
-      }
+        "checkedAt": "2026-11-25T02:40:22.041Z"
+      },
+      "premieres": [
+        {
+          "date": "2026-09-10",
+          "type": 3,
+          "region": "Нидерланды"
+        }
+      ],
+      "date": "2026-09-10"
     },
     {
       "id": "shepot-za-oknom-2026",
@@ -4815,7 +4813,7 @@
         "managedDate": true,
         "region": "US",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -4840,7 +4838,7 @@
         "url": "https://www.themoviedb.org/movie/1621552",
         "managedDate": true,
         "region": "MX",
-        "checkedAt": "2026-11-23T22:55:42.176Z",
+        "checkedAt": "2026-11-25T02:40:22.041Z",
         "schema": 2,
         "status": "unresolved",
         "candidates": [
@@ -4852,12 +4850,7 @@
             "year": 2026
           }
         ],
-        "issues": [
-          {
-            "provider": "kinopoisk",
-            "code": "provider_http_402"
-          }
-        ]
+        "issues": []
       }
     },
     {
@@ -4870,53 +4863,20 @@
       "poster_query": "Tuner 2025 Leo Woodall",
       "note": "Tuner (2025): криминальный триллер Дэниэла Роэра. Пианист-настройщик с повышенной чувствительностью к звукам вскрывает сейфы по звуку механизмов. В ролях Лео Вудалл, Дастин Хоффман и Жан Рено. Уже скачан, смотреть можно на своём сервере. В российском прокате с 5 ноября 2026, прокатчик «Триада Про» (Metaratings).",
       "release_sync": {
-        "status": "unresolved",
-        "checkedAt": "2026-11-23T22:55:42.176Z",
+        "provider": "kinopoisk",
+        "id": 7518867,
+        "identity": "tuner:2025",
+        "url": "https://www.kinopoisk.ru/film/7518867/",
         "schema": 2,
-        "candidates": [
-          {
-            "provider": "tmdb",
-            "id": 1340206,
-            "title": "Настройщик",
-            "original": "Tuner",
-            "year": 2026
-          },
-          {
-            "provider": "tmdb",
-            "id": 1269815,
-            "title": "The Tuner",
-            "original": "The Tuner",
-            "year": 2023
-          },
-          {
-            "provider": "tmdb",
-            "id": 1543523,
-            "title": "The Piano Tuner",
-            "original": "The Piano Tuner",
-            "year": 2026
-          },
-          {
-            "provider": "tmdb",
-            "id": 381581,
-            "title": "The Piano Tuner",
-            "original": "The Piano Tuner",
-            "year": 1969
-          },
-          {
-            "provider": "tmdb",
-            "id": 1690893,
-            "title": "The Piano Tuner",
-            "original": "The Piano Tuner",
-            "year": 2026
-          }
-        ],
-        "issues": [
-          {
-            "provider": "kinopoisk",
-            "code": "provider_http_402"
-          }
-        ]
-      }
+        "checkedAt": "2026-11-25T02:40:22.041Z"
+      },
+      "premieres": [
+        {
+          "date": "2025-08-30",
+          "type": 3,
+          "region": "США"
+        }
+      ]
     },
     {
       "id": "otel-grand-budapesht-7mw5",
@@ -4940,7 +4900,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -4970,7 +4930,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -4995,7 +4955,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -5006,7 +4966,7 @@
       "added": "2026-10-28",
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-23T22:55:42.176Z",
+        "checkedAt": "2026-11-25T02:40:22.041Z",
         "schema": 2,
         "candidates": [
           {
@@ -5018,13 +4978,6 @@
           },
           {
             "provider": "tmdb",
-            "id": 684818,
-            "title": "Последний самурай",
-            "original": "The Last Samurai",
-            "year": 1990
-          },
-          {
-            "provider": "tmdb",
             "id": 78486,
             "title": "Оба: Последний самурай",
             "original": "太平洋の奇跡 -フォックスと呼ばれた男-",
@@ -5032,18 +4985,48 @@
           },
           {
             "provider": "tmdb",
+            "id": 684818,
+            "title": "Последний самурай",
+            "original": "The Last Samurai",
+            "year": 1990
+          },
+          {
+            "provider": "tmdb",
             "id": 413782,
             "title": "Mifune: The Last Samurai",
             "original": "Mifune: The Last Samurai",
             "year": 2016
-          }
-        ],
-        "issues": [
+          },
           {
             "provider": "kinopoisk",
-            "code": "provider_http_402"
+            "id": 6764,
+            "title": "Последний самурай",
+            "original": "The Last Samurai",
+            "year": 2003
+          },
+          {
+            "provider": "kinopoisk",
+            "id": 1007463,
+            "title": "Мифунэ: Последний самурай",
+            "original": "Mifune: The Last Samurai",
+            "year": 2015
+          },
+          {
+            "provider": "kinopoisk",
+            "id": 550803,
+            "title": "Оба: Последний самурай",
+            "original": "Taiheiyou no kiseki: Fokkusu to yobareta otoko",
+            "year": 2011
+          },
+          {
+            "provider": "kinopoisk",
+            "id": 2289,
+            "title": "Последний самурай",
+            "original": "The Last Samurai",
+            "year": 1990
           }
-        ]
+        ],
+        "issues": []
       }
     },
     {
@@ -5068,7 +5051,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -5100,7 +5083,7 @@
         "managedDate": true,
         "region": "US",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -5129,7 +5112,7 @@
         "identity": "навар:",
         "url": "https://www.themoviedb.org/movie/1446602",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       },
       "watching": true,
       "archive_release_key": "",
@@ -5157,7 +5140,7 @@
         "managedDate": true,
         "region": "RU",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -5168,7 +5151,7 @@
       "added": "2026-11-03",
       "release_sync": {
         "status": "unresolved",
-        "checkedAt": "2026-11-23T22:55:42.176Z",
+        "checkedAt": "2026-11-25T02:40:22.041Z",
         "schema": 2,
         "candidates": [
           {
@@ -5194,25 +5177,55 @@
           },
           {
             "provider": "tmdb",
+            "id": 800158,
+            "title": "Убийца",
+            "original": "The Killer",
+            "year": 2023
+          },
+          {
+            "provider": "tmdb",
             "id": 1451483,
             "title": "Убийца",
             "original": "Убийца",
             "year": 2021
           },
           {
-            "provider": "tmdb",
-            "id": 800158,
-            "title": "Убийца",
-            "original": "The Killer",
-            "year": 2023
-          }
-        ],
-        "issues": [
+            "provider": "kinopoisk",
+            "id": 373,
+            "title": "М убийца",
+            "original": "M - Eine Stadt sucht einen Mörder",
+            "year": 1931
+          },
           {
             "provider": "kinopoisk",
-            "code": "provider_http_402"
+            "id": 532,
+            "title": "Наёмный убийца",
+            "original": "Dip huet seung hung",
+            "year": 1989
+          },
+          {
+            "provider": "kinopoisk",
+            "id": 86760,
+            "title": "Убийца поневоле",
+            "original": "Badal",
+            "year": 2000
+          },
+          {
+            "provider": "kinopoisk",
+            "id": 1398923,
+            "title": "Невидимый убийца",
+            "original": "Gonggisalin",
+            "year": 2022
+          },
+          {
+            "provider": "kinopoisk",
+            "id": 80777,
+            "title": "Самурай-убийца",
+            "original": "Samurai",
+            "year": 1965
           }
-        ]
+        ],
+        "issues": []
       }
     },
     {
@@ -5225,53 +5238,20 @@
       "poster_query": "Idiots 2026 Macon Blair",
       "note": "Комедия, криминал, 2026, режиссёр Мейкон Блэр. Два неудачника-водителя везут богатого подростка в рехаб (Дэйв Франко, О'Ши Джексон-мл., Мейсон Темс). В кино США с 28 августа 2026; в России шёл как «Кретины» (The Numbers). Сервис в России не подтверждён.",
       "release_sync": {
-        "status": "unresolved",
-        "checkedAt": "2026-11-23T22:55:42.176Z",
+        "provider": "kinopoisk",
+        "id": 10465870,
+        "identity": "idiots:2026",
+        "url": "https://www.kinopoisk.ru/film/10465870/",
         "schema": 2,
-        "candidates": [
-          {
-            "provider": "tmdb",
-            "id": 445466,
-            "title": "Придурки",
-            "original": "Idiots",
-            "year": 2026
-          },
-          {
-            "provider": "tmdb",
-            "id": 20453,
-            "title": "Три идиота",
-            "original": "3 Idiots",
-            "year": 2009
-          },
-          {
-            "provider": "tmdb",
-            "id": 201485,
-            "title": "American Idiots",
-            "original": "American Idiots",
-            "year": 2013
-          },
-          {
-            "provider": "tmdb",
-            "id": 116090,
-            "title": "Idiots Deluxe",
-            "original": "Idiots Deluxe",
-            "year": 1945
-          },
-          {
-            "provider": "tmdb",
-            "id": 101168,
-            "title": "Idiots",
-            "original": "Idiots",
-            "year": 2011
-          }
-        ],
-        "issues": [
-          {
-            "provider": "kinopoisk",
-            "code": "provider_http_402"
-          }
-        ]
-      }
+        "checkedAt": "2026-11-25T02:40:22.041Z"
+      },
+      "premieres": [
+        {
+          "date": "2026-01-23",
+          "type": 3,
+          "region": "США"
+        }
+      ]
     },
     {
       "id": "zhena-i-pes-2026",
@@ -5294,7 +5274,7 @@
         "identity": "женаипес:",
         "url": "https://www.themoviedb.org/movie/1290000",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     },
     {
@@ -5326,7 +5306,7 @@
         "identity": "ebenezer:2026",
         "url": "https://www.themoviedb.org/movie/1567605",
         "schema": 2,
-        "checkedAt": "2026-11-23T22:55:42.176Z"
+        "checkedAt": "2026-11-25T02:40:22.041Z"
       }
     }
   ]
