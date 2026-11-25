@@ -235,7 +235,7 @@
           }
         ]
       },
-      "watching": true,
+      "watching": false,
       "archive_release_key": "",
       "viewing_shared": true
     },
