@@ -1,7 +1,31 @@
 {
   "version": 1,
-  "updated": "2026-11-25T02:40:45.683Z",
+  "updated": "2026-11-25T11:43:08.437Z",
   "items": [
+    {
+      "id": "series-polyarnyy-season-6-2026-2026-11-25-10:00",
+      "category": "episodes",
+      "title": "Полярный: вышли серии 13–14",
+      "body": "ТНТ, Иви · Сезон 6 · сегодня, среда",
+      "route": "#/module/cinema/s/polyarnyy-season-6-2026",
+      "at": "2026-11-25T14:43:00+03:00"
+    },
+    {
+      "id": "series-taynyy-gorod-2026-2026-11-25-10:00",
+      "category": "episodes",
+      "title": "Тайный город: вышла 3 серия",
+      "body": "ТНТ, Кинопоиск · Сезон 1 · сегодня, среда",
+      "route": "#/module/cinema/s/taynyy-gorod-2026",
+      "at": "2026-11-25T14:43:00+03:00"
+    },
+    {
+      "id": "movie-znakomstvo-s-fakerami-2026-11-25",
+      "category": "movies",
+      "title": "Знакомство с Факерами: Новая глава: выходит сегодня",
+      "body": "Фильм · Твоё",
+      "route": "#/module/cinema/m/znakomstvo-s-fakerami",
+      "at": "2026-11-25T14:43:00+03:00"
+    },
     {
       "id": "series-polyarnyy-season-6-2026-2026-11-24-10:00",
       "category": "episodes",
