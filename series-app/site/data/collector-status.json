@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-11-26T03:06:01.192Z",
+  "checkedAt": "2026-11-26T12:20:30.633Z",
   "status": "ready",
   "series": {
     "checked": 68,
@@ -11,9 +11,9 @@
     "errors": {}
   },
   "movies": {
-    "checked": 142,
-    "updated": 120,
-    "unresolved": 22,
+    "checked": 0,
+    "updated": 0,
+    "unresolved": 0,
     "failed": 0,
     "locked": 0,
     "degraded": 0,

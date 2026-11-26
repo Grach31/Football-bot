@@ -1,7 +1,39 @@
 {
   "version": 1,
-  "updated": "2026-11-26T03:06:25.189Z",
+  "updated": "2026-11-26T12:20:37.907Z",
   "items": [
+    {
+      "id": "series-polyarnyy-season-6-2026-2026-11-26-10:00",
+      "category": "episodes",
+      "title": "Полярный: вышли серии 15–16 (финал)",
+      "body": "ТНТ, Иви · Сезон 6 · сегодня, четверг",
+      "route": "#/module/cinema/s/polyarnyy-season-6-2026",
+      "at": "2026-11-26T15:20:00+03:00"
+    },
+    {
+      "id": "series-taynyy-gorod-2026-2026-11-26-10:00",
+      "category": "episodes",
+      "title": "Тайный город: вышла 4 серия",
+      "body": "ТНТ, Кинопоиск · Сезон 1 · сегодня, четверг",
+      "route": "#/module/cinema/s/taynyy-gorod-2026",
+      "at": "2026-11-26T15:20:00+03:00"
+    },
+    {
+      "id": "series-poluraspad-2026-11-26-10:00",
+      "category": "episodes",
+      "title": "Полураспад: вышла 8 серия (финал)",
+      "body": "Okko · Сезон 1 · сегодня, четверг",
+      "route": "#/module/cinema/s/poluraspad",
+      "at": "2026-11-26T15:20:00+03:00"
+    },
+    {
+      "id": "series-tmdb-tv-279382-2026-11-26-10:00",
+      "category": "episodes",
+      "title": "Eldorado: вышли серии 4–6 (финал)",
+      "body": "Сезон 1 · сегодня, четверг",
+      "route": "#/module/cinema/s/tmdb-tv-279382",
+      "at": "2026-11-26T15:20:00+03:00"
+    },
     {
       "id": "series-polyarnyy-season-6-2026-2026-11-25-10:00",
       "category": "episodes",
