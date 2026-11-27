@@ -1,7 +1,39 @@
 {
   "version": 1,
-  "updated": "2026-11-27T03:53:03.529Z",
+  "updated": "2026-11-27T13:20:56.501Z",
   "items": [
+    {
+      "id": "series-tyazhelyy-lyuks-2026-2026-11-27-10:00",
+      "category": "episodes",
+      "title": "Тяжёлый люкс: вышла 3 серия",
+      "body": "Wink · Сезон 1 · сегодня, пятница",
+      "route": "#/module/cinema/s/tyazhelyy-lyuks-2026",
+      "at": "2026-11-27T16:20:00+03:00"
+    },
+    {
+      "id": "series-korol-talsy-2026-11-27-10:00",
+      "category": "episodes",
+      "title": "Король Талсы: вышла 7 серия",
+      "body": "Paramount+ · Сезон 4 · сегодня, пятница",
+      "route": "#/module/cinema/s/korol-talsy",
+      "at": "2026-11-27T16:20:00+03:00"
+    },
+    {
+      "id": "series-kak-priruchit-lisu-2026-11-27-10:00",
+      "category": "episodes",
+      "title": "Как приручить лису: вышла 3 серия",
+      "body": "Okko · Сезон 2 · сегодня, пятница",
+      "route": "#/module/cinema/s/kak-priruchit-lisu",
+      "at": "2026-11-27T16:20:00+03:00"
+    },
+    {
+      "id": "series-ayda-2026-11-27-10:00",
+      "category": "episodes",
+      "title": "Айда!: вышла 5 серия",
+      "body": "START · Сезон 1 · сегодня, пятница",
+      "route": "#/module/cinema/s/ayda",
+      "at": "2026-11-27T16:20:00+03:00"
+    },
     {
       "id": "series-polyarnyy-season-6-2026-2026-11-26-10:00",
       "category": "episodes",
