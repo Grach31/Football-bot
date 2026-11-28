@@ -1,7 +1,15 @@
 {
   "version": 1,
-  "updated": "2026-11-28T03:54:29.308Z",
+  "updated": "2026-11-28T12:35:39.829Z",
   "items": [
+    {
+      "id": "series-ocharovannye-2026-2026-11-28-10:00",
+      "category": "episodes",
+      "title": "Очарованные: вышла 4 серия",
+      "body": "Кинопоиск · Сезон 1 · сегодня, суббота",
+      "route": "#/module/cinema/s/ocharovannye-2026",
+      "at": "2026-11-28T15:35:00+03:00"
+    },
     {
       "id": "series-stavka-na-lyubov-2026-11-27-19:00",
       "category": "episodes",

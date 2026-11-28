@@ -1,19 +1,19 @@
 {
-  "checkedAt": "2026-11-28T03:54:10.134Z",
+  "checkedAt": "2026-11-28T12:35:23.798Z",
   "status": "ready",
   "series": {
-    "checked": 0,
-    "updated": 0,
-    "unresolved": 0,
+    "checked": 68,
+    "updated": 49,
+    "unresolved": 19,
     "failed": 0,
     "locked": 1,
     "degraded": 0,
     "errors": {}
   },
   "movies": {
-    "checked": 142,
-    "updated": 120,
-    "unresolved": 22,
+    "checked": 0,
+    "updated": 0,
+    "unresolved": 0,
     "failed": 0,
     "locked": 0,
     "degraded": 0,
